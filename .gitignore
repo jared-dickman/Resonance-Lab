@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+
+# JetBrains IDEs
+.idea/
+
+# Gemini
+.gemini/
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+
+# Binaries for programs and plugins
+bin/
