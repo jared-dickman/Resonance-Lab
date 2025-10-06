@@ -1,0 +1,1134 @@
+{
+  "artist": "Led Zeppelin",
+  "title": "Stairway To Heaven",
+  "sections": [
+    {
+      "name": "Intro",
+      "lines": []
+    },
+    {
+      "name": "Verse 1",
+      "lines": [
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "ady who’s s"
+        },
+        {
+          "chord": {
+            "name": "Ammaj9"
+          },
+          "lyric": "ure,"
+        },
+        {
+          "chord": {
+            "name": "Am7"
+          },
+          "lyric": "glitters is g"
+        },
+        {
+          "chord": {
+            "name": "D/F#"
+          },
+          "lyric": "old."
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "buying a stairway to"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "He"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "aven."
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "gets there she k"
+        },
+        {
+          "chord": {
+            "name": "Ammaj9"
+          },
+          "lyric": "nows,"
+        },
+        {
+          "chord": {
+            "name": "Am7"
+          },
+          "lyric": "stores are all c"
+        },
+        {
+          "chord": {
+            "name": "D/F#"
+          },
+          "lyric": "losed,"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "word she can get what she"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "cam"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "e for."
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Oo-"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "ooh"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "ooh -"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "ooh, and she’s"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "buying a"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "stairway to"
+        },
+        {
+          "chord": {
+            "name": "Dsus4"
+          },
+          "lyric": "Hea -"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "ven."
+        }
+      ]
+    },
+    {
+      "name": "Verse 2",
+      "lines": [
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "sign on the w"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "all,"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "wants to be s"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "ure."
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "know sometimes"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "words have two"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "meanings."
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "tree by the br"
+        },
+        {
+          "chord": {
+            "name": "Ammaj9"
+          },
+          "lyric": "ook,"
+        },
+        {
+          "chord": {
+            "name": "Am7"
+          },
+          "lyric": "songbird who"
+        },
+        {
+          "chord": {
+            "name": "D/F#"
+          },
+          "lyric": "sings,"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "all of our thoughts are mis"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "gi"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "ven."
+        }
+      ]
+    },
+    {
+      "name": "Instrumental",
+      "lines": []
+    },
+    {
+      "name": "Bridge 1",
+      "lines": [
+        {
+          "chord": {
+            "name": "Am7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "Ooh, it makes me w"
+        },
+        {
+          "chord": {
+            "name": "Am7"
+          },
+          "lyric": "onder..."
+        },
+        {
+          "chord": {
+            "name": "Em/D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C/D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Am7"
+          },
+          "lyric": "Oooooooo"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "oh, it makes me wond"
+        },
+        {
+          "chord": {
+            "name": "Am7"
+          },
+          "lyric": "er..."
+        },
+        {
+          "chord": {
+            "name": "Em/D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C/D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Verse 3",
+      "lines": [
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "feeling I g"
+        },
+        {
+          "chord": {
+            "name": "G/B"
+          },
+          "lyric": "et,"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "look to the west."
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "spirit is"
+        },
+        {
+          "chord": {
+            "name": "G/B"
+          },
+          "lyric": "crying for"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "lea -"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "ving."
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "thoughts I have"
+        },
+        {
+          "chord": {
+            "name": "G/B"
+          },
+          "lyric": "seen,"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "smoke through the trees,"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "voices of"
+        },
+        {
+          "chord": {
+            "name": "G/B"
+          },
+          "lyric": "those who stand"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "loo -"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "king."
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "G/B"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Bridge 2",
+      "lines": [
+        {
+          "chord": {
+            "name": "Am7"
+          },
+          "lyric": "Oooooo"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "oh, it makes me wonder.."
+        },
+        {
+          "chord": {
+            "name": "Am7"
+          },
+          "lyric": "."
+        },
+        {
+          "chord": {
+            "name": "Em/D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C/D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Am7"
+          },
+          "lyric": "Oooooooooh,"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "it really makes me wonder.."
+        },
+        {
+          "chord": {
+            "name": "Am7"
+          },
+          "lyric": "."
+        },
+        {
+          "chord": {
+            "name": "Em/D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C/D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Verse 4",
+      "lines": [
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "whispered that"
+        },
+        {
+          "chord": {
+            "name": "G/B"
+          },
+          "lyric": "soon,"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "all call the tune,"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "piper will"
+        },
+        {
+          "chord": {
+            "name": "G/B"
+          },
+          "lyric": "lead us to"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "rea -"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "son."
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "new day will d"
+        },
+        {
+          "chord": {
+            "name": "G/B"
+          },
+          "lyric": "awn,"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "those who stand long,"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "forests will"
+        },
+        {
+          "chord": {
+            "name": "G/B"
+          },
+          "lyric": "echo with"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "laugh-"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "ter."
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "G/B"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Bridge 3",
+      "lines": []
+    },
+    {
+      "name": "Verse 5",
+      "lines": [
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "If there’s a"
+        },
+        {
+          "chord": {
+            "name": "G/B"
+          },
+          "lyric": "bustle in your"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "hedgerow"
+        },
+        {
+          "chord": null,
+          "lyric": "Don’t be alarmed now,"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "It’s just a"
+        },
+        {
+          "chord": {
+            "name": "G/B"
+          },
+          "lyric": "spring clean for the"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "May"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "queen."
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Yes, there are"
+        },
+        {
+          "chord": {
+            "name": "G/B"
+          },
+          "lyric": "two paths you can"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "go by"
+        },
+        {
+          "chord": null,
+          "lyric": "But in the long run"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "There’s still"
+        },
+        {
+          "chord": {
+            "name": "G/B"
+          },
+          "lyric": "time to change the"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "road"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "you’re on."
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "G/B"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Bridge 4",
+      "lines": [
+        {
+          "chord": {
+            "name": "Am7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "And it makes me w"
+        },
+        {
+          "chord": {
+            "name": "Am7"
+          },
+          "lyric": "onder..."
+        },
+        {
+          "chord": {
+            "name": "Em/D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C/D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Am7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "Ohhh-ohhh"
+        },
+        {
+          "chord": {
+            "name": "Am7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Em/D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C/D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Verse 6",
+      "lines": [
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Your head is"
+        },
+        {
+          "chord": {
+            "name": "G/B"
+          },
+          "lyric": "humming and it"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "won’t go"
+        },
+        {
+          "chord": null,
+          "lyric": "In case you don’t know,"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "The piper’s"
+        },
+        {
+          "chord": {
+            "name": "G/B"
+          },
+          "lyric": "calling you to"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "join"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "him,"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Dear lady,"
+        },
+        {
+          "chord": {
+            "name": "G/B"
+          },
+          "lyric": "can you hear the w"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "ind blow,"
+        },
+        {
+          "chord": null,
+          "lyric": "And did you know"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Your stairway"
+        },
+        {
+          "chord": {
+            "name": "G/B"
+          },
+          "lyric": "lies on the"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "whispe"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "ring wind."
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "G/B"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Transition",
+      "lines": []
+    },
+    {
+      "name": "Solo",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "x10"
+        }
+      ]
+    },
+    {
+      "name": "Final Verse",
+      "lines": [
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "And as we w"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "ind on down the r"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "oad,"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Our shadows"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "taller than our s"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "ouls,"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "There walks a l"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "ady we all k"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "now,"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Who shines white"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "light and wants to"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "show,"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "How everyth"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "ing still turns to g"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "old."
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "And if you"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "listen very h"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "ard,"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "The tune will c"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "ome to you at"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "last."
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "When all are"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "one and one is"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "all, yeah."
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "To be a r"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "ock and not"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "to roll."
+        }
+      ]
+    },
+    {
+      "name": "Outro",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "x4"
+        },
+        {
+          "chord": null,
+          "lyric": "(Fmaj7) N.C."
+        },
+        {
+          "chord": null,
+          "lyric": "And she’s buying a stairway to Heaven."
+        }
+      ]
+    }
+  ]
+}

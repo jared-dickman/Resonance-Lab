@@ -1,0 +1,392 @@
+{
+  "artist": "Ben E. King",
+  "title": "Stand By Me",
+  "sections": [
+    {
+      "name": "Intro",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "Ben E. King"
+        },
+        {
+          "chord": null,
+          "lyric": "Stand By Me"
+        },
+        {
+          "chord": null,
+          "lyric": "BPM : 120"
+        },
+        {
+          "chord": null,
+          "lyric": "Capo : II"
+        }
+      ]
+    },
+    {
+      "name": "Verse 1",
+      "lines": [
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "has come"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "and the land is da-"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "rk"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "on is the on-"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "ly light we'll"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "see"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "n't be af-"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "raid, no, I"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "won't be af-"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "raid"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "long as you st-"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "and, stand by"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "me. So"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "darlin', darlin'"
+        }
+      ]
+    },
+    {
+      "name": "Chorus 1",
+      "lines": [
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "stand by me,"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "oh now"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "stand by"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "me,"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "stand by me,"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "stand by"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "me."
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Verse 2",
+      "lines": [
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "that we look up-"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "on"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "should tumble and"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "fall"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "ain should"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "crumble to the"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "sea"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "I won't cry,"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "no, I"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "won't shed a"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "tear"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "as you stand,"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "stand by"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "me. And"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "darling, darling"
+        }
+      ]
+    },
+    {
+      "name": "Chorus 2",
+      "lines": [
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "stand by me,"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "oh now"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "stand by"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "me,"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "stand by me,"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "stand by"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "me."
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Solo",
+      "lines": []
+    },
+    {
+      "name": "Chorus 3",
+      "lines": [
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "Stand by me,"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "oh now"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "stand by"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "me,"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "stand by me,"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "stand by"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "me."
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        }
+      ]
+    }
+  ]
+}
