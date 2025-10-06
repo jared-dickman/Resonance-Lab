@@ -8,11 +8,24 @@ export interface SavedSong {
   updatedAt: string
 }
 
+export interface Song {
+  artist: string;
+  title: string;
+  key?: string;
+  sections: {
+    name: string;
+    lines: {
+      chord?: { name: string };
+      lyric: string;
+    }[];
+  }[];
+}
+
 export interface SongDetail {
   summary: SavedSong
   chordsHtml?: string
   tabHtml?: string
-  songJson?: unknown
+  songJson?: Song
 }
 
 export interface SearchResult {
