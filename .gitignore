@@ -17,3 +17,14 @@
 
 # Binaries for programs and plugins
 bin/
+
+# Frontend artifacts
+frontend/node_modules/
+frontend/.next/
+frontend/.turbo/
+
+# Runtime logs
+*.log
+
+# Local environment
+.env
