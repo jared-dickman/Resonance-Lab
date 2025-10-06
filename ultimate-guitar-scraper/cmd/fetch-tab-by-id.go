@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"strings"
@@ -19,6 +20,16 @@ var FetchTab = cli.Command{
 			Name:  "id",
 			Value: 1947141,
 			Usage: "",
+		},
+		cli.StringFlag{
+			Name:   "supabase-url",
+			Usage:  "Supabase URL for storing data",
+			EnvVar: "SUPABASE_URL",
+		},
+		cli.StringFlag{
+			Name:   "supabase-key",
+			Usage:  "Supabase API Key for storing data",
+			EnvVar: "SUPABASE_KEY",
 		},
 	},
 	Action: fetchTabByID,
@@ -48,4 +59,27 @@ func fetchTabByID(c *cli.Context) {
 	tabOut = strings.ReplaceAll(tabOut, "[ch]", "")
 	tabOut = strings.ReplaceAll(tabOut, "[/ch]", "")
 	fmt.Println(tabOut)
+
+	// Supabase Integration
+	supabaseURL := c.String("supabase-url")
+	supabaseKey := c.String("supabase-key")
+
+	if supabaseURL == "" || supabaseKey == "" {
+		log.Println("Supabase URL or Key not provided. Skipping Supabase storage.")
+		return
+	}
+
+	supabaseClient := ultimateguitar.NewSupabaseClient(supabaseURL, supabaseKey)
+
+	song := ultimateguitar.Song{
+		TabID:      tabID,
+		SongName:   tab.SongName,
+		ArtistName: tab.ArtistName,
+		Content:    tab.Content,
+	}
+
+	err = supabaseClient.InsertSong(context.Background(), song)
+	if err != nil {
+		log.Printf("Failed to save song to Supabase: %v", err)
+	}
 }
