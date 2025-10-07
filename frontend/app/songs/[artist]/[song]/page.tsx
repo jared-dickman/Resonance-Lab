@@ -1,38 +1,25 @@
-
-import { SongControls } from "@/components/SongControls";
 import { apiBaseUrl } from "@/lib/utils";
 import { Song } from "@/lib/types";
+import SongClient from "./SongClient";
 
 async function getSong(artist: string, song: string): Promise<Song> {
-  const res = await fetch(`${apiBaseUrl()}/api/v1/songs/${artist}/${song}`);
+  const res = await fetch(`${apiBaseUrl()}/api/songs/${artist}/${song}`);
   if (!res.ok) {
     throw new Error('Failed to fetch song');
   }
   const data = await res.json();
+  // The actual song data is nested in the response
   return data.songJson;
 }
 
 export default async function SongPage({ params }: { params: { artist: string, song: string } }) {
-  const song = await getSong(params.artist, params.song);
+  const songData = await getSong(params.artist, params.song);
+
+  if (!songData) {
+    return <div>Song not found.</div>;
+  }
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold">{song.title}</h1>
-      <h2 className="text-xl text-gray-500">{song.artist}</h2>
-      <SongControls song={song} />
-      <div className="mt-4">
-        {song.sections.map((section, i) => (
-          <div key={i} className="mt-4">
-            <h3 className="text-lg font-semibold">{section.name}</h3>
-            {section.lines.map((line, j) => (
-              <div key={j} className="flex items-center">
-                {line.chord && <div className="w-16 font-mono text-purple-400">{line.chord.name}</div>}
-                <div>{line.lyric}</div>
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
+    <SongClient song={songData} />
   );
 }
