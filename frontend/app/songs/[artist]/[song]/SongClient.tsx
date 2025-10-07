@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react"; // Added useRef
 
 import { Song } from "@/lib/types";
 import { SongControls, KEY_SIGNATURES } from "@/components/SongControls";
 import VideoPlayer from "@/components/VideoPlayer";
 import { transposeChord } from "@/lib/utils";
+import styles from "./SongClient.module.css"; // Import the CSS module
 
 interface SongClientProps {
   song: Song;
@@ -31,6 +32,9 @@ export function SongClient({ song }: SongClientProps) {
   const [transpose, setTranspose] = useState(0);
   const [bpm, setBpm] = useState(120);
   const [isAutoScrollEnabled, setIsAutoScrollEnabled] = useState(false);
+  const [currentLineIndex, setCurrentLineIndex] = useState(0); // New state for current highlighted line
+
+  const lineRefs = useRef<Array<HTMLDivElement | null>>([]); // New ref to store references to each line element
 
   const transposeForKey = ((transpose % 12) + 12) % 12;
   const currentKey = KEY_SIGNATURES[(originalKeyIndex + transposeForKey) % 12];
@@ -58,8 +62,10 @@ export function SongClient({ song }: SongClientProps) {
     }));
   }, [song.sections, transpose]);
 
+  const lyricsContainerRef = useRef<HTMLDivElement>(null); // Ref for the lyrics container
+
   useEffect(() => {
-    if (!isAutoScrollEnabled || typeof window === "undefined") {
+    if (!isAutoScrollEnabled || typeof window === "undefined" || !lyricsContainerRef.current) {
       return;
     }
 
@@ -67,7 +73,7 @@ export function SongClient({ song }: SongClientProps) {
     let lastTimestamp: number | null = null;
 
     const step = (timestamp: number) => {
-      if (!isAutoScrollEnabled) return;
+      if (!isAutoScrollEnabled || !lyricsContainerRef.current) return;
 
       if (lastTimestamp === null) {
         lastTimestamp = timestamp;
@@ -80,9 +86,9 @@ export function SongClient({ song }: SongClientProps) {
       const pixelsPerSecond = bpm > 0 ? (bpm / 60) * SCROLL_PIXELS_PER_BEAT : 0;
       const scrollDelta = pixelsPerSecond * elapsedSeconds;
 
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const nextScroll = Math.min(window.scrollY + scrollDelta, maxScroll);
-      window.scrollTo({ top: nextScroll });
+      const maxScroll = lyricsContainerRef.current.scrollHeight - lyricsContainerRef.current.clientHeight;
+      const nextScroll = Math.min(lyricsContainerRef.current.scrollTop + scrollDelta, maxScroll);
+      lyricsContainerRef.current.scrollTop = nextScroll; // Scroll the container
 
       if (nextScroll >= maxScroll) {
         setIsAutoScrollEnabled(false);
@@ -120,9 +126,9 @@ export function SongClient({ song }: SongClientProps) {
   };
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold">{song.title}</h1>
-      <h2 className="text-xl text-gray-500">{song.artist}</h2>
+    <div className={styles.songContainer}>
+      <h1 className={styles.songTitle}>{song.title}</h1>
+      <h2 className={styles.songArtist}>{song.artist}</h2>
 
       <SongControls
         transpose={transpose}
@@ -138,16 +144,16 @@ export function SongClient({ song }: SongClientProps) {
 
       <VideoPlayer artist={song.artist} title={song.title} initialVideoId={song.videoId} />
 
-      <div className="mt-4">
+      <div ref={lyricsContainerRef} className={styles.lyricsContainer}> {/* Apply ref and class */}
         {transposedSections.map((section, sectionIndex) => (
-          <div key={`${section.name}-${sectionIndex}`} className="mt-4">
-            <h3 className="text-lg font-semibold">{section.name}</h3>
+          <div key={`${section.name}-${sectionIndex}`} className={styles.section}>
+            <h3 className={styles.sectionTitle}>{section.name}</h3>
             {section.lines.map((line, lineIndex) => (
-              <div key={`${sectionIndex}-${lineIndex}`} className="relative mb-4">
+              <div key={`${sectionIndex}-${lineIndex}`} className={styles.line}>
                 {line.chord?.name && (
-                  <div className="font-bold text-purple-400">{line.chord.name}</div>
+                  <span className={styles.chord}>{line.chord.name}</span>
                 )}
-                <div className="text-lg">{line.lyric}</div>
+                <span className={styles.lyric}>{line.lyric}</span>
               </div>
             ))}
           </div>
