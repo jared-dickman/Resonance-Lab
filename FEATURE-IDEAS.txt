@@ -1,0 +1,44 @@
+Repertoire section
+- optimize for showing songs you know, with chords/progressions/album info/youtube track
+- app can then pick from this list for the generated practice session, or suggest similar songs
+
+
+Structured Generated Practice Session
+- have the ai respond with a json structure that defines the next practice session
+- given this structure, can plug into the SavePracticeSession form
+- and create a new form with a checkbox/strikethrough once a section is complete
+- timer/metronome auto set for each section
+
+
+congrats messages for finishing a lesson [ai generated of course]
+posture and dynamics reminder [popups] appear during the lesson
+20 seconds of rest (close your eyes / visualize) between tasks
+
+
+upload/record audio/video along with a practice session
+review/rewatch these
+have the ai analyze/break up this data
+
+
+Stats
+- time practiced this week/month
+  - github style boxes :joy:
+
+
+AI Stuff
+- lyric buddy
+- stylistic progressions
+
+
+Shazam like lookup
+
+chord analyzer
+(listens to the notes)
+
+fretboard viewer
+
+
+
+event-data tracking
+tests
+yadda
