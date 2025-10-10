@@ -1,12 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState, useRef } from "react"; // Added useRef
-
+import { KEY_SIGNATURES, SongControls } from "@/components/SongControls";
 import { Song } from "@/lib/types";
-import { SongControls, KEY_SIGNATURES } from "@/components/SongControls";
-import VideoPlayer from "@/components/VideoPlayer";
 import { transposeChord } from "@/lib/utils";
-import styles from "./SongClient.module.css"; // Import the CSS module
+import { useEffect, useMemo, useRef, useState } from "react";
+import styles from "./SongClient.module.css";
 
 interface SongClientProps {
   song: Song;
@@ -32,9 +30,6 @@ export function SongClient({ song }: SongClientProps) {
   const [transpose, setTranspose] = useState(0);
   const [bpm, setBpm] = useState(120);
   const [isAutoScrollEnabled, setIsAutoScrollEnabled] = useState(false);
-  const [currentLineIndex, setCurrentLineIndex] = useState(0); // New state for current highlighted line
-
-  const lineRefs = useRef<Array<HTMLDivElement | null>>([]); // New ref to store references to each line element
 
   const transposeForKey = ((transpose % 12) + 12) % 12;
   const currentKey = KEY_SIGNATURES[(originalKeyIndex + transposeForKey) % 12];
@@ -142,9 +137,7 @@ export function SongClient({ song }: SongClientProps) {
         originalKey={song.key}
       />
 
-      <VideoPlayer artist={song.artist} title={song.title} initialVideoId={song.videoId} />
-
-      <div ref={lyricsContainerRef} className={styles.lyricsContainer}> {/* Apply ref and class */}
+      <div ref={lyricsContainerRef} className={styles.lyricsContainer}>
         {transposedSections.map((section, sectionIndex) => (
           <div key={`${section.name}-${sectionIndex}`} className={styles.section}>
             <h3 className={styles.sectionTitle}>{section.name}</h3>

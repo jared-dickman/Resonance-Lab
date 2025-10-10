@@ -1,71 +1,109 @@
 
 "use client";
 
-import { useState, useMemo } from 'react';
+import { ChangeEvent } from "react";
+
+import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { Badge } from "./ui/badge";
-import { Song } from "@/lib/types";
-import { transposeChord } from "@/lib/utils";
+
+export const KEY_SIGNATURES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"] as const;
 
 interface SongControlsProps {
-  song: Song;
+  transpose: number;
+  onTransposeChange: (nextValue: number) => void;
+  currentKey: string;
+  onKeyChange: (key: string) => void;
+  bpm: number;
+  onBpmChange: (nextValue: number) => void;
+  isAutoScrollEnabled: boolean;
+  onToggleAutoScroll: () => void;
+  originalKey?: string;
 }
 
-const KEY_SIGNATURES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+export function SongControls({
+  transpose,
+  onTransposeChange,
+  currentKey,
+  onKeyChange,
+  bpm,
+  onBpmChange,
+  isAutoScrollEnabled,
+  onToggleAutoScroll,
+  originalKey,
+}: SongControlsProps) {
+  const handleBpmChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const nextValue = Number(event.target.value);
+    if (Number.isFinite(nextValue)) {
+      onBpmChange(Math.max(0, nextValue));
+    }
+  };
 
-export function SongControls({ song }: SongControlsProps) {
-  const [transpose, setTranspose] = useState(0);
-  const [bpm, setBpm] = useState(120);
-  const [currentKey, setCurrentKey] = useState(song.key || 'C');
-
-  const transposedSong = useMemo(() => {
-    if (transpose === 0) return song;
-    const newSong = JSON.parse(JSON.stringify(song));
-    newSong.sections.forEach(section => {
-      section.lines.forEach(line => {
-        if (line.chord && line.chord.name) {
-          line.chord.name = transposeChord(line.chord.name, transpose);
-        }
-      });
-    });
-    return newSong;
-  }, [song, transpose]);
-
-  const handleKeyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newKey = e.target.value;
-    const originalKeyIndex = KEY_SIGNATURES.indexOf(song.key || 'C');
-    const newKeyIndex = KEY_SIGNATURES.indexOf(newKey);
-    const diff = newKeyIndex - originalKeyIndex;
-    setTranspose(diff);
-    setCurrentKey(newKey);
+  const handleKeyChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    onKeyChange(event.target.value);
   };
 
   return (
-    <div className="flex items-center space-x-4 my-4">
-      <div className="flex items-center space-x-2">
-        <Button onClick={() => setTranspose(transpose - 1)}>-</Button>
-        <Badge>{transpose}</Badge>
-        <Button onClick={() => setTranspose(transpose + 1)}>+</Button>
+    <div className="my-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="flex flex-wrap items-center gap-4">
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium">Transpose</span>
+          <div className="flex items-center gap-1">
+            <Button aria-label="Decrease transpose" onClick={() => onTransposeChange(transpose - 1)} size="icon">
+              -
+            </Button>
+            <Badge className="px-3 py-1 text-base font-semibold">{transpose >= 0 ? `+${transpose}` : transpose}</Badge>
+            <Button aria-label="Increase transpose" onClick={() => onTransposeChange(transpose + 1)} size="icon">
+              +
+            </Button>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <label className="text-sm font-medium" htmlFor="key-selector">
+            Key
+          </label>
+          <select
+            id="key-selector"
+            value={currentKey}
+            onChange={handleKeyChange}
+            className="rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          >
+            {KEY_SIGNATURES.map((key) => (
+              <option key={key} value={key}>
+                {key}
+              </option>
+            ))}
+          </select>
+          {originalKey && (
+            <Badge variant="secondary" className="text-xs font-medium">
+              Original: {originalKey}
+            </Badge>
+          )}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <label className="text-sm font-medium" htmlFor="bpm-input">
+            BPM
+          </label>
+          <Input
+            id="bpm-input"
+            type="number"
+            min={0}
+            value={Number.isFinite(bpm) ? bpm : ""}
+            onChange={handleBpmChange}
+            className="w-24"
+          />
+        </div>
       </div>
-      <div className="flex items-center space-x-2">
-        <label htmlFor="key-selector">Key:</label>
-        <select id="key-selector" value={currentKey} onChange={handleKeyChange} className="bg-gray-800 text-white p-2 rounded">
-          {KEY_SIGNATURES.map(key => (
-            <option key={key} value={key}>{key}</option>
-          ))}
-        </select>
-      </div>
-      <div className="flex items-center space-x-2">
-        <label htmlFor="bpm-input">BPM:</label>
-        <Input
-          id="bpm-input"
-          type="number"
-          value={bpm}
-          onChange={(e) => setBpm(parseInt(e.target.value, 10))}
-          className="w-24"
-        />
-      </div>
+
+      <Button
+        variant={isAutoScrollEnabled ? "default" : "outline"}
+        onClick={onToggleAutoScroll}
+        aria-pressed={isAutoScrollEnabled}
+      >
+        {isAutoScrollEnabled ? "Stop Auto-Scroll" : "Start Auto-Scroll"}
+      </Button>
     </div>
   );
 }

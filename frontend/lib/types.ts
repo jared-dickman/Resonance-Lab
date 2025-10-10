@@ -3,6 +3,7 @@ export interface SavedSong {
   artistSlug: string
   title: string
   songSlug: string
+  key: string
   hasChords: boolean
   hasTab: boolean
   updatedAt: string

@@ -1,6 +1,7 @@
 {
   "artist": "Led Zeppelin",
   "title": "Stairway To Heaven",
+  "key": "Am",
   "sections": [
     {
       "name": "Intro",

@@ -1,6 +1,6 @@
 "use client"
 
-import { type FormEvent, useState } from "react"
+import { type FormEvent, useState, useMemo, useEffect } from "react"
 import { Download, Search } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner"
 import { downloadSong, listSavedSongs, searchLibrary } from "@/lib/api"
 import type { SavedSong, SearchResult, SearchResponse } from "@/lib/types"
+import Link from "next/link"
 
 interface StatusMessage {
   type: "success" | "error" | "info"
@@ -16,16 +17,44 @@ interface StatusMessage {
 }
 
 export default function HomePage() {
+  const [songs, setSongs] = useState<SavedSong[]>([])
   const [isSearching, setIsSearching] = useState(false)
   const [isDownloading, setIsDownloading] = useState(false)
-
   const [status, setStatus] = useState<StatusMessage | null>(null)
-
   const [searchArtist, setSearchArtist] = useState("")
   const [searchTitle, setSearchTitle] = useState("")
   const [searchResults, setSearchResults] = useState<SearchResponse | null>(null)
   const [selectedChord, setSelectedChord] = useState<SearchResult | null>(null)
   const [selectedTab, setSelectedTab] = useState<SearchResult | null>(null)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [selectedKey, setSelectedKey] = useState("all")
+
+  useEffect(() => {
+    const fetchSongs = async () => {
+      try {
+        const savedSongs = await listSavedSongs()
+        setSongs(savedSongs)
+      } catch (error) {
+        console.error("Failed to fetch saved songs:", error)
+      }
+    }
+    fetchSongs()
+  }, [])
+
+  const filteredSongs = useMemo(() => {
+    return songs.filter(song => {
+      const matchesSearch =
+        song.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        song.artist.toLowerCase().includes(searchQuery.toLowerCase())
+      const matchesKey = selectedKey === "all" || song.key === selectedKey
+      return matchesSearch && matchesKey
+    })
+  }, [songs, searchQuery, selectedKey])
+
+  const availableKeys = useMemo(() => {
+    const keys = new Set(songs.map(song => song.key).filter(Boolean))
+    return ["all", ...Array.from(keys)]
+  }, [songs])
 
   const handleSearch = async (event: FormEvent) => {
     event.preventDefault()
@@ -74,12 +103,12 @@ export default function HomePage() {
         artist,
         title,
         chordId: selectedChord?.id,
-        tabId: selectedTab?.id
+        tabId: selectedTab?.id,
       })
       setStatus({ type: "success", message: `${detail.summary.title} saved successfully.` })
-      // No need to update songs here, as the layout will handle refreshing its own song list
-      // const updatedSongs = await listSavedSongs()
-      // setSongs(updatedSongs)
+      // Refresh the song list
+      const updatedSongs = await listSavedSongs()
+      setSongs(updatedSongs)
     } catch (error) {
       console.error(error)
       setStatus({ type: "error", message: `Download failed: ${getErrorMessage(error)}` })
@@ -90,6 +119,49 @@ export default function HomePage() {
 
   return (
     <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Filter Songs</CardTitle>
+          <CardDescription>Filter songs by key and search by title or artist.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex gap-4">
+            <Input
+              placeholder="Search by title or artist..."
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+            />
+            <select
+              value={selectedKey}
+              onChange={event => setSelectedKey(event.target.value)}
+              className="w-[180px] rounded-md border border-input bg-transparent px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
+              {availableKeys.map(key => (
+                <option key={key} value={key}>
+                  {key === "all" ? "All Keys" : key}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="space-y-2">
+            {filteredSongs.map(song => (
+              <Link
+                key={`${song.artistSlug}/${song.songSlug}`}
+                href={`/songs/${song.artistSlug}/${song.songSlug}`}
+                className="block rounded-md border p-3 hover:border-primary"
+              >
+                <div className="flex justify-between">
+                  <div>
+                    <div className="font-medium">{song.title}</div>
+                    <div className="text-sm text-muted-foreground">{song.artist}</div>
+                  </div>
+                  {song.key && <div className="text-sm text-muted-foreground">Key: {song.key}</div>}
+                </div>
+              </Link>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
       <Card>
         <CardHeader>
           <CardTitle className="text-lg">Search Ultimate Guitar</CardTitle>
@@ -105,7 +177,7 @@ export default function HomePage() {
                 id="artist"
                 placeholder="e.g. Ben E. King"
                 value={searchArtist}
-                onChange={(event) => setSearchArtist(event.target.value)}
+                onChange={event => setSearchArtist(event.target.value)}
                 autoComplete="off"
               />
             </div>
@@ -117,7 +189,7 @@ export default function HomePage() {
                 id="title"
                 placeholder="e.g. Stand By Me"
                 value={searchTitle}
-                onChange={(event) => setSearchTitle(event.target.value)}
+                onChange={event => setSearchTitle(event.target.value)}
                 required
                 autoComplete="off"
               />
@@ -181,7 +253,7 @@ function ResultList({
   title,
   results,
   selected,
-  onSelect
+  onSelect,
 }: {
   title: string
   results: SearchResult[]
@@ -196,7 +268,7 @@ function ResultList({
     <div className="space-y-2">
       <div className="text-xs font-semibold uppercase text-muted-foreground">{title}</div>
       <div className="space-y-2">
-        {results.map((result) => {
+        {results.map(result => {
           const isActive = selected === result.id
           return (
             <button

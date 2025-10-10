@@ -1,0 +1,315 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 600px;
+  padding: 2rem;
+}
+
+.metronomeCard {
+  width: 100%;
+  max-width: 500px;
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Indicator */
+.indicatorContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.indicator {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: hsl(var(--muted));
+  transition: all 0.15s ease;
+}
+
+.indicatorActive {
+  background: #ef4444;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.6);
+}
+
+/* BPM Display */
+.bpmDisplay {
+  background: linear-gradient(135deg, hsl(var(--muted)) 0%, hsl(var(--card)) 100%);
+  border: 1px solid hsl(var(--border));
+  border-radius: calc(var(--radius) - 2px);
+  padding: 2rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.bpmNumber {
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1;
+  color: hsl(var(--foreground));
+  letter-spacing: -0.02em;
+}
+
+.bpmLabel {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  margin-top: 0.25rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* Tempo Control */
+.tempoControl {
+  margin-bottom: 1.5rem;
+}
+
+.tempoLabel {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.75rem;
+}
+
+.sliderContainer {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.slider {
+  flex: 1;
+  height: 6px;
+  border-radius: 9999px;
+  background: linear-gradient(
+    to right,
+    #ef4444 0%,
+    #ef4444 var(--value, 50%),
+    hsl(var(--muted)) var(--value, 50%),
+    hsl(var(--muted)) 100%
+  );
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid #ef4444;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.15s ease;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid #ef4444;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.15s ease;
+}
+
+.slider::-moz-range-thumb:hover {
+  transform: scale(1.1);
+}
+
+.bpmInput {
+  width: 80px;
+  padding: 0.5rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: calc(var(--radius) - 4px);
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Presets */
+.presets {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.presetButton {
+  padding: 0.75rem 0.5rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: calc(var(--radius) - 4px);
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: center;
+}
+
+.presetButton:hover {
+  background: hsl(var(--muted));
+  border-color: hsl(var(--primary));
+}
+
+.presetButtonActive {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.presetLabel {
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-bottom: 0.125rem;
+}
+
+.presetBpm {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+/* Time Signature */
+.timeSignatureSection {
+  margin-bottom: 1.5rem;
+}
+
+.timeSignatureLabel {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.75rem;
+}
+
+.timeSignatureGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.timeSignatureButton {
+  padding: 0.75rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: calc(var(--radius) - 4px);
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.timeSignatureButton:hover {
+  background: hsl(var(--muted));
+  border-color: hsl(var(--primary));
+}
+
+.timeSignatureButtonActive {
+  background: #dc2626;
+  color: white;
+  border-color: #dc2626;
+}
+
+/* Options */
+.optionsSection {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.optionButton {
+  flex: 1;
+  padding: 0.625rem 1rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: calc(var(--radius) - 4px);
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.optionButton:hover {
+  background: hsl(var(--muted));
+  border-color: hsl(var(--primary));
+}
+
+.optionButtonActive {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border-color: hsl(var(--primary));
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.playButton {
+  flex: 3;
+  padding: 1rem;
+  border: none;
+  border-radius: calc(var(--radius) - 4px);
+  background: #f59e0b;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.playButton:hover {
+  background: #d97706;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.playButton:active {
+  transform: translateY(0);
+}
+
+.tapButton {
+  flex: 1;
+  padding: 1rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: calc(var(--radius) - 4px);
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tapButton:hover {
+  background: hsl(var(--muted));
+  border-color: hsl(var(--primary));
+}
+
+.tapButton:active {
+  transform: scale(0.98);
+}

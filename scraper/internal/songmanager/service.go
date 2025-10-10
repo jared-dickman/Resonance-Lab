@@ -65,6 +65,7 @@ type SavedSong struct {
 	ArtistSlug string    `json:"artistSlug"`
 	Title      string    `json:"title"`
 	SongSlug   string    `json:"songSlug"`
+	Key        string    `json:"key"`
 	HasChords  bool      `json:"hasChords"`
 	HasTab     bool      `json:"hasTab"`
 	UpdatedAt  time.Time `json:"updatedAt"`
@@ -367,6 +368,7 @@ func (s *Service) readSummary(artistSlug, songSlug string) (SavedSong, error) {
 			var payload struct {
 				Title  string `json:"title"`
 				Artist string `json:"artist"`
+				Key    string `json:"key"`
 			}
 			if jsonErr := json.Unmarshal(data, &payload); jsonErr == nil {
 				if payload.Title != "" {
@@ -374,6 +376,9 @@ func (s *Service) readSummary(artistSlug, songSlug string) (SavedSong, error) {
 				}
 				if payload.Artist != "" {
 					summary.Artist = payload.Artist
+				}
+				if payload.Key != "" {
+					summary.Key = payload.Key
 				}
 			}
 		}
