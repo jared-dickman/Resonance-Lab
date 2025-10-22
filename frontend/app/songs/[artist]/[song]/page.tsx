@@ -1,42 +1,42 @@
+'use client';
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { apiBaseUrl } from "@/lib/utils";
 import { Song } from "@/lib/types";
 import SongClient from "./SongClient";
 
-async function getSong(artist: string, song: string): Promise<Song> {
-  try {
-    const url = `${apiBaseUrl()}/api/songs/${artist}/${song}`;
-    console.log('Fetching song from:', url);
-    const res = await fetch(url, {
-      cache: "no-store"
-    });
-    if (!res.ok) {
-      console.error('API response not ok:', res.status, res.statusText);
-      throw new Error(`Failed to fetch song: ${res.status} ${res.statusText}`);
+export default function SongPage() {
+  const params = useParams();
+  const [song, setSong] = useState<Song | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const artist = params.artist as string;
+  const songSlug = params.song as string;
+
+  useEffect(() => {
+    async function fetchSong() {
+      try {
+        const url = `${apiBaseUrl()}/api/songs/${artist}/${songSlug}`;
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) {
+          throw new Error(`Failed to fetch song: ${res.status}`);
+        }
+        const data = await res.json();
+        setSong(data.songJson);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load song');
+      } finally {
+        setLoading(false);
+      }
     }
-    const data = await res.json();
-    return data.songJson;
-  } catch (error) {
-    console.error('Error fetching song:', error);
-    throw error;
-  }
-}
+    fetchSong();
+  }, [artist, songSlug]);
 
-interface SongPageProps {
-  params: Promise<{
-    artist: string
-    song: string
-  }>
-}
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!song) return <div>Song not found.</div>;
 
-export default async function SongPage({ params }: SongPageProps) {
-  const { artist, song } = await params
-  const songData = await getSong(artist, song);
-
-  if (!songData) {
-    return <div>Song not found.</div>;
-  }
-
-  return (
-    <SongClient song={songData} />
-  );
+  return <SongClient song={song} />;
 }
