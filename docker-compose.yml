@@ -20,9 +20,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.resonance-api.rule=Host(`srv1015344.hstgr.cloud`) && PathPrefix(`/api`)"
-      - "traefik.http.routers.resonance-api.entrypoints=websecure"
+      - "traefik.http.routers.resonance-api.entrypoints=web,websecure"
       - "traefik.http.routers.resonance-api.tls=true"
-      - "traefik.http.routers.resonance-api.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.resonance-api.tls.certresolver=mytlschallenge"
       - "traefik.http.services.resonance-api.loadbalancer.server.port=8080"
 
 networks:
