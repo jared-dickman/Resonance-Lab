@@ -16,7 +16,7 @@ services:
       - ADDR=:8080
     restart: unless-stopped  # Auto-restart if it crashes
     networks:
-      - traefik_default
+      - root_default
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.resonance-api.rule=Host(`srv1015344.hstgr.cloud`) && PathPrefix(`/api`)"
@@ -26,5 +26,5 @@ services:
       - "traefik.http.services.resonance-api.loadbalancer.server.port=8080"
 
 networks:
-  traefik_default:
+  root_default:
     external: true
