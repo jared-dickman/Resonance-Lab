@@ -7,11 +7,24 @@ services:
       context: .
       dockerfile: ./scraper/Dockerfile
     container_name: resonance-backend
-    ports:
-      - "3001:8080"  # Maps VPS port 3001 to container port 8080
+    expose:
+      - "8080"  # Internal port for Traefik
     volumes:
       - ./songs:/app/songs  # Persists songs data on VPS
     environment:
       - SONGS_DIR=/app/songs
       - ADDR=:8080
     restart: unless-stopped  # Auto-restart if it crashes
+    networks:
+      - traefik_default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.resonance-api.rule=Host(`srv1015344.hstgr.cloud`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.resonance-api.entrypoints=websecure"
+      - "traefik.http.routers.resonance-api.tls=true"
+      - "traefik.http.routers.resonance-api.tls.certresolver=letsencrypt"
+      - "traefik.http.services.resonance-api.loadbalancer.server.port=8080"
+
+networks:
+  traefik_default:
+    external: true
