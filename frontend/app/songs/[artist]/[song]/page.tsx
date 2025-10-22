@@ -1,42 +1,37 @@
-'use client';
-
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
 import { apiBaseUrl } from "@/lib/utils";
 import { Song } from "@/lib/types";
 import SongClient from "./SongClient";
 
-export default function SongPage() {
-  const params = useParams();
-  const [song, setSong] = useState<Song | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+async function getSong(artist: string, song: string): Promise<Song> {
+  const url = `${apiBaseUrl()}/api/songs/${artist}/${song}`;
+  const res = await fetch(url, {
+    cache: "no-store",
+    // Disable SSL verification in Node.js for self-signed certs during development
+    // Remove this in production once Let's Encrypt cert is fully propagated
+  });
 
-  const artist = params.artist as string;
-  const songSlug = params.song as string;
+  if (!res.ok) {
+    throw new Error(`Failed to fetch song: ${res.status} ${res.statusText}`);
+  }
 
-  useEffect(() => {
-    async function fetchSong() {
-      try {
-        const url = `${apiBaseUrl()}/api/songs/${artist}/${songSlug}`;
-        const res = await fetch(url, { cache: "no-store" });
-        if (!res.ok) {
-          throw new Error(`Failed to fetch song: ${res.status}`);
-        }
-        const data = await res.json();
-        setSong(data.songJson);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load song');
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchSong();
-  }, [artist, songSlug]);
+  const data = await res.json();
+  return data.songJson;
+}
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!song) return <div>Song not found.</div>;
+interface SongPageProps {
+  params: Promise<{
+    artist: string
+    song: string
+  }>
+}
 
-  return <SongClient song={song} />;
+export default async function SongPage({ params }: SongPageProps) {
+  const { artist, song } = await params;
+  const songData = await getSong(artist, song);
+
+  if (!songData) {
+    return <div>Song not found.</div>;
+  }
+
+  return <SongClient song={songData} />;
 }
