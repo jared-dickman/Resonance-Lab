@@ -133,19 +133,30 @@ export default function HomePage() {
           </div>
           <div className="space-y-2">
             {filteredSongs.map(song => (
-              <Link
+              <div
                 key={`${song.artistSlug}/${song.songSlug}`}
-                href={`/songs/${song.artistSlug}/${song.songSlug}`}
-                className="block rounded-md border p-3 hover:border-primary"
+                className="rounded-md border p-3"
               >
                 <div className="flex justify-between">
                   <div>
-                    <div className="font-medium">{song.title}</div>
-                    <div className="text-sm text-muted-foreground">{song.artist}</div>
+                    <Link
+                      href={`/songs/${song.artistSlug}/${song.songSlug}`}
+                      className="font-medium hover:text-primary transition-colors"
+                    >
+                      {song.title}
+                    </Link>
+                    <div className="text-sm text-muted-foreground">
+                      <Link
+                        href={`/songs/${song.artistSlug}`}
+                        className="hover:text-foreground transition-colors"
+                      >
+                        {song.artist}
+                      </Link>
+                    </div>
                   </div>
                   {song.key && <div className="text-sm text-muted-foreground">Key: {song.key}</div>}
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         </CardContent>

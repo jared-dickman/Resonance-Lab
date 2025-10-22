@@ -17,6 +17,7 @@ export function SongsProvider({ children }: { children: ReactNode }) {
   const [songs, setSongs] = useState<SavedSong[]>([])
   const [isLoadingSongs, setIsLoadingSongs] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [isMounted, setIsMounted] = useState(false)
 
   const refreshSongs = useCallback(async () => {
     try {
@@ -33,8 +34,13 @@ export function SongsProvider({ children }: { children: ReactNode }) {
   }, [])
 
   useEffect(() => {
+    setIsMounted(true)
     refreshSongs()
   }, [refreshSongs])
+
+  if (!isMounted) {
+    return null
+  }
 
   return (
     <SongsContext.Provider value={{ songs, isLoadingSongs, refreshSongs, error }}>

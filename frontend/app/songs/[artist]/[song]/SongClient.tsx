@@ -4,10 +4,12 @@ import { KEY_SIGNATURES, SongControls } from "@/components/SongControls";
 import { Song } from "@/lib/types";
 import { transposeChord } from "@/lib/utils";
 import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import styles from "./SongClient.module.css";
 
 interface SongClientProps {
   song: Song;
+  artistSlug: string;
 }
 
 const SCROLL_PIXELS_PER_BEAT = 40;
@@ -23,7 +25,7 @@ const getKeyIndex = (key: string) => {
   return index === -1 ? KEY_SIGNATURES.indexOf("C") : index;
 };
 
-export function SongClient({ song }: SongClientProps) {
+export function SongClient({ song, artistSlug }: SongClientProps) {
   const normalizedOriginalKey = getNormalizedKey(song.key);
   const originalKeyIndex = getKeyIndex(normalizedOriginalKey);
 
@@ -123,7 +125,11 @@ export function SongClient({ song }: SongClientProps) {
   return (
     <div className={styles.songContainer}>
       <h1 className={styles.songTitle}>{song.title}</h1>
-      <h2 className={styles.songArtist}>{song.artist}</h2>
+      <h2 className={styles.songArtist}>
+        <Link href={`/songs/${artistSlug}`} className="hover:underline">
+          {song.artist}
+        </Link>
+      </h2>
 
       <SongControls
         transpose={transpose}

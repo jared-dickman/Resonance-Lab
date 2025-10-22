@@ -21,7 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
-      <body>
+      <body suppressHydrationWarning>
         <SongsProvider>
           <LayoutContent>{children}</LayoutContent>
         </SongsProvider>
@@ -103,7 +103,12 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
                   <div className="space-y-4">
                     {groupedSongs.map(({ artist, items }) => (
                       <div key={artist} className="space-y-2">
-                        <h3 className="text-sm font-semibold text-muted-foreground">{artist}</h3>
+                        <Link
+                          href={`/songs/${items[0].artistSlug}`}
+                          className="text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
+                        >
+                          {artist}
+                        </Link>
                         <div className="space-y-2">
                           {items.map((song) => (
                             <Link

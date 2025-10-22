@@ -33,5 +33,5 @@ export default async function SongPage({ params }: SongPageProps) {
     return <div>Song not found.</div>;
   }
 
-  return <SongClient song={songData} />;
+  return <SongClient song={songData} artistSlug={artist} />;
 }
