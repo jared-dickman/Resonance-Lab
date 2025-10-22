@@ -7,14 +7,14 @@ RUN apk add --no-cache git
 # Set working directory inside container
 WORKDIR /app
 
-# Copy go.mod and go.sum first (Docker caches this layer)
-COPY go.mod go.sum ./
+# Copy the entire project (includes ultimate-guitar-scraper dependency)
+COPY . .
+
+# Change to scraper directory
+WORKDIR /app/scraper
 
 # Download dependencies
 RUN go mod download
-
-# Copy the rest of the code
-COPY . .
 
 # Build the server binary
 # CGO_ENABLED=0 makes a static binary (works anywhere)
@@ -29,7 +29,7 @@ RUN apk --no-cache add ca-certificates
 WORKDIR /app
 
 # Copy binary from builder stage
-COPY --from=builder /app/server .
+COPY --from=builder /app/scraper/server .
 
 # Create directory for songs
 RUN mkdir -p /app/songs

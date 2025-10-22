@@ -3,7 +3,9 @@ version: '3.8'
 services:
   # Your Go backend API
   backend:
-    build: ./scraper
+    build:
+      context: .
+      dockerfile: ./scraper/Dockerfile
     container_name: resonance-backend
     ports:
       - "3001:8080"  # Maps VPS port 3001 to container port 8080
