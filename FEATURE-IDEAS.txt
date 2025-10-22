@@ -38,6 +38,13 @@ chord analyzer
 fretboard viewer
 
 
+Album/Artist Browsing (Spotify/Nugs style)
+- Big image grid for artists/albums
+- Artist pages: bio, albums, songs
+- Album pages: cover art, tracklist, year
+- Genre filtering sidebar
+- Data needs: album name/year/cover URL, artist image/bio, genre tags
+
 
 event-data tracking
 tests

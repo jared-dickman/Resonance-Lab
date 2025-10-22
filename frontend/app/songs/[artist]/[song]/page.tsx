@@ -3,17 +3,34 @@ import { Song } from "@/lib/types";
 import SongClient from "./SongClient";
 
 async function getSong(artist: string, song: string): Promise<Song> {
-  const res = await fetch(`${apiBaseUrl()}/api/songs/${artist}/${song}`);
-  if (!res.ok) {
-    throw new Error('Failed to fetch song');
+  try {
+    const url = `${apiBaseUrl()}/api/songs/${artist}/${song}`;
+    console.log('Fetching song from:', url);
+    const res = await fetch(url, {
+      cache: "no-store"
+    });
+    if (!res.ok) {
+      console.error('API response not ok:', res.status, res.statusText);
+      throw new Error(`Failed to fetch song: ${res.status} ${res.statusText}`);
+    }
+    const data = await res.json();
+    return data.songJson;
+  } catch (error) {
+    console.error('Error fetching song:', error);
+    throw error;
   }
-  const data = await res.json();
-  // The actual song data is nested in the response
-  return data.songJson;
 }
 
-export default async function SongPage({ params }: { params: { artist: string, song: string } }) {
-  const songData = await getSong(params.artist, params.song);
+interface SongPageProps {
+  params: Promise<{
+    artist: string
+    song: string
+  }>
+}
+
+export default async function SongPage({ params }: SongPageProps) {
+  const { artist, song } = await params
+  const songData = await getSong(artist, song);
 
   if (!songData) {
     return <div>Song not found.</div>;

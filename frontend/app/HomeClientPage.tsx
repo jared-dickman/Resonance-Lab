@@ -1,15 +1,18 @@
 "use client"
 
-import { type FormEvent, useState, useMemo, useEffect } from "react"
+import { type FormEvent, useState, useMemo } from "react"
 import { Download, Search } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner"
-import { downloadSong, listSavedSongs, searchLibrary } from "@/lib/api"
-import type { SavedSong, SearchResult, SearchResponse } from "@/lib/types"
+import { Skeleton } from "@/components/ui/skeleton"
+import { downloadSong, searchLibrary } from "@/lib/api"
+import type { SearchResult, SearchResponse } from "@/lib/types"
 import Link from "next/link"
+import { useSongs } from "@/lib/SongsContext"
+import { logger } from "@/lib/logger"
 
 interface StatusMessage {
   type: "success" | "error" | "info"
@@ -17,7 +20,7 @@ interface StatusMessage {
 }
 
 export default function HomePage() {
-  const [songs, setSongs] = useState<SavedSong[]>([])
+  const { songs, refreshSongs } = useSongs()
   const [isSearching, setIsSearching] = useState(false)
   const [isDownloading, setIsDownloading] = useState(false)
   const [status, setStatus] = useState<StatusMessage | null>(null)
@@ -28,18 +31,6 @@ export default function HomePage() {
   const [selectedTab, setSelectedTab] = useState<SearchResult | null>(null)
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedKey, setSelectedKey] = useState("all")
-
-  useEffect(() => {
-    const fetchSongs = async () => {
-      try {
-        const savedSongs = await listSavedSongs()
-        setSongs(savedSongs)
-      } catch (error) {
-        console.error("Failed to fetch saved songs:", error)
-      }
-    }
-    fetchSongs()
-  }, [])
 
   const filteredSongs = useMemo(() => {
     return songs.filter(song => {
@@ -75,7 +66,7 @@ export default function HomePage() {
         setStatus(null)
       }
     } catch (error) {
-      console.error(error)
+      logger.error(error)
       setStatus({ type: "error", message: `Search failed: ${getErrorMessage(error)}` })
     } finally {
       setIsSearching(false)
@@ -106,11 +97,8 @@ export default function HomePage() {
         tabId: selectedTab?.id,
       })
       setStatus({ type: "success", message: `${detail.summary.title} saved successfully.` })
-      // Refresh the song list
-      const updatedSongs = await listSavedSongs()
-      setSongs(updatedSongs)
+      await refreshSongs()
     } catch (error) {
-      console.error(error)
       setStatus({ type: "error", message: `Download failed: ${getErrorMessage(error)}` })
     } finally {
       setIsDownloading(false)
@@ -209,7 +197,20 @@ export default function HomePage() {
             </Button>
           </form>
 
-          {searchResults && (
+          {isSearching && (
+            <div className="mt-6 space-y-4">
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-24" />
+                {[...Array(3)].map((_, i) => (
+                  <div key={i} className="rounded-md border px-3 py-2">
+                    <Skeleton className="h-4 w-3/4 mb-2" />
+                    <Skeleton className="h-3 w-1/2" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {!isSearching && searchResults && (
             <div className="mt-6 space-y-4">
               <ResultList
                 title="Chord Charts"

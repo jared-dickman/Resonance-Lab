@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useMemo } from "react"
 import Link from "next/link"
 import { RefreshCcw } from "lucide-react"
 import "./globals.css"
@@ -10,39 +10,28 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Spinner } from "@/components/ui/spinner"
-import { listSavedSongs } from "@/lib/api"
+import { Skeleton } from "@/components/ui/skeleton"
+import { SongsProvider, useSongs } from "@/lib/SongsContext"
 import type { SavedSong } from "@/lib/types"
-
-interface StatusMessage {
-  type: "success" | "error" | "info"
-  message: string
-}
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [songs, setSongs] = useState<SavedSong[]>([])
-  const [isLoadingSongs, setIsLoadingSongs] = useState(false)
-  const [status, setStatus] = useState<StatusMessage | null>(null)
+  return (
+    <html lang="en" className="dark" suppressHydrationWarning>
+      <body>
+        <SongsProvider>
+          <LayoutContent>{children}</LayoutContent>
+        </SongsProvider>
+      </body>
+    </html>
+  );
+}
 
-  useEffect(() => {
-    refreshSongs()
-  }, [])
-
-  const refreshSongs = async () => {
-    try {
-      setIsLoadingSongs(true)
-      const data = await listSavedSongs()
-      setSongs(data)
-    } catch (error) {
-      console.error(error)
-      setStatus({ type: "error", message: getErrorMessage(error) })
-    } finally {
-      setIsLoadingSongs(false)
-    }
-  }
+function LayoutContent({ children }: { children: React.ReactNode }) {
+  const { songs, isLoadingSongs, refreshSongs, error } = useSongs()
 
   const groupedSongs = useMemo(() => {
     const groups = new Map<string, SavedSong[]>()
@@ -58,91 +47,92 @@ export default function RootLayout({
   }, [songs])
 
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body>
-        <div className="min-h-screen bg-background">
-          <header className="border-b">
-            <div className="container flex flex-col gap-2 py-6">
-              <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-semibold tracking-tight">Resonance Lab</h1>
-                <Link href="/metronome">
-                  <Button variant="outline" size="sm">
-                    Metronome
-                  </Button>
-                </Link>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Manage saved songs and pull fresh chords from Ultimate Guitar using the Go backend.
-              </p>
-            </div>
-          </header>
-          <div className="container mx-auto p-4">
-            <Breadcrumbs />
+    <div className="min-h-screen bg-background">
+      <header className="border-b">
+        <div className="container flex flex-col gap-2 py-6">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-semibold tracking-tight">Resonance Lab</h1>
+            <Link href="/metronome">
+              <Button variant="outline" size="sm">
+                Metronome
+              </Button>
+            </Link>
           </div>
-          <main className="container grid gap-6 py-8 lg:grid-cols-[360px_minmax(0,1fr)]">
-            <div className="space-y-6">
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0">
-                  <div>
-                    <CardTitle className="text-lg">Saved Songs</CardTitle>
-                    <CardDescription>Choose a song to view its chords and tab.</CardDescription>
-                  </div>
-                  <Button variant="ghost" size="icon" onClick={refreshSongs} disabled={isLoadingSongs}>
-                    {isLoadingSongs ? <Spinner /> : <RefreshCcw className="h-4 w-4" />}
-                    <span className="sr-only">Refresh songs</span>
-                  </Button>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <ScrollArea className="h-[28rem] pr-4">
-                    {songs.length === 0 && !isLoadingSongs ? (
-                      <p className="text-sm text-muted-foreground">No songs saved yet. Use the search below to add one.</p>
-                    ) : (
-                      <div className="space-y-4">
-                        {groupedSongs.map(({ artist, items }) => (
-                          <div key={artist} className="space-y-2">
-                            <h3 className="text-sm font-semibold text-muted-foreground">{artist}</h3>
-                            <div className="space-y-2">
-                              {items.map((song) => (
-                                <Link
-                                  href={`/songs/${song.artistSlug}/${song.songSlug}`}
-                                  key={`${song.artistSlug}-${song.songSlug}`}
-                                  className="w-full rounded-md border border-transparent px-3 py-2 text-left text-sm transition hover:border-primary hover:bg-muted"
-                                >
-                                  <div className="font-medium">{song.title}</div>
-                                  <div className="text-xs text-muted-foreground">
-                                    Updated {new Date(song.updatedAt).toLocaleDateString()}
-                                  </div>
-                                </Link>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </ScrollArea>
-                  {status && (
-                    <p
-                      className={`mt-4 text-sm ${
-                        status.type === "error" ? "text-destructive" : "text-muted-foreground"
-                      }`}
-                    >
-                      {status.message}
-                    </p>
-                  )}
-                </CardContent>
-              </Card>
-            </div>
-            <div className="min-h-[32rem]">{children}</div>
-          </main>
+          <p className="text-sm text-muted-foreground">
+            Manage saved songs and pull fresh chords from Ultimate Guitar using the Go backend.
+          </p>
         </div>
-      </body>
-    </html>
+      </header>
+      <div className="container mx-auto p-4">
+        <Breadcrumbs />
+      </div>
+      <main className="container grid gap-6 py-8 lg:grid-cols-[360px_minmax(0,1fr)]">
+        <div className="space-y-6">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0">
+              <div>
+                <CardTitle className="text-lg">Saved Songs</CardTitle>
+                <CardDescription>Choose a song to view its chords and tab.</CardDescription>
+              </div>
+              <Button variant="ghost" size="icon" onClick={refreshSongs} disabled={isLoadingSongs}>
+                {isLoadingSongs ? <Spinner /> : <RefreshCcw className="h-4 w-4" />}
+                <span className="sr-only">Refresh songs</span>
+              </Button>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <ScrollArea className="h-[28rem] pr-4">
+                {isLoadingSongs ? (
+                  <div className="space-y-4">
+                    {[...Array(3)].map((_, groupIndex) => (
+                      <div key={groupIndex} className="space-y-2">
+                        <Skeleton className="h-4 w-24" />
+                        <div className="space-y-2">
+                          {[...Array(2)].map((_, songIndex) => (
+                            <div key={songIndex} className="rounded-md border border-transparent px-3 py-2">
+                              <Skeleton className="h-4 w-3/4 mb-2" />
+                              <Skeleton className="h-3 w-1/2" />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : songs.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">No songs saved yet. Use the search below to add one.</p>
+                ) : (
+                  <div className="space-y-4">
+                    {groupedSongs.map(({ artist, items }) => (
+                      <div key={artist} className="space-y-2">
+                        <h3 className="text-sm font-semibold text-muted-foreground">{artist}</h3>
+                        <div className="space-y-2">
+                          {items.map((song) => (
+                            <Link
+                              href={`/songs/${song.artistSlug}/${song.songSlug}`}
+                              key={`${song.artistSlug}-${song.songSlug}`}
+                              className="block rounded-md border border-transparent px-3 py-2 text-left text-sm transition hover:border-primary hover:bg-muted"
+                            >
+                              <div className="font-medium">{song.title}</div>
+                              <div className="text-xs text-muted-foreground">
+                                Updated {new Date(song.updatedAt).toLocaleDateString()}
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </ScrollArea>
+              {error && (
+                <p className="mt-4 text-sm text-destructive">
+                  {error}
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+        <div className="min-h-[32rem]">{children}</div>
+      </main>
+    </div>
   );
-}
-
-function getErrorMessage(error: unknown): string {
-  if (error instanceof Error) {
-    return error.message
-  }
-  return "Unexpected error"
 }

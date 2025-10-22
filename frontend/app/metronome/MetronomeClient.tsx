@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Pause, Volume2 } from "lucide-react";
 import styles from "./Metronome.module.css";
+import { logger } from "@/lib/logger";
 
 const TEMPO_PRESETS = [
   { label: "Largo", bpm: 50 },
@@ -209,7 +210,7 @@ export function MetronomeClient() {
 
   const handleTap = () => {
     // Tap tempo functionality can be added here
-    console.log("Tap tempo");
+    logger.log("Tap tempo");
   };
 
   const cycleClickSound = () => {

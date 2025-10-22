@@ -2,25 +2,44 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Fragment } from "react";
+import { useSongs } from "@/lib/SongsContext";
+import { useMemo } from "react";
 
 export function Breadcrumbs() {
   const pathname = usePathname();
+  const { songs } = useSongs();
   const pathSegments = pathname.split('/').filter(segment => segment);
 
-  // Start with a home breadcrumb
-  const breadcrumbs = [{ label: "Home", href: "/" }];
+  const breadcrumbs = useMemo(() => {
+    const crumbs = [{ label: "Home", href: "/" }];
 
-  // Build breadcrumbs from path segments
-  pathSegments.forEach((segment, index) => {
-    const href = '/' + pathSegments.slice(0, index + 1).join('/');
-    let label = segment.replace(/_/g, ' '); // Replace underscores with spaces for readability
+    pathSegments.forEach((segment, index) => {
+      const href = '/' + pathSegments.slice(0, index + 1).join('/');
+      let label = segment.replace(/_/g, ' ').replace(/-/g, ' ');
 
-    // Capitalize first letter of each word
-    label = label.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+      // Special handling for songs route
+      if (pathSegments[0] === 'songs') {
+        if (index === 1) {
+          // Artist slug
+          const song = songs.find(s => s.artistSlug === segment);
+          label = song?.artist || label.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+        } else if (index === 2) {
+          // Song slug
+          const artistSlug = pathSegments[1];
+          const song = songs.find(s => s.artistSlug === artistSlug && s.songSlug === segment);
+          label = song?.title || label.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+        } else {
+          label = label.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+        }
+      } else {
+        label = label.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+      }
 
-    breadcrumbs.push({ label, href });
-  });
+      crumbs.push({ label, href });
+    });
+
+    return crumbs;
+  }, [pathname, pathSegments, songs]);
 
   return (
     <nav className="flex" aria-label="Breadcrumb">
