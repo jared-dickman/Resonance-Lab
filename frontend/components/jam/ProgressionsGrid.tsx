@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import ProgressionCard from '@/components/jam/ProgressionCard';
 import type { ChordProgression, Vibe } from '@/lib/jamProgressions';
-import { SCROLL_AREA_HEIGHT, GRID_COLUMNS } from '@/lib/constants/ui.constants';
+import { GRID_COLUMNS } from '@/lib/constants/ui.constants';
 import { ANIMATION_DURATION, SPRING_CONFIG } from '@/lib/constants/animation.constants';
 import { TAB_SELECTOR } from '@/lib/constants/dom.constants';
 import { clickElement, capitalize, formatCount, cn } from '@/lib/utils';
