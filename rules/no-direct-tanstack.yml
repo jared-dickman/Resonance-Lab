@@ -1,0 +1,54 @@
+id: no-direct-tanstack
+message: Use feature hooks instead of direct TanStack Query calls. Import from app/features/*/hooks.ts
+severity: error
+language: TypeScript
+rule:
+  any:
+    # Detect direct useQuery usage outside of allowed locations
+    - all:
+        - pattern: useQuery($$$)
+        - not:
+            inside:
+              any:
+                # Allow in hook definitions
+                - pattern: export function use$HOOK($$$) { $$$ }
+                # Allow in custom wrapper hooks
+                - pattern: export function useApiQuery($$$) { $$$ }
+    # Detect direct useMutation usage outside of allowed locations
+    - all:
+        - pattern: useMutation($$$)
+        - not:
+            inside:
+              any:
+                # Allow in hook definitions
+                - pattern: export function use$HOOK($$$) { $$$ }
+                # Allow in custom wrapper hooks
+                - pattern: export function useApiMutation($$$) { $$$ }
+    # Detect direct QueryClient usage outside of allowed locations
+    - all:
+        - pattern: new QueryClient($$$)
+        - not:
+            inside:
+              any:
+                # Allow in QueryClient provider setup
+                - pattern: export const queryClient = $$$
+                # Allow in test setup
+                - pattern: export const $testClient = $$$
+
+# Only check TypeScript/TSX files, excluding allowed locations
+paths:
+  include:
+    - "**/*.ts"
+    - "**/*.tsx"
+  exclude:
+    - "**/app/hooks/query-hooks.ts"
+    - "**/app/features/**/hooks.ts"
+    - "**/app/providers/QueryClient.ts"
+    - "**/app/providers/QueryClientProvider.tsx"
+    - "**/*.test.ts"
+    - "**/*.test.tsx"
+    - "**/*.spec.ts"
+    - "**/*.spec.tsx"
+    - "**/testing/**"
+    - "**/__tests__/**"
+    - "**/node_modules/**"
