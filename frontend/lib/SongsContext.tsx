@@ -51,7 +51,13 @@ export function SongsProvider({ children }: { children: ReactNode }) {
 export function useSongs() {
   const context = useContext(SongsContext)
   if (context === undefined) {
-    throw new Error("useSongs must be used within a SongsProvider")
+    // Return default values when used outside provider (e.g., in not-found pages)
+    return {
+      songs: [],
+      isLoadingSongs: false,
+      refreshSongs: async () => {},
+      error: null,
+    }
   }
   return context
 }
