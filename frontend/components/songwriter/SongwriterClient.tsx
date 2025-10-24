@@ -27,6 +27,7 @@ export default function SongwriterClient(): JSX.Element {
   const [selectedChord, setSelectedChord] = useState<string | null>(null)
   const [panelSizes, setPanelSizes] = useState<number[]>(DEFAULT_PANEL_SIZES)
   const [focusArea, setFocusArea] = useState<FocusArea>('lyrics')
+  const [isMobile, setIsMobile] = useState<boolean>(false)
   const [conversationHistory, setConversationHistory] = useState<ConversationHistory>({
     messages: [],
     totalMessages: 0,
@@ -41,7 +42,14 @@ export default function SongwriterClient(): JSX.Element {
 
   useEffect(() => {
     loadPanelLayoutFromStorage()
+    checkMobileView()
+    window.addEventListener('resize', checkMobileView)
+    return () => window.removeEventListener('resize', checkMobileView)
   }, [])
+
+  function checkMobileView(): void {
+    setIsMobile(window.innerWidth < 1024)
+  }
 
   async function loadPanelLayoutFromStorage(): Promise<void> {
     const saved = await storage.load<number[]>(PANEL_LAYOUT_KEY)
@@ -144,14 +152,14 @@ export default function SongwriterClient(): JSX.Element {
 
       <div className="container mx-auto px-4 py-6">
         <PanelGroup
-          direction="horizontal"
+          direction={isMobile ? "vertical" : "horizontal"}
           onLayout={handlePanelResize}
           className="h-[calc(100vh-180px)]"
         >
           <Panel
             defaultSize={panelSizes[0]}
             minSize={MIN_PANEL_SIZE}
-            className="pr-3"
+            className={isMobile ? "pb-3" : "pr-3"}
           >
             <motion.div
               className="h-full"
@@ -178,16 +186,16 @@ export default function SongwriterClient(): JSX.Element {
             </motion.div>
           </Panel>
 
-          <PanelResizeHandle className="w-2 flex items-center justify-center hover:bg-primary/10 transition-colors group">
-            <div className="w-1 h-12 bg-border group-hover:bg-primary/50 rounded-full transition-colors flex items-center justify-center">
-              <GripVertical className="w-3 h-3 text-muted-foreground group-hover:text-primary" />
+          <PanelResizeHandle className={isMobile ? "h-2 flex items-center justify-center hover:bg-primary/10 transition-colors group" : "w-2 flex items-center justify-center hover:bg-primary/10 transition-colors group"}>
+            <div className={isMobile ? "h-1 w-12 bg-border group-hover:bg-primary/50 rounded-full transition-colors flex items-center justify-center" : "w-1 h-12 bg-border group-hover:bg-primary/50 rounded-full transition-colors flex items-center justify-center"}>
+              <GripVertical className={isMobile ? "w-3 h-3 text-muted-foreground group-hover:text-primary rotate-90" : "w-3 h-3 text-muted-foreground group-hover:text-primary"} />
             </div>
           </PanelResizeHandle>
 
           <Panel
             defaultSize={panelSizes[1]}
             minSize={MIN_PANEL_SIZE}
-            className="px-3"
+            className={isMobile ? "py-3" : "px-3"}
           >
             <motion.div
               className="h-full"
@@ -207,16 +215,16 @@ export default function SongwriterClient(): JSX.Element {
             </motion.div>
           </Panel>
 
-          <PanelResizeHandle className="w-2 flex items-center justify-center hover:bg-primary/10 transition-colors group">
-            <div className="w-1 h-12 bg-border group-hover:bg-primary/50 rounded-full transition-colors flex items-center justify-center">
-              <GripVertical className="w-3 h-3 text-muted-foreground group-hover:text-primary" />
+          <PanelResizeHandle className={isMobile ? "h-2 flex items-center justify-center hover:bg-primary/10 transition-colors group" : "w-2 flex items-center justify-center hover:bg-primary/10 transition-colors group"}>
+            <div className={isMobile ? "h-1 w-12 bg-border group-hover:bg-primary/50 rounded-full transition-colors flex items-center justify-center" : "w-1 h-12 bg-border group-hover:bg-primary/50 rounded-full transition-colors flex items-center justify-center"}>
+              <GripVertical className={isMobile ? "w-3 h-3 text-muted-foreground group-hover:text-primary rotate-90" : "w-3 h-3 text-muted-foreground group-hover:text-primary"} />
             </div>
           </PanelResizeHandle>
 
           <Panel
             defaultSize={panelSizes[2]}
             minSize={MIN_PANEL_SIZE}
-            className="pl-3"
+            className={isMobile ? "pt-3" : "pl-3"}
           >
             <motion.div
               className="h-full"
