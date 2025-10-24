@@ -11,7 +11,7 @@ export function apiBaseUrl(): string {
   return process.env.NEXT_PUBLIC_API_BASE_URL ?? DEFAULT_API_URL;
 }
 
-export { transposeChord } from './utils/formatting/chord';
-export { capitalize, capitalizeWords } from './utils/string/capitalize';
-export { pluralize, formatCount } from './utils/array/pluralize';
-export { clickElement, findElement } from './utils/dom/selector';
+export { transposeChord } from '@/lib/utils/formatting/chord';
+export { capitalize, capitalizeWords } from '@/lib/utils/string/capitalize';
+export { pluralize, formatCount } from '@/lib/utils/array/pluralize';
+export { clickElement, findElement } from '@/lib/utils/dom/selector';

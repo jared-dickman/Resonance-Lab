@@ -37,6 +37,7 @@ export default [
       'frontend/build/**',
       'scraper/bin/**',
       'scraper/vendor/**',
+      'scripts/test-ast-grep-rules.ts',
     ],
   },
 

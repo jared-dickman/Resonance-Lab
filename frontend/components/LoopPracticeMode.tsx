@@ -2,10 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-import { Badge } from './ui/badge';
-import { Button } from './ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Slider } from './ui/slider';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Slider } from '@/components/ui/slider';
 import type { Song } from '@/lib/types';
 import { adjustBpm } from '@/lib/utils/validation/bpm';
 import type {

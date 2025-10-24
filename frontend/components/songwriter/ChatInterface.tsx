@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { Send, Sparkles, Lightbulb, Music, PenTool, Bot } from 'lucide-react';
-import type { SongDraft } from './types/legacy';
+import type { SongDraft } from '@/components/songwriter/types/legacy';
 
 interface Message {
   id: string;

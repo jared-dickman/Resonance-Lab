@@ -4,8 +4,8 @@ import type {
   SavedSongResponse,
   SongDetailResponse,
   SearchResponseData,
-} from './dto/song-response.schema';
-import type { DownloadRequestInput, SearchRequestInput } from './dto/song-request.schema';
+} from '@/app/features/songs/dto/song-response.schema';
+import type { DownloadRequestInput, SearchRequestInput } from '@/app/features/songs/dto/song-request.schema';
 
 /**
  * Raw API calls - pure data fetching, no transformations

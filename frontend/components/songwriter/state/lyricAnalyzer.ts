@@ -7,7 +7,7 @@ import type {
   EmotionalTone,
   NarrativePerspective,
   VerbTense,
-} from '../types/song';
+} from '@/components/songwriter/types/song';
 
 export function extractSyllableCountFromLyricLine(lineText: string): number {
   const cleaned = lineText.toLowerCase().replace(/[^a-z\s]/g, '');

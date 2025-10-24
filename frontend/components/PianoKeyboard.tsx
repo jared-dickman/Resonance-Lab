@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-import { Badge } from './ui/badge';
-import { Button } from './ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { FINGER_COLORS } from '@/lib/constants/canvas.constants';
 import { CANVAS_RATIO } from '@/lib/constants/game.constants';
 import type { PianoChordVoicing } from '@/lib/pianoChords';

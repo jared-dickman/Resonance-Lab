@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 module.exports = {
   extends: ['@commitlint/config-conventional'],
   rules: {

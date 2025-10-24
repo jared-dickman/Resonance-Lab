@@ -55,8 +55,7 @@ export function Breadcrumbs() {
     });
 
     return crumbs;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathSegments, songs]);
+  }, [pathname, songs]);
 
   return (
     <nav className="flex" aria-label="Breadcrumb">

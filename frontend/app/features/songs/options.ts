@@ -1,6 +1,6 @@
-import { songKeys } from './keys';
-import { fetchSongsList, fetchSongDetail, searchSongs, downloadSong } from './queries';
-import type { SearchRequestInput, DownloadRequestInput } from './dto/song-request.schema';
+import { songKeys } from '@/app/features/songs/keys';
+import { fetchSongsList, fetchSongDetail, searchSongs, downloadSong } from '@/app/features/songs/queries';
+import type { SearchRequestInput, DownloadRequestInput } from '@/app/features/songs/dto/song-request.schema';
 
 /**
  * Query options definitions

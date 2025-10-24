@@ -10,8 +10,8 @@ import type {
   ChordInstance,
   MusicalKey,
   KeyMode,
-} from '../types/song';
-import { analyzeSectionLyrics } from './lyricAnalyzer';
+} from '@/components/songwriter/types/song';
+import { analyzeSectionLyrics } from '@/components/songwriter/state/lyricAnalyzer';
 
 export function createEmptySongState(): CompleteSongState {
   return {

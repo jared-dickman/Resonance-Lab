@@ -36,7 +36,7 @@ export type {
   CompleteSongState,
   UserPreferences,
   DraftSnapshot,
-} from './song'
+} from '@/components/songwriter/types/song'
 
 export type {
   AgentIntentCategory,
@@ -60,7 +60,7 @@ export type {
   AgentState,
   QuickPrompt,
   ConversationSessionMetrics,
-} from './chat'
+} from '@/components/songwriter/types/chat'
 
 export type {
   PanelId,
@@ -88,7 +88,7 @@ export type {
   UndoRedoState,
   ProgressIndicator,
   AccessibilityState,
-} from './ui'
+} from '@/components/songwriter/types/ui'
 
 export type {
   StorageKey,
@@ -112,6 +112,6 @@ export type {
   SyncState,
   CacheEntry,
   CacheManager,
-} from './persistence'
+} from '@/components/songwriter/types/persistence'
 
-export type { SongDraft } from './legacy'
+export type { SongDraft } from '@/components/songwriter/types/legacy'

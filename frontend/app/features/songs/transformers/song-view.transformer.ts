@@ -3,7 +3,7 @@ import type {
   SongDetailResponse,
   SearchResponseData,
   SearchResultResponse,
-} from '../dto/song-response.schema';
+} from '@/app/features/songs/dto/song-response.schema';
 
 /**
  * View models - optimized for UI rendering

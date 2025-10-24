@@ -1,10 +1,10 @@
 'use client';
 
-import { PianoKeyboard } from './PianoKeyboard';
+import { PianoKeyboard } from '@/components/PianoKeyboard';
 import type { PianoChordVoicing } from '@/lib/pianoChords';
 import { getPianoChordVoicings } from '@/lib/pianoChords';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Badge } from './ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { Piano } from 'lucide-react';
 import { useChordVoicings } from '@/lib/hooks/useChordVoicings';
 

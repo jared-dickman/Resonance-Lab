@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /**
  * BLOGZILLA ENTERPRISE SECURITY & CODE QUALITY RULES
  * ===================================================

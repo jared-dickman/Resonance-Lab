@@ -1,2 +1,2 @@
-export { useAsyncApi, type AsyncApiResult } from "./useAsyncApi";
-export { useChordVoicings, type UseChordVoicingsResult } from "./useChordVoicings";
+export { useAsyncApi, type AsyncApiResult } from "@/lib/hooks/useAsyncApi";
+export { useChordVoicings, type UseChordVoicingsResult } from "@/lib/hooks/useChordVoicings";

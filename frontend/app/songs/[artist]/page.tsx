@@ -1,4 +1,4 @@
-import ArtistClient from './ArtistClient';
+import ArtistClient from '@/app/songs/[artist]/ArtistClient';
 
 interface ArtistPageProps {
   params: Promise<{

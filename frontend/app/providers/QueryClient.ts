@@ -1,10 +1,11 @@
 import { QueryClient, QueryCache, MutationCache } from '@tanstack/react-query';
+import { logger } from '@/lib/logger';
 
 // Global error handling at cache level
 const queryCache = new QueryCache({
   onError: (error, query) => {
     // Log error for monitoring
-    console.error('Query Error:', {
+    logger.error('Query Error:', {
       queryKey: String(query.queryKey),
       error: error instanceof Error ? error.message : String(error),
     });
@@ -16,7 +17,7 @@ const queryCache = new QueryCache({
 
 const mutationCache = new MutationCache({
   onError: (error) => {
-    console.error('Mutation Error:', error instanceof Error ? error.message : String(error));
+    logger.error('Mutation Error:', error instanceof Error ? error.message : String(error));
 
     // Note: Toast notifications would go here if we add a toast library
   },

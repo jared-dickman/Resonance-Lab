@@ -1,7 +1,7 @@
 'use client';
 
 import { useSongDetail } from '@/app/features/songs/hooks';
-import SongClient from './SongClient';
+import SongClient from '@/app/songs/[artist]/[song]/SongClient';
 import { Spinner } from '@/components/ui/spinner';
 import { use } from 'react';
 

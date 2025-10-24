@@ -26,7 +26,7 @@ import {
   Edit3,
 } from 'lucide-react';
 import { ChordDisplay } from '@/components/ChordDisplay';
-import ChordPicker from './ChordPicker';
+import ChordPicker from '@/components/jam/ChordPicker';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface JamBuilderProps {

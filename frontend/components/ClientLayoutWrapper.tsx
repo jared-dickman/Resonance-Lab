@@ -1,6 +1,6 @@
 'use client';
 
-import { Breadcrumbs } from './Breadcrumbs';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 
 export function ClientLayoutWrapper({ children }: { children: React.ReactNode }) {
   return (

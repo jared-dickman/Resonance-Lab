@@ -3,7 +3,7 @@ import type {
   SectionType,
   EditHistoryEntry,
   UserPreferences,
-} from '../types/song';
+} from '@/components/songwriter/types/song';
 import type {
   CompleteSongContext,
   UserQueryContext,
@@ -12,8 +12,8 @@ import type {
   AgentIntentCategory,
   ConversationMessage,
   TextSelectionRange,
-} from '../types/chat';
-import type { GlobalUIState } from '../types/ui';
+} from '@/components/songwriter/types/chat';
+import type { GlobalUIState } from '@/components/songwriter/types/ui';
 
 export function extractUserQueryContext(
   queryText: string,

@@ -199,6 +199,7 @@ export function parseChordsToJSON(htmlContent: string): SongData {
 async function main() {
   const [, , inputPath, outputPath] = process.argv
   if (!inputPath) {
+    // eslint-disable-next-line no-console
     console.error("Usage: songify.ts <chords.html> [output.json]")
     process.exitCode = 1
     return
@@ -219,6 +220,7 @@ const modulePath = fileURLToPath(import.meta.url)
 const entryPath = path.resolve(process.argv[1] ?? "")
 if (modulePath === entryPath) {
   main().catch((error) => {
+    // eslint-disable-next-line no-console
     console.error("songify failed:", error)
     process.exitCode = 1
   })

@@ -1,10 +1,10 @@
 'use client';
 
-import { Fretboard } from './Fretboard';
+import { Fretboard } from '@/components/Fretboard';
 import type { ChordVoicing } from '@/lib/chordPositions';
 import { getChordVoicings } from '@/lib/chordPositions';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Badge } from './ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { Music } from 'lucide-react';
 import { useChordVoicings } from '@/lib/hooks/useChordVoicings';
 

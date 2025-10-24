@@ -1,5 +1,5 @@
-import type { CompleteSongState, DraftSnapshot } from './song'
-import type { PanelLayoutState } from './ui'
+import type { CompleteSongState, DraftSnapshot } from '@/components/songwriter/types/song'
+import type { PanelLayoutState } from '@/components/songwriter/types/ui'
 
 export type StorageKey = 'songwriterDrafts' | 'panelLayout' | 'userPreferences' | 'conversationHistory' | 'autosaveSnapshots' | 'songwriter-panel-layout'
 

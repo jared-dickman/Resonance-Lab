@@ -1,4 +1,4 @@
-import type { StorageKey, StorageQuota, StorageAdapter } from '../types/persistence';
+import type { StorageKey, StorageQuota, StorageAdapter } from '@/components/songwriter/types/persistence';
 import { logger } from '@/lib/logger';
 
 export function createLocalStorageAdapter(): StorageAdapter {
