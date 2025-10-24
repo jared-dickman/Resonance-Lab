@@ -135,7 +135,8 @@ export function SongClient({ song, artistSlug }: SongClientProps) {
       const centerY = containerRect.top + 100; // Check slightly below top
 
       // Find the chord element closest to the center
-      let closestChord: { name: string; distance: number } | null = null;
+      let closestChordName: string | null = null;
+      let minDistance = Infinity;
 
       chordElementsRef.current.forEach(({ element, chordName }) => {
         const rect = element.getBoundingClientRect();
@@ -144,14 +145,15 @@ export function SongClient({ song, artistSlug }: SongClientProps) {
         if (
           rect.top >= containerRect.top &&
           rect.bottom <= containerRect.bottom &&
-          (!closestChord || distance < closestChord.distance)
+          distance < minDistance
         ) {
-          closestChord = { name: chordName, distance };
+          closestChordName = chordName;
+          minDistance = distance;
         }
       });
 
-      if (closestChord && closestChord.name !== currentChord) {
-        setCurrentChord(closestChord.name);
+      if (closestChordName !== null && closestChordName !== currentChord) {
+        setCurrentChord(closestChordName);
       }
     }, 100);
 

@@ -52,11 +52,23 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
         <div className="container flex flex-col gap-2 py-6">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-semibold tracking-tight">Resonance Lab</h1>
-            <Link href="/metronome">
-              <Button variant="outline" size="sm">
-                Metronome
-              </Button>
-            </Link>
+            <div className="flex gap-2">
+              <Link href="/songwriter">
+                <Button variant="outline" size="sm">
+                  Songwriter
+                </Button>
+              </Link>
+              <Link href="/jam">
+                <Button variant="outline" size="sm">
+                  Jam Assistant
+                </Button>
+              </Link>
+              <Link href="/metronome">
+                <Button variant="outline" size="sm">
+                  Metronome
+                </Button>
+              </Link>
+            </div>
           </div>
           <p className="text-sm text-muted-foreground">
             Manage saved songs and pull fresh chords from Ultimate Guitar using the Go backend.

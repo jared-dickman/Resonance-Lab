@@ -112,7 +112,7 @@ export function ChordRhythmGame({ song, bpm, onChordHit, className = "" }: Chord
     const now = performance.now() - startTimeRef.current;
     const hitWindow = 300; // ms window for hitting
 
-    let bestHit: FallingChord | null = null;
+    let bestHitChord: FallingChord | null = null;
     let bestDistance = Infinity;
 
     fallingChords.forEach((fc) => {
@@ -120,15 +120,16 @@ export function ChordRhythmGame({ song, bpm, onChordHit, className = "" }: Chord
         const distance = Math.abs(fc.timestamp - now);
         if (distance < bestDistance && distance < hitWindow) {
           bestDistance = distance;
-          bestHit = fc;
+          bestHitChord = fc;
         }
       }
     });
 
-    if (bestHit) {
-      const quality = bestDistance < 100 ? "perfect" : bestDistance < 200 ? "good" : "miss";
-      bestHit.hit = true;
-      bestHit.hitQuality = quality;
+    if (bestHitChord) {
+      const quality: "perfect" | "good" | "miss" = bestDistance < 100 ? "perfect" : bestDistance < 200 ? "good" : "miss";
+      const hitChord: FallingChord = bestHitChord;
+      hitChord.hit = true;
+      hitChord.hitQuality = quality;
 
       const points = quality === "perfect" ? 100 : quality === "good" ? 50 : 0;
       const newCombo = quality !== "miss" ? gameStateRef.current.combo + 1 : 0;
