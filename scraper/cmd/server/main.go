@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"scraper/internal/api"
+	"scraper/internal/middleware"
 	"scraper/internal/songmanager"
 )
 
@@ -34,10 +35,25 @@ func main() {
 	mux := http.NewServeMux()
 	apiServer.Register(mux)
 
-	handler := withCORS(loggingMiddleware(mux))
+	rateLimiter := middleware.NewRateLimiter(100, time.Minute)
+	handler := withCORS(
+		rateLimiter.Middleware(
+			middleware.Timeout(30 * time.Second)(
+				loggingMiddleware(mux),
+			),
+		),
+	)
+
+	server := &http.Server{
+		Addr:         *addr,
+		Handler:      handler,
+		ReadTimeout:  15 * time.Second,
+		WriteTimeout: 15 * time.Second,
+		IdleTimeout:  60 * time.Second,
+	}
 
 	log.Printf("Starting server on %s (songs dir: %s)", *addr, resolvedSongsDir)
-	if err := http.ListenAndServe(*addr, handler); err != nil {
+	if err := server.ListenAndServe(); err != nil {
 		log.Fatalf("HTTP server error: %v", err)
 	}
 }

@@ -119,39 +119,19 @@ func (s *Service) ListSongs(_ context.Context) ([]SavedSong, error) {
 	}
 
 	songs := make([]SavedSong, 0)
-
 	for _, artistEntry := range artistDirs {
 		if !artistEntry.IsDir() {
 			continue
 		}
-		artistSlug := artistEntry.Name()
-		artistPath := filepath.Join(s.songsDir, artistSlug)
 
-		songEntries, err := os.ReadDir(artistPath)
+		artistSongs, err := s.scanArtistDirectory(artistEntry.Name())
 		if err != nil {
-			return nil, fmt.Errorf("read artist dir %s: %w", artistSlug, err)
+			return nil, err
 		}
-		for _, songEntry := range songEntries {
-			if !songEntry.IsDir() {
-				continue
-			}
-			songSlug := songEntry.Name()
-			summary, err := s.readSummary(artistSlug, songSlug)
-			if err != nil {
-				// Skip corrupt entries but keep processing others.
-				continue
-			}
-			songs = append(songs, summary)
-		}
+		songs = append(songs, artistSongs...)
 	}
 
-	sort.Slice(songs, func(i, j int) bool {
-		if songs[i].Artist == songs[j].Artist {
-			return songs[i].Title < songs[j].Title
-		}
-		return songs[i].Artist < songs[j].Artist
-	})
-
+	sortSongs(songs)
 	return songs, nil
 }
 
@@ -166,19 +146,14 @@ func (s *Service) GetSong(ctx context.Context, artistSlug, songSlug string) (Son
 	}
 
 	basePath := s.songPath(artistSlug, songSlug)
-	detail := SongDetail{Summary: summary}
+	chordsHTML, tabHTML, songJSON := s.loadSongFiles(basePath)
 
-	if data, err := os.ReadFile(filepath.Join(basePath, "chords.html")); err == nil {
-		detail.ChordsHTML = string(data)
-	}
-	if data, err := os.ReadFile(filepath.Join(basePath, "tab.html")); err == nil {
-		detail.TabHTML = string(data)
-	}
-	if data, err := os.ReadFile(filepath.Join(basePath, "song.json")); err == nil {
-		detail.SongJSON = json.RawMessage(data)
-	}
-
-	return detail, nil
+	return SongDetail{
+		Summary:    summary,
+		ChordsHTML: chordsHTML,
+		TabHTML:    tabHTML,
+		SongJSON:   json.RawMessage(songJSON),
+	}, nil
 }
 
 // Search queries Ultimate Guitar for chords and tabs matching the provided artist/title.
@@ -211,47 +186,27 @@ func (s *Service) Search(_ context.Context, artist, title string) (SearchRespons
 func (s *Service) Download(ctx context.Context, req DownloadRequest) (SongDetail, error) {
 	artist := strings.TrimSpace(req.Artist)
 	title := strings.TrimSpace(req.Title)
-	if artist == "" || title == "" {
-		return SongDetail{}, errors.New("both artist and title are required")
+
+	if err := validateDownloadRequest(artist, title); err != nil {
+		return SongDetail{}, err
 	}
 
 	scraper := ultimateguitar.New()
-
-	chordID := req.ChordID
-	if chordID == 0 {
-		tab, err := s.findBestTab(scraper, artist, title, ultimateguitar.TabTypeChords)
-		if err != nil {
-			return SongDetail{}, fmt.Errorf("resolve chord tab: %w", err)
-		}
-		chordID = tab.ID
-	}
-
-	tabID := req.TabID
-	if tabID == 0 {
-		tab, err := s.findBestTab(scraper, artist, title, ultimateguitar.TabTypeTabs)
-		if err == nil {
-			tabID = tab.ID
-		}
+	chordID, tabID, err := s.resolveTabIDs(scraper, artist, title, req)
+	if err != nil {
+		return SongDetail{}, err
 	}
 
 	artistSlug := Slugify(artist)
 	songSlug := Slugify(title)
 	basePath := s.songPath(artistSlug, songSlug)
+
 	if err := os.MkdirAll(basePath, 0o755); err != nil {
 		return SongDetail{}, fmt.Errorf("mkdir song dir: %w", err)
 	}
 
-	if chordID > 0 {
-		if err := s.fetchAndWriteTab(ctx, scraper, chordID, filepath.Join(basePath, "chords.html")); err != nil {
-			return SongDetail{}, err
-		}
-	}
-
-	if tabID > 0 {
-		if err := s.fetchAndWriteTab(ctx, scraper, tabID, filepath.Join(basePath, "tab.html")); err != nil {
-			// Keep chord data even if tab fetch fails.
-			return SongDetail{}, err
-		}
+	if err := s.downloadTabs(ctx, scraper, basePath, chordID, tabID); err != nil {
+		return SongDetail{}, err
 	}
 
 	return s.GetSong(ctx, artistSlug, songSlug)

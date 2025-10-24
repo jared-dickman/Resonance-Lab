@@ -4,18 +4,24 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"time"
 
+	"scraper/internal/cache"
 	"scraper/internal/songmanager"
 )
 
 // Server wires song management operations into HTTP handlers.
 type Server struct {
-	svc *songmanager.Service
+	svc   *songmanager.Service
+	cache *cache.Cache
 }
 
 // New creates a Server backed by the provided song service.
 func New(svc *songmanager.Service) *Server {
-	return &Server{svc: svc}
+	return &Server{
+		svc:   svc,
+		cache: cache.New(5 * time.Minute),
+	}
 }
 
 // Register attaches the API routes to the provided mux.
@@ -32,11 +38,20 @@ func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) handleListSongs(w http.ResponseWriter, r *http.Request) {
+	const cacheKey = "songs:list"
+
+	if cached, ok := s.cache.Get(cacheKey); ok {
+		writeJSON(w, http.StatusOK, cached)
+		return
+	}
+
 	songs, err := s.svc.ListSongs(r.Context())
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, err)
 		return
 	}
+
+	s.cache.Set(cacheKey, songs)
 	writeJSON(w, http.StatusOK, songs)
 }
 
@@ -83,6 +98,8 @@ func (s *Server) handleDownload(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusBadRequest, err)
 		return
 	}
+
+	s.cache.Invalidate("songs:list")
 	writeJSON(w, http.StatusOK, detail)
 }
 
