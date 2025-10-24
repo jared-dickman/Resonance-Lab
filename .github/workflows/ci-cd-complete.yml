@@ -72,7 +72,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18, 20]  # Test on multiple Node versions
+        node-version: [20]  # Next.js 16 requires Node >=20.9.0
 
     steps:
       - name: 📥 Checkout code
