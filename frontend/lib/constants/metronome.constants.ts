@@ -1,0 +1,36 @@
+export const METRONOME = {
+  DEFAULT_BPM: 138,
+  BEAT_FREQUENCIES: {
+    ACCENT: { HIGH: 880, LOW: 440 },
+    NORMAL: { HIGH: 1000, LOW: 600 },
+    SUBDIVISION: { HIGH: 800, LOW: 500 },
+  },
+  GAIN: {
+    ACCENT: { PEAK: 0.3, ATTACK: 0.2 },
+    NORMAL: { PEAK: 0.08, ATTACK: 0.05 },
+  },
+  ENVELOPE: {
+    ATTACK_TIME: 0.001,
+    DECAY_TIME: 0.01,
+  },
+  TIMING: {
+    MS_PER_MINUTE: 60_000,
+    LOOKAHEAD_INTERVAL_MS: 25,
+    SCHEDULE_AHEAD_SECONDS: 0.1,
+  },
+} as const;
+
+export const TIME_SIGNATURE = {
+  DEFAULT_NUMERATOR: 4,
+  DEFAULT_DENOMINATOR: 4,
+  MIN_VALUE: 1,
+  MAX_NUMERATOR: 12,
+  MAX_DENOMINATOR: 16,
+} as const;
+
+export const METRONOME_PRESETS = {
+  SLOW_PRACTICE: 30,
+  MODERATE: 120,
+  ALLEGRO: 138,
+  PRESTO: 180,
+} as const;
