@@ -46,8 +46,23 @@
 
 .chord {
   min-width: 4rem;
-  font-weight: 600;
+  font-weight: 700;
   color: rgb(234, 179, 8);
+  transition: all 0.2s ease;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  background: rgba(234, 179, 8, 0.1);
+}
+
+.chord:hover {
+  background: rgba(234, 179, 8, 0.2);
+  transform: translateY(-1px);
+}
+
+.chordActive {
+  background: rgba(234, 179, 8, 0.3);
+  box-shadow: 0 0 0 2px rgba(234, 179, 8, 0.5);
+  color: rgb(250, 204, 21);
 }
 
 .lyric {
