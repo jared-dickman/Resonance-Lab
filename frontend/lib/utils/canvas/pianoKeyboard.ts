@@ -6,7 +6,7 @@ export interface MidiNoteInfo {
 export function getMidiNote(octave: number, keyIndex: number): number {
   const baseNote = octave * 12 + 12;
   const offsets = [0, 2, 4, 5, 7, 9, 11];
-  return baseNote + offsets[keyIndex];
+  return baseNote + (offsets[keyIndex] ?? 0);
 }
 
 export function getBlackKeyMidiOffset(keyIndex: number): number {

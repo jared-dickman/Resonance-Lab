@@ -41,8 +41,8 @@ export function drawFrettedNote(
   finger: number,
   showFingerNumbers: boolean
 ): void {
-  const color = finger > 0 && finger <= 4 ? FINGER_COLORS[finger] : FINGER_COLORS[0];
-  ctx.fillStyle = color;
+  const color = finger > 0 && finger <= 4 ? (FINGER_COLORS[finger] ?? FINGER_COLORS[0]) : FINGER_COLORS[0];
+  ctx.fillStyle = color ?? '#3b82f6';
   ctx.beginPath();
   ctx.arc(x, y, FINGER_DOT_RADIUS, 0, Math.PI * 2);
   ctx.fill();
@@ -73,7 +73,7 @@ export function drawFingerPositions(
 
   frets.forEach((fret, stringIndex) => {
     const y = padding + stringIndex * stringSpacing;
-    const finger = fingers[stringIndex];
+    const finger = fingers[stringIndex] ?? 0;
 
     if (fret === MUTED_STRING) {
       drawMutedString(ctx, padding, y);

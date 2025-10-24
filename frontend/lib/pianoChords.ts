@@ -461,13 +461,13 @@ export function getPianoChordVoicings(chordName: string): PianoChordVoicing[] {
   }
 
   const [, root, quality = ""] = match;
-  const withQuality = root + quality;
+  const withQuality = (root ?? '') + quality;
 
-  if (PIANO_CHORD_DATABASE[withQuality]) {
+  if (root && PIANO_CHORD_DATABASE[withQuality]) {
     return PIANO_CHORD_DATABASE[withQuality];
   }
 
-  if (PIANO_CHORD_DATABASE[root]) {
+  if (root && PIANO_CHORD_DATABASE[root]) {
     return PIANO_CHORD_DATABASE[root];
   }
 
@@ -479,7 +479,7 @@ export function getPianoChordVoicings(chordName: string): PianoChordVoicing[] {
  */
 export function getDefaultPianoVoicing(chordName: string): PianoChordVoicing | null {
   const voicings = getPianoChordVoicings(chordName);
-  return voicings.length > 0 ? voicings[0] : null;
+  return voicings.length > 0 ? (voicings[0] ?? null) : null;
 }
 
 /**

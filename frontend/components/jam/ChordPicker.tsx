@@ -44,7 +44,7 @@ const getChordsInKey = (key: string): string[] => {
 
   return intervals.map((interval, i) => {
     const rootIndex = (keyIndex + interval) % 12;
-    return CHORD_ROOTS[rootIndex] + qualities[i];
+    return (CHORD_ROOTS[rootIndex] ?? 'C') + (qualities[i] ?? '');
   });
 };
 

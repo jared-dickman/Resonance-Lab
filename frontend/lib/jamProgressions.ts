@@ -300,8 +300,8 @@ export function getProgressionsByVibe(vibe: Vibe, skillLevel?: SkillLevel): Chor
  */
 export function getNextChordSuggestions(
   currentChord: string,
-  key: string,
-  vibe: Vibe
+  _key: string,
+  _vibe: Vibe
 ): string[] {
   // Common chord transitions based on function
   const transitions: Record<string, string[]> = {

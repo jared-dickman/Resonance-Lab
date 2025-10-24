@@ -6,7 +6,7 @@ import { CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Music2, Plus, Trash2, GripVertical, Play, Sparkles, RotateCcw } from 'lucide-react';
+import { Music2, Plus, Trash2, GripVertical, Sparkles, RotateCcw } from 'lucide-react';
 
 interface ChordProgressionBuilderProps {
   chords: { name: string; timing: number }[];
@@ -51,7 +51,7 @@ export default function ChordProgressionBuilder({
   selectedChord,
   onChordSelect,
 }: ChordProgressionBuilderProps) {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [_isPlaying, _setIsPlaying] = useState(false);
 
   const addChord = (chordName: string) => {
     const newChord = { name: chordName, timing: chords.length * 4 };

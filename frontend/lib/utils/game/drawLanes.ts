@@ -46,6 +46,6 @@ export function drawLanes(
 
     ctx.font = '10px sans-serif';
     ctx.fillStyle = 'rgba(255,255,255,0.6)';
-    ctx.fillText(keys[index], x, keyBindingY);
+    ctx.fillText(keys[index] ?? '', x, keyBindingY);
   });
 }

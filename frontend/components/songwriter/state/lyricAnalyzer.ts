@@ -43,7 +43,7 @@ export function detectStressPatternInLine(lineText: string): ReadonlyArray<Sylla
     for (let i = 0; i < syllableCount; i++) {
       stresses.push({
         syllableIndex,
-        isStressed: wordStresses[i],
+        isStressed: wordStresses[i] ?? false,
         syllableText: word,
       });
       syllableIndex++;
@@ -53,7 +53,7 @@ export function detectStressPatternInLine(lineText: string): ReadonlyArray<Sylla
   return stresses;
 }
 
-function generateWordStressPattern(word: string, syllableCount: number): boolean[] {
+function generateWordStressPattern(_word: string, syllableCount: number): boolean[] {
   if (syllableCount === 1) return [true];
   if (syllableCount === 2) return [true, false];
 
@@ -67,7 +67,7 @@ export function extractRhymeFromLineEnd(lineText: string): string {
   const words = lineText.split(/\s+/).filter(w => w.length > 0);
   if (words.length === 0) return '';
 
-  const lastWord = words[words.length - 1].toLowerCase().replace(/[^a-z]/g, '');
+  const lastWord = (words[words.length - 1] ?? '').toLowerCase().replace(/[^a-z]/g, '');
 
   if (lastWord.length < 2) return lastWord;
 
@@ -123,7 +123,7 @@ function classifyRhymePattern(pattern: string, lineCount: number): RhymeScheme {
   };
 
   if (pattern in schemes) {
-    return schemes[pattern];
+    return schemes[pattern] ?? 'free';
   }
 
   const uniqueLetters = new Set(pattern.split(''));
@@ -194,7 +194,7 @@ export function analyzeSectionLyrics(
   };
 }
 
-function extractThemeFromLines(lines: ReadonlyArray<string>): string {
+function extractThemeFromLines(_lines: ReadonlyArray<string>): string {
   return 'General theme';
 }
 

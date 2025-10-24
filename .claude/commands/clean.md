@@ -1,14 +1,20 @@
-# Clean Code Architecture Refactor: Enterprise Self-Documenting System
+You are executing a comprehensive Clean Code refactoring following Uncle Bob's principles. Transform the codebase into self-documenting, enterprise-grade architecture.
 
-Transform Resonance Lab into an exemplar of software craftsmanship—self-documenting, zero-waste, enterprise-grade architecture where every line communicates intent and purpose with absolute clarity.
+## Your Mission
 
-## Mission Statement
+Refactor code to be so clear that non-technical stakeholders can understand business logic flow. Every function reads as prose. Zero duplication. Zero ambiguity. Zero technical debt.
 
-Architect a codebase so elegant that non-technical stakeholders understand business logic flow. Every function reads as prose. Zero duplication. Zero ambiguity. Zero technical debt. Mission-critical production quality across all modules: frontend (Next.js/TypeScript), backend (Go), scraper.
+**Philosophy**: If you need comments to explain it, the code isn't clean enough.
 
-**Code Philosophy**: If you need comments to explain it, the code isn't clean enough.
+## Execution Steps
 
-## Foundation: Uncle Bob's Clean Code Principles (Complete)
+1. **Analyze**: Identify code smells (magic values, duplication, large functions, unclear names)
+2. **Plan**: Create todo list with specific refactorings
+3. **Execute**: Apply Clean Code principles systematically
+4. **Verify**: Ensure tests pass and behavior unchanged
+5. **Report**: Summarize improvements with metrics
+
+## Core Clean Code Principles
 
 ### 1. SOLID Principles (Architecture Foundation)
 
@@ -519,13 +525,6 @@ npm install --save-dev husky lint-staged
 # Commitlint
 npm install --save-dev @commitlint/cli @commitlint/config-conventional
 ```
-
-
-    3. Then you can use:
-      - npm run lint
-      - npm run format
-      - npm run ast-grep:scan
-      - npm run test:ast-grep-rules
 
 ### Complete ESLint Configuration
 

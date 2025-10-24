@@ -1,7 +1,6 @@
 'use client';
 
 import { type Vibe, VIBE_INFO } from '@/lib/jamProgressions';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';

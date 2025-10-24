@@ -14,15 +14,11 @@ function parseChord(chordName: string): ChordParts | null {
   }
 
   const [, root, quality] = match;
-  return { root, quality };
+  return { root: root ?? '', quality: quality ?? '' };
 }
 
 function shouldUseFlatScale(root: string): boolean {
   return root.includes('b');
-}
-
-function isValidNote(root: string, scale: readonly string[]): root is typeof scale[number] {
-  return scale.includes(root);
 }
 
 function getNewRoot(root: string, steps: number): string | null {

@@ -414,13 +414,13 @@ export function getChordVoicings(chordName: string): ChordVoicing[] {
   const [, root, quality = ""] = match;
 
   // Try with quality
-  const withQuality = root + quality;
-  if (CHORD_DATABASE[withQuality]) {
+  const withQuality = (root ?? '') + quality;
+  if (root && CHORD_DATABASE[withQuality]) {
     return CHORD_DATABASE[withQuality];
   }
 
   // Try just root (major)
-  if (CHORD_DATABASE[root]) {
+  if (root && CHORD_DATABASE[root]) {
     return CHORD_DATABASE[root];
   }
 
@@ -432,5 +432,5 @@ export function getChordVoicings(chordName: string): ChordVoicing[] {
  */
 export function getDefaultVoicing(chordName: string): ChordVoicing | null {
   const voicings = getChordVoicings(chordName);
-  return voicings.length > 0 ? voicings[0] : null;
+  return voicings.length > 0 ? (voicings[0] ?? null) : null;
 }

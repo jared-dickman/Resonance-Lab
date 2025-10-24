@@ -8,7 +8,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { X, FileText, Clock, Trash2, Download, Upload, GitBranch } from 'lucide-react';
+import { X, FileText, Clock, Trash2, Download, GitBranch } from 'lucide-react';
 import type { SongDraft } from './types/legacy';
 
 interface DraftManagerProps {

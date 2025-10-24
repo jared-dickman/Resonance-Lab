@@ -61,6 +61,8 @@ export default function JamBuilder({ progression, onUpdate, onClear }: JamBuilde
   useEffect(() => {
     if (isPlaying && progression.chords.length > 0) {
       const currentChord = progression.chords[currentChordIndex];
+      if (!currentChord) return undefined;
+
       const interval = getChordInterval(currentChord);
 
       intervalRef.current = setTimeout(() => {
@@ -77,6 +79,7 @@ export default function JamBuilder({ progression, onUpdate, onClear }: JamBuilde
         if (intervalRef.current) clearTimeout(intervalRef.current);
       };
     }
+    return undefined;
   }, [isPlaying, currentChordIndex, progression.chords, bpm, getChordInterval]);
 
   const handlePlayPause = () => {
@@ -315,7 +318,7 @@ export default function JamBuilder({ progression, onUpdate, onClear }: JamBuilde
               </div>
               <Slider
                 value={[bpm]}
-                onValueChange={value => setBpm(value[0])}
+                onValueChange={value => setBpm(value[0] ?? 120)}
                 min={40}
                 max={200}
                 step={1}
@@ -626,11 +629,11 @@ export default function JamBuilder({ progression, onUpdate, onClear }: JamBuilde
       </AnimatePresence>
 
       {/* Chord Picker Modal */}
-      {editingChordIndex !== null && (
+      {editingChordIndex !== null && progression.chords[editingChordIndex] && (
         <ChordPicker
           isOpen={true}
           onClose={() => setEditingChordIndex(null)}
-          currentChord={progression.chords[editingChordIndex]}
+          currentChord={progression.chords[editingChordIndex]!}
           suggestedKey={progression.key}
           onSelectChord={chordName => {
             handleUpdateChord(editingChordIndex, { name: chordName });

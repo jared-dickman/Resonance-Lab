@@ -22,7 +22,7 @@ export default function ArtistClient({ artistSlug }: ArtistClientProps) {
       return null;
     }
 
-    const artistName = artistSongs[0].artist;
+    const artistName = artistSongs[0]?.artist ?? 'Unknown Artist';
     const sortedSongs = [...artistSongs].sort((a, b) => a.title.localeCompare(b.title));
 
     const keys = new Set(artistSongs.map(s => s.key).filter(Boolean));

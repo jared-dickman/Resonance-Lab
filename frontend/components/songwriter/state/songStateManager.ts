@@ -173,7 +173,7 @@ function parseLyricsIntoSections(lyricsText: string): ReadonlyArray<SectionLyric
         currentSection = [];
       }
 
-      const detectedType = detectSectionTypeFromLabel(sectionMatch[1]);
+      const detectedType = detectSectionTypeFromLabel(sectionMatch[1] ?? 'verse');
       currentSectionType = detectedType;
     } else if (line.trim().length > 0) {
       currentSection.push(line);

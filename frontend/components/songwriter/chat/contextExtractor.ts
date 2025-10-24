@@ -148,10 +148,10 @@ function detectTargetSection(queryText: string, uiState: GlobalUIState): Section
 function extractLineNumbers(queryText: string): ReadonlyArray<number> {
   const lineNumberPattern = /line\s+(\d+)/gi;
   const matches = Array.from(queryText.matchAll(lineNumberPattern));
-  return matches.map(match => parseInt(match[1], 10));
+  return matches.map(match => parseInt(match[1] ?? '0', 10));
 }
 
-function determineActiveSection(uiState: GlobalUIState): SectionType | null {
+function determineActiveSection(_uiState: GlobalUIState): SectionType | null {
   return null;
 }
 
@@ -163,11 +163,8 @@ function buildSelectionRange(uiState: GlobalUIState): TextSelectionRange | null 
   }
 
   return {
-    startLine: selectionStart.line,
-    startColumn: selectionStart.column,
-    endLine: selectionEnd.line,
-    endColumn: selectionEnd.column,
-    selectedText: '',
+    start: selectionStart.column,
+    end: selectionEnd.column,
   };
 }
 

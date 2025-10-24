@@ -27,7 +27,7 @@ export default function LyricsEditor({
   const [localLyrics, setLocalLyrics] = useState(lyrics);
   const [wordCount, setWordCount] = useState(0);
   const [lineCount, setLineCount] = useState(0);
-  const [cursorPosition, setCursorPosition] = useState(0);
+  const [_cursorPosition, setCursorPosition] = useState(0);
 
   useEffect(() => {
     setLocalLyrics(lyrics);

@@ -84,7 +84,7 @@ export function ChordRhythmGame({ song, bpm, onChordHit, className = '' }: Chord
   const startTimeRef = useRef<number>(0);
   const animationRef = useRef<number>(0);
   const [currentActiveChords, setCurrentActiveChords] = useState<string[]>([]);
-  const [hitEffects, setHitEffects] = useState<
+  const [_hitEffects, setHitEffects] = useState<
     { chord: string; quality: string; x: number; y: number; time: number }[]
   >([]);
 

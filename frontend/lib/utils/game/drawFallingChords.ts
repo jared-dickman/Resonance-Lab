@@ -15,7 +15,7 @@ export function drawFallingChords(
   chordTypes: string[],
   config: { width: number; now: number; getChordColor: (chord: string) => string }
 ): void {
-  const { width, now, getChordColor } = config;
+  const { width, now } = config;
   const chordWidth = width / chordTypes.length;
 
   fallingChords.forEach(fc => {

@@ -78,9 +78,9 @@ const getResponseType = (message: string): keyof typeof STUBBED_RESPONSES => {
 };
 
 export default function ChatInterface({
-  onLyricsSuggestion,
-  onChordSuggestion,
-  currentDraft,
+  onLyricsSuggestion: _onLyricsSuggestion,
+  onChordSuggestion: _onChordSuggestion,
+  currentDraft: _currentDraft,
 }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -125,7 +125,7 @@ export default function ChatInterface({
         const assistantMessage: Message = {
           id: crypto.randomUUID(),
           role: 'assistant',
-          content: response,
+          content: response ?? 'I can help you with that!',
           timestamp: new Date(),
         };
 

@@ -76,7 +76,7 @@ function isQuotaExceededError(error: unknown): boolean {
   );
 }
 
-function dateReplacer(key: string, value: unknown): unknown {
+function dateReplacer(_key: string, value: unknown): unknown {
   if (value instanceof Date) {
     return { __type: 'Date', value: value.toISOString() };
   }
@@ -89,7 +89,7 @@ function dateReplacer(key: string, value: unknown): unknown {
   return value;
 }
 
-function dateReviver(key: string, value: unknown): unknown {
+function dateReviver(_key: string, value: unknown): unknown {
   if (typeof value === 'object' && value !== null && '__type' in value) {
     const typed = value as { __type: string; value: unknown };
 
