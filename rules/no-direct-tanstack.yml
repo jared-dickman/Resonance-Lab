@@ -41,7 +41,7 @@ paths:
     - "**/*.ts"
     - "**/*.tsx"
   exclude:
-    - "**/app/hooks/**"
+    - "**/app/hooks/query-hooks.ts"
     - "**/app/features/**/hooks.ts"
     - "**/app/providers/**"
     - "**/*.test.ts"
