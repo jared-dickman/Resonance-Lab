@@ -1,17 +1,12 @@
-"use client";
+'use client';
 
-import { type ChordProgression, FUNCTION_COLORS } from "@/lib/jamProgressions";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
-import { Play, Edit, Clock, Music } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { type ChordProgression, FUNCTION_COLORS } from '@/lib/jamProgressions';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
+import { Play, Edit, Clock, Music } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface ProgressionCardProps {
   progression: ChordProgression;
@@ -21,9 +16,9 @@ interface ProgressionCardProps {
 }
 
 const DIFFICULTY_COLORS = {
-  beginner: "bg-green-500/10 text-green-500 border-green-500/20",
-  intermediate: "bg-yellow-500/10 text-yellow-500 border-yellow-500/20",
-  expert: "bg-red-500/10 text-red-500 border-red-500/20",
+  beginner: 'bg-green-500/10 text-green-500 border-green-500/20',
+  intermediate: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20',
+  expert: 'bg-red-500/10 text-red-500 border-red-500/20',
 };
 
 export default function ProgressionCard({
@@ -43,8 +38,8 @@ export default function ProgressionCard({
     >
       <Card
         className={cn(
-          "cursor-pointer group relative overflow-hidden",
-          isSelected && "ring-2 ring-primary shadow-xl",
+          'cursor-pointer group relative overflow-hidden',
+          isSelected && 'ring-2 ring-primary shadow-xl'
         )}
         onClick={onSelect}
       >
@@ -68,24 +63,15 @@ export default function ProgressionCard({
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.1 }}
             >
-              <h3 className="font-semibold text-lg leading-tight mb-1">
-                {progression.name}
-              </h3>
-              <p className="text-xs text-muted-foreground">
-                Key of {progression.key}
-              </p>
+              <h3 className="font-semibold text-lg leading-tight mb-1">{progression.name}</h3>
+              <p className="text-xs text-muted-foreground">Key of {progression.key}</p>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2, type: "spring" }}
+              transition={{ delay: 0.2, type: 'spring' }}
             >
-              <Badge
-                className={cn(
-                  "text-xs",
-                  DIFFICULTY_COLORS[progression.difficulty],
-                )}
-              >
+              <Badge className={cn('text-xs', DIFFICULTY_COLORS[progression.difficulty])}>
                 {progression.difficulty}
               </Badge>
             </motion.div>
@@ -108,7 +94,7 @@ export default function ProgressionCard({
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{
                   delay: 0.3 + idx * 0.05,
-                  type: "spring",
+                  type: 'spring',
                   stiffness: 500,
                   damping: 25,
                 }}
@@ -120,25 +106,19 @@ export default function ProgressionCard({
               >
                 {chord.name}
                 {chord.duration && chord.duration > 4 && (
-                  <span className="text-xs opacity-60">
-                    ×{chord.duration / 4}
-                  </span>
+                  <span className="text-xs opacity-60">×{chord.duration / 4}</span>
                 )}
               </motion.div>
             ))}
           </div>
 
           {/* Description */}
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            {progression.description}
-          </p>
+          <p className="text-sm text-muted-foreground leading-relaxed">{progression.description}</p>
 
           {/* Examples */}
           {progression.examples && progression.examples.length > 0 && (
             <div className="pt-2 border-t border-border/50">
-              <p className="text-xs font-medium text-muted-foreground mb-1.5">
-                Used in:
-              </p>
+              <p className="text-xs font-medium text-muted-foreground mb-1.5">Used in:</p>
               <div className="space-y-1">
                 {progression.examples.slice(0, 2).map((example, idx) => (
                   <div
@@ -167,16 +147,12 @@ export default function ProgressionCard({
         </CardContent>
 
         <CardFooter className="pt-3 gap-2">
-          <motion.div
-            className="flex-1"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
+          <motion.div className="flex-1" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
             <Button
               size="sm"
               variant="outline"
               className="w-full"
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation();
                 onBuild();
               }}
@@ -185,15 +161,11 @@ export default function ProgressionCard({
               Customize
             </Button>
           </motion.div>
-          <motion.div
-            className="flex-1"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
+          <motion.div className="flex-1" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
             <Button
               size="sm"
               className="w-full"
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation();
                 // TODO: Implement play functionality
               }}

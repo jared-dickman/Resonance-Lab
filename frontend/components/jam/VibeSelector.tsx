@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { type Vibe, VIBE_INFO } from "@/lib/jamProgressions";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { type Vibe, VIBE_INFO } from '@/lib/jamProgressions';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 
 interface VibeSelectorProps {
   selectedVibe: Vibe;
@@ -12,22 +12,19 @@ interface VibeSelectorProps {
 }
 
 const VIBE_GRADIENTS: Record<Vibe, string> = {
-  pop: "from-pink-500 to-purple-500",
-  rock: "from-orange-500 to-red-600",
-  jazz: "from-blue-500 to-indigo-600",
-  blues: "from-cyan-500 to-blue-700",
-  folk: "from-green-500 to-emerald-600",
-  indie: "from-violet-500 to-purple-600",
-  soul: "from-amber-500 to-orange-600",
-  country: "from-yellow-600 to-amber-700",
-  funk: "from-fuchsia-500 to-pink-600",
-  latin: "from-rose-500 to-red-600",
+  pop: 'from-pink-500 to-purple-500',
+  rock: 'from-orange-500 to-red-600',
+  jazz: 'from-blue-500 to-indigo-600',
+  blues: 'from-cyan-500 to-blue-700',
+  folk: 'from-green-500 to-emerald-600',
+  indie: 'from-violet-500 to-purple-600',
+  soul: 'from-amber-500 to-orange-600',
+  country: 'from-yellow-600 to-amber-700',
+  funk: 'from-fuchsia-500 to-pink-600',
+  latin: 'from-rose-500 to-red-600',
 };
 
-export default function VibeSelector({
-  selectedVibe,
-  onSelectVibe,
-}: VibeSelectorProps) {
+export default function VibeSelector({ selectedVibe, onSelectVibe }: VibeSelectorProps) {
   const vibes = Object.keys(VIBE_INFO) as Vibe[];
 
   return (
@@ -66,18 +63,18 @@ export default function VibeSelector({
                   key={vibe}
                   onClick={() => onSelectVibe(vibe)}
                   className={cn(
-                    "relative overflow-hidden rounded-lg p-4",
-                    "border-2 flex flex-col items-center gap-2 text-center",
+                    'relative overflow-hidden rounded-lg p-4',
+                    'border-2 flex flex-col items-center gap-2 text-center',
                     isSelected
-                      ? "border-primary shadow-lg shadow-primary/20"
-                      : "border-border hover:border-primary/50",
+                      ? 'border-primary shadow-lg shadow-primary/20'
+                      : 'border-border hover:border-primary/50'
                   )}
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{
                     delay: index * 0.05,
                     duration: 0.3,
-                    type: "spring",
+                    type: 'spring',
                     stiffness: 300,
                     damping: 20,
                   }}
@@ -89,10 +86,7 @@ export default function VibeSelector({
                 >
                   {/* Gradient background with animation */}
                   <motion.div
-                    className={cn(
-                      "absolute inset-0 bg-gradient-to-br",
-                      VIBE_GRADIENTS[vibe],
-                    )}
+                    className={cn('absolute inset-0 bg-gradient-to-br', VIBE_GRADIENTS[vibe])}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: isSelected ? 0.15 : 0 }}
                     whileHover={{ opacity: 0.08 }}
@@ -120,7 +114,7 @@ export default function VibeSelector({
                       className="absolute inset-0 rounded-lg border-2 border-primary"
                       layoutId="selected-vibe"
                       transition={{
-                        type: "spring",
+                        type: 'spring',
                         stiffness: 400,
                         damping: 30,
                       }}

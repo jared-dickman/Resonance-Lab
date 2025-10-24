@@ -82,7 +82,7 @@ export default function ChordPicker({
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.9, opacity: 0, y: 20 }}
           transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-          onClick={(e) => e.stopPropagation()}
+          onClick={e => e.stopPropagation()}
         >
           <Card className="border-primary/20 shadow-2xl">
             <CardHeader className="border-b border-border/50">
@@ -103,7 +103,7 @@ export default function ChordPicker({
                 <Input
                   placeholder="Search or type chord name (e.g., Cmaj7, Am, F#m7b5)"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={e => setSearchQuery(e.target.value)}
                   className="text-lg"
                   autoFocus
                 />
