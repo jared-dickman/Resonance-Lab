@@ -1,31 +1,23 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { Fretboard } from "./Fretboard";
-import { getChordVoicings, ChordVoicing } from "@/lib/chordPositions";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
-import { Badge } from "./ui/badge";
-import { Music } from "lucide-react";
+import { Fretboard } from './Fretboard';
+import type { ChordVoicing } from '@/lib/chordPositions';
+import { getChordVoicings } from '@/lib/chordPositions';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { Badge } from './ui/badge';
+import { Music } from 'lucide-react';
+import { useChordVoicings } from '@/lib/hooks/useChordVoicings';
 
 interface ChordDisplayProps {
   chordName: string | null;
   className?: string;
 }
 
-export function ChordDisplay({ chordName, className = "" }: ChordDisplayProps) {
-  const [voicings, setVoicings] = useState<ChordVoicing[]>([]);
-  const [currentVoicingIndex, setCurrentVoicingIndex] = useState(0);
-
-  useEffect(() => {
-    if (!chordName) {
-      setVoicings([]);
-      return;
-    }
-
-    const foundVoicings = getChordVoicings(chordName);
-    setVoicings(foundVoicings);
-    setCurrentVoicingIndex(0);
-  }, [chordName]);
+export function ChordDisplay({ chordName, className = '' }: ChordDisplayProps) {
+  const { voicings, currentIndex: currentVoicingIndex, setCurrentIndex: setCurrentVoicingIndex } = useChordVoicings<ChordVoicing>({
+    chordName,
+    getVoicings: getChordVoicings,
+  });
 
   if (!chordName) {
     return (

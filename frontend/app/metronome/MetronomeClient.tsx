@@ -1,21 +1,22 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useRef, useCallback } from "react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Pause, Volume2 } from "lucide-react";
-import styles from "./Metronome.module.css";
-import { logger } from "@/lib/logger";
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Pause, Volume2 } from 'lucide-react';
+import styles from './Metronome.module.css';
+import { logger } from '@/lib/logger';
+import { METRONOME } from '@/lib/constants/metronome.constants';
 
 const TEMPO_PRESETS = [
-  { label: "Largo", bpm: 50 },
-  { label: "Andante", bpm: 80 },
-  { label: "Moderato", bpm: 108 },
-  { label: "Allegro", bpm: 140 },
-  { label: "Presto", bpm: 180 },
+  { label: 'Largo', bpm: 50 },
+  { label: 'Andante', bpm: 80 },
+  { label: 'Moderato', bpm: 108 },
+  { label: 'Allegro', bpm: 140 },
+  { label: 'Presto', bpm: 180 },
 ];
 
-const TIME_SIGNATURES = ["4/4", "3/4", "2/4", "6/8", "5/4", "7/8", "1/4"];
+const TIME_SIGNATURES = ['4/4', '3/4', '2/4', '6/8', '5/4', '7/8', '1/4'];
 
 // Generate pleasant click sounds using Web Audio API
 const createClickSound = (
@@ -33,11 +34,11 @@ const createClickSound = (
   gainNode.connect(context.destination);
 
   // Use a sine wave for a softer, more pleasant click
-  oscillator.type = "sine";
+  oscillator.type = 'sine';
   oscillator.frequency.value = frequency;
 
   // Filter settings for a warmer sound
-  filter.type = "lowpass";
+  filter.type = 'lowpass';
   filter.frequency.value = 2000;
   filter.Q.value = 1;
 
@@ -56,8 +57,8 @@ const createClickSound = (
 };
 
 export function MetronomeClient() {
-  const [bpm, setBpm] = useState(138);
-  const [timeSignature, setTimeSignature] = useState("4/4");
+  const [bpm, setBpm] = useState<number>(METRONOME.DEFAULT_BPM);
+  const [timeSignature, setTimeSignature] = useState('4/4');
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentBeat, setCurrentBeat] = useState(0);
   const [accentFirstBeat, setAccentFirstBeat] = useState(true);
@@ -79,7 +80,7 @@ export function MetronomeClient() {
   }, []);
 
   const getBeatsPerMeasure = useCallback(() => {
-    const [beats] = timeSignature.split("/").map(Number);
+    const [beats] = timeSignature.split('/').map(Number);
     return beats;
   }, [timeSignature]);
 
@@ -136,10 +137,10 @@ export function MetronomeClient() {
         filter.connect(gainNode);
         gainNode.connect(context.destination);
 
-        oscillator.type = "sine";
+        oscillator.type = 'sine';
         oscillator.frequency.value = frequency;
 
-        filter.type = "lowpass";
+        filter.type = 'lowpass';
         filter.frequency.value = 2000;
         filter.Q.value = 1;
 
@@ -171,7 +172,7 @@ export function MetronomeClient() {
       const secondsPerBeat = 60.0 / bpm;
       nextBeatTimeRef.current += secondsPerBeat;
 
-      setCurrentBeat((prev) => (prev + 1) % beatsPerMeasure);
+      setCurrentBeat(prev => (prev + 1) % beatsPerMeasure);
     }
   }, [bpm, currentBeat, getBeatsPerMeasure, scheduleNote]);
 
@@ -202,7 +203,7 @@ export function MetronomeClient() {
   };
 
   const togglePlay = () => {
-    if (audioContextRef.current?.state === "suspended") {
+    if (audioContextRef.current?.state === 'suspended') {
       audioContextRef.current.resume();
     }
     setIsPlaying(!isPlaying);
@@ -210,11 +211,11 @@ export function MetronomeClient() {
 
   const handleTap = () => {
     // Tap tempo functionality can be added here
-    logger.log("Tap tempo");
+    logger.log('Tap tempo');
   };
 
   const cycleClickSound = () => {
-    setClickSound((prev) => (prev + 1) % 3);
+    setClickSound(prev => (prev + 1) % 3);
   };
 
   return (
@@ -224,7 +225,7 @@ export function MetronomeClient() {
         <div className={styles.indicatorContainer}>
           <div
             className={`${styles.indicator} ${
-              isPlaying && currentBeat === 0 ? styles.indicatorActive : ""
+              isPlaying && currentBeat === 0 ? styles.indicatorActive : ''
             }`}
           />
         </div>
@@ -260,12 +261,12 @@ export function MetronomeClient() {
 
         {/* Tempo Presets */}
         <div className={styles.presets}>
-          {TEMPO_PRESETS.map((preset) => (
+          {TEMPO_PRESETS.map(preset => (
             <button
               key={preset.label}
               onClick={() => setBpm(preset.bpm)}
               className={`${styles.presetButton} ${
-                bpm === preset.bpm ? styles.presetButtonActive : ""
+                bpm === preset.bpm ? styles.presetButtonActive : ''
               }`}
             >
               <div className={styles.presetLabel}>{preset.label}</div>
@@ -278,7 +279,7 @@ export function MetronomeClient() {
         <div className={styles.timeSignatureSection}>
           <label className={styles.timeSignatureLabel}>Time Signature</label>
           <div className={styles.timeSignatureGrid}>
-            {TIME_SIGNATURES.map((sig) => (
+            {TIME_SIGNATURES.map(sig => (
               <button
                 key={sig}
                 onClick={() => {
@@ -286,7 +287,7 @@ export function MetronomeClient() {
                   setCurrentBeat(0);
                 }}
                 className={`${styles.timeSignatureButton} ${
-                  timeSignature === sig ? styles.timeSignatureButtonActive : ""
+                  timeSignature === sig ? styles.timeSignatureButtonActive : ''
                 }`}
               >
                 {sig}
@@ -299,9 +300,7 @@ export function MetronomeClient() {
         <div className={styles.optionsSection}>
           <button
             onClick={() => setAccentFirstBeat(!accentFirstBeat)}
-            className={`${styles.optionButton} ${
-              accentFirstBeat ? styles.optionButtonActive : ""
-            }`}
+            className={`${styles.optionButton} ${accentFirstBeat ? styles.optionButtonActive : ''}`}
           >
             Accent Beat 1
           </button>

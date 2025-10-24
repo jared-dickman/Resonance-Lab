@@ -1,31 +1,23 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { PianoKeyboard } from "./PianoKeyboard";
-import { getPianoChordVoicings, PianoChordVoicing } from "@/lib/pianoChords";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
-import { Badge } from "./ui/badge";
-import { Piano } from "lucide-react";
+import { PianoKeyboard } from './PianoKeyboard';
+import type { PianoChordVoicing } from '@/lib/pianoChords';
+import { getPianoChordVoicings } from '@/lib/pianoChords';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { Badge } from './ui/badge';
+import { Piano } from 'lucide-react';
+import { useChordVoicings } from '@/lib/hooks/useChordVoicings';
 
 interface PianoDisplayProps {
   chordName: string | null;
   className?: string;
 }
 
-export function PianoDisplay({ chordName, className = "" }: PianoDisplayProps) {
-  const [voicings, setVoicings] = useState<PianoChordVoicing[]>([]);
-  const [currentVoicingIndex, setCurrentVoicingIndex] = useState(0);
-
-  useEffect(() => {
-    if (!chordName) {
-      setVoicings([]);
-      return;
-    }
-
-    const foundVoicings = getPianoChordVoicings(chordName);
-    setVoicings(foundVoicings);
-    setCurrentVoicingIndex(0);
-  }, [chordName]);
+export function PianoDisplay({ chordName, className = '' }: PianoDisplayProps) {
+  const { voicings, currentIndex: currentVoicingIndex, setCurrentIndex: setCurrentVoicingIndex } = useChordVoicings<PianoChordVoicing>({
+    chordName,
+    getVoicings: getPianoChordVoicings,
+  });
 
   if (!chordName) {
     return (
