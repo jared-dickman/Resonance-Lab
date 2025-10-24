@@ -1,0 +1,16 @@
+id: no-sql-injection
+message: SQL injection risk - use Drizzle sql tagged template, never raw template literals
+severity: error
+language: typescript
+rule:
+  any:
+    # Direct template literals in db.execute/query
+    - pattern: db.execute(`$$$`)
+      kind: call_expression
+    - pattern: db.query(`$$$`)
+      kind: call_expression
+    # Template literals with interpolation assigned to variables
+    - all:
+        - pattern: const $VAR = `$$$${$$$}$$$`
+        - regex: '(INSERT|UPDATE|DELETE|SELECT|FROM|WHERE)'
+note: "CRITICAL SECURITY: Never use raw template literals in db.execute() or db.query(). Always use Drizzle's sql tagged template: sql`SELECT * FROM users WHERE id = ${sql.param(id)}`. The sql tag provides parameterization and SQL injection protection."

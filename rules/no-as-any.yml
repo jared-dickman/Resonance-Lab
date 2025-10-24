@@ -1,0 +1,8 @@
+id: no-as-any
+message: Do not use 'as any' to bypass TypeScript type checking
+severity: error
+language: typescript
+rule:
+  pattern: $EXPR as any
+  kind: as_expression
+note: "Fix the underlying type issue instead of using 'as any'. Use proper type assertions, guards, or refactor the code."

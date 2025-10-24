@@ -1,0 +1,25 @@
+ruleDirs:
+  - rules
+
+testConfigs:
+  - testDir: rules
+
+languageGlobs:
+  ts: ['**/*.ts', '**/*.tsx']
+  tsx: ['**/*.tsx']
+
+# Ensure ast-grep always runs with strict settings
+strictMode: true
+
+# Don't allow any violations to be ignored
+ignoreRules: []
+
+# Enforce all severity levels (hint, warning, error)
+minSeverity: hint
+
+# Fail on any violations (for CI/CD)
+exitOnError: true
+
+utils:
+  is-server-code:
+    pattern: $$$

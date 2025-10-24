@@ -1,0 +1,27 @@
+id: bdd-no-inline-api-mocking
+message: Step definitions must use centralized intercepts from e2e/intercepts/, not inline page.route()
+severity: error
+language: typescript
+rule:
+  pattern: page.route($$$)
+note: |
+  Step definitions must delegate to centralized intercept factories.
+
+  ✅ GOOD:
+    Given('the profile API will fail', async function(this: CustomWorld) {
+      if (!this.page) throw new Error('Page not initialized')
+      const intercepts = createProfileIntercepts(this.page)
+      await intercepts.mockFailingUserAPI()
+    })
+
+  ❌ BAD:
+    Given('the profile API will fail', async function(this: CustomWorld) {
+      await this.page.route('**/api/profile', route => route.fulfill({
+        status: 500,
+        body: JSON.stringify({error: 'Failed'})
+      }))
+    })
+
+  Create intercepts in e2e/intercepts/{domain}.intercepts.ts and use them in steps.
+files:
+  - "e2e/steps/**/*.steps.ts"

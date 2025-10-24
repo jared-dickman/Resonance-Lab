@@ -1,0 +1,43 @@
+id: no-hardcoded-api-routes
+message: Use apiRoutes constants, not hardcoded API paths
+severity: error
+language: typescript
+rule:
+  any:
+    # E2E intercept() calls with /api/ paths
+    - pattern: intercept($$$)
+      regex: 'intercept\s*\([^,]+,\s*[''"][^''"]*\/api\/'
+    # fetch() calls with /api/ paths
+    - pattern: fetch($PATH)
+      regex: 'fetch\s*\(\s*[''"]\/api\/'
+    # apiClient method calls with /api/ paths
+    - pattern: apiClient.$METHOD($PATH)
+      regex: 'apiClient\.\w+\s*\(\s*[''"]\/api\/'
+    # http method calls with /api/ paths (but NOT MSW handlers with callbacks)
+    - pattern: http.$METHOD($PATH)
+      regex: 'http\.\w+\s*\(\s*[''"]\/api\/'
+    - all:
+        - pattern: http.$METHOD($PATH, $ARG)
+          regex: 'http\.\w+\s*\(\s*[''"]\/api\/'
+        - not:
+            pattern: http.$METHOD($PATH, () => $$$)
+        - not:
+            pattern: http.$METHOD($PATH, function($$$) { $$$ })
+note: |
+  Use apiRoutes constants from @/app/config/apiRoutes for all API calls.
+
+  ✅ GOOD:
+    import {apiRoutes} from '@/app/config/apiRoutes'
+    await intercept(page, apiRoutes.blogify, {status: 500})
+
+  ❌ BAD:
+    await intercept(page, '/api/blogify', {status: 500})
+
+paths:
+  include:
+    - "e2e/**/*.ts"
+    - "app/**/*.ts"
+    - "app/**/*.tsx"
+  exclude:
+    - "**/openapi/**"
+    - "**/msw/handlers/**"

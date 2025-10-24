@@ -1,0 +1,35 @@
+id: e2e-use-msw-fixtures
+message: E2E intercept calls should use the same fixtures as MSW handlers
+severity: error
+language: typescript
+rule:
+  all:
+    - pattern: "{ $KEY: [$$$] }"
+    - regex: "blogs|posts|companies|keywords"
+    - not:
+        pattern: "{ $KEY: [] }"
+    - not:
+        inside:
+          stopBy: end
+          pattern: "import { $FIXTURE } from '$$$fixtures$$$'"
+note: |
+  E2E flows should import and reuse the same fixtures that MSW handlers use.
+  This ensures consistency between MSW mocks and E2E intercepts.
+
+  ✅ GOOD:
+    import {mockBlogPostListWithPillarsResponse} from '@/app/testing/fixtures/blog-posts/blog-post-fixtures'
+    await intercept(page, apiRoutes.blogPosts, {
+      body: mockBlogPostListWithPillarsResponse
+    })
+
+  ❌ BAD:
+    await intercept(page, apiRoutes.blogPosts, {
+      body: { blogs: [mockPillar, ...mockPillar.clusters] }
+    })
+
+  Exception: Simple responses like {blogs: []}, {error: 'message'}, or {success: true} are allowed.
+paths:
+  include:
+    - "e2e/**/*.ts"
+  exclude:
+    - "app/testing/msw/handlers/**"

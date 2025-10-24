@@ -1,0 +1,58 @@
+id: e2e-locators-no-getrole
+message: "E2E tests must use getByTestId() with fixture constants, not getByRole()"
+severity: error
+language: typescript
+
+rule:
+  all:
+    - any:
+        - pattern: page.getByRole($$$)
+        - pattern: $PAGE.getByRole($$$)
+
+    # Only allow for toast roles (status, alert) with explicit comment
+    - not:
+        all:
+          - any:
+              - pattern: page.getByRole('status')
+              - pattern: page.getByRole('alert')
+              - pattern: $PAGE.getByRole('status')
+              - pattern: $PAGE.getByRole('alert')
+          - inside:
+              kind: expression_statement
+              has:
+                kind: comment
+                regex: 'allow-getrole-toast'
+
+paths:
+  include:
+    - "e2e/**/*.ts"
+    - "e2e/**/*.tsx"
+  exclude:
+    # These files can use any locator strategy
+    - "e2e/fixtures/**"
+    - "e2e/support/**"
+    - "e2e/utils/**"
+    - "**/*.test.ts"
+    - "**/*.spec.ts"
+
+note: |
+  E2E tests must use getByTestId() with imported TestIds constants for stability.
+
+  ✅ PREFERRED:
+    import {LoginTestIds} from '@/app/testing/fixtures/auth/login-fixtures'
+    const button = page.getByTestId(LoginTestIds.submitButton)
+
+  ⚠️ ONLY EXCEPTION - Toasts (role: toast):
+    const toast = page.getByRole('toast') // allow-getrole-toast
+
+  ❌ BLOCKED (no exceptions):
+    const button = page.getByRole('button', {name: /submit/i})
+    const dialog = page.getByRole('dialog')
+    const tooltip = page.getByRole('tooltip')
+    const option = page.getByRole('option')
+    const errorToast = page.getByRole('alert')
+  
+  Why toasts are the only exception:
+  - Toasts are provided by shadcn/ui with dynamic content
+  - No stable test IDs available
+  - ARIA roles (status/alert) are semantic and stable

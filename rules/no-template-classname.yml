@@ -1,0 +1,19 @@
+id: no-template-classname
+message: Use cn() utility instead of template literals for classNames
+severity: error
+language: tsx
+rule:
+  pattern: <$TAG className={`$$$`} $$$>
+note: |
+  Use the cn() utility function for conditional classNames instead of template literals.
+
+  ✅ GOOD:
+    import { cn } from '@/app/utils/cn';
+    <div className={cn('base', active && 'active')}>Content</div>
+
+  ❌ BAD:
+    <div className={`base ${active ? 'active' : ''}`}>Content</div>
+
+paths:
+  include:
+    - "app/**/*.tsx"

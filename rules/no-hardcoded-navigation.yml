@@ -1,0 +1,64 @@
+id: no-hardcoded-navigation
+message: Use pageRoutes constants for navigation, not hardcoded paths
+severity: error
+language: tsx
+rule:
+  any:
+    # JSX href attributes (opening tags) - double quotes
+    - all:
+        - pattern: <$TAG href="$PATH"$$$>
+          regex: 'href="/'
+        - not:
+            pattern: <$TAG href={$EXPR}$$$>
+    # JSX href attributes (self-closing) - double quotes
+    - all:
+        - pattern: <$TAG href="$PATH" $$$ATTRS/>
+          regex: 'href="/'
+        - not:
+            pattern: <$TAG href={$EXPR} $$$ATTRS/>
+    # JSX href attributes (opening tags) - single quotes
+    - all:
+        - pattern: <$TAG href='$PATH'$$$>
+          regex: "href='/"
+        - not:
+            pattern: <$TAG href={$EXPR}$$$>
+    # JSX href attributes (self-closing) - single quotes
+    - all:
+        - pattern: <$TAG href='$PATH' $$$ATTRS/>
+          regex: "href='/"
+        - not:
+            pattern: <$TAG href={$EXPR} $$$ATTRS/>
+    # Method calls: page.goto('/path'), obj.goto('/path')
+    - pattern: $X.goto($S)
+      regex: '\.goto\s*\(\s*[''"][/]'
+    # Function calls: redirect('/path')
+    - pattern: redirect($S)
+      regex: 'redirect\s*\(\s*[''"][/]'
+    # Object property: { href: '/path' } - double quotes
+    - pattern: |
+        href: "$PATH"
+      regex: 'href:\s*"/'
+    # Object property: { href: '/path' } - single quotes
+    - pattern: |
+        href: '$PATH'
+      regex: "href:\\s*'/"
+note: |
+  Use pageRoutes constants for navigation.
+
+  ✅ GOOD:
+    <Link href={pageRoutes.ideas}>Ideas</Link>
+    await page.goto(pageRoutes.ideas)
+    redirect(pageRoutes.login)
+
+  ❌ BAD:
+    <Link href="/ideas">Ideas</Link>
+    await page.goto('/ideas')
+    redirect('/login')
+
+paths:
+  include:
+    - "e2e/**/*.ts"
+    - "app/**/*.ts"
+    - "app/**/*.tsx"
+  exclude:
+    - "**/*.stories.tsx"

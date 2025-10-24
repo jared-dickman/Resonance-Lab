@@ -1,0 +1,27 @@
+id: bdd-no-expect-in-steps
+message: Step definitions must use POM assertions, not direct expect() calls
+severity: error
+language: typescript
+rule:
+  any:
+    - pattern: expect(this.page.$$$)
+    - pattern: await expect($PAGE.$$$)
+    - pattern: expect($PAGE.$$$)
+note: |
+  Step definitions must delegate to POM assertions for all verifications.
+
+  ✅ GOOD:
+    Then('I see loading spinner', async function(this: CustomWorld) {
+      if (!this.page) throw new Error('Page not initialized')
+      const profilePage = createProfilePage(this.page)
+      await profilePage.assertions.showsLoadingSpinner()
+    })
+
+  ❌ BAD:
+    Then('I see loading spinner', async function(this: CustomWorld) {
+      await expect(this.page.locator('[class*="spinner"]').first()).toBeVisible()
+    })
+
+  Add the missing assertion to the POM, then use it in the step.
+files:
+  - "e2e/steps/**/*.steps.ts"

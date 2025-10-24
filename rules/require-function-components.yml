@@ -1,0 +1,17 @@
+id: require-function-components
+message: Use function keyword for components, not arrow functions
+severity: error
+language: tsx
+rule:
+  all:
+    # Match arrow function exports
+    - pattern: export const $NAME = ($$$) => $BODY
+    - not:
+        # Exclude forwardRef
+        pattern: export const $NAME = forwardRef($$$)
+note: "From components.md: Use 'export function Component()' not 'const Component = () => {}'. Function declarations improve stack traces and follow project conventions."
+paths:
+  exclude:
+    - "**/*.stories.tsx"
+    - "**/*.test.tsx"
+    - "app/components/ui/**"

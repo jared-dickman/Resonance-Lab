@@ -1,0 +1,29 @@
+id: bdd-no-direct-page-methods
+message: Step definitions must use POM flows, not direct page.click(), page.fill(), page.goto()
+severity: error
+language: typescript
+rule:
+  any:
+    - pattern: this.page.click($$$)
+    - pattern: this.page.fill($$$)
+    - pattern: this.page.goto($$$)
+    - pattern: this.page.getByTestId($$$).click()
+    - pattern: this.page.getByTestId($$$).fill($$$)
+note: |
+  Step definitions must delegate to POM flows for all user actions.
+
+  ✅ GOOD:
+    When('I click save', async function(this: CustomWorld) {
+      if (!this.page) throw new Error('Page not initialized')
+      const blogPage = createBlogPage(this.page)
+      await blogPage.flows.clickSave()
+    })
+
+  ❌ BAD:
+    When('I click save', async function(this: CustomWorld) {
+      await this.page.getByTestId('blog-save-button').click()
+    })
+
+  Add the missing flow to the POM, then use it in the step.
+files:
+  - "e2e/steps/**/*.steps.ts"

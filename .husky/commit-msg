@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+. "$(dirname -- "$0")/_/husky.sh"
+
+COMMIT_MSG_FILE=$1
+COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
+
+# Skip merge commits and revert commits
+if echo "$COMMIT_MSG" | grep -qE "^(Merge|Revert)"; then
+  exit 0
+fi
+
+# Enforce conventional commits format
+# Format: type(scope?): description
+# Types: feat, fix, docs, style, refactor, perf, test, chore, revert, build, ci
+if ! echo "$COMMIT_MSG" | grep -qE "^(feat|fix|docs|style|refactor|perf|test|chore|revert|build|ci)(\(.+\))?: .+"; then
+  echo "❌ Commit message must follow conventional commits format"
+  echo ""
+  echo "Format: type(scope): description"
+  echo ""
+  echo "Types:"
+  echo "  feat:     New feature"
+  echo "  fix:      Bug fix"
+  echo "  docs:     Documentation changes"
+  echo "  style:    Code style changes (formatting, etc)"
+  echo "  refactor: Code refactoring"
+  echo "  perf:     Performance improvements"
+  echo "  test:     Test changes"
+  echo "  chore:    Build process or auxiliary tool changes"
+  echo "  build:    Build system changes"
+  echo "  ci:       CI/CD changes"
+  echo ""
+  echo "Examples:"
+  echo "  feat: add user authentication"
+  echo "  fix(auth): handle expired tokens"
+  echo "  docs: update API documentation"
+  echo ""
+  echo "Your message: $COMMIT_MSG"
+  exit 1
+fi
+
+# Block WIP commits
+if echo "$COMMIT_MSG" | grep -qiE "^(wip|WIP|temp|TEMP|debug|DEBUG)"; then
+  echo "❌ WIP/TEMP/DEBUG commits not allowed"
+  echo "Complete your work before committing"
+  exit 1
+fi
+
+echo "✅ Commit message format valid"

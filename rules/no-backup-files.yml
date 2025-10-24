@@ -1,0 +1,20 @@
+id: no-backup-files
+message: Do not create backup files or components
+severity: error
+language: typescript
+rule:
+  any:
+    # Variables/constants with _backup suffix or ending in Backup after other text
+    - pattern: const $NAME = $$$
+      regex: '(const|let|var)\s+(\w+_[Bb]ackup|\w{2,}[Bb]ackup)\s*='
+    - pattern: export const $NAME = $$$
+      regex: 'export\s+(const|let|var)\s+(\w+_[Bb]ackup|\w{2,}[Bb]ackup)\s*='
+    # Functions with _backup suffix or ending in Backup after other text
+    - pattern: function $NAME($$$) { $$$ }
+      regex: 'function\s+(\w+_[Bb]ackup|\w{2,}[Bb]ackup)\s*\('
+    - pattern: export function $NAME($$$) { $$$ }
+      regex: 'export\s+function\s+(\w+_[Bb]ackup|\w{2,}[Bb]ackup)\s*\('
+    # Arrow functions with _backup suffix or ending in Backup after other text
+    - pattern: const $NAME = ($$$) => $$$
+      regex: '(const|let|var)\s+(\w+_[Bb]ackup|\w{2,}[Bb]ackup)\s*='
+note: "From CLAUDE.md: Never create 'backup' files or components. Delete old code instead of keeping backups in the codebase."

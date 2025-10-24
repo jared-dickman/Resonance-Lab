@@ -1,0 +1,36 @@
+id: no-magic-testids
+message: Use TestIds from fixtures, not inline magic strings
+severity: error
+language: tsx
+rule:
+  all:
+    # Match any data-testid attribute with string value
+    - any:
+        # Opening tags with double quotes
+        - pattern: <$TAG data-testid="$ID"$$$>
+        # Self-closing tags with double quotes
+        - pattern: <$TAG data-testid="$ID" $$$ATTRS/>
+        # Opening tags with single quotes
+        - pattern: <$TAG data-testid='$ID'$$$>
+        # Self-closing tags with single quotes
+        - pattern: <$TAG data-testid='$ID' $$$ATTRS/>
+    # Exclude JSX expressions (variables/constants are allowed)
+    - not:
+        any:
+          - pattern: <$TAG data-testid={$EXPR}$$$>
+          - pattern: <$TAG data-testid={$EXPR} $$$ATTRS/>
+
+note: |
+  Components must use TestIds constants from fixtures, not magic strings.
+
+  ✅ GOOD:
+    import {IdeasTestIds} from '@/app/testing/fixtures/ideas/ideas-fixtures'
+    <Button data-testid={IdeasTestIds.generatePillarButton}>Generate</Button>
+
+  ❌ BAD:
+    <Button data-testid="ideas-generate-button">Generate</Button>
+
+paths:
+  include:
+    - "app/components/**/*.tsx"
+    - "app/features/**/*.tsx"

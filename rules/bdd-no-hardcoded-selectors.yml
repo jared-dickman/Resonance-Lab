@@ -1,0 +1,29 @@
+id: bdd-no-hardcoded-selectors
+message: Step definitions must use POM locators, not hardcoded class/attribute selectors
+severity: error
+language: typescript
+rule:
+  any:
+    - pattern: page.locator('[class*=$$$]')
+    - pattern: page.locator('[$$$]')
+    - pattern: $PAGE.locator('[class*=$$$]')
+    - pattern: $PAGE.locator('[$$$]')
+note: |
+  Step definitions must delegate to POM assertions/flows that use proper testid locators.
+
+  ✅ GOOD:
+    Then('I see my profile avatar', async function(this: CustomWorld) {
+      if (!this.page) throw new Error('Page not initialized')
+      const profilePage = createProfilePage(this.page)
+      await profilePage.assertions.hasAvatar()
+    })
+
+  ❌ BAD:
+    Then('I see my profile avatar', async function(this: CustomWorld) {
+      const avatar = this.page.locator('[class*="avatar"]').first()
+      await expect(avatar).toBeVisible()
+    })
+
+  Add the missing assertion to the POM, then use it in the step.
+files:
+  - "e2e/steps/**/*.steps.ts"

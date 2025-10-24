@@ -1,0 +1,8 @@
+id: no-forbidden-status
+message: Use 404 instead of 403 to avoid revealing resource existence
+severity: error
+language: ts
+rule:
+  pattern: "NextResponse.json($$$, {status: 403})"
+fix: "NextResponse.json($$$, {status: 404})"
+note: "From security.md: Never return 403 Forbidden—it reveals that a resource exists. Always return 404 for both 'not found' and 'unauthorized' cases in multi-tenant applications."
