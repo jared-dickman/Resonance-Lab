@@ -14,6 +14,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { QueryClientProvider } from '@/app/providers/QueryClientProvider';
 import { useSongs } from '@/app/features/songs/hooks';
 import type { SavedSongView } from '@/app/features/songs/transformers/song-view.transformer';
+import { pageRoutes } from '@/lib/routes';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -50,17 +51,17 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
           <div className="flex items-center justify-between flex-wrap gap-2">
             <h1 className="text-2xl font-semibold tracking-tight">Resonance Lab</h1>
             <div className="flex gap-2 flex-wrap">
-              <Link href="/songwriter">
+              <Link href={pageRoutes.songwriter}>
                 <Button variant="outline" size="sm">
                   Songwriter
                 </Button>
               </Link>
-              <Link href="/jam">
+              <Link href={pageRoutes.jam}>
                 <Button variant="outline" size="sm">
                   Jam Assistant
                 </Button>
               </Link>
-              <Link href="/metronome">
+              <Link href={pageRoutes.metronome}>
                 <Button variant="outline" size="sm">
                   Metronome
                 </Button>

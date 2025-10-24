@@ -31,7 +31,13 @@ export function MetronomeClient() {
 
   // Initialize audio context
   useEffect(() => {
-    audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+    // Handle Safari's prefixed AudioContext
+    const AudioContextClass =
+      window.AudioContext ||
+      (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    if (AudioContextClass) {
+      audioContextRef.current = new AudioContextClass();
+    }
     return () => {
       if (audioContextRef.current) {
         audioContextRef.current.close();

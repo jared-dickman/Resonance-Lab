@@ -9,6 +9,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { Send, Sparkles, Lightbulb, Music, PenTool, Bot } from 'lucide-react';
 import type { SongDraft } from '@/components/songwriter/types/legacy';
+import { cn } from '@/lib/utils';
 
 interface Message {
   id: string;
@@ -169,14 +170,15 @@ export default function ChatInterface({
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.3 }}
-                  className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                  className={cn('flex', message.role === 'user' ? 'justify-end' : 'justify-start')}
                 >
                   <div
-                    className={`max-w-[85%] rounded-lg p-3 ${
+                    className={cn(
+                      'max-w-[85%] rounded-lg p-3',
                       message.role === 'user'
                         ? 'bg-primary text-primary-foreground'
                         : 'bg-muted border border-border'
-                    }`}
+                    )}
                   >
                     <div className="text-sm whitespace-pre-wrap">{message.content}</div>
                     <div className="text-xs opacity-60 mt-1">

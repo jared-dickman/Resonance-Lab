@@ -6,7 +6,7 @@ import type { ChordProgression, Vibe } from '@/lib/jamProgressions';
 import { SCROLL_AREA_HEIGHT, GRID_COLUMNS } from '@/lib/constants/ui.constants';
 import { ANIMATION_DURATION, SPRING_CONFIG } from '@/lib/constants/animation.constants';
 import { TAB_SELECTOR } from '@/lib/constants/dom.constants';
-import { clickElement, capitalize, formatCount } from '@/lib/utils';
+import { clickElement, capitalize, formatCount, cn } from '@/lib/utils';
 import { VIBE_INFO } from '@/lib/jamProgressions';
 
 interface ProgressionsGridProps {
@@ -63,9 +63,9 @@ export function ProgressionsGrid({
         </motion.div>
       </motion.div>
 
-      <ScrollArea className={`h-[${SCROLL_AREA_HEIGHT.MEDIUM}] pr-4`}>
+      <ScrollArea className="h-[600px] pr-4">
         <motion.div
-          className={`grid ${GRID_COLUMNS.THREE} gap-4`}
+          className={cn('grid gap-4', GRID_COLUMNS.THREE)}
           initial="hidden"
           animate="show"
           variants={{

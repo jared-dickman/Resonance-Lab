@@ -1,20 +1,15 @@
 ---
 name: UI TestID Injector
-description: Injects semantic TestIDs into components following domain-component-element-purpose naming. Auto-triggers on component creation and /bdd workflow. AST-powered refactoring for complex migrations.
-auto_trigger: true
-keywords: [testid, data-testid, component, bdd, testing, playwright, storybook, vitest, refactor]
+description: Enterprise-grade TestID integration ensuring semantic, hierarchical naming that works flawlessly across Vitest, Storybook, and Playwright. Enforces industry best practices for maintainable, resilient test automation.
+auto_trigger: false
+keywords: []
 ---
 
 # UI TestID Injector
 
-**Mission**: Enterprise-grade TestID integration with AST-powered refactoring for semantic, self-documenting identifiers that work flawlessly across Vitest, Storybook, and Playwright.
+**Mission**: Deliver production-grade TestID integration with semantic, self-documenting identifiers that ensure test stability across all testing frameworks.
 
-**Auto-invokes when**:
-
-- User creates new component files (`.tsx`)
-- `/bdd` workflow generates fixtures with TestIds
-- User requests TestID injection or refactoring
-- Complex component tree refactors require TestID updates
+**Standards**: Playwright + Vitest + Storybook compatibility, zero ambiguity, maximum clarity.
 
 ---
 
@@ -192,182 +187,6 @@ export const CompanyTestIds = {
   userRowEditButton: (userId: string) => `company-user-row-${userId}-edit-button`,
 } as const;
 ```
-
----
-
-## SINGLE SOURCE OF TRUTH
-
-**MANDATORY: All TestIDs defined in `app/testing/fixtures/{domain}/{domain}-fixtures.ts`**
-
-```typescript
-// ✅ ONLY place TestIDs are defined
-export const BillingTestIds = {
-  planCardSaveButton: 'billing-plan-card-save-button',
-} as const
-
-// ✅ Components import and use
-import { BillingTestIds } from '@/app/testing/fixtures/billing/billing-fixtures'
-<Button data-testid={BillingTestIds.planCardSaveButton}>Save</Button>
-
-// ✅ Playwright imports same constant
-import { BillingTestIds } from '@/app/testing/fixtures/billing/billing-fixtures'
-await page.getByTestId(BillingTestIds.planCardSaveButton).click()
-
-// ✅ Storybook imports same constant
-import { BillingTestIds } from '@/app/testing/fixtures/billing/billing-fixtures'
-await canvas.findByTestId(BillingTestIds.planCardSaveButton)
-
-// ✅ Vitest imports same constant
-import { BillingTestIds } from '@/app/testing/fixtures/billing/billing-fixtures'
-expect(screen.getByTestId(BillingTestIds.planCardSaveButton)).toBeInTheDocument()
-```
-
-**Cross-environment validation**:
-
-- All three test frameworks import from same file
-- TypeScript ensures constant usage (not strings)
-- ast-grep enforces no magic strings (rules/no-magic-testids.yml)
-
----
-
-## AST-POWERED REFACTORING
-
-### When to Use AST Mode
-
-**Standard mode**: Simple injection into existing components
-**AST mode**: Complex refactors requiring:
-
-- Component tree restructuring
-- Bulk TestID updates across multiple files
-- Renaming patterns (component rename → TestID cascade)
-- Migration from magic strings to constants
-
-### AST Workflow
-
-**Step 1: Analyze with ast-grep**
-
-```bash
-# Find all magic string testids
-npx ast-grep scan -r rules/no-magic-testids.yml
-
-# Find components using old pattern
-npx ast-grep scan --pattern '<$TAG data-testid="old-pattern-$$$">'
-```
-
-**Step 2: Generate Migration Plan**
-
-```typescript
-// Identify affected files and create mapping
-const migrations = [
-  {
-    from: 'data-testid="billing-save"',
-    to: 'data-testid={BillingTestIds.planCardSaveButton}',
-    files: ['app/components/billing/PlanCard.tsx'],
-  },
-];
-```
-
-**Step 3: Execute AST Transformations**
-
-Use serena tools for targeted changes:
-
-- `mcp__serena__replace_symbol_body` - Replace entire component
-- `mcp__serena__rename_symbol` - Cascade renames
-- Preserves component logic and formatting
-- Updates only data-testid attributes
-
-**Step 4: Validate Migration**
-
-```bash
-pnpm typecheck                    # No TS errors
-npx ast-grep scan                 # No magic strings
-pnpm test:unit                    # Tests pass
-```
-
-### AST Pattern: Component Rename Cascade
-
-**Scenario**: Rename `BillingCard` → `PlanCard`
-
-**AST Strategy**:
-
-```typescript
-// 1. Find all TestIDs referencing old name
-AST Query: BillingTestIds.billingCard*
-
-// 2. Generate new names
-billing-billing-card-save-button → billing-plan-card-save-button
-
-// 3. Update fixtures first (single source of truth)
-export const BillingTestIds = {
-  planCardSaveButton: 'billing-plan-card-save-button', // renamed
-}
-
-// 4. Update component with symbol replacement
-mcp__serena__replace_symbol_body({
-  name_path: 'BillingCard',
-  new_body: 'export function PlanCard(...) { ... }'
-})
-
-// 5. Update all imports automatically
-mcp__serena__rename_symbol({
-  name_path: 'BillingCard',
-  new_name: 'PlanCard'
-})
-
-// 6. Validate no broken references
-npx ast-grep scan
-pnpm typecheck
-```
-
----
-
-## WORKFLOW INTEGRATION
-
-### Auto-Trigger 1: New Component Creation
-
-**Detects**:
-
-- New `.tsx` files in `app/components/**`
-- Component exports detected
-
-**Actions**:
-
-1. Identify domain from file path (`app/components/billing/` → `billing`)
-2. Check if `app/testing/fixtures/{domain}/{domain}-fixtures.ts` exists
-3. Prompt: "Create TestIds for {ComponentName}?"
-4. Generate semantic TestIds based on component structure
-5. Inject with proper import
-
-### Auto-Trigger 2: /bdd Workflow
-
-**Sequence**:
-
-```
-/bdd command
-  ↓
-[gherkin-generator] - Creates .feature
-  ↓
-[bdd-implementation-generator] - Creates fixtures with TestIds
-  ↓
-[ui-testid-injector] ← AUTO-INVOKED
-  • Reads generated {domain}-fixtures.ts
-  • Maps TestIds to component elements
-  • Injects data-testid attributes
-  • Validates no magic strings
-  ↓
-[bdd-example-enforcer] - Validates compliance
-```
-
-### Auto-Trigger 3: Complex Refactors
-
-**Detects keywords**: "refactor component", "rename component", "restructure"
-
-**AST Analysis**:
-
-1. Identify affected components
-2. Extract current TestID usage
-3. Propose migration strategy
-4. Execute with validation
 
 ---
 
@@ -636,13 +455,6 @@ If TestIDs can't be mapped:
 - ✅ ast-grep: No violations
 - ✅ Duplicate TestIDs: None
 
-**Cross-Environment Validation:**
-
-- ✅ Vitest: Same constants from `app/testing/fixtures/{domain}/`
-- ✅ Storybook: Same constants from `app/testing/fixtures/{domain}/`
-- ✅ Playwright: Same constants from `app/testing/fixtures/{domain}/`
-- ✅ Single source of truth enforced
-
 **Testing Ready:**
 
 - Vitest: `pnpm test:unit --grep "{domain}"`
@@ -683,29 +495,13 @@ Production-Ready ✅
 
 ---
 
-## REFERENCES
+## NOTES
 
-**AST-grep rules** (enforcement):
-
-- `rules/no-magic-testids.yml` - Enforces fixture constants, prevents magic strings
-- `rules/bdd-no-hardcoded-selectors.yml` - Prevents hardcoded selectors in Playwright steps
-
-**Related skills** (workflow integration):
-
-- `.claude/skills/bdd-implementation-generator/` - Generates TestId fixtures during /bdd workflow
-- `.claude/skills/bdd-example-enforcer/` - Validates TestID usage patterns
-
-**Never duplicate these docs** - Reference only
-
----
-
-## PHILOSOPHY
-
-TestIDs are first-class documentation. Reading `billing-plan-card-save-button` reveals:
+**Philosophy:** TestIDs are first-class documentation. A developer should read `billing-plan-card-save-button` and immediately know:
 
 - Domain: `billing`
 - Component: `plan-card`
 - Element: `button`
 - Purpose: `save`
 
-**Single source of truth across all test environments. Zero ambiguity. Maximum clarity.**
+**Zero ambiguity. Maximum clarity. World-class quality.**

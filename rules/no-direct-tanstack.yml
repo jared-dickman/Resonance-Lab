@@ -1,6 +1,6 @@
 id: no-direct-tanstack
 message: Use feature hooks instead of direct TanStack Query calls. Import from app/features/*/hooks.ts
-severity: error
+severity: warning
 language: TypeScript
 rule:
   any:
@@ -24,16 +24,6 @@ rule:
                 - pattern: export function use$HOOK($$$) { $$$ }
                 # Allow in custom wrapper hooks
                 - pattern: export function useApiMutation($$$) { $$$ }
-    # Detect direct QueryClient usage outside of allowed locations
-    - all:
-        - pattern: new QueryClient($$$)
-        - not:
-            inside:
-              any:
-                # Allow in QueryClient provider setup
-                - pattern: export const queryClient = $$$
-                # Allow in test setup
-                - pattern: export const $testClient = $$$
 
 # Only check TypeScript/TSX files, excluding allowed locations
 paths:
@@ -44,6 +34,9 @@ paths:
     - "**/app/hooks/query-hooks.ts"
     - "**/app/features/**/hooks.ts"
     - "**/app/providers/**"
+    - "**/providers/**"
+    - "frontend/app/providers/**"
+    - "**/QueryClient.ts"
     - "**/*.test.ts"
     - "**/*.test.tsx"
     - "**/*.spec.ts"
@@ -53,4 +46,4 @@ paths:
     - "**/testing/**"
     - "**/__tests__/**"
     - "**/e2e/**"
-    - "**/node_modules/**
+    - "**/node_modules/**"

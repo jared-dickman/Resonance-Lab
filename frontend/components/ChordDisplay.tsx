@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Music } from 'lucide-react';
 import { useChordVoicings } from '@/lib/hooks/useChordVoicings';
+import { cn } from '@/lib/utils';
 
 interface ChordDisplayProps {
   chordName: string | null;
@@ -25,7 +26,7 @@ export function ChordDisplay({ chordName, className = '' }: ChordDisplayProps) {
 
   if (!chordName) {
     return (
-      <Card className={className}>
+      <Card className={cn(className)}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Music className="h-5 w-5" />
@@ -47,7 +48,7 @@ export function ChordDisplay({ chordName, className = '' }: ChordDisplayProps) {
 
   if (voicings.length === 0) {
     return (
-      <Card className={className}>
+      <Card className={cn(className)}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Music className="h-5 w-5" />
@@ -70,7 +71,7 @@ export function ChordDisplay({ chordName, className = '' }: ChordDisplayProps) {
   }
 
   return (
-    <Card className={className}>
+    <Card className={cn(className)}>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Music className="h-5 w-5" />

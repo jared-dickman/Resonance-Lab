@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { FINGER_COLORS } from '@/lib/constants/canvas.constants';
 import { FRETBOARD } from '@/lib/constants/game.constants';
 import type { ChordVoicing } from '@/lib/chordPositions';
@@ -201,14 +202,14 @@ export function Fretboard({
 
   if (!currentVoicing) {
     return (
-      <div className={`p-6 bg-muted rounded-lg ${className}`}>
+      <div className={cn('p-6 bg-muted rounded-lg', className)}>
         <p className="text-center text-muted-foreground">No chord position available</p>
       </div>
     );
   }
 
   return (
-    <div className={`space-y-4 ${className}`}>
+    <div className={cn('space-y-4', className)}>
       <div className="flex items-center justify-between">
         <div className="space-y-1">
           <h3 className="text-2xl font-bold">{currentVoicing.name}</h3>

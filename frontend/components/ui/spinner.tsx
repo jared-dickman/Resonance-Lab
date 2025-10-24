@@ -1,7 +1,9 @@
+import { cn } from '@/lib/utils';
+
 export function Spinner({ className = 'h-4 w-4' }: { className?: string }) {
   return (
     <svg
-      className={`animate-spin text-muted-foreground ${className}`}
+      className={cn('animate-spin text-muted-foreground', className)}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"

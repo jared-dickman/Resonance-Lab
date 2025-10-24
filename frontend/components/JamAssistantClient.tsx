@@ -13,6 +13,7 @@ import { ProTipsCard } from '@/components/jam/ProTipsCard';
 import { EmptyBuildState } from '@/components/jam/EmptyBuildState';
 import JamBuilder from '@/components/jam/JamBuilder';
 import { getProgressionsByVibe, type ChordProgression } from '@/lib/jamProgressions';
+import { cn } from '@/lib/utils';
 import { type Vibe } from '@/lib/jamProgressions';
 import { SkillLevel } from '@/lib/enums/skillLevel.enum';
 import { ANIMATION_DURATION, FADE_VARIANTS } from '@/lib/constants/animation.constants';
@@ -43,7 +44,7 @@ export default function JamAssistantClient(): React.JSX.Element {
 
   return (
     <motion.div
-      className={`container mx-auto py-8 px-4 ${MAX_WIDTH.EXTRA_LARGE} overflow-x-hidden`}
+      className={cn('container mx-auto py-8 px-4 overflow-x-hidden', MAX_WIDTH.EXTRA_LARGE)}
       variants={FADE_VARIANTS}
       initial="hidden"
       animate="show"
@@ -53,7 +54,7 @@ export default function JamAssistantClient(): React.JSX.Element {
       <SkillLevelSelector selectedLevel={skillLevel} onSelectLevel={setSkillLevel} />
 
       <Tabs defaultValue="discover" className="w-full">
-        <TabsList className={`grid w-full ${MAX_WIDTH.SMALL} mx-auto grid-cols-2 mb-8`}>
+        <TabsList className={cn('grid w-full mx-auto grid-cols-2 mb-8', MAX_WIDTH.SMALL)}>
           <TabsTrigger value="discover" className="flex items-center gap-2">
             <Lightbulb className={`w-${ICON_SIZE} h-${ICON_SIZE}`} />
             Discover

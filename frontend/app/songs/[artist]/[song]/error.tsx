@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
+import { pageRoutes } from '@/lib/routes';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { logger } from '@/lib/logger';
 import { AlertCircle, ArrowLeft } from 'lucide-react';
@@ -26,7 +27,7 @@ export default function Error({
 
   return (
     <div className="space-y-6">
-      <Link href="/">
+      <Link href={pageRoutes.home}>
         <Button variant="ghost" size="sm">
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Home
@@ -46,7 +47,7 @@ export default function Error({
           </p>
           <div className="flex gap-2">
             <Button onClick={reset}>Try Again</Button>
-            <Link href="/">
+            <Link href={pageRoutes.home}>
               <Button variant="outline">Go Home</Button>
             </Link>
           </div>

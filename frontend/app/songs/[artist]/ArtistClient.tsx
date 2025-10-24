@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useSongs } from '@/lib/SongsContext';
+import { pageRoutes } from '@/lib/routes';
 
 interface ArtistClientProps {
   artistSlug: string;
@@ -85,7 +86,7 @@ export default function ArtistClient({ artistSlug }: ArtistClientProps) {
   if (!artistData) {
     return (
       <div className="space-y-6">
-        <Link href="/">
+        <Link href={pageRoutes.home}>
           <Button variant="ghost" size="sm">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Home
@@ -104,7 +105,7 @@ export default function ArtistClient({ artistSlug }: ArtistClientProps) {
 
   return (
     <div className="space-y-6">
-      <Link href="/">
+      <Link href={pageRoutes.home}>
         <Button variant="ghost" size="sm">
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Home

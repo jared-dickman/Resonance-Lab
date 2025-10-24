@@ -35,6 +35,7 @@ export default [
       'frontend/node_modules/**',
       'frontend/dist/**',
       'frontend/build/**',
+      'frontend/next-env.d.ts',
       'scraper/bin/**',
       'scraper/vendor/**',
       'scripts/test-ast-grep-rules.ts',
