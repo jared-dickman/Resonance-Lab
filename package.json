@@ -28,6 +28,7 @@
     "build": "cd frontend && npm run build",
     "dev": "cd frontend && npm run dev",
     "start": "cd frontend && npm start",
+    "test": "echo \"No unit tests configured yet\" && exit 0",
     "lint": "eslint . --fix",
     "lint:check": "eslint .",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",

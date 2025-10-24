@@ -218,7 +218,7 @@ git diff master...HEAD --name-only | grep -E "^app/features" | cut -d/ -f3 | sor
 
 **Visual hierarchy:**
 
-````markdown
+```markdown
 ## 🎯 Section (h2 with emoji)
 
 **Bold for emphasis**
@@ -233,7 +233,7 @@ git diff master...HEAD --name-only | grep -E "^app/features" | cut -d/ -f3 | sor
 ---
 
 Horizontal rules to separate major sections
-````
+```
 
 **Anti-patterns:**
 

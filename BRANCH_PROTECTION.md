@@ -113,6 +113,7 @@ Similar to main but with relaxed settings:
    - Test with a PR to ensure checks run
 
 4. **Test the Pipeline**
+
    ```bash
    git checkout -b test/ci-cd
    echo "test" > test.txt
