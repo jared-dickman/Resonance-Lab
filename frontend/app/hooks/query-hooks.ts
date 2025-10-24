@@ -66,7 +66,7 @@ export function useApiMutation<
   return useMutation<TData, TError, TVariables, TContext>({
     mutationFn,
     ...rest,
-    onSuccess: async (data, variables, context) => {
+    onSuccess: async (data, variables, context, ...args) => {
       // Automatic cache invalidation
       if (invalidationKeys && invalidationKeys.length > 0) {
         await Promise.all(
@@ -81,7 +81,8 @@ export function useApiMutation<
 
       // User-provided onSuccess callback
       if (userOnSuccess) {
-        userOnSuccess(data, variables, context);
+        // @ts-expect-error - TanStack Query v5 type signature compatibility
+        userOnSuccess(data, variables, context, ...args);
       }
     },
   });

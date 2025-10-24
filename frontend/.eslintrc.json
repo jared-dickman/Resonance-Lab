@@ -1,3 +1,47 @@
 {
-  "extends": ["next", "next/core-web-vitals"]
+  "extends": [
+    "next/core-web-vitals",
+    "prettier"
+  ],
+  "rules": {
+    "max-lines-per-function": [
+      "warn",
+      {
+        "max": 20,
+        "skipBlankLines": true,
+        "skipComments": true
+      }
+    ],
+    "max-params": ["warn", 3],
+    "complexity": ["warn", 10],
+    "max-depth": ["warn", 3],
+    "no-magic-numbers": [
+      "warn",
+      {
+        "ignore": [0, 1, -1, 2],
+        "ignoreArrayIndexes": true,
+        "ignoreDefaultValues": true,
+        "enforceConst": true
+      }
+    ],
+    "no-console": "error",
+    "no-debugger": "error",
+    "prefer-const": "error",
+    "no-var": "error",
+    "eqeqeq": ["error", "always"]
+  },
+  "overrides": [
+    {
+      "files": ["lib/logger.ts"],
+      "rules": {
+        "no-console": "off"
+      }
+    },
+    {
+      "files": ["lib/constants/**/*.ts", "lib/enums/**/*.ts"],
+      "rules": {
+        "no-magic-numbers": "off"
+      }
+    }
+  ]
 }

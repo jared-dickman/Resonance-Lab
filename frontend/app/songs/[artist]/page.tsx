@@ -1,12 +1,12 @@
-import ArtistClient from "./ArtistClient"
+import ArtistClient from './ArtistClient';
 
 interface ArtistPageProps {
   params: Promise<{
-    artist: string
-  }>
+    artist: string;
+  }>;
 }
 
 export default async function ArtistPage({ params }: ArtistPageProps) {
-  const { artist } = await params
-  return <ArtistClient artistSlug={artist} />
+  const { artist } = await params;
+  return <ArtistClient artistSlug={artist} />;
 }

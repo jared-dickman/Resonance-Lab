@@ -1,12 +1,8 @@
-"use client";
+'use client';
 
-import { Breadcrumbs } from "./Breadcrumbs";
+import { Breadcrumbs } from './Breadcrumbs';
 
-export function ClientLayoutWrapper({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function ClientLayoutWrapper({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="container mx-auto p-4">

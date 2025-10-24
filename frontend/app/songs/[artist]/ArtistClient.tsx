@@ -1,43 +1,43 @@
-"use client"
+'use client';
 
-import { useMemo } from "react"
-import Link from "next/link"
-import { Music, ArrowLeft } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Skeleton } from "@/components/ui/skeleton"
-import { useSongs } from "@/lib/SongsContext"
+import { useMemo } from 'react';
+import Link from 'next/link';
+import { Music, ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useSongs } from '@/lib/SongsContext';
 
 interface ArtistClientProps {
-  artistSlug: string
+  artistSlug: string;
 }
 
 export default function ArtistClient({ artistSlug }: ArtistClientProps) {
-  const { songs, isLoadingSongs } = useSongs()
+  const { songs, isLoadingSongs } = useSongs();
 
   const artistData = useMemo(() => {
-    const artistSongs = songs.filter(song => song.artistSlug === artistSlug)
+    const artistSongs = songs.filter(song => song.artistSlug === artistSlug);
 
     if (artistSongs.length === 0) {
-      return null
+      return null;
     }
 
-    const artistName = artistSongs[0].artist
-    const sortedSongs = [...artistSongs].sort((a, b) => a.title.localeCompare(b.title))
+    const artistName = artistSongs[0].artist;
+    const sortedSongs = [...artistSongs].sort((a, b) => a.title.localeCompare(b.title));
 
-    const keys = new Set(artistSongs.map(s => s.key).filter(Boolean))
+    const keys = new Set(artistSongs.map(s => s.key).filter(Boolean));
     const lastUpdated = new Date(
       Math.max(...artistSongs.map(s => new Date(s.updatedAt).getTime()))
-    )
+    );
 
     return {
       name: artistName,
       songs: sortedSongs,
       totalSongs: sortedSongs.length,
       keys: Array.from(keys),
-      lastUpdated
-    }
-  }, [songs, artistSlug])
+      lastUpdated,
+    };
+  }, [songs, artistSlug]);
 
   if (isLoadingSongs) {
     return (
@@ -79,7 +79,7 @@ export default function ArtistClient({ artistSlug }: ArtistClientProps) {
           </CardContent>
         </Card>
       </div>
-    )
+    );
   }
 
   if (!artistData) {
@@ -93,11 +93,13 @@ export default function ArtistClient({ artistSlug }: ArtistClientProps) {
         </Link>
         <Card>
           <CardContent className="pt-6">
-            <p className="text-muted-foreground">Artist not found. They may not have any saved songs yet.</p>
+            <p className="text-muted-foreground">
+              Artist not found. They may not have any saved songs yet.
+            </p>
           </CardContent>
         </Card>
       </div>
-    )
+    );
   }
 
   return (
@@ -115,7 +117,8 @@ export default function ArtistClient({ artistSlug }: ArtistClientProps) {
             <div className="space-y-1">
               <CardTitle className="text-2xl">{artistData.name}</CardTitle>
               <CardDescription>
-                {artistData.totalSongs} {artistData.totalSongs === 1 ? 'song' : 'songs'} in your library
+                {artistData.totalSongs} {artistData.totalSongs === 1 ? 'song' : 'songs'} in your
+                library
               </CardDescription>
             </div>
             <Music className="h-8 w-8 text-muted-foreground" />
@@ -175,5 +178,5 @@ export default function ArtistClient({ artistSlug }: ArtistClientProps) {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

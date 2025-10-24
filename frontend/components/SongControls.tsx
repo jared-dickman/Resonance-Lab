@@ -1,13 +1,25 @@
+'use client';
 
-"use client";
+import type { ChangeEvent } from 'react';
 
-import { ChangeEvent } from "react";
+import { Badge } from './ui/badge';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
 
-import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-
-export const KEY_SIGNATURES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"] as const;
+export const KEY_SIGNATURES = [
+  'C',
+  'C#',
+  'D',
+  'D#',
+  'E',
+  'F',
+  'F#',
+  'G',
+  'G#',
+  'A',
+  'A#',
+  'B',
+] as const;
 
 interface SongControlsProps {
   transpose: number;
@@ -49,11 +61,21 @@ export function SongControls({
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium">Transpose</span>
           <div className="flex items-center gap-1">
-            <Button aria-label="Decrease transpose" onClick={() => onTransposeChange(transpose - 1)} size="icon">
+            <Button
+              aria-label="Decrease transpose"
+              onClick={() => onTransposeChange(transpose - 1)}
+              size="icon"
+            >
               -
             </Button>
-            <Badge className="px-3 py-1 text-base font-semibold">{transpose >= 0 ? `+${transpose}` : transpose}</Badge>
-            <Button aria-label="Increase transpose" onClick={() => onTransposeChange(transpose + 1)} size="icon">
+            <Badge className="px-3 py-1 text-base font-semibold">
+              {transpose >= 0 ? `+${transpose}` : transpose}
+            </Badge>
+            <Button
+              aria-label="Increase transpose"
+              onClick={() => onTransposeChange(transpose + 1)}
+              size="icon"
+            >
               +
             </Button>
           </div>
@@ -69,7 +91,7 @@ export function SongControls({
             onChange={handleKeyChange}
             className="rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           >
-            {KEY_SIGNATURES.map((key) => (
+            {KEY_SIGNATURES.map(key => (
               <option key={key} value={key}>
                 {key}
               </option>
@@ -90,7 +112,7 @@ export function SongControls({
             id="bpm-input"
             type="number"
             min={0}
-            value={Number.isFinite(bpm) ? bpm : ""}
+            value={Number.isFinite(bpm) ? bpm : ''}
             onChange={handleBpmChange}
             className="w-24"
           />
@@ -98,11 +120,11 @@ export function SongControls({
       </div>
 
       <Button
-        variant={isAutoScrollEnabled ? "default" : "outline"}
+        variant={isAutoScrollEnabled ? 'default' : 'outline'}
         onClick={onToggleAutoScroll}
         aria-pressed={isAutoScrollEnabled}
       >
-        {isAutoScrollEnabled ? "Stop Auto-Scroll" : "Start Auto-Scroll"}
+        {isAutoScrollEnabled ? 'Stop Auto-Scroll' : 'Start Auto-Scroll'}
       </Button>
     </div>
   );

@@ -1,6 +1,19 @@
-import type { CompleteSongState, SectionType, EditHistoryEntry, UserPreferences } from '../types/song'
-import type { CompleteSongContext, UserQueryContext, AgentRequest, ConversationHistory, AgentIntentCategory, ConversationMessage, TextSelectionRange } from '../types/chat'
-import type { GlobalUIState } from '../types/ui'
+import type {
+  CompleteSongState,
+  SectionType,
+  EditHistoryEntry,
+  UserPreferences,
+} from '../types/song';
+import type {
+  CompleteSongContext,
+  UserQueryContext,
+  AgentRequest,
+  ConversationHistory,
+  AgentIntentCategory,
+  ConversationMessage,
+  TextSelectionRange,
+} from '../types/chat';
+import type { GlobalUIState } from '../types/ui';
 
 export function extractUserQueryContext(
   queryText: string,
@@ -15,7 +28,7 @@ export function extractUserQueryContext(
     targetLineNumbers: extractLineNumbers(queryText),
     previousMessages,
     currentFocusArea: uiState.focusArea,
-  }
+  };
 }
 
 export function extractCompleteSongContext(
@@ -31,7 +44,7 @@ export function extractCompleteSongContext(
     recentEdits: extractRecentEdits(songState.editHistory),
     sessionGoals: extractSessionGoals(songState),
     userConstraints: buildUserConstraints(songState.userPreferences),
-  }
+  };
 }
 
 export function buildAgentRequest(
@@ -41,13 +54,9 @@ export function buildAgentRequest(
   uiState: GlobalUIState,
   sessionId: string
 ): AgentRequest {
-  const userQuery = extractUserQueryContext(
-    queryText,
-    conversationHistory.messages,
-    uiState
-  )
+  const userQuery = extractUserQueryContext(queryText, conversationHistory.messages, uiState);
 
-  const songContext = extractCompleteSongContext(songState, uiState)
+  const songContext = extractCompleteSongContext(songState, uiState);
 
   return {
     requestId: generateRequestId(),
@@ -57,84 +66,100 @@ export function buildAgentRequest(
     requestTimestamp: new Date(),
     clientVersion: '1.0.0',
     sessionId,
-  }
+  };
 }
 
 function detectQueryIntent(queryText: string): AgentIntentCategory {
-  const lowerQuery = queryText.toLowerCase()
+  const lowerQuery = queryText.toLowerCase();
 
   if (lowerQuery.includes('rhyme') || lowerQuery.includes('word that rhymes')) {
-    return 'rhymeHelp'
+    return 'rhymeHelp';
   }
 
   if (lowerQuery.includes('chord') || lowerQuery.includes('progression')) {
-    return 'chordSuggestion'
+    return 'chordSuggestion';
   }
 
-  if (lowerQuery.includes('verse') || lowerQuery.includes('chorus') || lowerQuery.includes('line')) {
-    return 'lyricSuggestion'
+  if (
+    lowerQuery.includes('verse') ||
+    lowerQuery.includes('chorus') ||
+    lowerQuery.includes('line')
+  ) {
+    return 'lyricSuggestion';
   }
 
-  if (lowerQuery.includes('structure') || lowerQuery.includes('bridge') || lowerQuery.includes('section')) {
-    return 'structureSuggestion'
+  if (
+    lowerQuery.includes('structure') ||
+    lowerQuery.includes('bridge') ||
+    lowerQuery.includes('section')
+  ) {
+    return 'structureSuggestion';
   }
 
-  if (lowerQuery.includes('theme') || lowerQuery.includes('story') || lowerQuery.includes('character')) {
-    return 'themeExploration'
+  if (
+    lowerQuery.includes('theme') ||
+    lowerQuery.includes('story') ||
+    lowerQuery.includes('character')
+  ) {
+    return 'themeExploration';
   }
 
-  if (lowerQuery.includes('edit') || lowerQuery.includes('improve') || lowerQuery.includes('better')) {
-    return 'editFeedback'
+  if (
+    lowerQuery.includes('edit') ||
+    lowerQuery.includes('improve') ||
+    lowerQuery.includes('better')
+  ) {
+    return 'editFeedback';
   }
 
   if (lowerQuery.includes('?') && lowerQuery.split(' ').length < 10) {
-    return 'technicalQuestion'
+    return 'technicalQuestion';
   }
 
-  return 'generalConversation'
+  return 'generalConversation';
 }
 
 function detectTargetSection(queryText: string, uiState: GlobalUIState): SectionType | null {
-  const lowerQuery = queryText.toLowerCase()
+  const lowerQuery = queryText.toLowerCase();
 
   const sectionKeywords: Record<string, SectionType> = {
-    'intro': 'intro',
-    'verse': 'verse',
-    'prechorus': 'prechorus',
+    intro: 'intro',
+    verse: 'verse',
+    prechorus: 'prechorus',
     'pre-chorus': 'prechorus',
-    'chorus': 'chorus',
-    'bridge': 'bridge',
-    'outro': 'outro',
-    'interlude': 'interlude',
-    'breakdown': 'breakdown',
-    'hook': 'hook',
-    'refrain': 'refrain',
-  }
+    chorus: 'chorus',
+    bridge: 'bridge',
+    outro: 'outro',
+    interlude: 'interlude',
+    breakdown: 'breakdown',
+    hook: 'hook',
+    refrain: 'refrain',
+  };
 
   for (const [keyword, section] of Object.entries(sectionKeywords)) {
     if (lowerQuery.includes(keyword)) {
-      return section
+      return section;
     }
   }
 
-  return determineActiveSection(uiState)
+  return determineActiveSection(uiState);
 }
 
 function extractLineNumbers(queryText: string): ReadonlyArray<number> {
-  const lineNumberPattern = /line\s+(\d+)/gi
-  const matches = Array.from(queryText.matchAll(lineNumberPattern))
-  return matches.map(match => parseInt(match[1], 10))
+  const lineNumberPattern = /line\s+(\d+)/gi;
+  const matches = Array.from(queryText.matchAll(lineNumberPattern));
+  return matches.map(match => parseInt(match[1], 10));
 }
 
 function determineActiveSection(uiState: GlobalUIState): SectionType | null {
-  return null
+  return null;
 }
 
 function buildSelectionRange(uiState: GlobalUIState): TextSelectionRange | null {
-  const { selectionStart, selectionEnd } = uiState.lyricsUI.editorState
+  const { selectionStart, selectionEnd } = uiState.lyricsUI.editorState;
 
   if (!selectionStart || !selectionEnd) {
-    return null
+    return null;
   }
 
   return {
@@ -143,51 +168,49 @@ function buildSelectionRange(uiState: GlobalUIState): TextSelectionRange | null 
     endLine: selectionEnd.line,
     endColumn: selectionEnd.column,
     selectedText: '',
-  }
+  };
 }
 
 function extractRecentEdits(editHistory: ReadonlyArray<EditHistoryEntry>): ReadonlyArray<string> {
-  return editHistory
-    .slice(-5)
-    .map(entry => `${entry.editType}: ${entry.changeDescription}`)
+  return editHistory.slice(-5).map(entry => `${entry.editType}: ${entry.changeDescription}`);
 }
 
 function extractSessionGoals(songState: CompleteSongState): ReadonlyArray<string> {
-  const goals: string[] = []
+  const goals: string[] = [];
 
   if (songState.metadata.completionPercentage < 25) {
-    goals.push('Complete initial song structure')
+    goals.push('Complete initial song structure');
   }
 
   if (songState.lyrics.length === 0) {
-    goals.push('Write first lyrics')
+    goals.push('Write first lyrics');
   }
 
   if (!songState.chordProgression) {
-    goals.push('Define chord progression')
+    goals.push('Define chord progression');
   }
 
-  return goals
+  return goals;
 }
 
 function buildUserConstraints(userPreferences: UserPreferences): ReadonlyArray<string> {
-  const constraints: string[] = []
+  const constraints: string[] = [];
 
   if (userPreferences.avoidClichés) {
-    constraints.push('Avoid clichéd phrases')
+    constraints.push('Avoid clichéd phrases');
   }
 
   if (userPreferences.targetSyllablesPerLine) {
-    constraints.push(`Target ${userPreferences.targetSyllablesPerLine} syllables per line`)
+    constraints.push(`Target ${userPreferences.targetSyllablesPerLine} syllables per line`);
   }
 
   if (userPreferences.forbiddenWords.length > 0) {
-    constraints.push(`Forbidden words: ${userPreferences.forbiddenWords.join(', ')}`)
+    constraints.push(`Forbidden words: ${userPreferences.forbiddenWords.join(', ')}`);
   }
 
-  return constraints
+  return constraints;
 }
 
 function generateRequestId(): string {
-  return `req_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`
+  return `req_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
 }

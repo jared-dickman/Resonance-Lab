@@ -123,17 +123,18 @@ Every agent request includes 50+ context fields:
 
 ```typescript
 interface AgentRequest {
-  requestId: string
-  userQuery: UserQueryContext
-  songContext: CompleteSongContext  // Complete song state
-  conversationHistory: ConversationHistory
-  requestTimestamp: Date
-  clientVersion: string
-  sessionId: string
+  requestId: string;
+  userQuery: UserQueryContext;
+  songContext: CompleteSongContext; // Complete song state
+  conversationHistory: ConversationHistory;
+  requestTimestamp: Date;
+  clientVersion: string;
+  sessionId: string;
 }
 ```
 
 Complete context enables sophisticated AI:
+
 - Rhyme suggestions aware of existing scheme
 - Chord recommendations factoring current key
 - Theme consistency checking
@@ -148,10 +149,11 @@ function analyzeSectionLyrics(
   sectionType: SectionType,
   sectionIndex: number,
   linesText: ReadonlyArray<string>
-): SectionLyrics
+): SectionLyrics;
 ```
 
 Extracts:
+
 - Syllable count per line
 - Stress patterns
 - Rhyme scheme (AABB, ABAB, etc.)
@@ -164,15 +166,12 @@ Extracts:
 Immutable state updates:
 
 ```typescript
-function updateSongTitle(
-  state: CompleteSongState,
-  newTitle: string
-): CompleteSongState {
+function updateSongTitle(state: CompleteSongState, newTitle: string): CompleteSongState {
   return {
     ...state,
     metadata: { ...state.metadata, title: newTitle },
-    editHistory: [...state.editHistory, editEntry]
-  }
+    editHistory: [...state.editHistory, editEntry],
+  };
 }
 ```
 
@@ -183,12 +182,13 @@ All state transitions create new objects with edit history.
 Type-safe storage adapter:
 
 ```typescript
-const storage = createLocalStorageAdapter()
-await storage.save('panelLayout', panelSizes)
-const saved = await storage.load<number[]>('panelLayout')
+const storage = createLocalStorageAdapter();
+await storage.save('panelLayout', panelSizes);
+const saved = await storage.load<number[]>('panelLayout');
 ```
 
 Handles:
+
 - Date serialization
 - Map/Set serialization
 - Quota exceeded errors
@@ -199,40 +199,34 @@ Handles:
 ### Creating Empty Song
 
 ```typescript
-import { createEmptySongState } from './state/songStateManager'
+import { createEmptySongState } from './state/songStateManager';
 
-const songState = createEmptySongState()
+const songState = createEmptySongState();
 ```
 
 ### Updating Lyrics
 
 ```typescript
-import { updateLyricsText } from './state/songStateManager'
+import { updateLyricsText } from './state/songStateManager';
 
-const updated = updateLyricsText(songState, newLyrics)
-setSongState(updated)
+const updated = updateLyricsText(songState, newLyrics);
+setSongState(updated);
 ```
 
 ### Building Agent Request
 
 ```typescript
-import { buildAgentRequest } from './chat/contextExtractor'
+import { buildAgentRequest } from './chat/contextExtractor';
 
-const request = buildAgentRequest(
-  queryText,
-  songState,
-  conversationHistory,
-  uiState,
-  sessionId
-)
+const request = buildAgentRequest(queryText, songState, conversationHistory, uiState, sessionId);
 ```
 
 ### Analyzing Lyrics
 
 ```typescript
-import { extractSyllableCountFromLyricLine } from './state/lyricAnalyzer'
+import { extractSyllableCountFromLyricLine } from './state/lyricAnalyzer';
 
-const syllables = extractSyllableCountFromLyricLine("This is a test line")
+const syllables = extractSyllableCountFromLyricLine('This is a test line');
 // Returns: 5
 ```
 
@@ -255,16 +249,16 @@ Zero type errors, zero `any` types.
 
 Every function name describes exact behavior:
 
-| Function | Purpose |
-|----------|---------|
-| `extractSyllableCountFromLyricLine` | Count syllables in line |
-| `detectStressPatternInLine` | Identify stressed syllables |
-| `analyzeRhymeSchemeForSection` | Determine rhyme pattern |
-| `parseLyricsIntoSections` | Split lyrics by sections |
-| `createEmptySongState` | Initialize new song |
-| `updateSongTitle` | Change title immutably |
-| `buildAgentRequest` | Construct API request |
-| `savePanelLayoutToStorage` | Persist panel sizes |
+| Function                            | Purpose                     |
+| ----------------------------------- | --------------------------- |
+| `extractSyllableCountFromLyricLine` | Count syllables in line     |
+| `detectStressPatternInLine`         | Identify stressed syllables |
+| `analyzeRhymeSchemeForSection`      | Determine rhyme pattern     |
+| `parseLyricsIntoSections`           | Split lyrics by sections    |
+| `createEmptySongState`              | Initialize new song         |
+| `updateSongTitle`                   | Change title immutably      |
+| `buildAgentRequest`                 | Construct API request       |
+| `savePanelLayoutToStorage`          | Persist panel sizes         |
 
 No abbreviations, no ambiguity.
 
@@ -273,12 +267,12 @@ No abbreviations, no ambiguity.
 Pure functions are easily testable:
 
 ```typescript
-import { countSyllablesInWord } from './state/lyricAnalyzer'
+import { countSyllablesInWord } from './state/lyricAnalyzer';
 
 test('counts syllables correctly', () => {
-  expect(countSyllablesInWord('hello')).toBe(2)
-  expect(countSyllablesInWord('beautiful')).toBe(3)
-})
+  expect(countSyllablesInWord('hello')).toBe(2);
+  expect(countSyllablesInWord('beautiful')).toBe(3);
+});
 ```
 
 ## Performance

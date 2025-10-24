@@ -1,20 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+
+import { logger } from '@/lib/logger';
 import { motion } from 'framer-motion';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import {
-  X,
-  FileText,
-  Clock,
-  Trash2,
-  Download,
-  Upload,
-  GitBranch,
-} from 'lucide-react';
+import { X, FileText, Clock, Trash2, Download, Upload, GitBranch } from 'lucide-react';
 import type { SongDraft } from './types/legacy';
 
 interface DraftManagerProps {
@@ -23,11 +17,7 @@ interface DraftManagerProps {
   onLoadDraft: (draft: SongDraft) => void;
 }
 
-export default function DraftManager({
-  currentDraft,
-  onClose,
-  onLoadDraft,
-}: DraftManagerProps) {
+export default function DraftManager({ currentDraft, onClose, onLoadDraft }: DraftManagerProps) {
   const [savedDrafts, setSavedDrafts] = useState<SongDraft[]>([]);
 
   useEffect(() => {
@@ -44,20 +34,18 @@ export default function DraftManager({
           }))
         );
       } catch (error) {
-        console.error('Failed to load drafts:', error);
+        logger.error('Failed to load drafts:', error);
       }
     }
   }, []);
 
   const saveDraft = () => {
-    const existing = savedDrafts.find((d) => d.id === currentDraft.id);
+    const existing = savedDrafts.find(d => d.id === currentDraft.id);
     let updated: SongDraft[];
 
     if (existing) {
       // Update existing
-      updated = savedDrafts.map((d) =>
-        d.id === currentDraft.id ? currentDraft : d
-      );
+      updated = savedDrafts.map(d => (d.id === currentDraft.id ? currentDraft : d));
     } else {
       // Add new
       updated = [currentDraft, ...savedDrafts];
@@ -68,7 +56,7 @@ export default function DraftManager({
   };
 
   const deleteDraft = (id: string) => {
-    const updated = savedDrafts.filter((d) => d.id !== id);
+    const updated = savedDrafts.filter(d => d.id !== id);
     setSavedDrafts(updated);
     localStorage.setItem('songwriter-drafts', JSON.stringify(updated));
   };
@@ -80,8 +68,7 @@ export default function DraftManager({
 
   const exportDraft = (draft: SongDraft) => {
     const dataStr = JSON.stringify(draft, null, 2);
-    const dataUri =
-      'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+    const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
 
     const exportName = `${draft.title.replace(/\s+/g, '-')}-v${draft.version}.json`;
 
@@ -118,7 +105,7 @@ export default function DraftManager({
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
-        onClick={(e) => e.stopPropagation()}
+        onClick={e => e.stopPropagation()}
       >
         <Card className="w-full max-w-2xl max-h-[80vh] flex flex-col">
           <CardHeader className="border-b flex-shrink-0">
@@ -164,11 +151,7 @@ export default function DraftManager({
                       <Button variant="outline" size="sm" onClick={saveDraft}>
                         Save
                       </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => exportDraft(currentDraft)}
-                      >
+                      <Button variant="ghost" size="sm" onClick={() => exportDraft(currentDraft)}>
                         <Download className="w-4 h-4" />
                       </Button>
                     </div>
@@ -187,7 +170,7 @@ export default function DraftManager({
               {savedDrafts.length > 0 ? (
                 <ScrollArea className="flex-1">
                   <div className="space-y-2 pr-4">
-                    {savedDrafts.map((draft) => (
+                    {savedDrafts.map(draft => (
                       <motion.div
                         key={draft.id}
                         initial={{ opacity: 0, y: 10 }}
@@ -248,9 +231,7 @@ export default function DraftManager({
                 <div className="flex-1 flex items-center justify-center p-8 border-2 border-dashed border-border rounded-lg">
                   <div className="text-center">
                     <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-50" />
-                    <p className="text-sm text-muted-foreground">
-                      No saved drafts yet
-                    </p>
+                    <p className="text-sm text-muted-foreground">No saved drafts yet</p>
                     <p className="text-xs text-muted-foreground mt-1">
                       Save your current work to see it here
                     </p>

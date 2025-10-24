@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import SongwriterClient from '@/components/songwriter/SongwriterClient';
 
 export const metadata: Metadata = {

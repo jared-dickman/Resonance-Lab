@@ -35,7 +35,7 @@ export default function LyricsEditor({
 
   useEffect(() => {
     const words = localLyrics.trim().split(/\s+/).filter(Boolean);
-    const lines = localLyrics.split('\n').filter((line) => line.trim());
+    const lines = localLyrics.split('\n').filter(line => line.trim());
     setWordCount(words.length);
     setLineCount(lines.length);
   }, [localLyrics]);
@@ -49,7 +49,7 @@ export default function LyricsEditor({
     const sections: string[] = [];
     const lines = localLyrics.split('\n');
 
-    lines.forEach((line) => {
+    lines.forEach(line => {
       const trimmed = line.trim().toLowerCase();
       if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
         sections.push(line.trim());
@@ -64,8 +64,7 @@ export default function LyricsEditor({
     const textarea = document.querySelector('textarea');
     if (textarea) {
       const start = textarea.selectionStart || localLyrics.length;
-      const newLyrics =
-        localLyrics.substring(0, start) + newSection + localLyrics.substring(start);
+      const newLyrics = localLyrics.substring(0, start) + newSection + localLyrics.substring(start);
       handleLyricsChange(newLyrics);
     }
   };
@@ -100,7 +99,7 @@ export default function LyricsEditor({
           </label>
           <Input
             value={title}
-            onChange={(e) => onTitleChange(e.target.value)}
+            onChange={e => onTitleChange(e.target.value)}
             placeholder="Enter your song title..."
             className="font-semibold text-lg"
           />
@@ -113,7 +112,7 @@ export default function LyricsEditor({
             Quick Sections
           </label>
           <div className="flex flex-wrap gap-2">
-            {['Verse', 'Chorus', 'Bridge', 'Pre-Chorus', 'Outro', 'Intro'].map((section) => (
+            {['Verse', 'Chorus', 'Bridge', 'Pre-Chorus', 'Outro', 'Intro'].map(section => (
               <motion.div key={section} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
                   variant="outline"
@@ -150,8 +149,8 @@ export default function LyricsEditor({
           </label>
           <Textarea
             value={localLyrics}
-            onChange={(e) => handleLyricsChange(e.target.value)}
-            onSelect={(e) => setCursorPosition((e.target as HTMLTextAreaElement).selectionStart)}
+            onChange={e => handleLyricsChange(e.target.value)}
+            onSelect={e => setCursorPosition((e.target as HTMLTextAreaElement).selectionStart)}
             placeholder="[Verse 1]&#10;Start writing your lyrics here...&#10;Let the words flow naturally&#10;&#10;[Chorus]&#10;This is where your hook goes&#10;Make it memorable and catchy"
             className="min-h-[400px] font-mono text-sm leading-relaxed resize-none"
             spellCheck={false}

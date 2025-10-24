@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useSongs } from "@/lib/SongsContext";
-import { useMemo } from "react";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useSongs } from '@/lib/SongsContext';
+import { useMemo } from 'react';
 
 export function Breadcrumbs() {
   const pathname = usePathname();
@@ -11,7 +11,7 @@ export function Breadcrumbs() {
   const pathSegments = pathname.split('/').filter(segment => segment);
 
   const breadcrumbs = useMemo(() => {
-    const crumbs = [{ label: "Home", href: "/" }];
+    const crumbs = [{ label: 'Home', href: '/' }];
 
     pathSegments.forEach((segment, index) => {
       const href = '/' + pathSegments.slice(0, index + 1).join('/');
@@ -22,24 +22,41 @@ export function Breadcrumbs() {
         if (index === 1) {
           // Artist slug
           const song = songs.find(s => s.artistSlug === segment);
-          label = song?.artist || label.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+          label =
+            song?.artist ||
+            label
+              .split(' ')
+              .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(' ');
         } else if (index === 2) {
           // Song slug
           const artistSlug = pathSegments[1];
           const song = songs.find(s => s.artistSlug === artistSlug && s.songSlug === segment);
-          label = song?.title || label.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+          label =
+            song?.title ||
+            label
+              .split(' ')
+              .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(' ');
         } else {
-          label = label.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+          label = label
+            .split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
         }
       } else {
-        label = label.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+        label = label
+          .split(' ')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
       }
 
       crumbs.push({ label, href });
     });
 
     return crumbs;
-  }, [pathname, pathSegments, songs]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathSegments, songs]);
 
   return (
     <nav className="flex" aria-label="Breadcrumb">

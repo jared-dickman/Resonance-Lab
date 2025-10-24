@@ -1,24 +1,28 @@
-"use client"
+'use client';
 
-import { useEffect } from "react"
-import Link from "next/link"
-import { ArrowLeft, AlertCircle } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useEffect } from 'react';
+
+import Link from 'next/link';
+
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { logger } from '@/lib/logger';
+import { AlertCircle, ArrowLeft } from 'lucide-react';
 
 export default function Error({
   error,
   reset,
 }: {
-  error: Error & { digest?: string }
-  reset: () => void
+  error: Error & { digest?: string };
+  reset: () => void;
 }) {
   useEffect(() => {
-    // Log error in development
-    if (process.env.NODE_ENV === "development") {
-      console.error(error)
-    }
-  }, [error])
+    logger.error('Song loading failed', {
+      message: error.message,
+      digest: error.digest,
+      stack: error.stack,
+    });
+  }, [error]);
 
   return (
     <div className="space-y-6">
@@ -38,7 +42,7 @@ export default function Error({
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-muted-foreground">
-            {error.message || "An unexpected error occurred while loading this song."}
+            {error.message || 'An unexpected error occurred while loading this song.'}
           </p>
           <div className="flex gap-2">
             <Button onClick={reset}>Try Again</Button>
@@ -49,5 +53,5 @@ export default function Error({
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

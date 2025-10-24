@@ -6,15 +6,7 @@ import { CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import {
-  Music2,
-  Plus,
-  Trash2,
-  GripVertical,
-  Play,
-  Sparkles,
-  RotateCcw,
-} from 'lucide-react';
+import { Music2, Plus, Trash2, GripVertical, Play, Sparkles, RotateCcw } from 'lucide-react';
 
 interface ChordProgressionBuilderProps {
   chords: { name: string; timing: number }[];
@@ -102,12 +94,7 @@ export default function ChordProgressionBuilder({
             Chord Progression
           </CardTitle>
           <div className="flex gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={clearAll}
-              disabled={chords.length === 0}
-            >
+            <Button variant="ghost" size="sm" onClick={clearAll} disabled={chords.length === 0}>
               <RotateCcw className="w-4 h-4" />
             </Button>
           </div>
@@ -123,12 +110,7 @@ export default function ChordProgressionBuilder({
           </label>
 
           {chords.length > 0 ? (
-            <Reorder.Group
-              axis="y"
-              values={chords}
-              onReorder={handleReorder}
-              className="space-y-2"
-            >
+            <Reorder.Group axis="y" values={chords} onReorder={handleReorder} className="space-y-2">
               <AnimatePresence mode="popLayout">
                 {chords.map((chord, index) => (
                   <Reorder.Item
@@ -180,7 +162,7 @@ export default function ChordProgressionBuilder({
             Quick Start
           </label>
           <div className="flex flex-wrap gap-2">
-            {SUGGESTED_PROGRESSIONS.map((prog) => (
+            {SUGGESTED_PROGRESSIONS.map(prog => (
               <motion.div key={prog.name} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
                   variant="outline"
@@ -203,7 +185,7 @@ export default function ChordProgressionBuilder({
           </label>
           <ScrollArea className="flex-1">
             <div className="grid grid-cols-3 gap-2 pr-2">
-              {COMMON_CHORDS.map((chord) => (
+              {COMMON_CHORDS.map(chord => (
                 <motion.div
                   key={chord.name}
                   whileHover={{ scale: 1.08 }}
@@ -219,9 +201,7 @@ export default function ChordProgressionBuilder({
                       background: `linear-gradient(135deg, ${chord.color} 0%, ${chord.color}99 100%)`,
                     }}
                   >
-                    <span className="relative z-10 text-white drop-shadow-lg">
-                      {chord.name}
-                    </span>
+                    <span className="relative z-10 text-white drop-shadow-lg">{chord.name}</span>
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
                   </button>
                 </motion.div>

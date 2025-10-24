@@ -4,6 +4,8 @@
   align-items: center;
   min-height: 600px;
   padding: 2rem;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 .metronomeCard {
@@ -14,6 +16,17 @@
   border-radius: var(--radius);
   padding: 2rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  overflow-x: hidden;
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .metronomeCard {
+    padding: 1.5rem;
+  }
 }
 
 /* Indicator */
@@ -148,6 +161,12 @@
   margin-bottom: 1.5rem;
 }
 
+@media (max-width: 640px) {
+  .presets {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 .presetButton {
   padding: 0.75rem 0.5rem;
   border: 1px solid hsl(var(--border));
@@ -200,6 +219,12 @@
   gap: 0.5rem;
 }
 
+@media (max-width: 640px) {
+  .timeSignatureGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .timeSignatureButton {
   padding: 0.75rem;
   border: 1px solid hsl(var(--border));
@@ -228,6 +253,7 @@
   display: flex;
   gap: 0.5rem;
   margin-bottom: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .optionButton {

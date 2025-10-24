@@ -1,5 +1,17 @@
-import type { CompleteSongState, SongMetadata, MusicalElements, EditHistoryEntry, TimeAnalytics, SectionType, UserPreferences, SectionLyrics, ChordInstance, MusicalKey, KeyMode } from '../types/song'
-import { analyzeSectionLyrics } from './lyricAnalyzer'
+import type {
+  CompleteSongState,
+  SongMetadata,
+  MusicalElements,
+  EditHistoryEntry,
+  TimeAnalytics,
+  SectionType,
+  UserPreferences,
+  SectionLyrics,
+  ChordInstance,
+  MusicalKey,
+  KeyMode,
+} from '../types/song';
+import { analyzeSectionLyrics } from './lyricAnalyzer';
 
 export function createEmptySongState(): CompleteSongState {
   return {
@@ -44,7 +56,7 @@ export function createEmptySongState(): CompleteSongState {
     editHistory: [],
     timeAnalytics: createInitialTimeAnalytics(),
     userPreferences: createDefaultUserPreferences(),
-  }
+  };
 }
 
 function createDefaultMetadata(): SongMetadata {
@@ -59,7 +71,7 @@ function createDefaultMetadata(): SongMetadata {
     createdAt: new Date(),
     updatedAt: new Date(),
     version: 1,
-  }
+  };
 }
 
 function createDefaultMusicalElements(): MusicalElements {
@@ -71,11 +83,11 @@ function createDefaultMusicalElements(): MusicalElements {
     dynamicRange: 'moderate',
     instrumentationNotes: '',
     productionStyle: 'modern',
-  }
+  };
 }
 
 function createInitialTimeAnalytics(): TimeAnalytics {
-  const now = new Date()
+  const now = new Date();
   return {
     totalTimeSpentSeconds: 0,
     timePerSection: new Map(),
@@ -83,7 +95,7 @@ function createInitialTimeAnalytics(): TimeAnalytics {
     lastActiveTime: now,
     editCount: 0,
     averageEditInterval: 0,
-  }
+  };
 }
 
 function createDefaultUserPreferences(): UserPreferences {
@@ -95,20 +107,17 @@ function createDefaultUserPreferences(): UserPreferences {
     thematicConstraints: [],
     forbiddenWords: [],
     styleGuide: '',
-  }
+  };
 }
 
-export function updateSongTitle(
-  state: CompleteSongState,
-  newTitle: string
-): CompleteSongState {
+export function updateSongTitle(state: CompleteSongState, newTitle: string): CompleteSongState {
   const editEntry = createEditHistoryEntry(
     'metadataChange',
     null,
     `Title changed from "${state.metadata.title}" to "${newTitle}"`,
     state.metadata.title,
     newTitle
-  )
+  );
 
   return {
     ...state,
@@ -118,14 +127,14 @@ export function updateSongTitle(
       updatedAt: new Date(),
     },
     editHistory: [...state.editHistory, editEntry],
-  }
+  };
 }
 
 export function updateLyricsText(
   state: CompleteSongState,
   newLyricsText: string
 ): CompleteSongState {
-  const sections = parseLyricsIntoSections(newLyricsText)
+  const sections = parseLyricsIntoSections(newLyricsText);
 
   const editEntry = createEditHistoryEntry(
     'lyricChange',
@@ -133,7 +142,7 @@ export function updateLyricsText(
     `Lyrics updated`,
     '',
     newLyricsText
-  )
+  );
 
   return {
     ...state,
@@ -145,61 +154,57 @@ export function updateLyricsText(
     },
     editHistory: [...state.editHistory, editEntry],
     timeAnalytics: updateTimeAnalytics(state.timeAnalytics),
-  }
+  };
 }
 
 function parseLyricsIntoSections(lyricsText: string): ReadonlyArray<SectionLyrics> {
-  const lines = lyricsText.split('\n')
-  const sections: SectionLyrics[] = []
-  let currentSection: string[] = []
-  let currentSectionType: SectionType = 'verse'
-  let sectionIndex = 0
+  const lines = lyricsText.split('\n');
+  const sections: SectionLyrics[] = [];
+  let currentSection: string[] = [];
+  let currentSectionType: SectionType = 'verse';
+  let sectionIndex = 0;
 
   for (const line of lines) {
-    const sectionMatch = line.match(/^\[(\w+)\]/)
+    const sectionMatch = line.match(/^\[(\w+)\]/);
 
     if (sectionMatch) {
       if (currentSection.length > 0) {
-        sections.push(
-          analyzeSectionLyrics(currentSectionType, sectionIndex++, currentSection)
-        )
-        currentSection = []
+        sections.push(analyzeSectionLyrics(currentSectionType, sectionIndex++, currentSection));
+        currentSection = [];
       }
 
-      const detectedType = detectSectionTypeFromLabel(sectionMatch[1])
-      currentSectionType = detectedType
+      const detectedType = detectSectionTypeFromLabel(sectionMatch[1]);
+      currentSectionType = detectedType;
     } else if (line.trim().length > 0) {
-      currentSection.push(line)
+      currentSection.push(line);
     }
   }
 
   if (currentSection.length > 0) {
-    sections.push(
-      analyzeSectionLyrics(currentSectionType, sectionIndex, currentSection)
-    )
+    sections.push(analyzeSectionLyrics(currentSectionType, sectionIndex, currentSection));
   }
 
-  return sections
+  return sections;
 }
 
 function detectSectionTypeFromLabel(label: string): SectionType {
-  const normalized = label.toLowerCase()
+  const normalized = label.toLowerCase();
 
   const mapping: Record<string, SectionType> = {
-    'intro': 'intro',
-    'verse': 'verse',
-    'prechorus': 'prechorus',
+    intro: 'intro',
+    verse: 'verse',
+    prechorus: 'prechorus',
     'pre-chorus': 'prechorus',
-    'chorus': 'chorus',
-    'bridge': 'bridge',
-    'outro': 'outro',
-    'interlude': 'interlude',
-    'breakdown': 'breakdown',
-    'hook': 'hook',
-    'refrain': 'refrain',
-  }
+    chorus: 'chorus',
+    bridge: 'bridge',
+    outro: 'outro',
+    interlude: 'interlude',
+    breakdown: 'breakdown',
+    hook: 'hook',
+    refrain: 'refrain',
+  };
 
-  return mapping[normalized] || 'verse'
+  return mapping[normalized] || 'verse';
 }
 
 function createEditHistoryEntry(
@@ -216,52 +221,49 @@ function createEditHistoryEntry(
     changeDescription,
     previousValue,
     newValue,
-  }
+  };
 }
 
 function updateTimeAnalytics(analytics: TimeAnalytics): TimeAnalytics {
-  const now = new Date()
-  const timeSinceLastEdit = (now.getTime() - analytics.lastActiveTime.getTime()) / 1000
+  const now = new Date();
+  const timeSinceLastEdit = (now.getTime() - analytics.lastActiveTime.getTime()) / 1000;
 
   return {
     ...analytics,
     lastActiveTime: now,
     editCount: analytics.editCount + 1,
     averageEditInterval: calculateAverageEditInterval(analytics, timeSinceLastEdit),
-  }
+  };
 }
 
-function calculateAverageEditInterval(
-  analytics: TimeAnalytics,
-  newInterval: number
-): number {
-  if (analytics.editCount === 0) return newInterval
+function calculateAverageEditInterval(analytics: TimeAnalytics, newInterval: number): number {
+  if (analytics.editCount === 0) return newInterval;
 
-  const totalTime = analytics.averageEditInterval * analytics.editCount
-  return (totalTime + newInterval) / (analytics.editCount + 1)
+  const totalTime = analytics.averageEditInterval * analytics.editCount;
+  return (totalTime + newInterval) / (analytics.editCount + 1);
 }
 
 function calculateCompletionPercentage(
   state: CompleteSongState,
   lyricSectionCount: number
 ): number {
-  let completion = 0
+  let completion = 0;
 
-  if (state.metadata.title !== 'Untitled Song') completion += 10
-  if (lyricSectionCount > 0) completion += 30
-  if (lyricSectionCount >= 3) completion += 20
-  if (state.chordProgression) completion += 20
-  if (state.musicalElements.key) completion += 10
-  if (state.musicalElements.tempo) completion += 10
+  if (state.metadata.title !== 'Untitled Song') completion += 10;
+  if (lyricSectionCount > 0) completion += 30;
+  if (lyricSectionCount >= 3) completion += 20;
+  if (state.chordProgression) completion += 20;
+  if (state.musicalElements.key) completion += 10;
+  if (state.musicalElements.tempo) completion += 10;
 
-  return Math.min(100, completion)
+  return Math.min(100, completion);
 }
 
 export function addChordToProgression(
   state: CompleteSongState,
   chord: ChordInstance
 ): CompleteSongState {
-  const currentChords = state.chordProgression?.chords || []
+  const currentChords = state.chordProgression?.chords || [];
 
   const editEntry = createEditHistoryEntry(
     'chordChange',
@@ -269,7 +271,7 @@ export function addChordToProgression(
     `Added chord: ${chord.displayName}`,
     '',
     chord.displayName
-  )
+  );
 
   return {
     ...state,
@@ -284,7 +286,7 @@ export function addChordToProgression(
       ...state.metadata,
       updatedAt: new Date(),
     },
-  }
+  };
 }
 
 export function updateMusicalKey(
@@ -298,7 +300,7 @@ export function updateMusicalKey(
     `Key changed to ${key} ${mode}`,
     state.musicalElements.key || '',
     `${key} ${mode}`
-  )
+  );
 
   return {
     ...state,
@@ -312,20 +314,17 @@ export function updateMusicalKey(
       ...state.metadata,
       updatedAt: new Date(),
     },
-  }
+  };
 }
 
-export function updateTempo(
-  state: CompleteSongState,
-  tempo: number
-): CompleteSongState {
+export function updateTempo(state: CompleteSongState, tempo: number): CompleteSongState {
   const editEntry = createEditHistoryEntry(
     'metadataChange',
     null,
     `Tempo changed to ${tempo} BPM`,
     state.musicalElements.tempo?.toString() || '',
     tempo.toString()
-  )
+  );
 
   return {
     ...state,
@@ -338,5 +337,5 @@ export function updateTempo(
       ...state.metadata,
       updatedAt: new Date(),
     },
-  }
+  };
 }
