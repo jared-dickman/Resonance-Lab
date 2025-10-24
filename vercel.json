@@ -1,9 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install",
-  "framework": "nextjs",
   "git": {
     "deploymentEnabled": {
       "main": true,
@@ -14,11 +10,6 @@
   "github": {
     "silent": false,
     "autoJobCancelation": true
-  },
-  "functions": {
-    "api/*.ts": {
-      "maxDuration": 10
-    }
   },
   "env": {
     "NEXT_TELEMETRY_DISABLED": "1"
