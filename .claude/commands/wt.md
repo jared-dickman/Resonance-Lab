@@ -18,6 +18,7 @@ You are managing a git worktree session. A **worktree** creates a separate physi
      - "Implement search feature" → `search-feature`
 
 2. **Create named worktree:**
+
    ```bash
    SESSION_NAME="feature-name"  # Replace with descriptive name
    git worktree add ../BlogzillaV5-session-${SESSION_NAME} -b session/${SESSION_NAME}
@@ -31,6 +32,7 @@ You are managing a git worktree session. A **worktree** creates a separate physi
    - Git history is shared between both directories
 
 4. **Verify and navigate:**
+
    ```bash
    git worktree list  # Confirm creation
    cd ../BlogzillaV5-session-${SESSION_NAME}
@@ -44,6 +46,7 @@ You are managing a git worktree session. A **worktree** creates a separate physi
 ### During Session
 
 **All operations happen in the worktree directory:**
+
 - File edits: Use worktree path for all Read/Write/Edit tools
 - Commits: Go to session branch automatically
 - **Commits: Make atomic commits frequently** (after each logical chunk, see Best Practices section below)
@@ -60,11 +63,12 @@ Examples: "update empty states", "improve error messages", "add form placeholder
 
 #### 2. Why This Matters
 
-**⚠️  If a worktree directory is removed while uncommitted changes exist, ALL WORK IS LOST.**
+**⚠️ If a worktree directory is removed while uncommitted changes exist, ALL WORK IS LOST.**
 
 Worktrees are temporary folders. Commits are permanent. Only committed work is safe.
 
 Real scenario:
+
 ```
 ✗ Agent works 2 hours, makes 45+ changes, never commits
 ✗ Worktree directory disappears → all work lost
@@ -160,23 +164,27 @@ Uncommitted work is one filesystem error away from vanishing. Only committed wor
 When done:
 
 1. **Commit remaining changes:**
+
    ```bash
    git add -A && git commit -m "feat: [description]"
    ```
 
 2. **Run quality checks:**
+
    ```bash
    pnpm run typecheck  # Check types
    pnpm exec ast-grep scan  # Check violations
    ```
 
 3. **Start dev server on random port:**
+
    ```bash
    PORT=$(node -e "require('http').createServer().listen(0, function() { console.log(this.address().port); this.close(); })")
    NEXT_PUBLIC_ENABLE_MSW=true PORT=$PORT pnpm dev
    ```
 
 4. **Present summary:**
+
    ```
    ✅ Session complete - Review & test before merging!
 
@@ -198,6 +206,7 @@ When done:
 ### Session State Tracking
 
 Store in memory throughout session:
+
 - `WORKTREE_PATH`: Full path to worktree directory (e.g., `../BlogzillaV5-session-user-management`)
 - `SESSION_BRANCH`: Branch name (e.g., `session/user-management`)
 - `SESSION_NAME`: Descriptive name (e.g., `user-management`)
@@ -209,16 +218,19 @@ Update these as work progresses. Check before allowing session end.
 ### Error Handling
 
 **If worktree creation fails:**
+
 - Check for existing worktrees: `git worktree list`
 - Check for branch conflicts: `git branch -a`
 - Suggest cleanup: `git worktree prune`
 
 **If merge conflicts occur:**
+
 - Show conflict files
 - Guide user through resolution
 - Don't auto-merge without confirmation
 
 **If user tries to exit prematurely:**
+
 - Show clear warning
 - List uncommitted files
 - Require explicit choice

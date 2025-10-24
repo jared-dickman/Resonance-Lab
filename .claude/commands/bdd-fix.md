@@ -5,8 +5,9 @@ Autonomously diagnose and fix failing BDD tests by analyzing traces, updating PO
 ## Input Required
 
 User provides one or more of:
+
 - Failed test/scenario name
-- Trace file path (test-results/*/trace.zip)
+- Trace file path (test-results/\*/trace.zip)
 - Screenshot path (optional)
 - Error message from CI/console
 
@@ -15,6 +16,7 @@ User provides one or more of:
 ### 1. Read Trace & Identify Failure
 
 Open trace file, locate exact failure point:
+
 - Which step failed?
 - What was the error type (timeout, selector not found, assertion failed)?
 - What was expected vs actual?
@@ -22,26 +24,31 @@ Open trace file, locate exact failure point:
 ### 2. Classify Failure Type
 
 **Selector Changed**
+
 - Error: `locator.click: Target closed` or `Error: locator not found`
 - Root cause: Component TestId changed
 - Fix location: Fixture TestIds
 
 **Timing Issue**
+
 - Error: `TimeoutError: Locator.toBeVisible timeout`
 - Root cause: Missing wait, race condition
 - Fix location: POM assertions, add loading state handlers
 
 **Assertion Failed**
+
 - Error: `expect(locator).toContainText(...) failed`
 - Root cause: Text changed, API response changed
 - Fix location: Fixture Text constants
 
 **Element Not Visible**
+
 - Error: `expect(locator).toBeVisible() failed`
 - Root cause: Loading state not handled, timing
 - Fix location: POM flows/assertions
 
 **API Mock Outdated**
+
 - Error: Unexpected response shape, missing fields
 - Root cause: API contract changed
 - Fix location: MSW handlers, fixtures
@@ -49,23 +56,28 @@ Open trace file, locate exact failure point:
 ### 3. Investigate Root Cause
 
 **For Selector Changes**:
+
 ```bash
 # Find component with changed testid
 pnpm exec ast-grep --pattern 'data-testid=$$$' --lang tsx app/components/{domain}/
 ```
+
 Compare against fixture TestIds
 
 **For Timing Issues**:
+
 - Check if POM has loading state assertions
 - Check if step waits for async operations
 - Review trace timeline for race conditions
 
 **For Text Assertions**:
+
 - Check component for text changes
 - Check fixture Text constants
 - Check API response in trace network tab
 
 **For API Changes**:
+
 - Review MSW handler response shape
 - Compare against OpenAPI schema
 - Check fixture mock responses
@@ -73,38 +85,42 @@ Compare against fixture TestIds
 ### 4. Generate Fix
 
 **Update Fixture TestIds** (selector changed):
+
 ```typescript
 // app/testing/fixtures/{domain}/{domain}-fixtures.ts
 export const BlogPostTestIds = {
   createButton: 'blog-create-button', // was 'create-button'
   // ...
-}
+};
 ```
 
 **Add Loading State Handling** (timing issue):
+
 ```typescript
 // e2e/assertions/{page}.assertions.ts
 export const createBlogPageAssertions = (page: Page, locators) => ({
   isLoading: async () => {
-    await expect(locators.loadingSpinner).toBeVisible()
+    await expect(locators.loadingSpinner).toBeVisible();
   },
   isLoadingGone: async () => {
-    await expect(locators.loadingSpinner).not.toBeVisible({timeout: 10000})
+    await expect(locators.loadingSpinner).not.toBeVisible({ timeout: 10000 });
   },
   // ...
-})
+});
 ```
 
 **Update Fixture Text** (assertion changed):
+
 ```typescript
 // app/testing/fixtures/{domain}/{domain}-fixtures.ts
 export const BlogText = {
   createSuccess: 'Blog post created', // was 'Created successfully'
   // ...
-}
+};
 ```
 
 **Update MSW Handler** (API changed):
+
 ```typescript
 // app/testing/msw/handlers/{domain}.handlers.ts
 export const blogHandlers = [
@@ -114,9 +130,9 @@ export const blogHandlers = [
       title: 'Test',
       status: 'draft', // new field
       // ...
-    })
+    });
   }),
-]
+];
 ```
 
 ### 5. Validate Fix Locally
@@ -156,77 +172,86 @@ git push
 ### Pattern 1: Component Refactor Changed TestId
 
 **Before**: Single testid per button
+
 ```tsx
 <Button data-testid="create-button">Create</Button>
 ```
 
 **After**: Domain-prefixed testids
+
 ```tsx
 <Button data-testid="blog-create-button">Create</Button>
 ```
 
 **Fix**: Update fixture
+
 ```typescript
 export const BlogPostTestIds = {
   createButton: 'blog-create-button', // Update here only
-}
+};
 ```
 
 ### Pattern 2: Missing Loading State
 
 **Symptom**: Flaky test, sometimes passes/fails
+
 ```
 Error: expect(locator).toBeVisible() timed out
 ```
 
 **Fix**: Add loading assertions
+
 ```typescript
 // Step definition
-Then('I see the blog list', async function() {
-  const blog = createBlogPage(this.page)
-  await blog.assertions.isLoadingGone() // Add this
-  await blog.assertions.hasBlogList()
-})
+Then('I see the blog list', async function () {
+  const blog = createBlogPage(this.page);
+  await blog.assertions.isLoadingGone(); // Add this
+  await blog.assertions.hasBlogList();
+});
 ```
 
 ### Pattern 3: Success Message Changed
 
 **Before**: Generic message
+
 ```typescript
 export const BlogText = {
-  createSuccess: 'Success'
-}
+  createSuccess: 'Success',
+};
 ```
 
 **After**: Specific message
+
 ```typescript
 export const BlogText = {
-  createSuccess: 'Blog post created successfully'
-}
+  createSuccess: 'Blog post created successfully',
+};
 ```
 
 ### Pattern 4: New Required Field
 
 **Symptom**: Form validation fails
+
 ```
 Error: expect(success).toBeVisible() failed
 ```
 
 **Fix**: Update fixture and flow
+
 ```typescript
 // Fixture
 export const mockCreateBlogRequest = {
   title: 'Test',
   content: 'Content',
   companyId: 'company-123', // New required field
-}
+};
 
 // Flow
-export const createBlogPageFlow = (basePage) => ({
+export const createBlogPageFlow = basePage => ({
   createBlog: async (title: string, content: string, companyId: string) => {
     // Add companyId parameter
-  }
-})
+  },
+});
 ```
 
 ## Flakiness Tracking (Future Phase)
@@ -255,25 +280,29 @@ HAVING COUNT(*) >= 3;
 ## Tools to Use
 
 **Read trace**:
-```typescript
-import {readFileSync} from 'fs'
-import {join} from 'path'
 
-const tracePath = 'test-results/.../trace.zip'
+```typescript
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
+const tracePath = 'test-results/.../trace.zip';
 // Extract and analyze with Playwright trace viewer API
 ```
 
 **Find changed selectors**:
+
 ```bash
 pnpm exec ast-grep --pattern 'data-testid="$ID"' --lang tsx app/
 ```
 
 **Search for text**:
+
 ```bash
 pnpm exec ast-grep --pattern '"$TEXT"' --lang typescript app/
 ```
 
 **Validate tests**:
+
 ```bash
 pnpm test:bdd -- --tags "@{scenario}"
 ```
@@ -306,3 +335,4 @@ Provide structured summary:
 
 Run `git status` to review changes
 Run `pnpm test:bdd` to verify all tests still pass
+```

@@ -25,11 +25,7 @@ export default function SongPage({ params }: SongPageProps) {
   }
 
   if (error) {
-    return (
-      <div className="text-center text-destructive">
-        Failed to load song: {error.message}
-      </div>
-    );
+    return <div className="text-center text-destructive">Failed to load song: {error.message}</div>;
   }
 
   if (!songData || !songData.sections) {

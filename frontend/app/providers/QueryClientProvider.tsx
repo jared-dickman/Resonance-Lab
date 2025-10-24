@@ -8,9 +8,5 @@ interface QueryClientProviderProps {
 }
 
 export function QueryClientProvider({ children }: QueryClientProviderProps) {
-  return (
-    <TanStackQueryClientProvider client={queryClient}>
-      {children}
-    </TanStackQueryClientProvider>
-  );
+  return <TanStackQueryClientProvider client={queryClient}>{children}</TanStackQueryClientProvider>;
 }

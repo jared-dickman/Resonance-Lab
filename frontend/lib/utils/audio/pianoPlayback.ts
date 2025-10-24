@@ -1,9 +1,6 @@
 import { midiToFrequency } from '@/lib/pianoChords';
 
-export function playPianoChord(
-  audioContext: AudioContext,
-  midiNotes: number[]
-): void {
+export function playPianoChord(audioContext: AudioContext, midiNotes: number[]): void {
   const now = audioContext.currentTime;
 
   midiNotes.forEach((midi, index) => {

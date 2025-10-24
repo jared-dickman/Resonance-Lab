@@ -9,11 +9,7 @@ import { CANVAS_RATIO } from '@/lib/constants/game.constants';
 import type { PianoChordVoicing } from '@/lib/pianoChords';
 import { createAudioContext } from '@/lib/utils/audio/audioContext';
 import { playPianoChord } from '@/lib/utils/audio/pianoPlayback';
-import {
-  drawWhiteKey,
-  drawBlackKey,
-  drawFingerNumber,
-} from '@/lib/utils/canvas/pianoKeyRendering';
+import { drawWhiteKey, drawBlackKey, drawFingerNumber } from '@/lib/utils/canvas/pianoKeyRendering';
 import {
   getMidiNote,
   getBlackKeyMidiOffset,

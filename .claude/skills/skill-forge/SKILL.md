@@ -20,6 +20,7 @@ Generate high-impact Claude Code skills following project conventions and consti
 **Scalability** - Maintainable patterns over quick hacks
 
 **Writing style:**
+
 - Minimal markdown (emphasis only, no numbered lists in bodies)
 - Show don't tell (examples > explanations)
 - Scannable structure (headers, bullets, code blocks)
@@ -38,6 +39,7 @@ Generate high-impact Claude Code skills following project conventions and consti
 ### 1. Gather Requirements
 
 Ask user:
+
 - **Trigger context** - When should this auto-invoke? (be specific)
 - **Scope** - Personal, project, or plugin?
 - **Tool access** - All tools or restricted set?
@@ -47,11 +49,13 @@ Ask user:
 **CRITICAL**: Before creating any skill, understand project standards:
 
 **Required reading:**
+
 - `llm/rules/index.md` - Identify 4-8 relevant rules for skill domain
 - `llm/rules/code-standards.md` - Core principles (always relevant)
 - `llm/rules/writing-rules.md` - How to structure documentation
 
 **Reading strategy:**
+
 - Start with index to identify relevant rules
 - Read ONLY rules that apply to skill's domain
 - Never read all rules (reduces output quality)
@@ -62,7 +66,7 @@ Ask user:
 
 **File**: `{skill-name}/SKILL.md`
 
-```yaml
+````yaml
 ---
 name: skill-name
 description: Specific trigger + what it does (critical for auto-discovery)
@@ -88,9 +92,10 @@ Action items with clear outcomes
 # Validation commands
 pnpm typecheck
 pnpm exec ast-grep scan
-```
+````
 
 ### Next Step
+
 More actions
 
 ## Anti-Patterns (if applicable)
@@ -102,7 +107,8 @@ More actions
 
 - `llm/rules/specific-rule.md` - What it covers (NEVER duplicate content)
 - `llm/templates/example.md` - Template to follow
-```
+
+````
 
 **Description requirements:**
 - Specific trigger context: "when user wants to create BDD tests" (NOT "helps with testing")
@@ -134,9 +140,10 @@ head -n 10 .claude/skills/{skill-name}/SKILL.md
 # Verify no duplication of existing docs
 grep -r "llm/rules" .claude/skills/{skill-name}/SKILL.md
 grep -r "llm/templates" .claude/skills/{skill-name}/SKILL.md
-```
+````
 
 **Quality checklist:**
+
 - ✅ Description under 100 chars with specific trigger
 - ✅ References docs, doesn't duplicate them
 - ✅ Includes validation steps
@@ -168,6 +175,7 @@ Create new conversation and test trigger phrases from description and keywords.
 **Scale well** - Maintainable patterns that grow with project
 
 **Writing quality:**
+
 - Show examples over explanations
 - Use scannable structure (headers, bullets, code blocks)
 - Include anti-patterns to prevent common mistakes
@@ -178,6 +186,7 @@ Create new conversation and test trigger phrases from description and keywords.
 ### Executive Summary First
 
 **Start with value, not instructions:**
+
 - Core mandate: What it does + why it matters (single paragraph)
 - Quality standards: ❌ Unacceptable vs ✅ World-class (with examples)
 - Why: Executives scan summaries first
@@ -185,6 +194,7 @@ Create new conversation and test trigger phrases from description and keywords.
 ### Research Industry Standards
 
 **Before writing domain-specific skills:**
+
 - Web search: "{domain} best practices 2025"
 - Extract authoritative patterns (Playwright docs, React conventions, major company standards)
 - Document with citations
@@ -193,6 +203,7 @@ Create new conversation and test trigger phrases from description and keywords.
 ### Precision Over Prose
 
 **Remove filler:**
+
 - No "helps you", "you should", "carefully"
 - Bullet points > paragraphs
 - Algorithms > explanations
@@ -202,6 +213,7 @@ Create new conversation and test trigger phrases from description and keywords.
 ### Self-Documenting Names
 
 **Everything should explain itself:**
+
 - `billing-plan-card-save-button` = domain-component-element-purpose
 - `bdd-no-hardcoded-selectors` = context-type-target
 - Why: Reduces cognitive load, enables grep
@@ -209,6 +221,7 @@ Create new conversation and test trigger phrases from description and keywords.
 ### Validation Checklists
 
 **Pre/post structure with metrics:**
+
 - [ ] Requirements before action
 - [ ] Commands after action
 - [ ] 100% compliance metrics
@@ -217,6 +230,7 @@ Create new conversation and test trigger phrases from description and keywords.
 ### Pattern Documentation
 
 **For complex domains (lists, arrays, states):**
+
 - Pattern name + preference (Preferred, Use Sparingly)
 - "Use when" decision criteria
 - ⚠️ Warnings for edge cases
@@ -225,6 +239,7 @@ Create new conversation and test trigger phrases from description and keywords.
 ### Quality Metrics
 
 **End with measurable success:**
+
 - Concrete numbers: {N} of {Total}
 - Percentage compliance: 100%
 - Letter grades: A+
@@ -233,6 +248,7 @@ Create new conversation and test trigger phrases from description and keywords.
 ### Philosophy Statement
 
 **Closing that crystallizes value:**
+
 - Core belief about domain
 - Memorable closing line
 - Why: Elevates procedure to principle

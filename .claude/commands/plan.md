@@ -6,53 +6,53 @@ thorough, and collaborative. Deliver production-grade specs.
 ## Invocation
 
 - If parameters include file paths or a ticket:
-    - Read all provided files fully.
-    - Start analysis immediately.
+  - Read all provided files fully.
+  - Start analysis immediately.
 
 - If no parameters:
-    - Ask:
-        1. Task/ticket description (or file)
-        2. Repo access or paths to relevant files
-        3. Constraints (performance, SEO, security, deadlines)
-        4. Dependencies, prior art, design mocks, research links
+  - Ask:
+    1. Task/ticket description (or file)
+    2. Repo access or paths to relevant files
+    3. Constraints (performance, SEO, security, deadlines)
+    4. Dependencies, prior art, design mocks, research links
 
 Then wait for input.
 
 ## Process
 
 1. Intake and codebase scan
-    - Read fully: package.json, next.config.ts, tsconfig.json, .eslintrc.*, .prettierrc.*, app/, components/, lib/,
-      hooks/, public/, middleware.ts, app/api/**/route.ts, error.tsx, not-found.tsx, loading.tsx, env files, tests/,
-      e2e/.
-    - Note: router, Server vs Client Components, Server Actions, Route Handlers, Middleware, runtime (node/edge),
-      caching and revalidation, data-fetching patterns, auth, feature flags, env usage, CI commands, testing setup.
-    - Analyze llm directory for project rules and context.
+   - Read fully: package.json, next.config.ts, tsconfig.json, .eslintrc._, .prettierrc._, app/, components/, lib/,
+     hooks/, public/, middleware.ts, app/api/\*\*/route.ts, error.tsx, not-found.tsx, loading.tsx, env files, tests/,
+     e2e/.
+   - Note: router, Server vs Client Components, Server Actions, Route Handlers, Middleware, runtime (node/edge),
+     caching and revalidation, data-fetching patterns, auth, feature flags, env usage, CI commands, testing setup.
+   - Analyze llm directory for project rules and context.
 
 2. Cross-check requirements
-    - Map requirements to current code.
-    - Identify gaps, risks, and constraints.
-    - List assumptions that need confirmation.
+   - Map requirements to current code.
+   - Identify gaps, risks, and constraints.
+   - List assumptions that need confirmation.
 
 3. Clarify
-    - Provide a concise understanding summary.
-    - Ask only questions that cannot be answered from code.
-    - Propose success metrics and constraints if missing.
+   - Provide a concise understanding summary.
+   - Ask only questions that cannot be answered from code.
+   - Propose success metrics and constraints if missing.
 
 4. Design options
-    - Offer 1–2 viable approaches with clear pros/cons.
-    - Call out RSC boundaries, caching, runtime, and DX tradeoffs.
+   - Offer 1–2 viable approaches with clear pros/cons.
+   - Call out RSC boundaries, caching, runtime, and DX tradeoffs.
 
 5. Plan outline
-    - Propose phases and sequencing.
-    - Get confirmation before writing details.
+   - Propose phases and sequencing.
+   - Get confirmation before writing details.
 
 6. Detailed plan
-    - Write a complete, testable plan (see template).
-    - Include code paths, snippet stubs, commands, and verification.
+   - Write a complete, testable plan (see template).
+   - Include code paths, snippet stubs, commands, and verification.
 
 7. Review and iterate
-    - Present the plan file path.
-    - Apply feedback and finalize. No open questions remain.
+   - Present the plan file path.
+   - Apply feedback and finalize. No open questions remain.
 
 ## Plan Template
 
@@ -62,9 +62,11 @@ Save to: Implementation Plans/[kebab-description].md
 # [Feature/Task] — Implementation Plan (Next.js 15, TypeScript)
 
 ## Overview
+
 [What and why in 2–3 sentences]
 
 ## Current State
+
 - Stack summary: Next.js 15 (App Router), TS strict, SSR/SSG, Server Actions used? Auth? DB?
 - Relevant files and patterns:
   - `app/...`
@@ -76,6 +78,7 @@ Save to: Implementation Plans/[kebab-description].md
   - Tests present: [unit, component, e2e]
 
 ## Desired End State
+
 - Functional behavior
 - API contracts
 - RSC boundary expectations (server/client)
@@ -84,14 +87,17 @@ Save to: Implementation Plans/[kebab-description].md
 - Verification approach
 
 ## Key Findings
+
 - [file:line] [important constraint]
 - [file:line] [pattern to follow]
 - [file:line] [risk/edge case]
 
 ## Out of Scope
+
 - [Explicit non-goals]
 
 ## Implementation Approach
+
 - High-level strategy and rationale
 - Data flow and component architecture
 - Runtime (edge/node) and security considerations
@@ -100,16 +106,19 @@ Save to: Implementation Plans/[kebab-description].md
 ## Phases
 
 ### Phase 1 — [Name]
+
 - Goal
 - Changes
   - File: `app/...`
     - Changes: [summary]
     - Code:
+
 ```ts
 // snippet or signature stub
 ```
-  - File: `components/...`
-    - Changes: [summary]
+
+- File: `components/...`
+  - Changes: [summary]
 - RSC boundaries: [server/client]
 - Caching/revalidation: [none | time | tag | pathway]
 - Security: [input validation, secrets, auth]
@@ -128,9 +137,11 @@ Save to: Implementation Plans/[kebab-description].md
     - [ ] No regressions in related routes
 
 ### Phase 2 — [Name]
+
 [Repeat structure]
 
 ## Testing Strategy
+
 - Unit: [what and edge cases]
 - Component (RTL): [what, RSC boundaries]
 - Integration/API: [route handlers, server actions]
@@ -138,6 +149,7 @@ Save to: Implementation Plans/[kebab-description].md
 - Fixtures and mocking guidelines (fetch, cookies, headers)
 
 ## Performance
+
 - RSC-first; minimize client JS
 - dynamic import() and route-level splitting where needed
 - Image optimization, metadata, streaming/Suspense
@@ -145,6 +157,7 @@ Save to: Implementation Plans/[kebab-description].md
 - Verify bundle size and TTFB/LCP targets
 
 ## Security & Privacy
+
 - Server-only secrets; never in client
 - Input validation (e.g., zod) at boundaries
 - Auth/session checks in Server Actions/Route Handlers
@@ -152,16 +165,19 @@ Save to: Implementation Plans/[kebab-description].md
 - Headers and CSP (if applicable)
 
 ## SEO
+
 - metadata.ts, canonical, robots, sitemaps
 - Structured data (JSON-LD) if relevant
 - Clean URLs and not-found/error handling
 
 ## Migration Notes
+
 - Data changes (e.g., Prisma migrations)
 - Backfill/rollback strategy
 - Feature flag rollout (if used)
 
 ## References
+
 - Ticket: [link or path]
 - Design: [link]
 - Related code: `path/to/file.tsx`
@@ -192,17 +208,17 @@ Note: use the project’s package manager (npm | pnpm | yarn | bun). Detect from
 ## Success Criteria (format)
 
 - Automated
-    - [ ] Typecheck: `<pkg> run typecheck`
-    - [ ] Lint: `<pkg> run lint`
-    - [ ] Unit/component tests: `<pkg> test`
-    - [ ] E2E: `<pkg> run e2e`
-    - [ ] Build: `<pkg> run build` passes with no warnings that block CI
+  - [ ] Typecheck: `<pkg> run typecheck`
+  - [ ] Lint: `<pkg> run lint`
+  - [ ] Unit/component tests: `<pkg> test`
+  - [ ] E2E: `<pkg> run e2e`
+  - [ ] Build: `<pkg> run build` passes with no warnings that block CI
 - Manual
-    - [ ] Core UX flows verified
-    - [ ] A11y: keyboard, contrast, labels
-    - [ ] Mobile + desktop
-    - [ ] SEO checks (metadata, canonical, sitemap if relevant)
-    - [ ] Performance acceptable under realistic load
+  - [ ] Core UX flows verified
+  - [ ] A11y: keyboard, contrast, labels
+  - [ ] Mobile + desktop
+  - [ ] SEO checks (metadata, canonical, sitemap if relevant)
+  - [ ] Performance acceptable under realistic load
 
 ## Common Patterns
 
@@ -224,9 +240,9 @@ Note: use the project’s package manager (npm | pnpm | yarn | bun). Detect from
 
 I will create a detailed Next.js 15 TS plan. Please provide:
 
-1) Ticket or task description (or file)
-2) Repo access or relevant file paths
-3) Constraints (perf, SEO, security, deadline)
-4) Links to designs, prior art, or research
+1. Ticket or task description (or file)
+2. Repo access or relevant file paths
+3. Constraints (perf, SEO, security, deadline)
+4. Links to designs, prior art, or research
 
 I’ll analyze the codebase, propose options, and deliver a phased, verifiable plan.

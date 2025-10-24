@@ -5,7 +5,17 @@
 
 export type ChordFunction = 'tonic' | 'subdominant' | 'dominant' | 'passing' | 'borrowed';
 export type SkillLevel = 'beginner' | 'intermediate' | 'expert';
-export type Vibe = 'pop' | 'rock' | 'jazz' | 'blues' | 'folk' | 'indie' | 'soul' | 'country' | 'funk' | 'latin';
+export type Vibe =
+  | 'pop'
+  | 'rock'
+  | 'jazz'
+  | 'blues'
+  | 'folk'
+  | 'indie'
+  | 'soul'
+  | 'country'
+  | 'funk'
+  | 'latin';
 
 export interface JamChord {
   name: string;
@@ -75,7 +85,7 @@ export const PROGRESSIONS: ChordProgression[] = [
     ],
     difficulty: 'beginner',
     description: 'Powerful rock progression with borrowed bVII chord',
-    examples: ['Sweet Home Alabama', 'Summer of \'69'],
+    examples: ['Sweet Home Alabama', "Summer of '69"],
     bpm: 120,
   },
   {
@@ -184,7 +194,7 @@ export const PROGRESSIONS: ChordProgression[] = [
     ],
     difficulty: 'beginner',
     description: 'Simple and timeless folk progression',
-    examples: ['This Land Is Your Land', 'Blowin\' in the Wind'],
+    examples: ['This Land Is Your Land', "Blowin' in the Wind"],
     bpm: 100,
   },
   {
@@ -298,31 +308,27 @@ export function getProgressionsByVibe(vibe: Vibe, skillLevel?: SkillLevel): Chor
 /**
  * Get recommended next chords based on current chord and key
  */
-export function getNextChordSuggestions(
-  currentChord: string,
-  _key: string,
-  _vibe: Vibe
-): string[] {
+export function getNextChordSuggestions(currentChord: string, _key: string, _vibe: Vibe): string[] {
   // Common chord transitions based on function
   const transitions: Record<string, string[]> = {
     // Tonic chords often go to subdominant or dominant
-    'C': ['F', 'G', 'Am', 'Dm', 'Em'],
-    'G': ['C', 'D', 'Em', 'Am', 'Bm'],
-    'D': ['G', 'A', 'Bm', 'Em', 'F#m'],
-    'A': ['D', 'E', 'F#m', 'Bm', 'C#m'],
-    'E': ['A', 'B', 'C#m', 'F#m', 'G#m'],
+    C: ['F', 'G', 'Am', 'Dm', 'Em'],
+    G: ['C', 'D', 'Em', 'Am', 'Bm'],
+    D: ['G', 'A', 'Bm', 'Em', 'F#m'],
+    A: ['D', 'E', 'F#m', 'Bm', 'C#m'],
+    E: ['A', 'B', 'C#m', 'F#m', 'G#m'],
 
     // Minor tonics
-    'Am': ['F', 'G', 'C', 'Dm', 'Em'],
-    'Em': ['C', 'D', 'G', 'Am', 'Bm'],
-    'Dm': ['F', 'C', 'Bb', 'Am', 'Gm'],
+    Am: ['F', 'G', 'C', 'Dm', 'Em'],
+    Em: ['C', 'D', 'G', 'Am', 'Bm'],
+    Dm: ['F', 'C', 'Bb', 'Am', 'Gm'],
 
     // Dominant 7ths resolve to tonic
-    'G7': ['C', 'Cmaj7'],
-    'D7': ['G', 'Gmaj7'],
-    'A7': ['D', 'Dmaj7'],
-    'E7': ['A', 'Amaj7'],
-    'B7': ['E', 'Emaj7'],
+    G7: ['C', 'Cmaj7'],
+    D7: ['G', 'Gmaj7'],
+    A7: ['D', 'Dmaj7'],
+    E7: ['A', 'Amaj7'],
+    B7: ['E', 'Emaj7'],
   };
 
   return transitions[currentChord] || [];
@@ -332,11 +338,11 @@ export function getNextChordSuggestions(
  * Chord function colors for UI
  */
 export const FUNCTION_COLORS: Record<ChordFunction, string> = {
-  tonic: 'hsl(210, 90%, 60%)',        // Blue - home/stable
-  subdominant: 'hsl(120, 70%, 50%)',  // Green - movement
-  dominant: 'hsl(30, 90%, 55%)',      // Orange - tension
-  passing: 'hsl(280, 70%, 60%)',      // Purple - transition
-  borrowed: 'hsl(350, 80%, 60%)',     // Red - outside
+  tonic: 'hsl(210, 90%, 60%)', // Blue - home/stable
+  subdominant: 'hsl(120, 70%, 50%)', // Green - movement
+  dominant: 'hsl(30, 90%, 55%)', // Orange - tension
+  passing: 'hsl(280, 70%, 60%)', // Purple - transition
+  borrowed: 'hsl(350, 80%, 60%)', // Red - outside
 };
 
 /**

@@ -1,12 +1,12 @@
-# SQLite database stuff (largely useless at first glance)  
+# SQLite database stuff (largely useless at first glance)
 
 The `chords_applicatures` table in `ugpro.db` is probably the only interesting thing from a non-paying-user perspective.
 
-Database location: `/data/data/com.ultimateguitar.tabs/databases`  
+Database location: `/data/data/com.ultimateguitar.tabs/databases`
 
-Example: `adb pull /data/data/com.ultimateguitar.tabs/databases/ugpro.db`  
+Example: `adb pull /data/data/com.ultimateguitar.tabs/databases/ugpro.db`
 
-Databases/directories within the dir at time of commit:  
+Databases/directories within the dir at time of commit:
 
 - OneSignal.db
 - OneSignal.db-journal

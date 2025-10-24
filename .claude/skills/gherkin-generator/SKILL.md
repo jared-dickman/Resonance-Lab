@@ -16,13 +16,16 @@ keywords: []
 ## CORE PRINCIPLES (Cucumber Best Practices 2025)
 
 ### 1. Declarative Over Imperative
+
 **✅ CORRECT** (Describes WHAT, not HOW):
+
 ```gherkin
 When I log in with Google
 Then I should see the dashboard
 ```
 
 **❌ WRONG** (Describes implementation details):
+
 ```gherkin
 When I click the button at coordinates 100,200
 And I wait for the API call to complete
@@ -30,16 +33,19 @@ Then the URL should change to /dashboard
 ```
 
 ### 2. One Behavior Per Scenario
+
 - Each scenario tests ONE user procedure
 - ONE When-Then pair per scenario
 - Multiple When-Then pairs = split into separate scenarios
 
 ### 3. Business Language Only
+
 - No technical jargon (API, database, coordinates)
 - No implementation details (timeouts, waits, selectors)
 - Use domain language the business understands
 
 ### 4. Background for Common Setup
+
 - Extract repeated Given steps into Background
 - Keep Background short (3-5 steps max)
 - Background runs before EVERY scenario
@@ -63,6 +69,7 @@ Then the URL should change to /dashboard
    - Must verify error messages, retry buttons
 
 **Additional scenarios** (context-dependent):
+
 - Protected routes (`@{domain} @protected`)
 - Permission/access control (`@{domain} @access`)
 - Validation errors (`@{domain} @validation`)
@@ -73,11 +80,13 @@ Then the URL should change to /dashboard
 ## @SMOKE TAG STRATEGY
 
 **ONLY tag scenarios with @smoke if:**
+
 - ✅ Critical happy path (app breaks if this fails)
 - ✅ Core user journey (login, signup, main features)
 - ✅ Business-critical flow
 
 **NEVER tag with @smoke:**
+
 - ❌ Loading states
 - ❌ Error scenarios
 - ❌ Edge cases
@@ -92,12 +101,14 @@ Then the URL should change to /dashboard
 **CRITICAL**: Reuse existing step definitions exactly.
 
 ### Process:
+
 1. **Read existing features** in the same domain
 2. **Extract step vocabulary** (exact wording)
 3. **Reuse steps** where possible (exact match)
 4. **Create new steps** only when genuinely needed
 
 ### Example:
+
 ```gherkin
 # Existing auth tests use:
 "I click the Google sign-in button"
@@ -119,9 +130,10 @@ Then the URL should change to /dashboard
 ### Step 1: Analyze Context
 
 **Read existing tests to understand:**
+
 ```typescript
 // Read all features in target domain
-mcp__serena__list_dir(`e2e/features/{domain}/`)
+mcp__serena__list_dir(`e2e/features/{domain}/`);
 
 // Read each .feature file
 // Extract:
@@ -134,6 +146,7 @@ mcp__serena__list_dir(`e2e/features/{domain}/`)
 ### Step 2: Check for Inconsistencies
 
 **Before generating, verify:**
+
 - [ ] No duplicate step phrases with different wording
 - [ ] Consistent @domain tag usage
 - [ ] Background pattern matches existing tests
@@ -144,6 +157,7 @@ mcp__serena__list_dir(`e2e/features/{domain}/`)
 ### Step 3: Generate Scenarios
 
 **Use this template:**
+
 ```gherkin
 Feature: {Feature Name}
   {1-2 sentence description from user's perspective}
@@ -178,6 +192,7 @@ Feature: {Feature Name}
 ### Step 4: Self-Validate
 
 **Before showing to user, check:**
+
 - [ ] Exactly ONE @smoke scenario (or justify if more)
 - [ ] Loading + error scenarios present
 - [ ] All steps reuse existing vocabulary OR are genuinely new
@@ -187,6 +202,7 @@ Feature: {Feature Name}
 - [ ] Valid Gherkin syntax
 
 **Run**:
+
 ```bash
 # Create temp file with generated Gherkin
 # Validate syntax
@@ -196,17 +212,20 @@ cucumber-js --dry-run {temp-file}
 ### Step 5: Report Generation
 
 **Output format:**
+
 ```markdown
 ## Generated Feature File
 
 **Location**: `e2e/features/{domain}/{feature}.feature`
 
 **Scenarios created**:
+
 1. ✅ {Happy path name} (@smoke @{domain})
 2. ✅ {Loading state name} (@{domain} @loading)
 3. ✅ {Error scenario name} (@{domain} @error)
 
 **Step vocabulary**:
+
 - Reused {N} existing steps
 - Created {M} new steps:
   - "{new step 1}"
@@ -233,6 +252,7 @@ cucumber-js --dry-run {temp-file}
 ```
 
 **Edge Scout will analyze:**
+
 - Business logic conflicts (billing, permissions, roles)
 - Cross-feature interactions
 - State management edge cases
@@ -247,12 +267,14 @@ cucumber-js --dry-run {temp-file}
 ## ANTI-PATTERNS (Avoid These)
 
 ### ❌ Too Technical
+
 ```gherkin
 When I POST to /api/auth/login
 Then the response code is 200
 ```
 
 ### ❌ Multiple Behaviors
+
 ```gherkin
 Scenario: User can do everything
   When I log in
@@ -262,6 +284,7 @@ Scenario: User can do everything
 ```
 
 ### ❌ Implementation Details
+
 ```gherkin
 When I wait 3000ms
 And I click the button with id "login-btn"
@@ -269,6 +292,7 @@ Then the React component re-renders
 ```
 
 ### ❌ @smoke on Non-Critical Scenarios
+
 ```gherkin
 @smoke @auth @loading
 Scenario: Loading spinner appears
@@ -279,14 +303,18 @@ Scenario: Loading spinner appears
 ## DOMAIN-SPECIFIC PATTERNS
 
 ### Auth Features
+
 **Common steps**:
+
 - "I am on the login page"
 - "I click the Google sign-in button"
 - "I am redirected after authentication"
 - "I see 'Signing in...'"
 
 ### Billing Features
+
 **Common Background**:
+
 ```gherkin
 Background:
   Given I am logged in as admin
@@ -294,7 +322,9 @@ Background:
 ```
 
 ### Blog Management Features
+
 **Common steps**:
+
 - "I am on the blog management page"
 - "I have existing blog posts"
 - "I see a table of blogs"
@@ -304,11 +334,13 @@ Background:
 ## EXAMPLE GENERATION
 
 ### User Input:
+
 ```
 /bdd "test keyword research with volume filters"
 ```
 
 ### Analysis:
+
 ```
 Domain: keywords
 Existing features: keywords.feature
@@ -320,6 +352,7 @@ Step vocabulary: Use existing where possible
 ```
 
 ### Generated Output:
+
 ```gherkin
 Feature: Keyword Research with Volume Filters
   As a content strategist
@@ -368,8 +401,9 @@ Feature: Keyword Research with Volume Filters
 ## ERROR HANDLING
 
 ### If Step Vocabulary Conflicts Detected:
+
 ```markdown
-⚠️  CONSISTENCY ISSUE DETECTED
+⚠️ CONSISTENCY ISSUE DETECTED
 
 Found conflicting step definitions for the same action:
 
@@ -382,6 +416,7 @@ Found conflicting step definitions for the same action:
 **Both steps** appear to do the same thing (trigger Google OAuth).
 
 **Options**:
+
 1. Standardize on "Google sign-in button" (used in auth.feature)
 2. Standardize on "Google login button" (used in login.feature)
 3. Keep both if they're genuinely different actions
@@ -390,12 +425,14 @@ Found conflicting step definitions for the same action:
 ```
 
 ### If Domain Unclear:
+
 ```markdown
-⚠️  DOMAIN CLASSIFICATION NEEDED
+⚠️ DOMAIN CLASSIFICATION NEEDED
 
 Request: "test user settings page"
 
 **Possible domains**:
+
 - `profile` (existing domain, has settings-related tests)
 - `settings` (new domain)
 
@@ -409,6 +446,7 @@ Request: "test user settings page"
 ## COMPLETION CHECKLIST
 
 Before marking task complete:
+
 - [ ] Feature file generated
 - [ ] Syntax validated (cucumber-js --dry-run)
 - [ ] Step vocabulary consistency verified

@@ -12,6 +12,7 @@ Fix issues systematically:
 4. **Verify** - Run checks to confirm resolution
 
 **Common fixes:**
+
 - TanStack violations → Use feature hooks
 - Type errors → Add proper types (never `as any`)
 - Animation issues → Use constants

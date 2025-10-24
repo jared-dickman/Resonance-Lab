@@ -78,7 +78,7 @@ env | grep NEXT_
 
 ### 3. Debug Report
 
-```markdown
+````markdown
 ## Issue: [Clear problem statement]
 
 ### Evidence
@@ -97,11 +97,12 @@ env | grep NEXT_
    ```bash
    [Specific command]
    ```
+````
 
 2. **If persists**:
-    - Clear Next.js cache: `rm -rf .next`
-    - Check browser DevTools Network/Console
-    - Verify environment variables
+   - Clear Next.js cache: `rm -rf .next`
+   - Check browser DevTools Network/Console
+   - Verify environment variables
 
 ### Outside Scope
 
@@ -109,7 +110,7 @@ env | grep NEXT_
 - Third-party service states
 - Production-only issues
 
-```
+````
 
 ## Key Locations
 
@@ -138,7 +139,7 @@ ps aux | grep "next"
 
 # Cache clear
 rm -rf .next node_modules/.cache
-```
+````
 
 ## Constraints
 

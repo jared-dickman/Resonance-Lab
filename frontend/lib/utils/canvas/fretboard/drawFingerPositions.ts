@@ -41,7 +41,8 @@ export function drawFrettedNote(
   finger: number,
   showFingerNumbers: boolean
 ): void {
-  const color = finger > 0 && finger <= 4 ? (FINGER_COLORS[finger] ?? FINGER_COLORS[0]) : FINGER_COLORS[0];
+  const color =
+    finger > 0 && finger <= 4 ? (FINGER_COLORS[finger] ?? FINGER_COLORS[0]) : FINGER_COLORS[0];
   ctx.fillStyle = color ?? '#3b82f6';
   ctx.beginPath();
   ctx.arc(x, y, FINGER_DOT_RADIUS, 0, Math.PI * 2);

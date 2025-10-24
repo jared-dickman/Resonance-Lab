@@ -1,4 +1,4 @@
-# Tuning strings from the app  
+# Tuning strings from the app
 
 ```xml
 <string name="tuning_C6">C6</string>
@@ -54,7 +54,6 @@
 <string name="tuning_open_G">Open G</string>
 <string name="tuning_standard">Standard</string>
 ```
-
 
 ```
 

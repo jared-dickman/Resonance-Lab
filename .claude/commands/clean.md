@@ -19,30 +19,35 @@ Refactor code to be so clear that non-technical stakeholders can understand busi
 ### 1. SOLID Principles (Architecture Foundation)
 
 **Single Responsibility Principle (SRP)**
+
 - One class/function = one reason to change
 - `OrderProcessor` shouldn't handle validation AND database AND logging
 - Split: `OrderValidator`, `OrderRepository`, `OrderLogger`
 - Each module owns exactly one concept
 
 **Open-Closed Principle (OCP)**
+
 - Open for extension, closed for modification
 - Add new payment methods via `PaymentProcessor` interface, never modify core
 - Use strategy pattern, polymorphism over conditionals
 - New features = new classes, not edited classes
 
 **Liskov Substitution Principle (LSP)**
+
 - Child classes substitute parents without breaking behavior
 - `Square` shouldn't extend `Rectangle` if it violates width/height independence
 - Subclasses honor parent contracts completely
 - No surprising exceptions or weakened guarantees
 
 **Interface Segregation Principle (ISP)**
+
 - Many focused interfaces > one bloated interface
 - Don't force `SimplePrinter` to implement `IAllInOneMachine.fax()`
 - Clients depend only on methods they use
 - Split `IUserOperations` into `IUserReader`, `IUserWriter`, `IUserDeleter`
 
 **Dependency Inversion Principle (DIP)**
+
 - High-level modules depend on abstractions, not concrete implementations
 - `OrderService` depends on `IPaymentGateway`, not `StripePaymentGateway`
 - Inversion of control: frameworks call you, you don't call frameworks
@@ -51,18 +56,21 @@ Refactor code to be so clear that non-technical stakeholders can understand busi
 ### 2. Functions: The First Line of Organization
 
 **Do One Thing**
+
 - Functions do ONE thing at ONE level of abstraction
 - Extract till you drop: if you can describe function with "and", split it
 - `processOrderAndSendEmail()` → `processOrder()` + `sendOrderConfirmationEmail()`
 - One level of abstraction per function (no mixing high-level + low-level)
 
 **Small & Focused**
+
 - **Target: 5-10 lines, Max: 20 lines** (fits on screen without scrolling)
 - Ideal functions fit in your working memory
 - Blocks inside `if`, `while` should be one-line function calls
 - Long function = multiple responsibilities = refactor
 
 **Descriptive Names**
+
 - Name length proportional to scope breadth
 - Loop iterator: `i`, `idx` (tiny scope)
 - Module function: `calculateUserLifetimeValueWithDiscounts()` (broad scope)
@@ -70,6 +78,7 @@ Refactor code to be so clear that non-technical stakeholders can understand busi
 - Noun for data: `activeSubscriptionEndDate`, `validatedUserInput`
 
 **Argument Discipline**
+
 - **Zero arguments**: Ideal (`getCurrentTimestamp()`)
 - **One argument**: Excellent (`formatCurrency(amount)`)
 - **Two arguments**: Good (`createUser(email, password)`)
@@ -77,6 +86,7 @@ Refactor code to be so clear that non-technical stakeholders can understand busi
 - **More than three**: Extract to configuration object or rethink design
 
 **No Side Effects**
+
 - Pure functions when possible: same input → same output, no external mutations
 - If side effects necessary (I/O, state changes), make it OBVIOUS in name
 - `checkPassword()` shouldn't log you in (side effect!)
@@ -84,12 +94,14 @@ Refactor code to be so clear that non-technical stakeholders can understand busi
 - Avoid output parameters: return new values instead
 
 **No Flag Arguments**
+
 - `render(true)` ← What does true mean?
 - Split: `renderForAdmin()` vs `renderForUser()`
 - Boolean parameters = function does two things
 - Exception: Configuration objects where names are explicit
 
 **Command Query Separation**
+
 - Functions either DO something (command) or ANSWER something (query), never both
 - `setUserName(name)` = command (returns void)
 - `getUserName()` = query (no side effects)
@@ -98,42 +110,50 @@ Refactor code to be so clear that non-technical stakeholders can understand busi
 ### 3. Naming: The Art of Clarity
 
 **Intent-Revealing Names**
+
 - `d` → `elapsedTimeInDays`
 - `getData()` → `getActiveSubscriptionsByUserId()`
 - `arr1` → `validatedOrderItems`
 - Name reveals WHAT and WHY, not HOW
 
 **Pronounceable Names**
+
 - `genymdhms` → `generationTimestamp`
 - `modymdhms` → `modificationTimestamp`
 - If you can't say it in conversation, rename it
 
 **Searchable Names**
+
 - Single letters only for short loop scopes
 - `7` → `DAYS_IN_WEEK`
 - `e` → `exception`, `error`, `element` (context-dependent)
 - Name length = scope size
 
 **Avoid Mental Mapping**
+
 - Don't use `r` for URL because "r for request"
 - Don't use `hp` for "homepage"
 - Reader shouldn't translate your abbreviations
 - Clarity > brevity
 
 **Class Names: Nouns**
+
 - `Customer`, `WikiPage`, `Account`, `AddressParser`
 - NOT: `Manager`, `Processor`, `Data`, `Info` (too vague)
 
 **Method Names: Verbs**
+
 - `postPayment()`, `deletePage()`, `save()`
 - Accessors: `getName()`, Mutators: `setName()`, Predicates: `isPosted()`
 
 **Pick One Word Per Concept**
+
 - Not: `fetch()` in one class, `retrieve()` in another, `get()` in third
 - Choose: `get()` everywhere OR `fetch()` everywhere
 - Consistency = predictability
 
 **Avoid Puns**
+
 - Don't use `add()` for insertion if you use it for arithmetic elsewhere
 - Don't use `append()` and `add()` interchangeably
 - One word = one meaning across codebase
@@ -141,11 +161,13 @@ Refactor code to be so clear that non-technical stakeholders can understand busi
 ### 4. Comments: The Failure of Expression
 
 **Comments as Code Smell**
+
 - Every comment represents a failure to write self-explanatory code
 - Don't comment bad code—rewrite it
 - `// check if user is eligible for discount` → `if (userIsEligibleForDiscount())`
 
 **Acceptable Comments**
+
 - **Legal comments**: Copyright, licensing
 - **Explanation of intent**: Why this algorithm, not what it does
 - **Warning of consequences**: "This takes 10 minutes to run"
@@ -153,6 +175,7 @@ Refactor code to be so clear that non-technical stakeholders can understand busi
 - **Amplification**: Why something seemingly trivial is important
 
 **Unacceptable Comments**
+
 - **Redundant**: `i++; // increment i`
 - **Misleading**: Out-of-date comments
 - **Journal**: Change history (use Git)
@@ -164,17 +187,20 @@ Refactor code to be so clear that non-technical stakeholders can understand busi
 ### 5. DRY: Don't Repeat Yourself (Zero Tolerance)
 
 **Duplication Detection**
+
 - **2+ occurrences = extract immediately**
 - Scan for: identical logic, similar patterns, magic values
 - Tools: ESLint `no-duplicate-code`, SonarQube
 
 **Extraction Strategy**
+
 - **Identical code**: Extract to named function
 - **Similar patterns**: Extract to configurable utility
 - **Magic values**: Extract to named constants/enums
 - **Complex conditions**: Extract to predicate functions
 
 **Shared Utilities Organization**
+
 ```
 /utils
   /validation
@@ -192,6 +218,7 @@ Refactor code to be so clear that non-technical stakeholders can understand busi
 ```
 
 **Constants & Enums**
+
 - No strings in business logic
 - No numbers in business logic (except 0, 1, -1 in specific cases)
 - Everything has a name and lives in one place
@@ -199,13 +226,16 @@ Refactor code to be so clear that non-technical stakeholders can understand busi
 ### 6. Error Handling: First-Class Concern
 
 **Use Exceptions, Not Error Codes**
+
 - Error codes scatter handling logic
 - Exceptions separate happy path from error path
 - `try-catch` isolates error handling
 
 **Try-Catch: One Thing**
+
 - Functions with `try-catch` should do ONLY error handling
 - Extract try body into separate function
+
 ```typescript
 function deletePageAndDependencies(page: Page): void {
   try {
@@ -218,18 +248,21 @@ function deletePageAndDependencies(page: Page): void {
 ```
 
 **Provide Context**
+
 - Error messages are for humans
 - Include: what failed, why it matters, what to do
 - Bad: `Error: Invalid input`
 - Good: `Email validation failed: "${input}" is not a valid email format. Use format: name@domain.com`
 
 **Don't Return Null**
+
 - Null returns force null checks everywhere
 - Return empty collections, Optional types, or throw exceptions
 - Bad: `getUsers()` returns `null`
 - Good: `getUsers()` returns `[]`
 
 **Don't Pass Null**
+
 - Null parameters = null checks in every function
 - Use default parameters, required parameters, or separate functions
 - TypeScript: Use strict null checking
@@ -237,39 +270,46 @@ function deletePageAndDependencies(page: Page): void {
 ### 7. Structure & Organization
 
 **Vertical Formatting**
+
 - **Newspaper metaphor**: Most important info at top
 - Public API first, implementation details last
 - Related functions stay close
 - Caller above callee when possible
 
 **Horizontal Formatting**
+
 - Max line length: 80-120 characters
 - Use indentation to show hierarchy
 - Space to show association: `x = a + b` not `x=a+b`
 - Align related code vertically when it aids scanning
 
 **File Size**
+
 - Target: <300 lines per file
 - Max: 500 lines (consider splitting)
 - One primary concept per file
 
 **Class Organization**
+
 - Constants → static variables → instance variables → constructors → public methods → private methods
 - Group by functionality, not by access level
 
 ### 8. Tests: The Safety Net
 
 **Test One Concept Per Test**
+
 - Each test validates one specific behavior
 - Name: `should_ReturnEmptyArray_When_NoUsersExist`
 - Given-When-Then structure
 
 **Clean Test Code**
+
 - Tests follow same clean code rules as production
 - Readability even more important (tests are documentation)
 - Extract test helpers, use builders for complex setups
 
 **F.I.R.S.T Principles**
+
 - **Fast**: Run quickly (milliseconds, not seconds)
 - **Independent**: No test depends on another
 - **Repeatable**: Same result every time
@@ -281,6 +321,7 @@ function deletePageAndDependencies(page: Page): void {
 ### TypeScript/React/Next.js (Frontend)
 
 **Directory Structure**
+
 ```
 frontend/
 ├── app/                          # Next.js app directory
@@ -315,6 +356,7 @@ frontend/
 ```
 
 **TypeScript Configuration**
+
 ```json
 {
   "compilerOptions": {
@@ -331,6 +373,7 @@ frontend/
 ```
 
 **Component Rules**
+
 - **Max 100 lines** per component file
 - **Single responsibility**: One component = one UI concept
 - **No business logic**: Move to hooks or services
@@ -338,6 +381,7 @@ frontend/
 - **Default exports**: Named exports only (searchability)
 
 **Hooks Guidelines**
+
 - Prefix with `use`: `useAuthenticatedUser()`, `useSongMetadata()`
 - Extract ALL stateful logic from components
 - Single responsibility per hook
@@ -345,20 +389,24 @@ frontend/
 - Document dependencies explicitly
 
 **Constants Organization**
+
 ```typescript
 // ❌ BAD: Magic values in code
-if (user.role === "admin") { }
-fetch("/api/songs")
+if (user.role === 'admin') {
+}
+fetch('/api/songs');
 
 // ✅ GOOD: Named constants
 import { UserRole } from '@/lib/enums/userRole.enum';
 import { API_ROUTES } from '@/lib/constants/api.constants';
 
-if (user.role === UserRole.Admin) { }
-fetch(API_ROUTES.songs.list)
+if (user.role === UserRole.Admin) {
+}
+fetch(API_ROUTES.songs.list);
 ```
 
 **Type Safety**
+
 - **Zero `any`**: Use `unknown` and narrow types
 - **Explicit return types**: On all functions
 - **Discriminated unions**: For complex state
@@ -367,6 +415,7 @@ fetch(API_ROUTES.songs.list)
 ### Go (Backend/Scraper)
 
 **Directory Structure**
+
 ```
 scraper/
 ├── cmd/
@@ -392,6 +441,7 @@ scraper/
 ```
 
 **Go Standards**
+
 - **Interfaces**: Small, focused (1-3 methods ideal)
 - **Error wrapping**: Always provide context with `fmt.Errorf("%w", err)`
 - **No global state**: Dependency injection via constructors
@@ -399,6 +449,7 @@ scraper/
 - **Package naming**: Short, lowercase, no underscores
 
 **Constants Pattern**
+
 ```go
 // ❌ BAD
 if status == "active" { }
@@ -414,6 +465,7 @@ if status == StatusActive { }
 ```
 
 **Error Handling**
+
 ```go
 // ❌ BAD
 if err != nil {
@@ -429,6 +481,7 @@ if err != nil {
 ### Universal Standards (All Languages)
 
 **Import Organization**
+
 1. Standard library
 2. External dependencies (alphabetical)
 3. Internal packages (alphabetical)
@@ -451,6 +504,7 @@ import { SongCard } from './SongCard';
 ```
 
 **File Naming**
+
 - **TypeScript**: `camelCase.ts`, `PascalCase.tsx` (components)
 - **Go**: `snake_case.go`
 - **Constants**: `*.constants.ts`, `constants.go`
@@ -458,6 +512,7 @@ import { SongCard } from './SongCard';
 - **Tests**: `*.test.ts`, `*_test.go`
 
 **Logging Standards**
+
 - **Never `console.log`**: Use structured logger
 - **Log levels**: ERROR, WARN, INFO, DEBUG
 - **Include context**: Request ID, user ID, operation
@@ -465,6 +520,7 @@ import { SongCard } from './SongCard';
 - **Structured format**: JSON for production
 
 **Security Rules**
+
 - API keys in environment variables only
 - Never commit `.env` (use `.env.example`)
 - Validate all external input
@@ -474,30 +530,35 @@ import { SongCard } from './SongCard';
 ## Refactoring Process
 
 ### Phase 1: Establish Foundation
+
 1. Create project-wide constants files
 2. Define comprehensive type system
 3. Build core utility library
 4. Set up shared enums
 
 ### Phase 2: Extract Duplication
+
 1. Identify repeated patterns (min 2+ occurrences)
 2. Extract to named, testable utilities
 3. Replace all instances with utility calls
 4. Verify behavior unchanged
 
 ### Phase 3: Function Decomposition
+
 1. Break large functions (>20 lines) into small, single-purpose functions
 2. Each function has clear input/output contract
 3. Eliminate side effects or make explicit
 4. Reduce parameter counts
 
 ### Phase 4: Naming & Clarity
+
 1. Rename vague identifiers to reveal intent
 2. Replace comments with self-explanatory code
 3. Ensure business logic reads as natural language
 4. Remove dead code
 
 ### Phase 5: Quality Tooling
+
 1. ESLint + Prettier (strict rules)
 2. Husky pre-commit hooks
 3. TypeScript strict mode
@@ -553,14 +614,17 @@ Create `frontend/.eslintrc.json`:
   },
   "rules": {
     // Function Quality
-    "max-lines-per-function": ["error", {"max": 20, "skipBlankLines": true, "skipComments": true}],
+    "max-lines-per-function": [
+      "error",
+      { "max": 20, "skipBlankLines": true, "skipComments": true }
+    ],
     "max-params": ["error", 3],
     "complexity": ["error", 5],
     "max-depth": ["error", 3],
     "max-nested-callbacks": ["error", 3],
 
     // Naming & Code Quality
-    "no-magic-numbers": ["error", {"ignore": [0, 1, -1], "ignoreArrayIndexes": true}],
+    "no-magic-numbers": ["error", { "ignore": [0, 1, -1], "ignoreArrayIndexes": true }],
     "no-console": "error",
     "no-debugger": "error",
     "no-alert": "error",
@@ -571,9 +635,9 @@ Create `frontend/.eslintrc.json`:
 
     // TypeScript Specific
     "@typescript-eslint/no-explicit-any": "error",
-    "@typescript-eslint/explicit-function-return-type": ["error", {"allowExpressions": true}],
+    "@typescript-eslint/explicit-function-return-type": ["error", { "allowExpressions": true }],
     "@typescript-eslint/explicit-module-boundary-types": "error",
-    "@typescript-eslint/no-unused-vars": ["error", {"argsIgnorePattern": "^_"}],
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "@typescript-eslint/no-floating-promises": "error",
     "@typescript-eslint/no-misused-promises": "error",
     "@typescript-eslint/await-thenable": "error",
@@ -583,31 +647,27 @@ Create `frontend/.eslintrc.json`:
     "@typescript-eslint/strict-boolean-expressions": "error",
 
     // Import Organization
-    "import/order": ["error", {
-      "groups": [
-        "builtin",
-        "external",
-        "internal",
-        "parent",
-        "sibling",
-        "index"
-      ],
-      "pathGroups": [
-        {
-          "pattern": "react",
-          "group": "external",
-          "position": "before"
-        },
-        {
-          "pattern": "@/lib/**",
-          "group": "internal",
-          "position": "before"
-        }
-      ],
-      "pathGroupsExcludedImportTypes": ["react"],
-      "alphabetize": {"order": "asc", "caseInsensitive": true},
-      "newlines-between": "always"
-    }],
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "@/lib/**",
+            "group": "internal",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"],
+        "alphabetize": { "order": "asc", "caseInsensitive": true },
+        "newlines-between": "always"
+      }
+    ],
     "import/no-duplicates": "error",
     "import/no-cycle": "error",
     "import/no-self-import": "error",
@@ -740,14 +800,8 @@ Add to `frontend/package.json`:
 ```json
 {
   "lint-staged": {
-    "*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write",
-      "bash -c 'npm run type-check'"
-    ],
-    "*.{json,md,yml,yaml}": [
-      "prettier --write"
-    ]
+    "*.{ts,tsx}": ["eslint --fix", "prettier --write", "bash -c 'npm run type-check'"],
+    "*.{json,md,yml,yaml}": ["prettier --write"]
   }
 }
 ```
@@ -764,16 +818,16 @@ module.exports = {
       2,
       'always',
       [
-        'feat',     // New feature
-        'fix',      // Bug fix
+        'feat', // New feature
+        'fix', // Bug fix
         'refactor', // Code refactor (no functional changes)
-        'perf',     // Performance improvement
-        'style',    // Code style (formatting, semicolons, etc.)
-        'test',     // Adding/updating tests
-        'docs',     // Documentation
-        'chore',    // Maintenance tasks
-        'ci',       // CI/CD changes
-        'revert',   // Revert previous commit
+        'perf', // Performance improvement
+        'style', // Code style (formatting, semicolons, etc.)
+        'test', // Adding/updating tests
+        'docs', // Documentation
+        'chore', // Maintenance tasks
+        'ci', // CI/CD changes
+        'revert', // Revert previous commit
       ],
     ],
     'subject-case': [2, 'always', 'sentence-case'],
@@ -872,12 +926,7 @@ Create `frontend/.vscode/settings.json`:
   },
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact"
-  ],
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
   "files.eol": "\n",
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true
@@ -913,16 +962,16 @@ linters:
     - ineffassign
     - deadcode
     - typecheck
-    - goconst        # Find repeated strings that should be constants
-    - dupl           # Find duplicated code
-    - gocritic       # Opinionated linter
-    - gocyclo        # Cyclomatic complexity
-    - funlen         # Function length
-    - misspell       # Spell checking
-    - unconvert      # Unnecessary type conversions
-    - unparam        # Unused function parameters
-    - nakedret       # Naked returns
-    - prealloc       # Slice preallocation
+    - goconst # Find repeated strings that should be constants
+    - dupl # Find duplicated code
+    - gocritic # Opinionated linter
+    - gocyclo # Cyclomatic complexity
+    - funlen # Function length
+    - misspell # Spell checking
+    - unconvert # Unnecessary type conversions
+    - unparam # Unused function parameters
+    - nakedret # Naked returns
+    - prealloc # Slice preallocation
 
 linters-settings:
   gocyclo:
@@ -986,6 +1035,7 @@ git diff --cached --name-only --diff-filter=ACM | grep '\.go$' | xargs goimports
 ## Output Expectations
 
 When complete, provide:
+
 - Summary of changes (constants added, utils created, functions refactored)
 - Metrics (magic values eliminated, duplication removed, avg function size)
 - Tooling setup confirmation (ESLint, Husky, Prettier configured)

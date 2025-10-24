@@ -50,12 +50,7 @@ export type CompleteSongContext = {
 
 export type ConfidenceLevel = 'high' | 'medium' | 'low';
 
-export type SuggestionType =
-  | 'lyric'
-  | 'chord'
-  | 'structure'
-  | 'thematic'
-  | 'edit';
+export type SuggestionType = 'lyric' | 'chord' | 'structure' | 'thematic' | 'edit';
 
 export type LyricSuggestion = {
   type: 'lyric';

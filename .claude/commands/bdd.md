@@ -59,6 +59,7 @@ DONE ✅ - Production-ready test suite
 ```
 
 **Example requests**:
+
 - "test Google OAuth login"
 - "test keyword filtering by volume"
 - "test billing page subscription management"
@@ -70,6 +71,7 @@ DONE ✅ - Production-ready test suite
 **Input**: User's feature description + domain
 
 **Skill execution**:
+
 1. Reads existing features in domain
 2. Extracts step vocabulary
 3. Checks for inconsistencies
@@ -81,6 +83,7 @@ DONE ✅ - Production-ready test suite
 6. Shows generated .feature file
 
 **Output**:
+
 - `e2e/features/{domain}/{feature}.feature`
 - Report of scenarios created
 - Validation results
@@ -92,6 +95,7 @@ DONE ✅ - Production-ready test suite
 **Input**: Generated .feature file
 
 **Skill execution**:
+
 1. Parses scenarios to identify required elements
 2. Generates 7 files following exact codebase patterns:
    - Fixtures (TestIds + Text + mock data)
@@ -105,6 +109,7 @@ DONE ✅ - Production-ready test suite
 4. Shows implementation summary
 
 **Output**:
+
 - `app/testing/fixtures/{domain}/{domain}-fixtures.ts`
 - `e2e/locators/{domain}-page.locators.ts`
 - `e2e/flows/{domain}-page.flow.ts`
@@ -120,6 +125,7 @@ DONE ✅ - Production-ready test suite
 **Input**: Generated step definitions + domain
 
 **Skill execution**:
+
 1. Analyzes step definitions to understand data needs
 2. Checks if fixtures already exist (reuse if possible)
 3. Generates TestIds constants
@@ -128,6 +134,7 @@ DONE ✅ - Production-ready test suite
 6. Validates against Zod schemas
 
 **Output**:
+
 - Updated `app/testing/fixtures/{domain}/{domain}-fixtures.ts`
 - TestIds, Text constants, mock data
 
@@ -138,6 +145,7 @@ DONE ✅ - Production-ready test suite
 **Input**: Generated TestIds from fixtures
 
 **Skill execution**:
+
 1. Reads TestIds from fixtures
 2. Finds UI components in domain
 3. Maps TestIds to React elements
@@ -146,6 +154,7 @@ DONE ✅ - Production-ready test suite
 6. Validates TypeScript compiles
 
 **Output**:
+
 - Updated UI components with data-testid attributes
 - Report of mapped vs unmapped TestIds
 
@@ -156,6 +165,7 @@ DONE ✅ - Production-ready test suite
 **Input**: All generated files
 
 **Skill execution**:
+
 1. Runs `pnpm validate:bdd`
 2. Runs `pnpm exec ast-grep scan`
 3. Checks patterns against bdd-example.md
@@ -168,6 +178,7 @@ DONE ✅ - Production-ready test suite
 6. Reports final status
 
 **Output**:
+
 - Validation report
 - List of any remaining issues
 - Pass/fail status
@@ -177,11 +188,13 @@ DONE ✅ - Production-ready test suite
 ### Step 7: Run Smoke Test
 
 **Execute**:
+
 ```bash
 pnpm test:bdd:smoke --grep "@{domain}"
 ```
 
 **Report**:
+
 - Test execution results
 - Passing/failing scenarios
 - Screenshots if failures occur
@@ -189,13 +202,15 @@ pnpm test:bdd:smoke --grep "@{domain}"
 ### Step 8: Final Summary
 
 **Report to user**:
-```markdown
+
+````markdown
 ## BDD Test Suite Complete ✅
 
 **Feature**: {feature name}
 **Domain**: {domain}
 
 **Generated Files**:
+
 1. ✅ Feature file: e2e/features/{domain}/{feature}.feature
 2. ✅ Fixtures: app/testing/fixtures/{domain}/{domain}-fixtures.ts (TestIds, Text, mock data)
 3. ✅ Locators: e2e/locators/{domain}-page.locators.ts
@@ -205,15 +220,16 @@ pnpm test:bdd:smoke --grep "@{domain}"
 7. ✅ POM: e2e/pages/{domain}-page.pom.ts
 8. ✅ Steps: e2e/steps/{domain}/{feature}.steps.ts
 
-**Updated Components**:
-9. ✅ UI components with data-testid attributes injected
+**Updated Components**: 9. ✅ UI components with data-testid attributes injected
 
 **Scenarios**:
+
 - ✅ Happy path (@smoke @{domain})
 - ✅ Loading state (@{domain} @loading)
 - ✅ Error handling (@{domain} @error)
 
 **Validation**:
+
 - ✅ Gherkin syntax valid
 - ✅ Pattern validation passed
 - ✅ AST-grep scan passed
@@ -221,15 +237,19 @@ pnpm test:bdd:smoke --grep "@{domain}"
 - ✅ Smoke tests passed
 
 **Run tests**:
+
 ```bash
 pnpm test:bdd:smoke --grep "@{domain}"
 ```
+````
 
 **Next steps**:
+
 1. Review generated code
 2. Add testIds to UI components (if new elements)
 3. Implement API routes (if new endpoints)
 4. Run full test suite
+
 ```
 
 ---
@@ -277,7 +297,9 @@ pnpm test:bdd:smoke --grep "@{domain}"
 
 ### Example 1: New Feature
 ```
+
 /bdd test user settings page with profile editing
+
 ```
 **Expected flow**:
 1. Infer domain: "profile" or "settings"
@@ -288,7 +310,9 @@ pnpm test:bdd:smoke --grep "@{domain}"
 
 ### Example 2: Expanding Existing Feature
 ```
+
 /bdd add error scenarios to billing page
+
 ```
 **Expected flow**:
 1. Read existing billing.feature
@@ -299,8 +323,10 @@ pnpm test:bdd:smoke --grep "@{domain}"
 
 ### Example 3: New Domain
 ```
+
 /bdd test analytics dashboard with charts
-```
+
+````
 **Expected flow**:
 1. Detect new domain: "analytics"
 2. Ask user to confirm domain name
@@ -371,7 +397,7 @@ reportCompletion({
   implementation: implementationResult,
   validation: validationResult,
 })
-```
+````
 
 ---
 

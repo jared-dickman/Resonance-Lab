@@ -16,6 +16,5 @@ Execute: Use `git add <specific-files>` (never `-A` or `.`). Commit. Show `git l
 
 Never add Claude attribution or co-author info. Write commits as the user would. No "Generated with Claude" or "Co-Authored-By" lines. No other thoughts or commentary.
 
-
 Never commit code with failing tests or linting errors!
-Run tests for playwright, storybook, and linting before confirming commits with user. Surface any issues.  
+Run tests for playwright, storybook, and linting before confirming commits with user. Surface any issues.

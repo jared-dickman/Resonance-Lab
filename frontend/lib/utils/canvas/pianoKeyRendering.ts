@@ -10,10 +10,7 @@ export interface DrawKeyConfig {
   isBlackKey: boolean;
 }
 
-export function drawWhiteKey(
-  ctx: CanvasRenderingContext2D,
-  config: DrawKeyConfig
-): void {
+export function drawWhiteKey(ctx: CanvasRenderingContext2D, config: DrawKeyConfig): void {
   const { x, width, height, isPressed } = config;
 
   const gradient = ctx.createLinearGradient(x, 0, x, height);
@@ -38,10 +35,7 @@ export function drawWhiteKey(
   ctx.fillRect(x, height - 20, width - 1, 20);
 }
 
-export function drawBlackKey(
-  ctx: CanvasRenderingContext2D,
-  config: DrawKeyConfig
-): void {
+export function drawBlackKey(ctx: CanvasRenderingContext2D, config: DrawKeyConfig): void {
   const { x, width, height, isPressed } = config;
 
   const gradient = ctx.createLinearGradient(x, 0, x, height);

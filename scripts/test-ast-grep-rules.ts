@@ -869,10 +869,10 @@ export default [
   fs.writeFileSync(configPath, eslintConfigContent);
 
   try {
-    const output = execSync(
-      `pnpm exec eslint --config ${configPath} --no-ignore ${filePath}`,
-      { encoding: 'utf-8', stdio: 'pipe' }
-    );
+    const output = execSync(`pnpm exec eslint --config ${configPath} --no-ignore ${filePath}`, {
+      encoding: 'utf-8',
+      stdio: 'pipe',
+    });
     // ESLint returns 0 exit code when no violations found
     return { passed: true, output };
   } catch (error: any) {
@@ -897,7 +897,7 @@ function runRule(rule: string, filePath: string): { passed: boolean; output: str
     'no-unsafe-innerHTML',
     'no-exposed-secrets',
     'no-unhandled-promises',
-    'require-zod-validation'
+    'require-zod-validation',
   ];
 
   if (eslintRules.includes(rule)) {
@@ -905,10 +905,10 @@ function runRule(rule: string, filePath: string): { passed: boolean; output: str
   }
 
   try {
-    const output = execSync(
-      `pnpm exec sg scan --rule rules/${rule}.yml ${filePath}`,
-      { encoding: 'utf-8', stdio: 'pipe' }
-    );
+    const output = execSync(`pnpm exec sg scan --rule rules/${rule}.yml ${filePath}`, {
+      encoding: 'utf-8',
+      stdio: 'pipe',
+    });
     return { passed: true, output };
   } catch (error: any) {
     return { passed: false, output: error.stdout || error.stderr || '' };
@@ -932,8 +932,11 @@ function testRule(testCase: TestCase): TestResult {
     if (result.passed) {
       errors.push(
         `❌ FAILED TO CATCH: ${shouldCatch.file}\n` +
-        `   Expected violation but rule passed\n` +
-        `   Code:\n${shouldCatch.code.split('\n').map(l => `   ${l}`).join('\n')}`
+          `   Expected violation but rule passed\n` +
+          `   Code:\n${shouldCatch.code
+            .split('\n')
+            .map(l => `   ${l}`)
+            .join('\n')}`
       );
     }
   }
@@ -946,9 +949,12 @@ function testRule(testCase: TestCase): TestResult {
     if (!result.passed) {
       errors.push(
         `❌ FALSE POSITIVE: ${shouldPass.file}\n` +
-        `   Expected pass but rule caught violation\n` +
-        `   Output: ${result.output.split('\n').slice(0, 3).join('\n')}\n` +
-        `   Code:\n${shouldPass.code.split('\n').map(l => `   ${l}`).join('\n')}`
+          `   Expected pass but rule caught violation\n` +
+          `   Output: ${result.output.split('\n').slice(0, 3).join('\n')}\n` +
+          `   Code:\n${shouldPass.code
+            .split('\n')
+            .map(l => `   ${l}`)
+            .join('\n')}`
       );
     }
   }

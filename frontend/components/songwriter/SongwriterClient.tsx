@@ -11,7 +11,11 @@ import ChatInterface from '@/components/songwriter/ChatInterface';
 import LyricsEditor from '@/components/songwriter/LyricsEditor';
 import ChordProgressionBuilder from '@/components/songwriter/ChordProgressionBuilder';
 import DraftManager from '@/components/songwriter/DraftManager';
-import { createEmptySongState, updateSongTitle, updateLyricsText } from '@/components/songwriter/state/songStateManager';
+import {
+  createEmptySongState,
+  updateSongTitle,
+  updateLyricsText,
+} from '@/components/songwriter/state/songStateManager';
 import { createLocalStorageAdapter } from '@/components/songwriter/persistence/localStorageAdapter';
 import type { CompleteSongState } from '@/components/songwriter/types/song';
 import type { FocusArea } from '@/components/songwriter/types/ui';

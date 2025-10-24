@@ -36,7 +36,8 @@ export const PRODUCTION_LINTING_RULES: Record<string, LintingRule> = {
     category: 'quality',
     severity: 'error',
     description: 'Enforce function declarations for React components instead of arrow functions',
-    rationale: 'Function declarations provide better debugging experience with named stack traces and are the project standard',
+    rationale:
+      'Function declarations provide better debugging experience with named stack traces and are the project standard',
     violations: [
       'export const MyComponent = () => <div />',
       'export const Component = memo(() => <div />)',
@@ -55,7 +56,8 @@ export const PRODUCTION_LINTING_RULES: Record<string, LintingRule> = {
     category: 'architecture',
     severity: 'error',
     description: 'Prohibit direct TanStack Query imports outside designated hook files',
-    rationale: 'Centralizes data fetching logic in feature hooks for maintainability and consistent error handling',
+    rationale:
+      'Centralizes data fetching logic in feature hooks for maintainability and consistent error handling',
     violations: [
       "import { useQuery } from '@tanstack/react-query' // in components",
       "import { useMutation } from '@tanstack/react-query' // in pages",
@@ -73,10 +75,11 @@ export const PRODUCTION_LINTING_RULES: Record<string, LintingRule> = {
     category: 'quality',
     severity: 'error',
     description: 'Enforce cn() utility for dynamic classNames instead of template literals',
-    rationale: 'The cn() utility handles edge cases, deduplication, and provides better TypeScript support',
+    rationale:
+      'The cn() utility handles edge cases, deduplication, and provides better TypeScript support',
     violations: [
       "className={`base ${active ? 'active' : ''}`}",
-      "className={`card card-${size} ${variant}`}",
+      'className={`card card-${size} ${variant}`}',
       'const classes = `btn ${modifier}`; <button className={classes} />',
     ],
     validPatterns: [
@@ -172,10 +175,7 @@ export const PRODUCTION_LINTING_RULES: Record<string, LintingRule> = {
     severity: 'error',
     description: 'Ensure all promises have error handling',
     rationale: 'Unhandled promise rejections crash Node.js and hide errors in browser',
-    violations: [
-      "fetch('/api/data') // No .catch()",
-      'axios.post(url, data) // No try/catch',
-    ],
+    violations: ["fetch('/api/data') // No .catch()", 'axios.post(url, data) // No try/catch'],
     validPatterns: [
       'await fetch("/api/data") // With await',
       'fetch().then().catch(handleError)',
@@ -194,9 +194,7 @@ export const PRODUCTION_LINTING_RULES: Record<string, LintingRule> = {
     severity: 'error',
     description: 'E2E tests must use getByTestId with constants, not getByRole',
     rationale: 'Role selectors are fragile and break with accessibility improvements',
-    violations: [
-      "page.getByRole('button') // in e2e tests",
-    ],
+    violations: ["page.getByRole('button') // in e2e tests"],
     validPatterns: [
       'page.getByTestId(TestIds.submitButton)',
       'getByRole() allowed in e2e/fixtures/',
@@ -210,10 +208,7 @@ export const PRODUCTION_LINTING_RULES: Record<string, LintingRule> = {
     severity: 'error',
     description: 'Test IDs must come from centralized fixtures, not inline strings',
     rationale: 'Centralized test IDs prevent typos and enable refactoring',
-    violations: [
-      'data-testid="submit-button"',
-      'getByTestId("user-profile")',
-    ],
+    violations: ['data-testid="submit-button"', 'getByTestId("user-profile")'],
     validPatterns: [
       'data-testid={TestIds.submitButton}',
       'import { TestIds } from "@/app/testing/fixtures"',
@@ -227,14 +222,8 @@ export const PRODUCTION_LINTING_RULES: Record<string, LintingRule> = {
     severity: 'error',
     description: 'E2E tests must use MSW fixtures for API mocking',
     rationale: 'Centralized fixtures ensure consistent test data and prevent flakiness',
-    violations: [
-      'page.route() with inline responses',
-      'Direct API interception in test files',
-    ],
-    validPatterns: [
-      'await mockUserEndpoints(page)',
-      'Fixtures defined in e2e/fixtures/',
-    ],
+    violations: ['page.route() with inline responses', 'Direct API interception in test files'],
+    validPatterns: ['await mockUserEndpoints(page)', 'Fixtures defined in e2e/fixtures/'],
   },
 
   // =====================================================
@@ -248,11 +237,7 @@ export const PRODUCTION_LINTING_RULES: Record<string, LintingRule> = {
     severity: 'error',
     description: 'Use pageRoutes constants instead of hardcoded paths',
     rationale: 'Centralized routes enable safe refactoring and prevent broken links',
-    violations: [
-      'href="/dashboard"',
-      'redirect("/login")',
-      'page.goto("/settings")',
-    ],
+    violations: ['href="/dashboard"', 'redirect("/login")', 'page.goto("/settings")'],
     validPatterns: [
       'href={pageRoutes.dashboard}',
       'redirect(pageRoutes.login)',
@@ -267,14 +252,8 @@ export const PRODUCTION_LINTING_RULES: Record<string, LintingRule> = {
     severity: 'error',
     description: 'Use apiRoutes constants for API paths',
     rationale: 'Prevents API versioning issues and broken endpoints',
-    violations: [
-      'fetch("/api/users")',
-      'axios.post("/api/auth/login")',
-    ],
-    validPatterns: [
-      'fetch(apiRoutes.users)',
-      'import { apiRoutes } from "@/shared/routes"',
-    ],
+    violations: ['fetch("/api/users")', 'axios.post("/api/auth/login")'],
+    validPatterns: ['fetch(apiRoutes.users)', 'import { apiRoutes } from "@/shared/routes"'],
   },
 
   // =====================================================
@@ -288,15 +267,8 @@ export const PRODUCTION_LINTING_RULES: Record<string, LintingRule> = {
     severity: 'error',
     description: 'Prohibit TypeScript "as any" type assertions',
     rationale: 'Type safety is critical for preventing runtime errors',
-    violations: [
-      'data as any',
-      'return result as any',
-    ],
-    validPatterns: [
-      'data as UserType',
-      'unknown for truly unknown types',
-      'Proper type guards',
-    ],
+    violations: ['data as any', 'return result as any'],
+    validPatterns: ['data as UserType', 'unknown for truly unknown types', 'Proper type guards'],
   },
 
   'no-backup-files': {
@@ -306,15 +278,8 @@ export const PRODUCTION_LINTING_RULES: Record<string, LintingRule> = {
     severity: 'error',
     description: 'Prevent backup file creation (Component.backup.tsx)',
     rationale: 'Version control handles backups; file copies create confusion',
-    violations: [
-      'Component.backup.tsx',
-      'service.old.ts',
-      'utils.copy.js',
-    ],
-    validPatterns: [
-      'Use git branches for experiments',
-      'Feature flags for gradual rollout',
-    ],
+    violations: ['Component.backup.tsx', 'service.old.ts', 'utils.copy.js'],
+    validPatterns: ['Use git branches for experiments', 'Feature flags for gradual rollout'],
   },
 
   'no-forbidden-status': {
@@ -324,10 +289,7 @@ export const PRODUCTION_LINTING_RULES: Record<string, LintingRule> = {
     severity: 'error',
     description: 'Prevent 403 status codes that expose authorization logic',
     rationale: '403 reveals resource existence; use 404 for security',
-    violations: [
-      'return new Response(null, { status: 403 })',
-      'res.status(403)',
-    ],
+    violations: ['return new Response(null, { status: 403 })', 'res.status(403)'],
     validPatterns: [
       'return new Response(null, { status: 404 })',
       '401 for authentication required',
@@ -439,7 +401,11 @@ export const EXECUTIVE_SUMMARY = {
   },
 
   compliance: {
-    owasp: ['A01:2021 - Broken Access Control', 'A03:2021 - Injection', 'A02:2021 - Cryptographic Failures'],
+    owasp: [
+      'A01:2021 - Broken Access Control',
+      'A03:2021 - Injection',
+      'A02:2021 - Cryptographic Failures',
+    ],
     iso27001: ['Access Control', 'Cryptography', 'Secure Development'],
     gdpr: ['Security of Processing', 'Integrity and Confidentiality'],
   },

@@ -11,25 +11,30 @@ Run the setup script to install all dependencies and configure tools:
 ## 📦 What's Included
 
 ### 1. **ast-grep Rules** (8 rules)
+
 - Security-focused structural pattern matching
 - Located in `/rules/*.yml`
 - Run with: `npm run ast-grep:scan`
 
 ### 2. **Custom ESLint Plugin** (8 rules)
+
 - Complex security and quality checks
 - Located in `/scripts/eslint-plugin-resonance.mjs`
 - Integrated with ESLint config
 
 ### 3. **Husky Git Hooks**
+
 - Pre-commit: Runs linting and formatting
 - Commit-msg: Enforces commit message standards
 - Located in `/.husky/`
 
 ### 4. **Prettier Configuration**
+
 - Consistent code formatting
 - Configured in `.prettierrc`
 
 ### 5. **Test Harness**
+
 - Comprehensive rule testing
 - Located in `/scripts/test-ast-grep-rules.ts`
 - Run with: `npm run test:ast-grep-rules`
@@ -53,18 +58,21 @@ npm run test:ast-grep-rules  # Test all linting rules
 ## 🔒 Security Rules
 
 ### Critical Security Enforcement
+
 - **no-unsafe-innerHTML**: Prevents XSS vulnerabilities
 - **no-exposed-secrets**: Detects hardcoded API keys/tokens
 - **no-sql-injection**: Enforces parameterized queries
 - **require-zod-validation**: Ensures API input validation
 
 ### Code Quality Rules
+
 - **require-function-components**: React component standards
 - **no-direct-tanstack**: Enforces data fetching patterns
 - **no-template-classname**: Use cn() utility for classes
 - **no-unhandled-promises**: Ensures error handling
 
 ### Testing Standards
+
 - **e2e-locators-no-getrole**: Stable E2E selectors
 - **no-magic-testids**: Centralized test IDs
 - **e2e-use-msw-fixtures**: Consistent API mocking
@@ -90,6 +98,7 @@ npm run test:ast-grep-rules  # Test all linting rules
 ## 📊 Rule Documentation
 
 See `rules-documentation.ts` for:
+
 - Complete rule catalog with examples
 - Business justification for each rule
 - ROI metrics and compliance mapping
@@ -107,20 +116,24 @@ See `rules-documentation.ts` for:
 ### Common Issues
 
 **ESLint not finding custom plugin:**
+
 - Ensure path in `eslint.config.mjs` points to correct plugin location
 - Check that plugin file exists at `/scripts/eslint-plugin-resonance.mjs`
 
 **ast-grep rules not running:**
+
 - Verify `sgconfig.yml` exists in project root
 - Check that rule files exist in `/rules/` directory
 
 **Husky hooks not executing:**
+
 - Run `npx husky install` to set up Git hooks
 - Make hooks executable: `chmod +x .husky/*`
 
 ## 📈 Impact
 
 With these tools configured, you'll prevent:
+
 - 50-100 bugs per quarter
 - Critical security vulnerabilities
 - 60% reduction in code review time
@@ -129,6 +142,7 @@ With these tools configured, you'll prevent:
 ## 🤝 Contributing
 
 When adding new rules:
+
 1. Add comprehensive test cases
 2. Document business justification
 3. Test against real codebase
@@ -136,4 +150,4 @@ When adding new rules:
 
 ---
 
-*Configured with enterprise-grade security and quality standards from BlogzillaV5*
+_Configured with enterprise-grade security and quality standards from BlogzillaV5_

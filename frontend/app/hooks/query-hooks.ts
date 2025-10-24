@@ -21,7 +21,7 @@ export function useApiQuery<
   TData = unknown,
   TError = Error,
   TTransformed = TData,
-  TKey extends QueryKey = QueryKey
+  TKey extends QueryKey = QueryKey,
 >(
   queryKey: TKey,
   queryFn: () => Promise<TData>,
@@ -56,7 +56,7 @@ export function useApiMutation<
   TData = unknown,
   TError = Error,
   TVariables = void,
-  TContext = unknown
+  TContext = unknown,
 >(
   mutationFn: (variables: TVariables) => Promise<TData>,
   options?: UseApiMutationOptions<TData, TError, TVariables, TContext>
@@ -70,7 +70,7 @@ export function useApiMutation<
       // Automatic cache invalidation
       if (invalidationKeys && invalidationKeys.length > 0) {
         await Promise.all(
-          invalidationKeys.map((key) =>
+          invalidationKeys.map(key =>
             queryClient.invalidateQueries({
               queryKey: key,
               refetchType: 'all',

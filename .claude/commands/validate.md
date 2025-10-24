@@ -21,6 +21,7 @@ If context is unclear:
 2. Identify expected changes: List modified files, success criteria (automated/manual), and key features (e.g., new
    components, routes, hooks).
 3. Spawn parallel research tasks:
+
    ```
    Task 1 - Database/ORM Changes:
    Check migrations (e.g., Prisma schema), schema diffs, and table structures against plan.

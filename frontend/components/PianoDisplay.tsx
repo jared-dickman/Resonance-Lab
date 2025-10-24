@@ -14,7 +14,11 @@ interface PianoDisplayProps {
 }
 
 export function PianoDisplay({ chordName, className = '' }: PianoDisplayProps) {
-  const { voicings, currentIndex: currentVoicingIndex, setCurrentIndex: setCurrentVoicingIndex } = useChordVoicings<PianoChordVoicing>({
+  const {
+    voicings,
+    currentIndex: currentVoicingIndex,
+    setCurrentIndex: setCurrentVoicingIndex,
+  } = useChordVoicings<PianoChordVoicing>({
     chordName,
     getVoicings: getPianoChordVoicings,
   });

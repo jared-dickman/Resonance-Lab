@@ -8,12 +8,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Slider } from '@/components/ui/slider';
 import type { Song } from '@/lib/types';
 import { adjustBpm } from '@/lib/utils/validation/bpm';
-import type {
-  LoopRange} from '@/lib/utils/song/loopBoundaries';
-import {
-  calculateLoopBoundaries,
-  shouldLoopRestart
-} from '@/lib/utils/song/loopBoundaries';
+import type { LoopRange } from '@/lib/utils/song/loopBoundaries';
+import { calculateLoopBoundaries, shouldLoopRestart } from '@/lib/utils/song/loopBoundaries';
 import { ChevronDown, ChevronUp, Minus, Pause, Play, Plus, Repeat, RotateCcw } from 'lucide-react';
 
 interface LoopPracticeModeProps {
@@ -25,7 +21,6 @@ interface LoopPracticeModeProps {
   lyricsContainerRef: React.RefObject<HTMLDivElement>;
   className?: string;
 }
-
 
 export function LoopPracticeMode({
   song,

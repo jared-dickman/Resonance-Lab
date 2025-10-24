@@ -16,12 +16,14 @@ Catch obscure business logic gotchas before coding starts. Reduce "oh shit" mome
 ## Scope
 
 **Analyzes:**
+
 - Business logic conflicts (billing plans, roles, permissions, subscription states)
 - Cross-feature interactions (forgotten features that touch the same domain)
 - State management edge cases (what happens during transitions)
 - Data consistency issues (orphaned records, cascade effects)
 
 **Does NOT:**
+
 - Generate code or tests
 - Auto-fix issues
 - Cover technical integration details (API contracts, race conditions)
@@ -29,6 +31,7 @@ Catch obscure business logic gotchas before coding starts. Reduce "oh shit" mome
 ## Input
 
 Accepts any of:
+
 - `/plan` output (plan.md)
 - Spec file (spec.md)
 - Natural language feature description
@@ -41,6 +44,7 @@ Accepts any of:
 ## 🚨 High Risk
 
 **Downgrade while admin features active**
+
 - Current: Admins can use advanced analytics
 - Conflict: What if user downgrades from Pro to Basic?
 - Impact: Loss of data? Feature locked? Permission errors?
@@ -49,6 +53,7 @@ Accepts any of:
 ## ⚠️ Medium Risk
 
 **Multi-workspace role inheritance**
+
 - Current: Users can be admin in workspace A, viewer in workspace B
 - Conflict: New global permissions might override workspace-level
 - Impact: Potential privilege escalation or access denial
@@ -57,6 +62,7 @@ Accepts any of:
 ## 💡 Low Risk / Questions
 
 **Trial expiration edge case**
+
 - What happens if trial expires mid-blog-generation?
 - Should operation complete or fail immediately?
 ```
@@ -73,6 +79,7 @@ Accepts any of:
 ## Detection Strategies
 
 **State transition conflicts:**
+
 ```bash
 # Find state machines and enums in domain
 ast-grep --pattern 'enum $NAME { $$$ }' --lang typescript
@@ -80,6 +87,7 @@ ast-grep --pattern 'enum $NAME { $$$ }' --lang typescript
 ```
 
 **Permission/role conflicts:**
+
 ```bash
 # Find permission checks
 grep -r "hasPermission\|canAccess\|isAdmin" app/features/[domain]
@@ -87,6 +95,7 @@ grep -r "hasPermission\|canAccess\|isAdmin" app/features/[domain]
 ```
 
 **Billing plan conflicts:**
+
 ```bash
 # Find plan-gated features
 grep -r "plan\.\|subscription\.\|tier\." app/features/
@@ -94,6 +103,7 @@ grep -r "plan\.\|subscription\.\|tier\." app/features/
 ```
 
 **Cross-feature dependencies:**
+
 ```bash
 # Find imports from other features
 grep -r "from.*features/" app/features/[new-feature]
@@ -103,22 +113,26 @@ grep -r "from.*features/" app/features/[new-feature]
 ## Anti-Patterns
 
 ❌ **Generating solutions:**
+
 ```markdown
 Fix: Add `if (user.plan === 'basic') return false`
 ```
 
 ✅ **Raising questions:**
+
 ```markdown
 What should happen when Basic plan users try to access Pro analytics?
 Found similar check in: app/features/reports/permissions.ts:45
 ```
 
 ❌ **Technical implementation details:**
+
 ```markdown
 Race condition in API endpoint...
 ```
 
 ✅ **Business logic focus:**
+
 ```markdown
 Two users editing same blog post - who wins? Current behavior unclear.
 ```
@@ -133,9 +147,11 @@ Two users editing same blog post - who wins? Current behavior unclear.
 ## Invocation
 
 **Auto-triggered by:**
+
 - gherkin-generator (after feature file generation, before implementation)
 
 **Manual trigger:**
+
 - After `/plan` completes
 - Before `/implement` starts
 - When spec feels incomplete

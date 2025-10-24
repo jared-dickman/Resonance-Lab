@@ -40,10 +40,7 @@ export function createFallingChord(
   };
 }
 
-export function isChordAlreadySpawned(
-  existingChords: FallingChord[],
-  timestamp: number
-): boolean {
+export function isChordAlreadySpawned(existingChords: FallingChord[], timestamp: number): boolean {
   const duplicateThreshold = 10;
   return existingChords.some(fc => Math.abs(fc.timestamp - timestamp) < duplicateThreshold);
 }

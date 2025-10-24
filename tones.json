@@ -1,664 +1,88 @@
 {
   "diatonicChords": {
     "major": {
-      "C": [
-        "C",
-        "Dm",
-        "Em",
-        "F",
-        "G",
-        "Am",
-        "Bdim"
-      ],
-      "G": [
-        "G",
-        "Am",
-        "Bm",
-        "C",
-        "D",
-        "Em",
-        "F#dim"
-      ],
-      "D": [
-        "D",
-        "Em",
-        "F#m",
-        "G",
-        "A",
-        "Bm",
-        "C#dim"
-      ],
-      "A": [
-        "A",
-        "Bm",
-        "C#m",
-        "D",
-        "E",
-        "F#m",
-        "G#dim"
-      ],
-      "E": [
-        "E",
-        "F#m",
-        "G#m",
-        "A",
-        "B",
-        "C#m",
-        "D#dim"
-      ],
-      "B": [
-        "B",
-        "C#m",
-        "D#m",
-        "E",
-        "F#",
-        "G#m",
-        "A#dim"
-      ],
-      "F#": [
-        "F#",
-        "G#m",
-        "A#m",
-        "B",
-        "C#",
-        "D#m",
-        "E#dim"
-      ],
-      "C#": [
-        "C#",
-        "D#m",
-        "E#m",
-        "F#",
-        "G#",
-        "A#m",
-        "B#dim"
-      ],
-      "F": [
-        "F",
-        "Gm",
-        "Am",
-        "Bb",
-        "C",
-        "Dm",
-        "Edim"
-      ],
-      "Bb": [
-        "Bb",
-        "Cm",
-        "Dm",
-        "Eb",
-        "F",
-        "Gm",
-        "Adim"
-      ],
-      "Eb": [
-        "Eb",
-        "Fm",
-        "Gm",
-        "Ab",
-        "Bb",
-        "Cm",
-        "Ddim"
-      ],
-      "Ab": [
-        "Ab",
-        "Bbm",
-        "Cm",
-        "Db",
-        "Eb",
-        "Fm",
-        "Gdim"
-      ]
+      "C": ["C", "Dm", "Em", "F", "G", "Am", "Bdim"],
+      "G": ["G", "Am", "Bm", "C", "D", "Em", "F#dim"],
+      "D": ["D", "Em", "F#m", "G", "A", "Bm", "C#dim"],
+      "A": ["A", "Bm", "C#m", "D", "E", "F#m", "G#dim"],
+      "E": ["E", "F#m", "G#m", "A", "B", "C#m", "D#dim"],
+      "B": ["B", "C#m", "D#m", "E", "F#", "G#m", "A#dim"],
+      "F#": ["F#", "G#m", "A#m", "B", "C#", "D#m", "E#dim"],
+      "C#": ["C#", "D#m", "E#m", "F#", "G#", "A#m", "B#dim"],
+      "F": ["F", "Gm", "Am", "Bb", "C", "Dm", "Edim"],
+      "Bb": ["Bb", "Cm", "Dm", "Eb", "F", "Gm", "Adim"],
+      "Eb": ["Eb", "Fm", "Gm", "Ab", "Bb", "Cm", "Ddim"],
+      "Ab": ["Ab", "Bbm", "Cm", "Db", "Eb", "Fm", "Gdim"]
     },
     "naturalMinor": {
-      "Am": [
-        "Am",
-        "Bdim",
-        "C",
-        "Dm",
-        "Em",
-        "F",
-        "G"
-      ],
-      "Em": [
-        "Em",
-        "F#dim",
-        "G",
-        "Am",
-        "Bm",
-        "C",
-        "D"
-      ],
-      "Bm": [
-        "Bm",
-        "C#dim",
-        "D",
-        "Em",
-        "F#m",
-        "G",
-        "A"
-      ],
-      "F#m": [
-        "F#m",
-        "G#dim",
-        "A",
-        "Bm",
-        "C#m",
-        "D",
-        "E"
-      ],
-      "C#m": [
-        "C#m",
-        "D#dim",
-        "E",
-        "F#m",
-        "G#m",
-        "A",
-        "B"
-      ],
-      "G#m": [
-        "G#m",
-        "A#dim",
-        "B",
-        "C#m",
-        "D#m",
-        "E",
-        "F#"
-      ],
-      "D#m": [
-        "D#m",
-        "E#dim",
-        "F#",
-        "G#m",
-        "A#m",
-        "B",
-        "C#"
-      ],
-      "Cm": [
-        "Cm",
-        "Ddim",
-        "Eb",
-        "Fm",
-        "Gm",
-        "Ab",
-        "Bb"
-      ],
-      "Gm": [
-        "Gm",
-        "Adim",
-        "Bb",
-        "Cm",
-        "Dm",
-        "Eb",
-        "F"
-      ],
-      "Dm": [
-        "Dm",
-        "Edim",
-        "F",
-        "Gm",
-        "Am",
-        "Bb",
-        "C"
-      ],
-      "Bbm": [
-        "Bbm",
-        "Cdim",
-        "Db",
-        "Ebm",
-        "Fm",
-        "Gb",
-        "Ab"
-      ],
-      "Fm": [
-        "Fm",
-        "Gdim",
-        "Ab",
-        "Bbm",
-        "Cm",
-        "Db",
-        "Eb"
-      ]
+      "Am": ["Am", "Bdim", "C", "Dm", "Em", "F", "G"],
+      "Em": ["Em", "F#dim", "G", "Am", "Bm", "C", "D"],
+      "Bm": ["Bm", "C#dim", "D", "Em", "F#m", "G", "A"],
+      "F#m": ["F#m", "G#dim", "A", "Bm", "C#m", "D", "E"],
+      "C#m": ["C#m", "D#dim", "E", "F#m", "G#m", "A", "B"],
+      "G#m": ["G#m", "A#dim", "B", "C#m", "D#m", "E", "F#"],
+      "D#m": ["D#m", "E#dim", "F#", "G#m", "A#m", "B", "C#"],
+      "Cm": ["Cm", "Ddim", "Eb", "Fm", "Gm", "Ab", "Bb"],
+      "Gm": ["Gm", "Adim", "Bb", "Cm", "Dm", "Eb", "F"],
+      "Dm": ["Dm", "Edim", "F", "Gm", "Am", "Bb", "C"],
+      "Bbm": ["Bbm", "Cdim", "Db", "Ebm", "Fm", "Gb", "Ab"],
+      "Fm": ["Fm", "Gdim", "Ab", "Bbm", "Cm", "Db", "Eb"]
     },
     "harmonicMinor": {
-      "Am": [
-        "Am",
-        "Bdim",
-        "C+",
-        "Dm",
-        "E",
-        "F",
-        "G#dim"
-      ],
-      "Em": [
-        "Em",
-        "F#dim",
-        "G+",
-        "Am",
-        "B",
-        "C",
-        "D#dim"
-      ],
-      "Bm": [
-        "Bm",
-        "C#dim",
-        "D+",
-        "Em",
-        "F#",
-        "G",
-        "A#dim"
-      ],
-      "F#m": [
-        "F#m",
-        "G#dim",
-        "A+",
-        "Bm",
-        "C#",
-        "D",
-        "E#dim"
-      ],
-      "C#m": [
-        "C#m",
-        "D#dim",
-        "E+",
-        "F#m",
-        "G#",
-        "A",
-        "B#dim"
-      ],
-      "G#m": [
-        "G#m",
-        "A#dim",
-        "B+",
-        "C#m",
-        "D#",
-        "E",
-        "Fx#dim"
-      ],
-      "D#m": [
-        "D#m",
-        "E#dim",
-        "F#+",
-        "G#m",
-        "A#",
-        "B",
-        "Cx#dim"
-      ],
-      "Cm": [
-        "Cm",
-        "Ddim",
-        "Eb+",
-        "Fm",
-        "G",
-        "Ab",
-        "Bdim"
-      ],
-      "Gm": [
-        "Gm",
-        "Adim",
-        "Bb+",
-        "Cm",
-        "D",
-        "Eb",
-        "Fdim"
-      ],
-      "Dm": [
-        "Dm",
-        "Edim",
-        "F+",
-        "Gm",
-        "A",
-        "Bb",
-        "Cdim"
-      ],
-      "Bbm": [
-        "Bbm",
-        "Cdim",
-        "Db+",
-        "Ebm",
-        "F",
-        "Gb",
-        "Adim"
-      ],
-      "Fm": [
-        "Fm",
-        "Gdim",
-        "Ab+",
-        "Bbm",
-        "C",
-        "Db",
-        "Edim"
-      ]
+      "Am": ["Am", "Bdim", "C+", "Dm", "E", "F", "G#dim"],
+      "Em": ["Em", "F#dim", "G+", "Am", "B", "C", "D#dim"],
+      "Bm": ["Bm", "C#dim", "D+", "Em", "F#", "G", "A#dim"],
+      "F#m": ["F#m", "G#dim", "A+", "Bm", "C#", "D", "E#dim"],
+      "C#m": ["C#m", "D#dim", "E+", "F#m", "G#", "A", "B#dim"],
+      "G#m": ["G#m", "A#dim", "B+", "C#m", "D#", "E", "Fx#dim"],
+      "D#m": ["D#m", "E#dim", "F#+", "G#m", "A#", "B", "Cx#dim"],
+      "Cm": ["Cm", "Ddim", "Eb+", "Fm", "G", "Ab", "Bdim"],
+      "Gm": ["Gm", "Adim", "Bb+", "Cm", "D", "Eb", "Fdim"],
+      "Dm": ["Dm", "Edim", "F+", "Gm", "A", "Bb", "Cdim"],
+      "Bbm": ["Bbm", "Cdim", "Db+", "Ebm", "F", "Gb", "Adim"],
+      "Fm": ["Fm", "Gdim", "Ab+", "Bbm", "C", "Db", "Edim"]
     },
     "melodicMinor": {
-      "Am": [
-        "Am",
-        "Bm",
-        "Caug",
-        "D",
-        "E",
-        "F#dim",
-        "G#dim"
-      ],
-      "Em": [
-        "Em",
-        "F#m",
-        "Gaug",
-        "A",
-        "B",
-        "C#dim",
-        "D#dim"
-      ],
-      "Bm": [
-        "Bm",
-        "C#m",
-        "Daug",
-        "E",
-        "F#",
-        "G#dim",
-        "A#dim"
-      ],
-      "F#m": [
-        "F#m",
-        "G#m",
-        "Aaug",
-        "B",
-        "C#",
-        "D#dim",
-        "E#dim"
-      ],
-      "C#m": [
-        "C#m",
-        "D#m",
-        "Eaug",
-        "F#",
-        "G#",
-        "A#dim",
-        "B#dim"
-      ],
-      "G#m": [
-        "G#m",
-        "A#m",
-        "Baug",
-        "C#",
-        "D#",
-        "E#dim",
-        "Fx#dim"
-      ],
-      "D#m": [
-        "D#m",
-        "E#m",
-        "F#aug",
-        "G#",
-        "A#",
-        "B#dim",
-        "Cx#dim"
-      ],
-      "Cm": [
-        "Cm",
-        "Dm",
-        "Ebaug",
-        "F",
-        "G",
-        "Adim",
-        "Bdim"
-      ],
-      "Gm": [
-        "Gm",
-        "Abm",
-        "Bbaug",
-        "C",
-        "D",
-        "Edim",
-        "Fdim"
-      ],
-      "Dm": [
-        "Dm",
-        "Ebm",
-        "Faugs",
-        "G",
-        "A",
-        "Bdim",
-        "Cdim"
-      ],
-      "Bbm": [
-        "Bbm",
-        "Cm",
-        "Dbaug",
-        "Eb",
-        "F",
-        "Gdim",
-        "Adim"
-      ],
-      "Fm": [
-        "Fm",
-        "Gm",
-        "Abaug",
-        "Bb",
-        "C",
-        "Ddim",
-        "Edim"
-      ]
+      "Am": ["Am", "Bm", "Caug", "D", "E", "F#dim", "G#dim"],
+      "Em": ["Em", "F#m", "Gaug", "A", "B", "C#dim", "D#dim"],
+      "Bm": ["Bm", "C#m", "Daug", "E", "F#", "G#dim", "A#dim"],
+      "F#m": ["F#m", "G#m", "Aaug", "B", "C#", "D#dim", "E#dim"],
+      "C#m": ["C#m", "D#m", "Eaug", "F#", "G#", "A#dim", "B#dim"],
+      "G#m": ["G#m", "A#m", "Baug", "C#", "D#", "E#dim", "Fx#dim"],
+      "D#m": ["D#m", "E#m", "F#aug", "G#", "A#", "B#dim", "Cx#dim"],
+      "Cm": ["Cm", "Dm", "Ebaug", "F", "G", "Adim", "Bdim"],
+      "Gm": ["Gm", "Abm", "Bbaug", "C", "D", "Edim", "Fdim"],
+      "Dm": ["Dm", "Ebm", "Faugs", "G", "A", "Bdim", "Cdim"],
+      "Bbm": ["Bbm", "Cm", "Dbaug", "Eb", "F", "Gdim", "Adim"],
+      "Fm": ["Fm", "Gm", "Abaug", "Bb", "C", "Ddim", "Edim"]
     },
     "dorian": {
-      "Dm": [
-        "Dm",
-        "Em",
-        "F",
-        "G",
-        "Am",
-        "Bb",
-        "C"
-      ],
-      "Am": [
-        "Am",
-        "Bm",
-        "C",
-        "D",
-        "Em",
-        "F",
-        "G"
-      ],
-      "Em": [
-        "Em",
-        "F#m",
-        "G",
-        "A",
-        "Bm",
-        "C",
-        "D"
-      ],
-      "Bm": [
-        "Bm",
-        "C#m",
-        "D",
-        "E",
-        "F#m",
-        "G",
-        "A"
-      ],
-      "F#m": [
-        "F#m",
-        "G#m",
-        "A",
-        "B",
-        "C#m",
-        "D",
-        "E"
-      ],
-      "C#m": [
-        "C#m",
-        "D#m",
-        "E",
-        "F#",
-        "G#m",
-        "A",
-        "B"
-      ],
-      "G#m": [
-        "G#m",
-        "A#m",
-        "B",
-        "C#",
-        "D#m",
-        "E",
-        "F#"
-      ],
-      "D#m": [
-        "D#m",
-        "E#m",
-        "F#",
-        "G#",
-        "A#m",
-        "B",
-        "C#"
-      ],
-      "Gm": [
-        "Gm",
-        "Abm",
-        "Ab",
-        "Bb",
-        "Cm",
-        "Db",
-        "Eb"
-      ],
-      "Cm": [
-        "Cm",
-        "Dm",
-        "Eb",
-        "F",
-        "Gm",
-        "Ab",
-        "Bb"
-      ],
-      "Fm": [
-        "Fm",
-        "Gm",
-        "Ab",
-        "Bb",
-        "Cm",
-        "Db",
-        "Eb"
-      ],
-      "Bbm": [
-        "Bbm",
-        "Cm",
-        "Db",
-        "Eb",
-        "Fm",
-        "Gb",
-        "Ab"
-      ]
+      "Dm": ["Dm", "Em", "F", "G", "Am", "Bb", "C"],
+      "Am": ["Am", "Bm", "C", "D", "Em", "F", "G"],
+      "Em": ["Em", "F#m", "G", "A", "Bm", "C", "D"],
+      "Bm": ["Bm", "C#m", "D", "E", "F#m", "G", "A"],
+      "F#m": ["F#m", "G#m", "A", "B", "C#m", "D", "E"],
+      "C#m": ["C#m", "D#m", "E", "F#", "G#m", "A", "B"],
+      "G#m": ["G#m", "A#m", "B", "C#", "D#m", "E", "F#"],
+      "D#m": ["D#m", "E#m", "F#", "G#", "A#m", "B", "C#"],
+      "Gm": ["Gm", "Abm", "Ab", "Bb", "Cm", "Db", "Eb"],
+      "Cm": ["Cm", "Dm", "Eb", "F", "Gm", "Ab", "Bb"],
+      "Fm": ["Fm", "Gm", "Ab", "Bb", "Cm", "Db", "Eb"],
+      "Bbm": ["Bbm", "Cm", "Db", "Eb", "Fm", "Gb", "Ab"]
     },
     "mixolydian": {
-      "G": [
-        "G",
-        "Am",
-        "Bm",
-        "C",
-        "Dm",
-        "Edim",
-        "F"
-      ],
-      "D": [
-        "D",
-        "Em",
-        "F#m",
-        "G",
-        "Am",
-        "Bdim",
-        "C"
-      ],
-      "A": [
-        "A",
-        "Bm",
-        "C#m",
-        "D",
-        "Em",
-        "F#dim",
-        "G"
-      ],
-      "E": [
-        "E",
-        "F#m",
-        "G#m",
-        "A",
-        "Bm",
-        "C#dim",
-        "D"
-      ],
-      "B": [
-        "B",
-        "C#m",
-        "D#m",
-        "E",
-        "F#m",
-        "G#dim",
-        "F#"
-      ],
-      "F#": [
-        "F#",
-        "G#m",
-        "A#m",
-        "B",
-        "C#m",
-        "D#dim",
-        "C#"
-      ],
-      "C#": [
-        "C#",
-        "D#m",
-        "E#m",
-        "F#",
-        "G#m",
-        "A#dim",
-        "G#"
-      ],
-      "C": [
-        "C",
-        "Dm",
-        "Em",
-        "F",
-        "Gm",
-        "Adim",
-        "Bb"
-      ],
-      "F": [
-        "F",
-        "Gm",
-        "Am",
-        "Bb",
-        "Cm",
-        "Bdim",
-        "Eb"
-      ],
-      "Bb": [
-        "Bb",
-        "Cm",
-        "Dm",
-        "Eb",
-        "Fm",
-        "Gdim",
-        "Ab"
-      ],
-      "Eb": [
-        "Eb",
-        "Fm",
-        "Gm",
-        "Ab",
-        "Bbm",
-        "Cdim",
-        "Db"
-      ],
-      "Ab": [
-        "Ab",
-        "Bbm",
-        "Cm",
-        "Db",
-        "Ebm",
-        "Fdim",
-        "Gb"
-      ]
+      "G": ["G", "Am", "Bm", "C", "Dm", "Edim", "F"],
+      "D": ["D", "Em", "F#m", "G", "Am", "Bdim", "C"],
+      "A": ["A", "Bm", "C#m", "D", "Em", "F#dim", "G"],
+      "E": ["E", "F#m", "G#m", "A", "Bm", "C#dim", "D"],
+      "B": ["B", "C#m", "D#m", "E", "F#m", "G#dim", "F#"],
+      "F#": ["F#", "G#m", "A#m", "B", "C#m", "D#dim", "C#"],
+      "C#": ["C#", "D#m", "E#m", "F#", "G#m", "A#dim", "G#"],
+      "C": ["C", "Dm", "Em", "F", "Gm", "Adim", "Bb"],
+      "F": ["F", "Gm", "Am", "Bb", "Cm", "Bdim", "Eb"],
+      "Bb": ["Bb", "Cm", "Dm", "Eb", "Fm", "Gdim", "Ab"],
+      "Eb": ["Eb", "Fm", "Gm", "Ab", "Bbm", "Cdim", "Db"],
+      "Ab": ["Ab", "Bbm", "Cm", "Db", "Ebm", "Fdim", "Gb"]
     }
   }
 }

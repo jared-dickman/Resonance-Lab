@@ -1,9 +1,6 @@
 import { HitQuality } from '@/lib/enums/hitQuality.enum';
 
-export function calculateCombo(
-  currentCombo: number,
-  hitQuality: HitQuality
-): number {
+export function calculateCombo(currentCombo: number, hitQuality: HitQuality): number {
   return hitQuality !== HitQuality.Miss ? currentCombo + 1 : 0;
 }
 

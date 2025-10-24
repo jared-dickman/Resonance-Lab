@@ -22,6 +22,7 @@ keywords: [pull request, pr, create pr, open pr, pr description]
 ### Analyze Changes
 
 **Understand the diff:**
+
 ```bash
 # Get commit history since branch diverged
 git log master..HEAD --oneline
@@ -34,6 +35,7 @@ git diff master...HEAD --name-only | grep -E "^app/features" | cut -d/ -f3 | sor
 ```
 
 **Extract context:**
+
 - What problem does this solve?
 - What features are added/changed?
 - What's the business impact?
@@ -45,6 +47,7 @@ git diff master...HEAD --name-only | grep -E "^app/features" | cut -d/ -f3 | sor
 **Format:** `type(scope): make it human and fun`
 
 **Examples:**
+
 ```
 ✨ feat(billing): let users upgrade without leaving the page
 🐛 fix(auth): stop login page from ghosting users
@@ -54,6 +57,7 @@ git diff master...HEAD --name-only | grep -E "^app/features" | cut -d/ -f3 | sor
 ```
 
 **Emoji guide:**
+
 - ✨ New features
 - 🐛 Bug fixes
 - 🎨 UI/UX improvements
@@ -101,6 +105,7 @@ git diff master...HEAD --name-only | grep -E "^app/features" | cut -d/ -f3 | sor
    - Magnifying glasses at different angles
 
 **Creative Guidelines:**
+
 - **Never copy-paste** - Generate new patterns each time
 - **Use emojis creatively** - Mix and match different ones
 - **Vary the structure** - Different heights, widths, alignments
@@ -109,6 +114,7 @@ git diff master...HEAD --name-only | grep -E "^app/features" | cut -d/ -f3 | sor
 - **Mix symbols** - Combine ASCII chars: `/\`, `()`, `||`, `--`, `__`, etc.
 
 **Example process:**
+
 1. Identify PR type (feature/bug/perf/etc)
 2. Choose theme elements (stars, rockets, etc)
 3. Create unique layout (never seen before)
@@ -120,6 +126,7 @@ git diff master...HEAD --name-only | grep -E "^app/features" | cut -d/ -f3 | sor
 ### Write Executive Summary
 
 **Template:**
+
 ```markdown
 ## 🎯 Executive Summary
 
@@ -155,8 +162,10 @@ git diff master...HEAD --name-only | grep -E "^app/features" | cut -d/ -f3 | sor
 ### Build Description Body
 
 **Structure:**
+
 ```markdown
 ## 🎯 Executive Summary
+
 [Impact, Why now, Confidence]
 
 [ASCII ART]
@@ -164,13 +173,16 @@ git diff master...HEAD --name-only | grep -E "^app/features" | cut -d/ -f3 | sor
 ## 💡 What Changed
 
 **Added:**
+
 - Feature X - [one-line benefit]
 - Feature Y - [one-line benefit]
 
 **Fixed:**
+
 - Issue Z - [what users will notice]
 
 **Improved:**
+
 - Thing A - [measurable improvement]
 
 ## 🧪 Testing
@@ -183,6 +195,7 @@ git diff master...HEAD --name-only | grep -E "^app/features" | cut -d/ -f3 | sor
 ## 📊 Metrics
 
 **Before → After:**
+
 - Response time: 800ms → 250ms
 - Test coverage: 75% → 92%
 - Bundle size: No change
@@ -195,6 +208,7 @@ git diff master...HEAD --name-only | grep -E "^app/features" | cut -d/ -f3 | sor
 ```
 
 **Keep it concise:**
+
 - Executive summary: 3 lines max
 - What changed: Bullets only, no paragraphs
 - Testing: Checklist format
@@ -203,36 +217,42 @@ git diff master...HEAD --name-only | grep -E "^app/features" | cut -d/ -f3 | sor
 ### Format with Beautiful Markdown
 
 **Visual hierarchy:**
-```markdown
+
+````markdown
 ## 🎯 Section (h2 with emoji)
 
 **Bold for emphasis**
+
 - Bullets for lists
 - Not paragraphs
 
-```code blocks with syntax```
+`code blocks with syntax`
 
 > Blockquotes for important callouts
 
 ---
 
 Horizontal rules to separate major sections
-```
+````
 
 **Anti-patterns:**
 
 ❌ **Walls of text:**
+
 ```markdown
 This PR implements a new feature that allows users to do X and Y and also fixes Z. We needed this because A and B and C...
 ```
 
 ✅ **Scannable bullets:**
+
 ```markdown
 **Added:**
+
 - User feature X
 - Admin feature Y
 
 **Fixed:**
+
 - Login flow issue Z
 ```
 
@@ -269,6 +289,7 @@ echo "PR created and opened: $PR_URL"
 ```
 
 **Must do:**
+
 - Create PR with gh CLI
 - Capture the final PR URL (not compare URL)
 - Open completed PR in browser
@@ -277,6 +298,7 @@ echo "PR created and opened: $PR_URL"
 ## PR Templates by Type
 
 ### Feature PR
+
 ```markdown
 ## 🎯 Executive Summary
 
@@ -294,6 +316,7 @@ echo "PR created and opened: $PR_URL"
 ## 💡 What Changed
 
 **Added:**
+
 - [Feature] - [User benefit]
 - [Feature] - [User benefit]
 
@@ -310,6 +333,7 @@ echo "PR created and opened: $PR_URL"
 ```
 
 ### Bug Fix PR
+
 ```markdown
 ## 🎯 Executive Summary
 
@@ -328,6 +352,7 @@ echo "PR created and opened: $PR_URL"
 ## 💡 What Changed
 
 **Fixed:**
+
 - [Issue] - [What users will notice]
 - [Issue] - [Root cause]
 
@@ -342,6 +367,7 @@ echo "PR created and opened: $PR_URL"
 ```
 
 ### Performance PR
+
 ```markdown
 ## 🎯 Executive Summary
 
@@ -359,11 +385,13 @@ echo "PR created and opened: $PR_URL"
 ## 💡 What Changed
 
 **Optimized:**
+
 - [Component] - [Technique used]
 
 ## 📊 Metrics
 
 **Before → After:**
+
 - Response time: [X]ms → [Y]ms
 - Memory usage: [X]MB → [Y]MB
 - API calls: [X] → [Y]
@@ -372,37 +400,47 @@ echo "PR created and opened: $PR_URL"
 ## Anti-Patterns
 
 ❌ **Too long:**
+
 ```markdown
 ## Summary
+
 This PR implements several changes including... [500 words]
 ```
 
 ❌ **No context:**
+
 ```markdown
 ## Changes
+
 - Updated files
 - Fixed stuff
 ```
 
 ❌ **Technical jargon:**
+
 ```markdown
 Refactored the observer pattern implementation in the singleton factory...
 ```
 
 ❌ **No visual breaks:**
+
 ```markdown
 We changed X and Y and Z and also fixed A and B...
 ```
 
 ✅ **Executive friendly:**
+
 ```markdown
 ## 🎯 Executive Summary
+
 **Impact:** 3x faster page loads
 **Why now:** Users complaining about speed
 **Confidence:** High - tested extensively
 
 ## 💡 What Changed
+
 **Optimized:**
+
 - Image loading - lazy load below fold
 - API calls - batch requests
 ```

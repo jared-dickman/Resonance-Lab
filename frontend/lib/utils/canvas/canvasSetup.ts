@@ -11,10 +11,7 @@ export interface CanvasContext {
   dpr: number;
 }
 
-export function setupCanvas(
-  canvas: HTMLCanvasElement,
-  size: CanvasSize
-): CanvasContext | null {
+export function setupCanvas(canvas: HTMLCanvasElement, size: CanvasSize): CanvasContext | null {
   const context = canvas.getContext('2d');
   if (!context) {
     return null;

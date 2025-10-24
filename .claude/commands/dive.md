@@ -18,20 +18,20 @@ Execution:
    - Ask EXACTLY ONE question per turn
    - Each builds on previous answers
    - Quality focus:
-     * Uncover assumptions ("What makes this better than X?")
-     * Explore why ("Why now vs later?")
-     * Probe constraints ("What can't change?")
-     * Define success ("How do we know it works?")
-     * Find edge cases ("What breaks this?")
-     * Examine trade-offs ("What are we sacrificing?")
-     * Clarify impact ("Who benefits most?")
+     - Uncover assumptions ("What makes this better than X?")
+     - Explore why ("Why now vs later?")
+     - Probe constraints ("What can't change?")
+     - Define success ("How do we know it works?")
+     - Find edge cases ("What breaks this?")
+     - Examine trade-offs ("What are we sacrificing?")
+     - Clarify impact ("Who benefits most?")
    - Format: Short, direct, thought-provoking
    - NO multiple choice unless critical for disambiguation
 
 3. Answer processing
    - After each answer, decide internally:
-     * Is clarity sufficient? (functional scope + constraints + success criteria clear)
-     * What's the most valuable next question?
+     - Is clarity sufficient? (functional scope + constraints + success criteria clear)
+     - What's the most valuable next question?
    - Track answers in memory (DO NOT write files during questioning)
    - Continue until clarity threshold met (typically 4-8 questions)
 

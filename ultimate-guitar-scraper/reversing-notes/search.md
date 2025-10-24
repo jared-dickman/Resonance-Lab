@@ -17,33 +17,29 @@ accept-encoding: gzip
 
 ```
 
-
 Basic search: `https://api.ultimate-guitar.com/api/v1/tab/search?title=johnny%20flynn&page=1&type[]=0&official[]=0&official[]=1&`
 
 Ukulele: `https://api.ultimate-guitar.com/api/v1/tab/search?title=johnny%20flynn&page=1&type[]=800&official[]=0&official[]=1&`
 
 Ukulele + Chords: `https://api.ultimate-guitar.com/api/v1/tab/search?title=johnny%20flynn&page=1&type[]=300&type[]=800&official[]=0&official[]=1&`
 
-
-### Search Suggestions:  
+### Search Suggestions:
 
 Suggestions have a limit of 5 characters: https://api.ultimate-guitar.com/api/v1/tab/suggestion?q=joh
 
-### Filtering:  
+### Filtering:
 
-Basic search for "johnny f": `https://api.ultimate-guitar.com/api/v1/tab/search?title=johnny%20f&page=1&type[]=0&&display_songs=1&filter=1`  
+Basic search for "johnny f": `https://api.ultimate-guitar.com/api/v1/tab/search?title=johnny%20f&page=1&type[]=0&&display_songs=1&filter=1`
 
-..and with "official" and "chords" types: `https://api.ultimate-guitar.com/api/v1/tab/search?title=johnny%20f&page=1&type[]=900&type[]=300&&display_songs=1&filter=1`  
+..and with "official" and "chords" types: `https://api.ultimate-guitar.com/api/v1/tab/search?title=johnny%20f&page=1&type[]=900&type[]=300&&display_songs=1&filter=1`
 
-with all tunings: `https://api.ultimate-guitar.com/api/v1/tab/search?title=johnny%20f&page=1&&tuning[]=standard&tuning[]=half-step%20down&tuning[]=b%20tuning&tuning[]=c%20tuning&tuning[]=d%20tuning&tuning[]=drop%20a&tuning[]=drop%20a%23&tuning[]=drop%20b&tuning[]=drop%20c&tuning[]=drop%20c%23&tuning[]=drop%20d&tuning[]=open%20c&tuning[]=open%20d&tuning[]=open%20e&tuning[]=open%20g&display_songs=1&filter=1`  
+with all tunings: `https://api.ultimate-guitar.com/api/v1/tab/search?title=johnny%20f&page=1&&tuning[]=standard&tuning[]=half-step%20down&tuning[]=b%20tuning&tuning[]=c%20tuning&tuning[]=d%20tuning&tuning[]=drop%20a&tuning[]=drop%20a%23&tuning[]=drop%20b&tuning[]=drop%20c&tuning[]=drop%20c%23&tuning[]=drop%20d&tuning[]=open%20c&tuning[]=open%20d&tuning[]=open%20e&tuning[]=open%20g&display_songs=1&filter=1`
 
+---
 
----  
+### Search by known chords
 
-### Search by known chords   
-
-I've also seen references to: `tab/search/chords`  
-
+I've also seen references to: `tab/search/chords`
 
 ```smali
 Function<>14990(1 params, 15 registers, 0 symbols):
@@ -92,13 +88,9 @@ Function<>14990(1 params, 15 registers, 0 symbols):
 EndFunction
 ```
 
+---
 
-
-
----  
-
-
-### Response Struct 
+### Response Struct
 
 ```go
 type SearchResult struct {
@@ -131,8 +123,7 @@ type SearchResult struct {
 }
 ```
 
-
-Ultimate-Guitar's android app uses React Native, which compiles the JS to bytecode with `Hermes`. Here's one of the decompiled functions that kicks off the search:  
+Ultimate-Guitar's android app uses React Native, which compiles the JS to bytecode with `Hermes`. Here's one of the decompiled functions that kicks off the search:
 
 ```
 Function<>14986(3 params, 22 registers, 1 symbols):

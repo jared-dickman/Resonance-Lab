@@ -6,14 +6,14 @@
 export interface PianoChordPosition {
   notes: number[]; // MIDI note numbers (e.g., [60, 64, 67] for C major)
   fingerNumbers?: number[]; // Optional finger numbers (1-5, thumb to pinky)
-  hand: "left" | "right" | "both";
-  spread: "close" | "open" | "wide"; // How spread out the chord is
+  hand: 'left' | 'right' | 'both';
+  spread: 'close' | 'open' | 'wide'; // How spread out the chord is
 }
 
 export interface PianoChordVoicing {
   name: string;
   position: PianoChordPosition;
-  difficulty: "beginner" | "intermediate" | "advanced";
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
   positionName: string;
   octave: number; // Which octave this voicing is in
 }
@@ -23,7 +23,7 @@ const NOTE_C4 = 60;
 
 // Helper to build chords from intervals
 function buildChord(root: number, intervals: number[]): number[] {
-  return intervals.map((interval) => root + interval);
+  return intervals.map(interval => root + interval);
 }
 
 /**
@@ -33,51 +33,51 @@ export const PIANO_CHORD_DATABASE: Record<string, PianoChordVoicing[]> = {
   // C Major
   C: [
     {
-      name: "C",
+      name: 'C',
       position: {
         notes: buildChord(NOTE_C4, [0, 4, 7]), // C E G
         fingerNumbers: [1, 3, 5],
-        hand: "right",
-        spread: "close",
+        hand: 'right',
+        spread: 'close',
       },
-      difficulty: "beginner",
-      positionName: "Root Position",
+      difficulty: 'beginner',
+      positionName: 'Root Position',
       octave: 4,
     },
     {
-      name: "C",
+      name: 'C',
       position: {
         notes: buildChord(NOTE_C4, [0, 7, 12 + 4]), // C G E (1st inversion)
         fingerNumbers: [1, 2, 5],
-        hand: "right",
-        spread: "close",
+        hand: 'right',
+        spread: 'close',
       },
-      difficulty: "beginner",
-      positionName: "1st Inversion",
+      difficulty: 'beginner',
+      positionName: '1st Inversion',
       octave: 4,
     },
     {
-      name: "C",
+      name: 'C',
       position: {
         notes: buildChord(NOTE_C4, [0, 12 + 4, 12 + 7]), // C E G (octave higher)
         fingerNumbers: [1, 3, 5],
-        hand: "right",
-        spread: "open",
+        hand: 'right',
+        spread: 'open',
       },
-      difficulty: "intermediate",
-      positionName: "Open Voicing",
+      difficulty: 'intermediate',
+      positionName: 'Open Voicing',
       octave: 4,
     },
     {
-      name: "C",
+      name: 'C',
       position: {
         notes: buildChord(NOTE_C4 - 12, [0, 4, 7]), // C E G (lower octave)
         fingerNumbers: [5, 3, 1],
-        hand: "left",
-        spread: "close",
+        hand: 'left',
+        spread: 'close',
       },
-      difficulty: "beginner",
-      positionName: "Root Position (Left)",
+      difficulty: 'beginner',
+      positionName: 'Root Position (Left)',
       octave: 3,
     },
   ],
@@ -85,39 +85,39 @@ export const PIANO_CHORD_DATABASE: Record<string, PianoChordVoicing[]> = {
   // D Major
   D: [
     {
-      name: "D",
+      name: 'D',
       position: {
         notes: buildChord(NOTE_C4 + 2, [0, 4, 7]), // D F# A
         fingerNumbers: [1, 3, 5],
-        hand: "right",
-        spread: "close",
+        hand: 'right',
+        spread: 'close',
       },
-      difficulty: "beginner",
-      positionName: "Root Position",
+      difficulty: 'beginner',
+      positionName: 'Root Position',
       octave: 4,
     },
     {
-      name: "D",
+      name: 'D',
       position: {
         notes: buildChord(NOTE_C4 + 2, [0, 7, 12 + 4]), // D A F#
         fingerNumbers: [1, 2, 5],
-        hand: "right",
-        spread: "close",
+        hand: 'right',
+        spread: 'close',
       },
-      difficulty: "beginner",
-      positionName: "1st Inversion",
+      difficulty: 'beginner',
+      positionName: '1st Inversion',
       octave: 4,
     },
     {
-      name: "D",
+      name: 'D',
       position: {
         notes: buildChord(NOTE_C4 + 2 - 12, [0, 4, 7]), // D F# A (lower octave)
         fingerNumbers: [5, 3, 1],
-        hand: "left",
-        spread: "close",
+        hand: 'left',
+        spread: 'close',
       },
-      difficulty: "beginner",
-      positionName: "Root Position (Left)",
+      difficulty: 'beginner',
+      positionName: 'Root Position (Left)',
       octave: 3,
     },
   ],
@@ -125,27 +125,27 @@ export const PIANO_CHORD_DATABASE: Record<string, PianoChordVoicing[]> = {
   // E Major
   E: [
     {
-      name: "E",
+      name: 'E',
       position: {
         notes: buildChord(NOTE_C4 + 4, [0, 4, 7]), // E G# B
         fingerNumbers: [1, 3, 5],
-        hand: "right",
-        spread: "close",
+        hand: 'right',
+        spread: 'close',
       },
-      difficulty: "beginner",
-      positionName: "Root Position",
+      difficulty: 'beginner',
+      positionName: 'Root Position',
       octave: 4,
     },
     {
-      name: "E",
+      name: 'E',
       position: {
         notes: buildChord(NOTE_C4 + 4 - 12, [0, 4, 7]), // E G# B (lower octave)
         fingerNumbers: [5, 3, 1],
-        hand: "left",
-        spread: "close",
+        hand: 'left',
+        spread: 'close',
       },
-      difficulty: "beginner",
-      positionName: "Root Position (Left)",
+      difficulty: 'beginner',
+      positionName: 'Root Position (Left)',
       octave: 3,
     },
   ],
@@ -153,27 +153,27 @@ export const PIANO_CHORD_DATABASE: Record<string, PianoChordVoicing[]> = {
   // F Major
   F: [
     {
-      name: "F",
+      name: 'F',
       position: {
         notes: buildChord(NOTE_C4 + 5, [0, 4, 7]), // F A C
         fingerNumbers: [1, 3, 5],
-        hand: "right",
-        spread: "close",
+        hand: 'right',
+        spread: 'close',
       },
-      difficulty: "beginner",
-      positionName: "Root Position",
+      difficulty: 'beginner',
+      positionName: 'Root Position',
       octave: 4,
     },
     {
-      name: "F",
+      name: 'F',
       position: {
         notes: buildChord(NOTE_C4 + 5 - 12, [0, 4, 7]), // F A C (lower octave)
         fingerNumbers: [5, 3, 1],
-        hand: "left",
-        spread: "close",
+        hand: 'left',
+        spread: 'close',
       },
-      difficulty: "beginner",
-      positionName: "Root Position (Left)",
+      difficulty: 'beginner',
+      positionName: 'Root Position (Left)',
       octave: 3,
     },
   ],
@@ -181,39 +181,39 @@ export const PIANO_CHORD_DATABASE: Record<string, PianoChordVoicing[]> = {
   // G Major
   G: [
     {
-      name: "G",
+      name: 'G',
       position: {
         notes: buildChord(NOTE_C4 + 7, [0, 4, 7]), // G B D
         fingerNumbers: [1, 3, 5],
-        hand: "right",
-        spread: "close",
+        hand: 'right',
+        spread: 'close',
       },
-      difficulty: "beginner",
-      positionName: "Root Position",
+      difficulty: 'beginner',
+      positionName: 'Root Position',
       octave: 4,
     },
     {
-      name: "G",
+      name: 'G',
       position: {
         notes: buildChord(NOTE_C4 + 7, [0, 7, 12 + 4]), // G D B (1st inversion)
         fingerNumbers: [1, 2, 5],
-        hand: "right",
-        spread: "close",
+        hand: 'right',
+        spread: 'close',
       },
-      difficulty: "beginner",
-      positionName: "1st Inversion",
+      difficulty: 'beginner',
+      positionName: '1st Inversion',
       octave: 4,
     },
     {
-      name: "G",
+      name: 'G',
       position: {
         notes: buildChord(NOTE_C4 + 7 - 12, [0, 4, 7]), // G B D (lower octave)
         fingerNumbers: [5, 3, 1],
-        hand: "left",
-        spread: "close",
+        hand: 'left',
+        spread: 'close',
       },
-      difficulty: "beginner",
-      positionName: "Root Position (Left)",
+      difficulty: 'beginner',
+      positionName: 'Root Position (Left)',
       octave: 3,
     },
   ],
@@ -221,27 +221,27 @@ export const PIANO_CHORD_DATABASE: Record<string, PianoChordVoicing[]> = {
   // A Major
   A: [
     {
-      name: "A",
+      name: 'A',
       position: {
         notes: buildChord(NOTE_C4 + 9, [0, 4, 7]), // A C# E
         fingerNumbers: [1, 3, 5],
-        hand: "right",
-        spread: "close",
+        hand: 'right',
+        spread: 'close',
       },
-      difficulty: "beginner",
-      positionName: "Root Position",
+      difficulty: 'beginner',
+      positionName: 'Root Position',
       octave: 4,
     },
     {
-      name: "A",
+      name: 'A',
       position: {
         notes: buildChord(NOTE_C4 + 9 - 12, [0, 4, 7]), // A C# E (lower octave)
         fingerNumbers: [5, 3, 1],
-        hand: "left",
-        spread: "close",
+        hand: 'left',
+        spread: 'close',
       },
-      difficulty: "beginner",
-      positionName: "Root Position (Left)",
+      difficulty: 'beginner',
+      positionName: 'Root Position (Left)',
       octave: 3,
     },
   ],
@@ -249,27 +249,27 @@ export const PIANO_CHORD_DATABASE: Record<string, PianoChordVoicing[]> = {
   // B Major
   B: [
     {
-      name: "B",
+      name: 'B',
       position: {
         notes: buildChord(NOTE_C4 + 11, [0, 4, 7]), // B D# F#
         fingerNumbers: [1, 3, 5],
-        hand: "right",
-        spread: "close",
+        hand: 'right',
+        spread: 'close',
       },
-      difficulty: "beginner",
-      positionName: "Root Position",
+      difficulty: 'beginner',
+      positionName: 'Root Position',
       octave: 4,
     },
     {
-      name: "B",
+      name: 'B',
       position: {
         notes: buildChord(NOTE_C4 + 11 - 12, [0, 4, 7]), // B D# F# (lower octave)
         fingerNumbers: [5, 3, 1],
-        hand: "left",
-        spread: "close",
+        hand: 'left',
+        spread: 'close',
       },
-      difficulty: "beginner",
-      positionName: "Root Position (Left)",
+      difficulty: 'beginner',
+      positionName: 'Root Position (Left)',
       octave: 3,
     },
   ],
@@ -277,81 +277,81 @@ export const PIANO_CHORD_DATABASE: Record<string, PianoChordVoicing[]> = {
   // Minor chords
   Am: [
     {
-      name: "Am",
+      name: 'Am',
       position: {
         notes: buildChord(NOTE_C4 + 9, [0, 3, 7]), // A C E
         fingerNumbers: [1, 3, 5],
-        hand: "right",
-        spread: "close",
+        hand: 'right',
+        spread: 'close',
       },
-      difficulty: "beginner",
-      positionName: "Root Position",
+      difficulty: 'beginner',
+      positionName: 'Root Position',
       octave: 4,
     },
     {
-      name: "Am",
+      name: 'Am',
       position: {
         notes: buildChord(NOTE_C4 + 9 - 12, [0, 3, 7]), // A C E (lower octave)
         fingerNumbers: [5, 3, 1],
-        hand: "left",
-        spread: "close",
+        hand: 'left',
+        spread: 'close',
       },
-      difficulty: "beginner",
-      positionName: "Root Position (Left)",
+      difficulty: 'beginner',
+      positionName: 'Root Position (Left)',
       octave: 3,
     },
   ],
 
   Dm: [
     {
-      name: "Dm",
+      name: 'Dm',
       position: {
         notes: buildChord(NOTE_C4 + 2, [0, 3, 7]), // D F A
         fingerNumbers: [1, 3, 5],
-        hand: "right",
-        spread: "close",
+        hand: 'right',
+        spread: 'close',
       },
-      difficulty: "beginner",
-      positionName: "Root Position",
+      difficulty: 'beginner',
+      positionName: 'Root Position',
       octave: 4,
     },
     {
-      name: "Dm",
+      name: 'Dm',
       position: {
         notes: buildChord(NOTE_C4 + 2 - 12, [0, 3, 7]), // D F A (lower octave)
         fingerNumbers: [5, 3, 1],
-        hand: "left",
-        spread: "close",
+        hand: 'left',
+        spread: 'close',
       },
-      difficulty: "beginner",
-      positionName: "Root Position (Left)",
+      difficulty: 'beginner',
+      positionName: 'Root Position (Left)',
       octave: 3,
     },
   ],
 
   Em: [
     {
-      name: "Em",
+      name: 'Em',
       position: {
         notes: buildChord(NOTE_C4 + 4, [0, 3, 7]), // E G B
         fingerNumbers: [1, 3, 5],
-        hand: "right",
-        spread: "close",
+        hand: 'right',
+        spread: 'close',
       },
-      difficulty: "beginner",
-      positionName: "Root Position",
+      difficulty: 'beginner',
+      positionName: 'Root Position',
       octave: 4,
     },
     {
-      name: "Em",
+      name: 'Em',
       position: {
         notes: buildChord(NOTE_C4 + 4 - 12, [0, 3, 7]), // E G B (lower octave)
         fingerNumbers: [5, 3, 1],
-        hand: "left",
-        spread: "close",
+        hand: 'left',
+        spread: 'close',
       },
-      difficulty: "beginner",
-      positionName: "Root Position (Left)",
+      difficulty: 'beginner',
+      positionName: 'Root Position (Left)',
       octave: 3,
     },
   ],
@@ -359,87 +359,87 @@ export const PIANO_CHORD_DATABASE: Record<string, PianoChordVoicing[]> = {
   // Seventh chords
   G7: [
     {
-      name: "G7",
+      name: 'G7',
       position: {
         notes: buildChord(NOTE_C4 + 7, [0, 4, 7, 10]), // G B D F
         fingerNumbers: [1, 2, 3, 5],
-        hand: "right",
-        spread: "close",
+        hand: 'right',
+        spread: 'close',
       },
-      difficulty: "intermediate",
-      positionName: "Root Position",
+      difficulty: 'intermediate',
+      positionName: 'Root Position',
       octave: 4,
     },
     {
-      name: "G7",
+      name: 'G7',
       position: {
         notes: buildChord(NOTE_C4 + 7 - 12, [0, 4, 7, 10]), // G B D F (lower octave)
         fingerNumbers: [5, 3, 2, 1],
-        hand: "left",
-        spread: "close",
+        hand: 'left',
+        spread: 'close',
       },
-      difficulty: "intermediate",
-      positionName: "Root Position (Left)",
+      difficulty: 'intermediate',
+      positionName: 'Root Position (Left)',
       octave: 3,
     },
   ],
 
   C7: [
     {
-      name: "C7",
+      name: 'C7',
       position: {
         notes: buildChord(NOTE_C4, [0, 4, 7, 10]), // C E G Bb
         fingerNumbers: [1, 2, 3, 5],
-        hand: "right",
-        spread: "close",
+        hand: 'right',
+        spread: 'close',
       },
-      difficulty: "intermediate",
-      positionName: "Root Position",
+      difficulty: 'intermediate',
+      positionName: 'Root Position',
       octave: 4,
     },
   ],
 
   D7: [
     {
-      name: "D7",
+      name: 'D7',
       position: {
         notes: buildChord(NOTE_C4 + 2, [0, 4, 7, 10]), // D F# A C
         fingerNumbers: [1, 2, 3, 5],
-        hand: "right",
-        spread: "close",
+        hand: 'right',
+        spread: 'close',
       },
-      difficulty: "intermediate",
-      positionName: "Root Position",
+      difficulty: 'intermediate',
+      positionName: 'Root Position',
       octave: 4,
     },
   ],
 
   E7: [
     {
-      name: "E7",
+      name: 'E7',
       position: {
         notes: buildChord(NOTE_C4 + 4, [0, 4, 7, 10]), // E G# B D
         fingerNumbers: [1, 2, 3, 5],
-        hand: "right",
-        spread: "close",
+        hand: 'right',
+        spread: 'close',
       },
-      difficulty: "intermediate",
-      positionName: "Root Position",
+      difficulty: 'intermediate',
+      positionName: 'Root Position',
       octave: 4,
     },
   ],
 
   A7: [
     {
-      name: "A7",
+      name: 'A7',
       position: {
         notes: buildChord(NOTE_C4 + 9, [0, 4, 7, 10]), // A C# E G
         fingerNumbers: [1, 2, 3, 5],
-        hand: "right",
-        spread: "close",
+        hand: 'right',
+        spread: 'close',
       },
-      difficulty: "intermediate",
-      positionName: "Root Position",
+      difficulty: 'intermediate',
+      positionName: 'Root Position',
       octave: 4,
     },
   ],
@@ -460,7 +460,7 @@ export function getPianoChordVoicings(chordName: string): PianoChordVoicing[] {
     return [];
   }
 
-  const [, root, quality = ""] = match;
+  const [, root, quality = ''] = match;
   const withQuality = (root ?? '') + quality;
 
   if (root && PIANO_CHORD_DATABASE[withQuality]) {
@@ -486,7 +486,7 @@ export function getDefaultPianoVoicing(chordName: string): PianoChordVoicing | n
  * Convert MIDI note number to note name
  */
 export function midiToNoteName(midi: number): string {
-  const noteNames = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+  const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
   const octave = Math.floor(midi / 12) - 1;
   const noteName = noteNames[midi % 12];
   return `${noteName}${octave}`;

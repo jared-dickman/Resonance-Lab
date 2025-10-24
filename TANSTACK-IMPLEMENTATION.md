@@ -40,45 +40,51 @@ frontend/
 ## Key Features Implemented
 
 ### 1. Global QueryClient ✅
+
 - Cache-level error handling (QueryCache, MutationCache)
 - Default options: 5min staleTime, 3 retries with exponential backoff
 - Smart retry logic: Retries 5xx/network errors, skips 4xx client errors
 
 ### 2. API Client ✅
+
 - Centralized fetch wrapper with consistent error handling
 - ApiClientError class with status codes
 - Built-in auth token injection (prepared for future auth)
 - Support for GET, POST, PUT, DELETE
 
 ### 3. Route Registry ✅
+
 ```typescript
 // app/config/apiRoutes.ts
 export const apiRoutes = {
   songs: '/api/songs',
-  songDetail: (artistSlug: string, songSlug: string) =>
-    `/api/songs/${artistSlug}/${songSlug}`,
+  songDetail: (artistSlug: string, songSlug: string) => `/api/songs/${artistSlug}/${songSlug}`,
   search: '/api/search',
 } as const;
 ```
 
 ### 4. Custom Hooks ✅
+
 **useApiQuery** - Wraps useQuery with consistent typing
 **useApiMutation** - Automatic cache invalidation on success
 
 ### 5. Songs Feature ✅
+
 Complete three-file pattern implementation:
 
 **keys.ts** - Hierarchical cache keys:
+
 ```typescript
 export const songKeys = {
   all: ['songs'] as const,
   lists: () => [...songKeys.all, 'list'] as const,
   detail: (artistSlug: string, songSlug: string) =>
     [...songKeys.all, 'detail', artistSlug, songSlug] as const,
-}
+};
 ```
 
 **queries.ts** - Pure API calls:
+
 ```typescript
 export async function fetchSongsList(): Promise<SavedSongResponse[]> {
   return apiClient.get<SavedSongResponse[]>(apiRoutes.songs);
@@ -86,16 +92,18 @@ export async function fetchSongsList(): Promise<SavedSongResponse[]> {
 ```
 
 **options.ts** - Query configuration:
+
 ```typescript
 export const songOptions = {
   list: () => ({
     queryKey: songKeys.list(),
     queryFn: fetchSongsList,
   }),
-}
+};
 ```
 
 **hooks.ts** - Component API:
+
 ```typescript
 export function useSongs() {
   const options = songOptions.list();
@@ -111,36 +119,36 @@ export function useSongs() {
 ```
 
 ### 6. Type Safety ✅
+
 - Zod schemas for all requests/responses
 - View transformers separate API types from UI types
 - No `any` types used
 
 ### 7. Enforcement ✅
+
 ast-grep rule blocks direct TanStack usage outside allowed files:
+
 - ✅ Allowed: app/hooks/query-hooks.ts, app/features/\*\*/hooks.ts
 - ❌ Blocked: Components importing useQuery/useMutation directly
 
 ## Migration Complete
 
 ### Before (Old Pattern):
+
 ```typescript
 // lib/SongsContext.tsx - Manual state management
 const [songs, setSongs] = useState<SavedSong[]>([]);
-const { data, isLoading, error, execute } = useAsyncApi(
-  listSavedSongs,
-  "Failed to load songs"
-);
+const { data, isLoading, error, execute } = useAsyncApi(listSavedSongs, 'Failed to load songs');
 ```
 
 ### After (TanStack Pattern):
+
 ```typescript
 // app/features/songs/hooks.ts
 export function useSongs() {
-  return useApiQuery<SavedSongResponse[], Error, SavedSongView[]>(
-    songKeys.list(),
-    fetchSongsList,
-    { select: toSongsListView }
-  );
+  return useApiQuery<SavedSongResponse[], Error, SavedSongView[]>(songKeys.list(), fetchSongsList, {
+    select: toSongsListView,
+  });
 }
 
 // app/layout.tsx
@@ -196,21 +204,22 @@ export function useSearchSongs(input: SearchRequestInput) {
 ```
 
 Component usage:
+
 ```typescript
 const { data: results } = useSearchSongs({ artist, title });
 ```
 
 ## Key Differences vs. Default TanStack
 
-| Default | BlogzillaV5 Pattern |
-|---------|---------------------|
-| Direct useQuery in components | Feature hooks only (useSongs) |
-| Inline query keys | Centralized hierarchical key factories |
-| Per-component error handling | Global cache-level error handlers |
-| Manual token injection | Automatic via apiClient |
-| Manual cache invalidation | Automatic via useApiMutation |
-| Optional types | Enforced Zod + transformers |
-| No enforcement | ast-grep blocks violations |
+| Default                       | BlogzillaV5 Pattern                    |
+| ----------------------------- | -------------------------------------- |
+| Direct useQuery in components | Feature hooks only (useSongs)          |
+| Inline query keys             | Centralized hierarchical key factories |
+| Per-component error handling  | Global cache-level error handlers      |
+| Manual token injection        | Automatic via apiClient                |
+| Manual cache invalidation     | Automatic via useApiMutation           |
+| Optional types                | Enforced Zod + transformers            |
+| No enforcement                | ast-grep blocks violations             |
 
 ---
 

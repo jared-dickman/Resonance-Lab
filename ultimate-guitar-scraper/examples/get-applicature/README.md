@@ -1,4 +1,4 @@
-# Get applicature  
+# Get applicature
 
 ```go
 // Create a new ultimateguitar
@@ -21,4 +21,4 @@ for _, applicature := range applicatures {
 }
 ```
 
-See `./main.go` in this directory for an example. 
+See `./main.go` in this directory for an example.

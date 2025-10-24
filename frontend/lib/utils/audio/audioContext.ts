@@ -8,8 +8,7 @@ export function createAudioContext(): AudioContext | null {
   }
 
   const windowWithWebkit = window as WindowWithWebkit;
-  const AudioContextConstructor =
-    window.AudioContext || windowWithWebkit.webkitAudioContext;
+  const AudioContextConstructor = window.AudioContext || windowWithWebkit.webkitAudioContext;
 
   if (!AudioContextConstructor) {
     return null;

@@ -18,6 +18,7 @@ keywords: []
 ### Core Mandate
 
 Every UI element requiring test coverage receives a precisely-named, semantically-rich `data-testid` that:
+
 - **Describes WHAT** (element type: button, input, form, card)
 - **Describes WHERE** (domain, component hierarchy)
 - **Describes PURPOSE** (action or content: save, filter, error, loading)
@@ -26,11 +27,13 @@ Every UI element requiring test coverage receives a precisely-named, semanticall
 ### Quality Standards
 
 **❌ Unacceptable:**
+
 - `data-testid="button1"` (meaningless)
 - `data-testid="save"` (ambiguous - what saves?)
 - `data-testid={saveBtn}` (missing context)
 
 **✅ World-Class:**
+
 - `data-testid={BillingTestIds.planCardSaveButton}` (domain + component + element + purpose)
 - `data-testid={KeywordTestIds.searchFormInput}` (component + element type)
 - `data-testid={BrandTestIds.profileHeaderTitle}` (location + element)
@@ -44,33 +47,35 @@ Every UI element requiring test coverage receives a precisely-named, semanticall
 **Format:** `domain-component-element-type-purpose`
 
 **Examples:**
+
 ```typescript
 export const BillingTestIds = {
   // Page-level elements
-  pageHeader: 'billing-page-header',                      // domain-page-element
-  pageTitle: 'billing-page-title-text',                   // domain-page-element-type
+  pageHeader: 'billing-page-header', // domain-page-element
+  pageTitle: 'billing-page-title-text', // domain-page-element-type
 
   // Component-level elements
-  planCardContainer: 'billing-plan-card-container',       // domain-component-element
-  planCardTitle: 'billing-plan-card-title-text',          // domain-component-element-type
+  planCardContainer: 'billing-plan-card-container', // domain-component-element
+  planCardTitle: 'billing-plan-card-title-text', // domain-component-element-type
   planCardPrice: 'billing-plan-card-price-text',
-  planCardSaveButton: 'billing-plan-card-save-button',    // domain-component-element-action
+  planCardSaveButton: 'billing-plan-card-save-button', // domain-component-element-action
   planCardCancelButton: 'billing-plan-card-cancel-button',
 
   // Form elements
-  upgradeFormInput: 'billing-upgrade-form-input',         // domain-component-element
+  upgradeFormInput: 'billing-upgrade-form-input', // domain-component-element
   upgradeFormSubmitButton: 'billing-upgrade-form-submit-button',
   upgradeFormCancelButton: 'billing-upgrade-form-cancel-button',
 
   // State elements
-  loadingSpinner: 'billing-loading-spinner',              // domain-state-element
-  errorMessage: 'billing-error-message-text',             // domain-state-element-type
+  loadingSpinner: 'billing-loading-spinner', // domain-state-element
+  errorMessage: 'billing-error-message-text', // domain-state-element-type
   successToast: 'billing-success-toast-container',
 
   // List elements (with dynamic functions)
   planCard: (planId: string) => `billing-plan-card-${planId}`,
-  planCardButton: (planId: string, action: string) => `billing-plan-card-${planId}-${action}-button`,
-} as const
+  planCardButton: (planId: string, action: string) =>
+    `billing-plan-card-${planId}-${action}-button`,
+} as const;
 ```
 
 ### Element Type Taxonomy
@@ -79,31 +84,31 @@ export const BillingTestIds = {
 
 ```typescript
 // Buttons
-saveButton, cancelButton, submitButton, closeButton, deleteButton
+(saveButton, cancelButton, submitButton, closeButton, deleteButton);
 
 // Inputs
-emailInput, passwordInput, searchInput, filterInput, amountInput
+(emailInput, passwordInput, searchInput, filterInput, amountInput);
 
 // Text Elements
-titleText, descriptionText, labelText, errorText, hintText
+(titleText, descriptionText, labelText, errorText, hintText);
 
 // Containers
-cardContainer, formContainer, modalContainer, listContainer
+(cardContainer, formContainer, modalContainer, listContainer);
 
 // Interactive Elements
-dropdown, checkbox, radioButton, toggle, slider
+(dropdown, checkbox, radioButton, toggle, slider);
 
 // State Indicators
-loadingSpinner, errorMessage, successBanner, warningAlert
+(loadingSpinner, errorMessage, successBanner, warningAlert);
 
 // Navigation
-headerNav, sidebarNav, breadcrumbNav, tabNav
+(headerNav, sidebarNav, breadcrumbNav, tabNav);
 
 // Media
-avatarImage, logoImage, thumbnailImage, videoPlayer
+(avatarImage, logoImage, thumbnailImage, videoPlayer);
 
 // Tables/Lists
-dataTable, itemList, gridLayout
+(dataTable, itemList, gridLayout);
 ```
 
 ### Domain Prefix Requirements
@@ -114,14 +119,14 @@ dataTable, itemList, gridLayout
 
 ```typescript
 // ✅ Correct - Clear domain ownership
-billing-plan-card-save-button
-keywords-search-form-input
-brand-profile-header-title
+billing - plan - card - save - button;
+keywords - search - form - input;
+brand - profile - header - title;
 
 // ❌ Wrong - Domain ambiguous
-plan-card-save-button      // Which feature's plans?
-search-input               // Which search?
-header-title               // Which page?
+plan - card - save - button; // Which feature's plans?
+search - input; // Which search?
+header - title; // Which page?
 ```
 
 ---
@@ -180,7 +185,7 @@ export const StepTestIds = {
 export const CompanyTestIds = {
   userRow: (userId: string, role: string) => `company-user-row-${userId}-${role}`,
   userRowEditButton: (userId: string) => `company-user-row-${userId}-edit-button`,
-} as const
+} as const;
 ```
 
 ---
@@ -190,16 +195,18 @@ export const CompanyTestIds = {
 ### Phase 1: Analyze Fixtures
 
 **Input:** Generated fixtures file
+
 ```typescript
 // app/testing/fixtures/billing/billing-fixtures.ts
 export const BillingTestIds = {
   pageHeader: 'billing-page-header',
   planCardSaveButton: 'billing-plan-card-save-button',
   upgradeFormInput: 'billing-upgrade-form-input',
-} as const
+} as const;
 ```
 
 **Extract:**
+
 1. Domain: `billing`
 2. Components: `page`, `plan-card`, `upgrade-form`
 3. Elements: `header`, `save-button`, `input`
@@ -208,6 +215,7 @@ export const BillingTestIds = {
 ### Phase 2: Map to Components
 
 **Search strategy:**
+
 ```
 1. app/components/billing/          → BillingPage.tsx, PlanCard.tsx
 2. app/(routes)/billing/page.tsx    → Route page
@@ -216,6 +224,7 @@ export const BillingTestIds = {
 ```
 
 **Matching algorithm:**
+
 ```
 TestID: billing-plan-card-save-button
 ↓
@@ -255,12 +264,14 @@ TestID: billing-plan-card-save-button
 ### Phase 4: Inject with Precision
 
 **Import pattern:**
+
 ```typescript
 // Add after existing imports, before component definition
-import {BillingTestIds} from '@/app/testing/fixtures/billing/billing-fixtures'
+import { BillingTestIds } from '@/app/testing/fixtures/billing/billing-fixtures';
 ```
 
 **Injection pattern:**
+
 ```typescript
 // BEFORE
 <Button
@@ -281,6 +292,7 @@ import {BillingTestIds} from '@/app/testing/fixtures/billing/billing-fixtures'
 ```
 
 **Formatting rules:**
+
 - `data-testid` on separate line (readability)
 - Final attribute position (consistent location)
 - Curly braces: `{TestIds.element}` (never strings)
@@ -289,6 +301,7 @@ import {BillingTestIds} from '@/app/testing/fixtures/billing/billing-fixtures'
 ### Phase 5: Validate Excellence
 
 **Automated checks:**
+
 ```bash
 pnpm typecheck                    # TypeScript compilation
 pnpm exec ast-grep scan          # No magic string testIds
@@ -296,6 +309,7 @@ pnpm exec eslint --fix           # Code style compliance
 ```
 
 **Manual verification:**
+
 - [ ] Every TestID from fixtures has matching element
 - [ ] Element type matches name suffix (-button, -input, -text)
 - [ ] Semantic meaning is clear and unambiguous
@@ -371,6 +385,7 @@ export const BillingTestIds = {
 ### Pre-Integration Checklist
 
 Before injecting any TestIDs:
+
 - [ ] Fixtures follow hierarchical naming: `domain-component-element-type-purpose`
 - [ ] Element types are explicit: `-button`, `-input`, `-text`, `-container`
 - [ ] No ambiguous names: avoid `item`, `box`, `thing`, `data`
@@ -380,6 +395,7 @@ Before injecting any TestIDs:
 ### Post-Integration Validation
 
 After injecting TestIDs:
+
 - [ ] `pnpm typecheck` passes
 - [ ] `pnpm exec ast-grep scan` shows no violations
 - [ ] All TestIDs from fixtures are mapped
@@ -431,6 +447,7 @@ If TestIDs can't be mapped:
 **TestIDs Integrated:** {M}/{Total}
 
 **Quality Metrics:**
+
 - ✅ Semantic naming: 100% compliance
 - ✅ Element type suffix: 100% present
 - ✅ Domain prefix: 100% present
@@ -439,11 +456,13 @@ If TestIDs can't be mapped:
 - ✅ Duplicate TestIDs: None
 
 **Testing Ready:**
+
 - Vitest: `pnpm test:unit --grep "{domain}"`
 - Storybook: All stories with play functions
 - Playwright: `pnpm test:bdd:smoke --grep "@{domain}"`
 
 **Maintainability Score:** A+
+
 - Clear, self-documenting TestIDs
 - Hierarchical organization
 - List patterns using functions
@@ -479,6 +498,7 @@ Production-Ready ✅
 ## NOTES
 
 **Philosophy:** TestIDs are first-class documentation. A developer should read `billing-plan-card-save-button` and immediately know:
+
 - Domain: `billing`
 - Component: `plan-card`
 - Element: `button`

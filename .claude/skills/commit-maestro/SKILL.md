@@ -16,48 +16,63 @@ keywords: [commit, git, validation, conventional commits, husky]
 All checks must pass before committing:
 
 ### 1. Schema & Migration Integrity
+
 ```bash
 pnpm db:verify
 ```
+
 Required if: `db/drizzle/schema/` files changed
 
 ### 2. TypeScript Type Checking
+
 ```bash
 pnpm typecheck
 ```
+
 Required if: `.ts` or `.tsx` files changed
 
 ### 3. ESLint Auto-fix & Validation
+
 ```bash
 pnpm exec eslint --fix --max-warnings=0 [staged files]
 ```
+
 Auto-fixes issues and fails on unfixable errors
 
 ### 4. AST-Grep Structural Linting
+
 ```bash
 pnpm exec ast-grep scan
 ```
+
 Enforces 16 security and architecture rules
 
 ### 5. AST-Grep Rules Test
+
 ```bash
 pnpm test:ast-grep-rules
 ```
+
 Ensures all 16 lint rules are working correctly
 
 ### 6. BDD Smoke Tests
+
 ```bash
 pnpm test:bdd:smoke
 ```
+
 Required if: `e2e/`, `app/components/`, or `app/lib/` changed
 
 ### 7. OpenAPI Validation
+
 ```bash
 pnpm openapi:validate
 ```
+
 Required if: OpenAPI/Swagger files changed
 
 ### 8. Security Pattern Checks
+
 - No TODO/FIXME/XXX/HACK/TEMP in staged code
 - No hardcoded secrets (API keys, tokens, passwords)
 - No console.log in production code (use logger instead)
@@ -71,12 +86,14 @@ Required if: OpenAPI/Swagger files changed
 ## Commit Splitting Strategy
 
 **When to split:**
+
 - More than 5 files changed
 - Multiple unrelated features/fixes
 - Mix of refactor + new features
 - Different types (feat, fix, chore, etc.)
 
 **How to split:**
+
 1. Group related files by purpose:
    - Same feature/component
    - Same type of change
@@ -85,6 +102,7 @@ Required if: OpenAPI/Swagger files changed
 3. Each commit should be independently reviewable
 
 **Example split:**
+
 ```
 Before: 12 files changed
 - 3 new components
@@ -103,6 +121,7 @@ After: 3 commits
 ## Commit Message Format
 
 **Structure:**
+
 ```
 type(scope): brief summary
 
@@ -110,6 +129,7 @@ Optional body explaining what and why
 ```
 
 **Types:**
+
 - `feat` - new feature for users
 - `fix` - bug fix for users
 - `docs` - documentation changes
@@ -122,12 +142,14 @@ Optional body explaining what and why
 - `ci` - CI/CD pipeline changes
 
 **Scope (optional but recommended):**
+
 - Component/feature name: `auth`, `blog`, `ui`
 - System area: `api`, `db`, `security`
 
 **Human-Friendly Messages:**
 
 ❌ **Bad:**
+
 ```
 fix: fixed the bug
 feat: implemented feature
@@ -135,6 +157,7 @@ chore: updates
 ```
 
 ✅ **Good:**
+
 ```
 fix(auth): handle expired tokens gracefully
 feat(blog): add markdown preview to editor
@@ -142,6 +165,7 @@ chore(deps): update react-query to v5
 ```
 
 **Examples:**
+
 ```
 feat(profile): let users upload custom avatars
 fix(search): prevent crash when query is empty
@@ -152,6 +176,7 @@ docs(api): add examples to endpoint descriptions
 ```
 
 **Tone:**
+
 - Sound human, like talking to a friend
 - Be specific but concise
 - Focus on user impact, not implementation details
@@ -162,12 +187,14 @@ docs(api): add examples to endpoint descriptions
 ## Workflow
 
 ### Step 1: Analyze Staged Changes
+
 ```bash
 git status
 git diff --cached --name-only
 ```
 
 Determine:
+
 - Number of files
 - Types of changes
 - Whether to split commit
@@ -175,6 +202,7 @@ Determine:
 ### Step 2: Run All Validations
 
 Execute checks in order:
+
 1. Migration integrity (if needed)
 2. TypeScript typecheck
 3. ESLint auto-fix
@@ -185,6 +213,7 @@ Execute checks in order:
 8. Security pattern checks
 
 **If any check fails:**
+
 - For auto-fixable issues (ESLint): Fix and re-stage
 - For simple issues: Fix immediately and re-stage
 - For complex issues: Report to user with details
@@ -192,6 +221,7 @@ Execute checks in order:
 ### Step 3: Split Commits (If Needed)
 
 If > 5 files or mixed types:
+
 1. Group files logically
 2. Unstage all: `git reset`
 3. Stage and commit each group separately
@@ -205,6 +235,7 @@ If > 5 files or mixed types:
 4. Add body if change needs explanation
 
 **IMPORTANT:**
+
 - NEVER add Claude co-author attribution
 - NEVER add "Generated with Claude Code" footer
 - Keep it natural and human
@@ -228,18 +259,22 @@ Ensure message follows format and sounds human.
 ## Special Cases
 
 **Merge Commits:**
+
 - Skip validation
 - Auto-accept merge commit messages
 
 **Revert Commits:**
+
 - Skip validation
 - Use format: `revert: undo feature X`
 
 **Hot Fixes:**
+
 - Still run all validations
 - Use `fix` type with HIGH priority scope: `fix(critical): ...`
 
 **Large Refactors:**
+
 - Split into smallest possible commits
 - Each commit should still pass all tests
 - Use `refactor` type consistently
@@ -249,31 +284,37 @@ Ensure message follows format and sounds human.
 ## Error Handling
 
 **Migration Drift:**
+
 ```
 Fix: Run `pnpm drizzle-kit generate`
 ```
 
 **TypeScript Errors:**
+
 - Fix type issues
 - Never use `as any`
 - Re-run typecheck
 
 **ESLint Errors:**
+
 - Auto-fix will handle most
 - For unfixable: review and fix manually
 - Re-run lint
 
 **AST-Grep Violations:**
+
 - Check violation type
 - Fix according to rule
 - Re-run scan
 
 **Test Failures:**
+
 - Debug failed tests
 - Fix root cause
 - Re-run tests
 
 **Blocked Patterns:**
+
 - Remove TODO/FIXME or document properly
 - Move secrets to env vars
 - Replace console.log with logger
@@ -284,6 +325,7 @@ Fix: Run `pnpm drizzle-kit generate`
 ## Success Criteria
 
 Commit is ready when:
+
 - ✅ All validations pass
 - ✅ Commit is atomic (single purpose)
 - ✅ Message is conventional format
@@ -297,6 +339,7 @@ Commit is ready when:
 ## Usage Notes
 
 **This skill should:**
+
 - Run before every commit
 - Split large commits automatically
 - Provide clear error messages
@@ -304,6 +347,7 @@ Commit is ready when:
 - Ask for help on complex issues
 
 **This skill should NOT:**
+
 - Commit without all validations passing
 - Create commits larger than 10 files
 - Use technical/robotic language

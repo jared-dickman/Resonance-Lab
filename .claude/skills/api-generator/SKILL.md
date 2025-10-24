@@ -2,7 +2,8 @@
 name: API Generator
 description: Generates complete feature implementation matching blog-posts architecture - domain, service, repository, transformers, DTOs, hooks, actions, MSW
 auto_trigger: true
-keywords: [api, endpoint, feature, domain, service, repository, hook, rest, backend, create endpoint]
+keywords:
+  [api, endpoint, feature, domain, service, repository, hook, rest, backend, create endpoint]
 ---
 
 # API Generator
@@ -10,6 +11,7 @@ keywords: [api, endpoint, feature, domain, service, repository, hook, rest, back
 **Canonical Reference**: `app/features/blog-posts/` (complete working example)
 
 **Generates 18 files**:
+
 ```
 app/features/{domain}/
 ├── domain/{domain}.ts
@@ -42,30 +44,30 @@ app/config/apiRoutes.ts (update)
 
 ## Naming Transformations
 
-| Concept | Pattern | Example (keywords) |
-|---------|---------|-------------------|
-| Domain folder | `{domain}` plural, kebab-case | `keywords` |
-| API path | `/{domain}` plural, kebab-case | `/keywords` |
-| Entity type | `{Domain}Entity` singular, PascalCase | `KeywordEntity` |
-| Service name | `{Domain}Service` singular, PascalCase | `KeywordService` |
-| Service methods | Generic: `list`, `getById`, `create`, `update`, `delete` | `list()` NOT `listKeywords()` |
-| Response key | `{pluralDomain}` matches domain | `{ keywords: [...] }` NOT `{ items: [...] }` |
-| Query keys | `{domain}Keys` with `companyId` BEFORE `list/detail` | `keywordKeys.list(companyId)` |
-| Actions path | `app/actions/{domain}/index.ts` | `app/actions/keywords/index.ts` |
+| Concept         | Pattern                                                  | Example (keywords)                           |
+| --------------- | -------------------------------------------------------- | -------------------------------------------- |
+| Domain folder   | `{domain}` plural, kebab-case                            | `keywords`                                   |
+| API path        | `/{domain}` plural, kebab-case                           | `/keywords`                                  |
+| Entity type     | `{Domain}Entity` singular, PascalCase                    | `KeywordEntity`                              |
+| Service name    | `{Domain}Service` singular, PascalCase                   | `KeywordService`                             |
+| Service methods | Generic: `list`, `getById`, `create`, `update`, `delete` | `list()` NOT `listKeywords()`                |
+| Response key    | `{pluralDomain}` matches domain                          | `{ keywords: [...] }` NOT `{ items: [...] }` |
+| Query keys      | `{domain}Keys` with `companyId` BEFORE `list/detail`     | `keywordKeys.list(companyId)`                |
+| Actions path    | `app/actions/{domain}/index.ts`                          | `app/actions/keywords/index.ts`              |
 
 ## Key Patterns
 
-| File | Pattern | Canonical Reference |
-|------|---------|-------------------|
-| `keys.ts` | `companyId` BEFORE `list/detail` | `app/features/blog-posts/keys.ts` |
-| `options.ts` | Import actions from `app/actions/{domain}/index.ts` | `app/features/blog-posts/options.ts` |
-| `hooks.ts` | `useCurrentCompany()` checks companyId | `app/features/blog-posts/hooks.ts` |
-| `service.ts` | Generic methods: `list`, `getById`, `create`, `update`, `delete` | `app/features/blog-posts/service.ts` |
-| Transformers | Entity→Response, Response→View (two files) | `app/features/blog-posts/transformers/` |
-| Route | `validateQueryParams`, `authenticateApiRequest`, `validateCompanyData` | `app/api/blog-posts/route.ts` |
-| Actions | Must be `index.ts` in `{domain}/` folder, uses `requireAuth` | `app/actions/blog-posts/index.ts` |
-| Fixtures | TestIds object + mock data using `TEST_IDS`/`TEST_DATES` | `app/testing/fixtures/blog-posts/` |
-| MSW | Mock list/detail endpoints, filter by companyId | `app/testing/msw/handlers/blog-posts.handlers.ts` |
+| File         | Pattern                                                                | Canonical Reference                               |
+| ------------ | ---------------------------------------------------------------------- | ------------------------------------------------- |
+| `keys.ts`    | `companyId` BEFORE `list/detail`                                       | `app/features/blog-posts/keys.ts`                 |
+| `options.ts` | Import actions from `app/actions/{domain}/index.ts`                    | `app/features/blog-posts/options.ts`              |
+| `hooks.ts`   | `useCurrentCompany()` checks companyId                                 | `app/features/blog-posts/hooks.ts`                |
+| `service.ts` | Generic methods: `list`, `getById`, `create`, `update`, `delete`       | `app/features/blog-posts/service.ts`              |
+| Transformers | Entity→Response, Response→View (two files)                             | `app/features/blog-posts/transformers/`           |
+| Route        | `validateQueryParams`, `authenticateApiRequest`, `validateCompanyData` | `app/api/blog-posts/route.ts`                     |
+| Actions      | Must be `index.ts` in `{domain}/` folder, uses `requireAuth`           | `app/actions/blog-posts/index.ts`                 |
+| Fixtures     | TestIds object + mock data using `TEST_IDS`/`TEST_DATES`               | `app/testing/fixtures/blog-posts/`                |
+| MSW          | Mock list/detail endpoints, filter by companyId                        | `app/testing/msw/handlers/blog-posts.handlers.ts` |
 
 ---
 
@@ -76,17 +78,19 @@ app/config/apiRoutes.ts (update)
 ### Authentication: Two Patterns
 
 **Pattern 1: No company validation** - Use `requireAuthForRoute()` for user-scoped resources (analytics, webhooks)
+
 ```typescript
-const authResult = await requireAuthForRoute()
-if (!authResult.success) return authResult.response
-const {userId, session} = authResult
+const authResult = await requireAuthForRoute();
+if (!authResult.success) return authResult.response;
+const { userId, session } = authResult;
 ```
 
 **Pattern 2: Company validation** - Use `authenticateApiRequest(companyId)` for multi-tenant resources (billing, subscriptions)
+
 ```typescript
-const authResult = await authenticateApiRequest(companyId)
-if (!authResult.success) return authResult.response
-const {userId, companyId} = authResult
+const authResult = await authenticateApiRequest(companyId);
+if (!authResult.success) return authResult.response;
+const { userId, companyId } = authResult;
 ```
 
 **Why**: Pattern 2 automatically validates `validateCompanyAccess()` preventing cross-tenant data leaks.
@@ -99,7 +103,7 @@ if (session.isSuperAdmin) {
     resource: 'resource-name',
     userId,
     requestId,
-  })
+  });
 }
 ```
 
@@ -120,6 +124,7 @@ if (!validation.success) {
 ### Security Checklist
 
 Every route MUST have:
+
 - ✅ Auth: `requireAuthForRoute()` OR `authenticateApiRequest()`
 - ✅ Validation: Zod schemas for query + body
 - ✅ Tracing: `generateRequestId()`
@@ -135,6 +140,7 @@ Every route MUST have:
 **File**: `app/core/repository/repository-factory.ts`
 
 Add:
+
 ```typescript
 // Import
 import {Drizzle{Domain}Repository} from '@/app/features/{domain}/repository/drizzle-{domain}.repository'

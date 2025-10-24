@@ -1,4 +1,5 @@
 # Animation System - Resonance Lab
+
 ## UX-Driven Motion Design Specification
 
 **Purpose:** Create spatial awareness, guide attention, and provide feedback through purposeful motion.
@@ -10,6 +11,7 @@
 ## Design Philosophy
 
 Motion exists to serve users, not impress them:
+
 - **Confirm actions** - User knows their tap registered
 - **Show relationships** - Connected elements move together
 - **Guide attention** - Important changes stand out
@@ -22,13 +24,13 @@ Motion exists to serve users, not impress them:
 
 Speed communicates importance and urgency:
 
-| Duration | Purpose | User Feeling |
-|----------|---------|--------------|
-| **0.2s** | Instant feedback | Responsive, snappy |
-| **0.3s** | UI state changes | Quick, efficient |
-| **0.5s** | Page transitions | Smooth, natural |
-| **0.8s** | Emphasis moments | Important, deliberate |
-| **1.5s+** | Ambient loops | Calm, decorative |
+| Duration  | Purpose          | User Feeling          |
+| --------- | ---------------- | --------------------- |
+| **0.2s**  | Instant feedback | Responsive, snappy    |
+| **0.3s**  | UI state changes | Quick, efficient      |
+| **0.5s**  | Page transitions | Smooth, natural       |
+| **0.8s**  | Emphasis moments | Important, deliberate |
+| **1.5s+** | Ambient loops    | Calm, decorative      |
 
 **Rule:** Faster = more urgent. Slower = more important.
 
@@ -37,6 +39,7 @@ Speed communicates importance and urgency:
 ## Pattern Library by User Need
 
 ### 1. "Did my action work?"
+
 **Feedback Animations**
 
 **What:** Buttons scale down on tap, icons rotate on click
@@ -47,6 +50,7 @@ Speed communicates importance and urgency:
 ---
 
 ### 2. "What changed?"
+
 **State Transition Animations**
 
 **What:** Icons swap with rotation, toggles slide backgrounds
@@ -57,6 +61,7 @@ Speed communicates importance and urgency:
 ---
 
 ### 3. "Where did it go?"
+
 **Exit Animations**
 
 **What:** Items fade + shrink when removed
@@ -67,6 +72,7 @@ Speed communicates importance and urgency:
 ---
 
 ### 4. "What's related?"
+
 **Staggered Entry**
 
 **What:** Grid items appear sequentially, not all at once
@@ -77,6 +83,7 @@ Speed communicates importance and urgency:
 ---
 
 ### 5. "What's happening?"
+
 **Loading States**
 
 **What:** Pulsing dots, animated indicators
@@ -87,6 +94,7 @@ Speed communicates importance and urgency:
 ---
 
 ### 6. "What should I notice?"
+
 **Emphasis Animations**
 
 **What:** Glowing borders, pulsing highlights on active items
@@ -97,6 +105,7 @@ Speed communicates importance and urgency:
 ---
 
 ### 7. "How do I navigate?"
+
 **Spatial Orientation**
 
 **What:** Panels slide in from direction they appear
@@ -107,6 +116,7 @@ Speed communicates importance and urgency:
 ---
 
 ### 8. "Is this interactive?"
+
 **Hover Affordances**
 
 **What:** Cards lift (-4px), buttons scale up (105%)
@@ -117,6 +127,7 @@ Speed communicates importance and urgency:
 ---
 
 ### 9. "What's the current value?"
+
 **Value Change Indicators**
 
 **What:** Numbers pulse/highlight when changing
@@ -127,6 +138,7 @@ Speed communicates importance and urgency:
 ---
 
 ### 10. "Where am I?"
+
 **Ambient Context**
 
 **What:** Subtle icon loops, decorative motion
@@ -139,18 +151,22 @@ Speed communicates importance and urgency:
 ## Motion Principles
 
 ### Natural Physics
+
 Use spring animations (stiffness: 300, damping: 24) for physical objects like cards.
 Makes motion feel grounded and believable.
 
 ### Anticipation
+
 Elements move slightly before main action (e.g., scale 0.98 before 1.05).
 Prepares user for what's coming.
 
 ### Layered Timing
+
 Never animate everything at once - stagger by importance.
 Headers first (0.1s), then content (0.2s), then actions (0.3s).
 
 ### Exit Intent
+
 Items leaving should hint where they're going.
 Deleting? Shrink and fade. Dismissed? Slide off-screen.
 
@@ -159,22 +175,27 @@ Deleting? Shrink and fade. Dismissed? Slide off-screen.
 ## Anti-Patterns (Don't Do This)
 
 **❌ Animate for the sake of it**
+
 - Decorative motion that serves no purpose
 - Fix: Remove or make it communicate something
 
 **❌ Block user actions**
+
 - Wait for animation to finish before allowing next click
 - Fix: Make animations non-blocking (max 0.3s)
 
 **❌ Animate everything at once**
+
 - All 20 cards fade in simultaneously
 - Fix: Stagger by 0.08s to show relationships
 
 **❌ Inconsistent timing**
+
 - Buttons use 0.2s sometimes, 0.5s other times
 - Fix: Use centralized constants
 
 **❌ Overshoot springs**
+
 - Elements bounce too much (looks buggy)
 - Fix: Use damping: 30 for tight springs
 
@@ -186,23 +207,24 @@ Create `lib/constants/animation.constants.ts`:
 
 ```typescript
 export const DURATION = {
-  INSTANT: 0.2,    // Feedback
-  FAST: 0.3,       // State changes
-  NORMAL: 0.5,     // Transitions
-  EMPHASIS: 0.8,   // Important moments
+  INSTANT: 0.2, // Feedback
+  FAST: 0.3, // State changes
+  NORMAL: 0.5, // Transitions
+  EMPHASIS: 0.8, // Important moments
 };
 
 export const SPRING = {
-  TIGHT: { stiffness: 500, damping: 30 },   // Snappy
+  TIGHT: { stiffness: 500, damping: 30 }, // Snappy
   DEFAULT: { stiffness: 300, damping: 24 }, // Balanced
-  LOOSE: { stiffness: 200, damping: 20 },   // Bouncy
+  LOOSE: { stiffness: 200, damping: 20 }, // Bouncy
 };
 
 export const STAGGER = 0.08; // Grid items
-export const CASCADE = 0.1;  // Sequential panels
+export const CASCADE = 0.1; // Sequential panels
 ```
 
 **Why constants?**
+
 - Consistency across the app
 - Easy to tune globally
 - Self-documenting code
@@ -211,19 +233,20 @@ export const CASCADE = 0.1;  // Sequential panels
 
 ## Gesture Interactions
 
-| Gesture | Response | Why |
-|---------|----------|-----|
-| **Hover card** | Lift 4px | Signals interactivity |
-| **Hover button** | Scale 105% | Confirms target |
-| **Tap button** | Scale 95% | Confirms press received |
-| **Tap card** | Scale 98% | Softer feedback (less intrusive) |
-| **Hover delete** | Rotate + scale 120% | Warning (destructive action) |
+| Gesture          | Response            | Why                              |
+| ---------------- | ------------------- | -------------------------------- |
+| **Hover card**   | Lift 4px            | Signals interactivity            |
+| **Hover button** | Scale 105%          | Confirms target                  |
+| **Tap button**   | Scale 95%           | Confirms press received          |
+| **Tap card**     | Scale 98%           | Softer feedback (less intrusive) |
+| **Hover delete** | Rotate + scale 120% | Warning (destructive action)     |
 
 ---
 
 ## Accessibility
 
 **Respect `prefers-reduced-motion`:**
+
 - Disable decorative animations
 - Keep functional feedback (button press)
 - Reduce durations to 0.1s max
@@ -245,14 +268,14 @@ export const CASCADE = 0.1;  // Sequential panels
 
 ## When to Animate
 
-| Scenario | Animate? | Rationale |
-|----------|----------|-----------|
-| User clicks button | ✅ Yes | Confirm action received |
-| Loading new data | ✅ Yes | Reduce perceived wait |
-| Background sync | ❌ No | Don't interrupt user |
-| Error state | ⚠️ Subtle | Alert without scaring |
-| Success state | ✅ Yes | Celebrate wins |
-| Passive updates | ❌ No | Don't steal attention |
+| Scenario           | Animate?  | Rationale               |
+| ------------------ | --------- | ----------------------- |
+| User clicks button | ✅ Yes    | Confirm action received |
+| Loading new data   | ✅ Yes    | Reduce perceived wait   |
+| Background sync    | ❌ No     | Don't interrupt user    |
+| Error state        | ⚠️ Subtle | Alert without scaring   |
+| Success state      | ✅ Yes    | Celebrate wins          |
+| Passive updates    | ❌ No     | Don't steal attention   |
 
 ---
 
@@ -312,6 +335,7 @@ Interactive element?
 Users don't think "wow, nice animation" - they think "this app feels responsive and polished."
 
 Motion should:
+
 - Feel instant (0.2-0.3s)
 - Confirm actions
 - Show relationships

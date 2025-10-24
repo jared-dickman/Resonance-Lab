@@ -13,6 +13,7 @@ chmod +x setup-linting-enhanced.sh
 ```
 
 This script will:
+
 - Install all required npm packages (ESLint, ast-grep, Husky, etc.)
 - Configure Git hooks that cannot be bypassed
 - Set up lint-staged for incremental checking
@@ -57,18 +58,22 @@ npm run ast-grep:scan
 ## Step 4: Configure GitHub Repository (if you have access)
 
 ### Add GitHub Secrets:
+
 Go to Settings → Secrets → Actions → New repository secret
 
 Add these if you have them:
+
 - `VERCEL_TOKEN`
 - `VERCEL_ORG_ID`
 - `VERCEL_PROJECT_ID`
 
 ### Enable GitHub Actions:
+
 - Settings → Actions → General
 - Allow all actions and reusable workflows
 
 ### Configure Branch Protection:
+
 - Settings → Branches → Add rule for `main`
 - Require status checks: `quality-security`, `build-test`, `enforce-protection`
 - Require pull request reviews
@@ -104,7 +109,9 @@ rm test.tsx
 ## Step 6: Configure Your IDE
 
 ### VS Code:
+
 The setup script already created `.vscode/settings.json` with:
+
 - Format on save
 - ESLint auto-fix on save
 - Correct line endings
@@ -112,6 +119,7 @@ The setup script already created `.vscode/settings.json` with:
 Just restart VS Code to apply.
 
 ### WebStorm/IntelliJ:
+
 1. Settings → Languages & Frameworks → JavaScript → Prettier
    - Check "On code reformat"
    - Check "On save"
@@ -122,12 +130,14 @@ Just restart VS Code to apply.
 ## What's Now Enforced
 
 ### 🔒 Security Rules (Cannot bypass):
+
 - No hardcoded API keys/secrets
 - No SQL injection vulnerabilities
 - No XSS (innerHTML/dangerouslySetInnerHTML)
 - Required Zod validation on APIs
 
 ### 📝 Code Quality (Auto-enforced):
+
 - Function components only (no arrow functions)
 - No console.log (use logger)
 - No `as any` TypeScript
@@ -135,6 +145,7 @@ Just restart VS Code to apply.
 - Centralized routing constants
 
 ### 🚫 Git Protection:
+
 - Cannot commit to main/master directly
 - Cannot skip hooks with --no-verify
 - Must use conventional commits
@@ -153,6 +164,7 @@ npm run test:rules    # Test rule configurations
 ## Troubleshooting
 
 ### If hooks don't run:
+
 ```bash
 npx husky install
 git config core.hooksPath .husky
@@ -160,6 +172,7 @@ chmod +x .husky/*
 ```
 
 ### If ESLint fails:
+
 ```bash
 # Check the plugin is found
 ls scripts/eslint-plugin-resonance.mjs
@@ -168,6 +181,7 @@ ls scripts/eslint-plugin-resonance.mjs
 ```
 
 ### If ast-grep fails:
+
 ```bash
 # Reinstall ast-grep
 npm install --save-dev @ast-grep/cli
@@ -178,6 +192,7 @@ ls rules/*.yml
 ## Success Criteria
 
 You'll know everything is working when:
+
 1. ✅ Cannot commit code with violations
 2. ✅ `npm run check:all` passes
 3. ✅ Git hooks run automatically on commit

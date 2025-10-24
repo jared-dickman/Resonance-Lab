@@ -14,7 +14,11 @@ interface ChordDisplayProps {
 }
 
 export function ChordDisplay({ chordName, className = '' }: ChordDisplayProps) {
-  const { voicings, currentIndex: currentVoicingIndex, setCurrentIndex: setCurrentVoicingIndex } = useChordVoicings<ChordVoicing>({
+  const {
+    voicings,
+    currentIndex: currentVoicingIndex,
+    setCurrentIndex: setCurrentVoicingIndex,
+  } = useChordVoicings<ChordVoicing>({
     chordName,
     getVoicings: getChordVoicings,
   });

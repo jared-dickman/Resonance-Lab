@@ -66,7 +66,7 @@ export interface SearchView {
  * Transform API response to view model for song list
  */
 export function toSongsListView(songs: SavedSongResponse[]): SavedSongView[] {
-  return songs.map((song) => ({
+  return songs.map(song => ({
     ...song,
     displayTitle: `${song.artist} - ${song.title}`,
     detailUrl: `/songs/${song.artistSlug}/${song.songSlug}`,
@@ -96,10 +96,7 @@ export function toSongDetailView(response: SongDetailResponse): SongDetailView |
 /**
  * Transform search result to view model
  */
-function toSearchResultView(
-  result: SearchResultResponse,
-  type: 'chord' | 'tab'
-): SearchResultView {
+function toSearchResultView(result: SearchResultResponse, type: 'chord' | 'tab'): SearchResultView {
   return {
     ...result,
     type,
@@ -111,8 +108,8 @@ function toSearchResultView(
  * Transform search response to view model
  */
 export function toSearchView(response: SearchResponseData): SearchView {
-  const chords = response.chords.map((r) => toSearchResultView(r, 'chord'));
-  const tabs = response.tabs.map((r) => toSearchResultView(r, 'tab'));
+  const chords = response.chords.map(r => toSearchResultView(r, 'chord'));
+  const tabs = response.tabs.map(r => toSearchResultView(r, 'tab'));
 
   return {
     query: response.query,

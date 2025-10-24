@@ -27,6 +27,7 @@ keywords: [fixture, test data, mock data, MSW, test fixtures, create fixture, up
 **Parse context from multiple sources:**
 
 **From Gherkin/BDD scenarios:**
+
 ```gherkin
 Scenario: User creates a blog post
   Given I am logged in as "Ada Lovelace"
@@ -35,31 +36,37 @@ Scenario: User creates a blog post
 ```
 
 **Extract:**
+
 - User persona: "Ada Lovelace" → fixture username
 - Content: "The Future of Computing" → fixture blog title
 - Domain: blog posts → `/api/blog-posts` endpoint
 
 **From plain text:**
+
 ```
 "We need to test the payment flow for a $50 subscription"
 ```
 
 **Extract:**
+
 - Domain: payments/subscriptions
 - Amount: $50 → fixture price
 - Action: payment flow → POST /api/payments endpoint
 
 **From user story:**
+
 ```
 "As a user, I want to invite team members by email"
 ```
 
 **Extract:**
+
 - Domain: team/invitations
 - Action: invite → POST /api/invitations
 - Input: email → fixture email field
 
 **Contextual understanding:**
+
 - Map human intent to technical endpoints
 - Infer API contract from feature description
 - Translate business language to schema fields
@@ -68,6 +75,7 @@ Scenario: User creates a blog post
 ### Analyze Context
 
 **Before creating:**
+
 ```bash
 # Search for existing fixtures
 find app/testing/fixtures -name "*${feature}*fixtures.ts"
@@ -80,6 +88,7 @@ find e2e/features -name "*.feature" | xargs grep -l "${domain}"
 ```
 
 **Determine:**
+
 - Does fixture already exist? (reuse if yes)
 - What's the API endpoint? (one fixture per endpoint)
 - What Zod schemas define the contract?
@@ -89,6 +98,7 @@ find e2e/features -name "*.feature" | xargs grep -l "${domain}"
 ### Check Existing Usage
 
 **Programmatic traceability:**
+
 ```bash
 # Find all imports of fixture (if updating)
 grep -r "import.*${fixtureName}" app/ e2e/ --include="*.ts" --include="*.tsx"
@@ -101,6 +111,7 @@ grep -r "${FeatureText}" e2e/ app/ --include="*.test.ts" --include="*.spec.ts" -
 ```
 
 **Decision:**
+
 - Existing fixture: Show usage, ask to reuse/extend vs create new
 - No fixture: Create new with traceability built in
 
@@ -109,6 +120,7 @@ grep -r "${FeatureText}" e2e/ app/ --include="*.test.ts" --include="*.spec.ts" -
 **Location:** `app/testing/fixtures/${feature}/${feature}-fixtures.ts`
 
 **Template:**
+
 ```typescript
 import type {FeatureRequest, FeatureResponse} from '@/app/features/${feature}/schemas'
 
@@ -143,12 +155,14 @@ export const mock${Feature}Response: FeatureResponse = {
 ```
 
 **Naming conventions:**
+
 - Text constants: `${Feature}Text` (MessageText, UserText, BlogText)
 - Request: `mock${Feature}Request`
 - Response: `mock${Feature}Response`
 - Fun data: Creative names, whimsical but realistic
 
 **Fun name examples:**
+
 - Names: Steve McTestFace, Ada Lovelace-Test, Grace Debugger
 - Emails: test.legend@example.com, qa.superhero@test.dev
 - Titles: "The Art of Perfect Testing", "Bug Hunting for Fun and Profit"
@@ -157,6 +171,7 @@ export const mock${Feature}Response: FeatureResponse = {
 ### Validate Against Zod Schema
 
 **Critical validation:**
+
 ```typescript
 // Add runtime validation check in fixture file
 import {featureRequestSchema, featureResponseSchema} from '@/app/features/${feature}/schemas'
@@ -167,6 +182,7 @@ featureResponseSchema.parse(mock${Feature}Response)
 ```
 
 **Run validation:**
+
 ```bash
 # TypeScript compilation catches type errors
 pnpm typecheck
@@ -181,10 +197,11 @@ tsx -e "import('./app/testing/fixtures/${feature}/${feature}-fixtures.ts')"
 
 ```typescript
 // Add export
-export * from './${feature}/${feature}-fixtures'
+export * from './${feature}/${feature}-fixtures';
 ```
 
 **Verify:**
+
 ```bash
 # Ensure export works
 tsx -e "import {${Feature}Text} from './app/testing/fixtures'"
@@ -193,10 +210,12 @@ tsx -e "import {${Feature}Text} from './app/testing/fixtures'"
 ### Track Usage & Create References
 
 **Document usage locations:**
+
 - Update fixture file JSDoc with actual usage
 - Track in comments where fixture is imported
 
 **Common usage patterns:**
+
 ```typescript
 // MSW Handler
 http.get('/api/${endpoint}', () => {
@@ -221,6 +240,7 @@ export const Default: Story = {
 ### Verify No Breakage
 
 **Run affected tests:**
+
 ```bash
 # Find files that import this fixture
 AFFECTED_FILES=$(grep -rl "import.*${feature}-fixtures" app/ e2e/ --include="*.test.ts" --include="*.spec.ts" --include="*.stories.ts")
@@ -240,6 +260,7 @@ fi
 ```
 
 **Validation checklist:**
+
 - ✅ All affected tests pass
 - ✅ TypeScript compiles
 - ✅ Zod validation succeeds
@@ -249,6 +270,7 @@ fi
 ### Report Traceability
 
 **Generate usage report:**
+
 ```
 📦 Fixture Created: ${Feature}Text
 
@@ -268,30 +290,33 @@ Validation: ✅ All tests pass
 ## Fixture Patterns
 
 **Minimal data principle:**
+
 ```typescript
 // ✅ Good: One request/response pair
 export const BlogText = {
   title: 'The Testing Manifesto',
   content: 'Write tests like your users depend on them. Because they do.',
-} as const
+} as const;
 
-export const mockBlogRequest = { title: BlogText.title, content: BlogText.content }
-export const mockBlogResponse = { id: 'blog-test-1', ...mockBlogRequest, status: 'draft' }
+export const mockBlogRequest = { title: BlogText.title, content: BlogText.content };
+export const mockBlogResponse = { id: 'blog-test-1', ...mockBlogRequest, status: 'draft' };
 ```
 
 **Reusable & extensible:**
+
 ```typescript
 // ✅ Good: Base fixture can be extended
-export const baseBlogResponse = { id: 'blog-1', title: BlogText.title }
+export const baseBlogResponse = { id: 'blog-1', title: BlogText.title };
 
 // Tests can extend as needed
-const publishedBlog = { ...baseBlogResponse, status: 'published' }
-const draftBlog = { ...baseBlogResponse, status: 'draft' }
+const publishedBlog = { ...baseBlogResponse, status: 'published' };
+const draftBlog = { ...baseBlogResponse, status: 'draft' };
 ```
 
 ## Anti-Patterns
 
 ❌ **Multiple fixtures per endpoint:**
+
 ```typescript
 // Too many - keep it minimal
 export const mockSuccessResponse = {...}
@@ -300,26 +325,30 @@ export const mockTestResponse = {...}
 ```
 
 ❌ **No Zod validation:**
+
 ```typescript
 // Missing runtime safety
 export const mockResponse = {
-  field: 'value'  // No schema validation
-}
+  field: 'value', // No schema validation
+};
 ```
 
 ❌ **Hardcoded strings in tests:**
+
 ```typescript
 // Should use fixture constant
-await expect(page.getByText('Hello, world!')).toBeVisible()
+await expect(page.getByText('Hello, world!')).toBeVisible();
 ```
 
 ❌ **No traceability:**
+
 ```typescript
 // No JSDoc tracking usage
 export const BlogText = {...}
 ```
 
 ✅ **Single fixture with traceability:**
+
 ```typescript
 /**
  * Blog Fixtures - /api/blog-posts
@@ -339,6 +368,7 @@ export const BlogText = {
 ## Programmatic Traceability
 
 **Usage tracking script:**
+
 ```bash
 # Find all fixture imports
 grep -r "import.*fixtures" app/ e2e/ --include="*.ts" --include="*.tsx" | \
@@ -358,6 +388,7 @@ done
 ## Stale Fixture Detection
 
 **Auto-check before creating:**
+
 ```bash
 # Find fixtures with no imports (stale)
 FIXTURE_FILES=$(find app/testing/fixtures -name "*-fixtures.ts" ! -name "index.ts")

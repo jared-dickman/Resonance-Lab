@@ -21,7 +21,7 @@ export const CANVAS_COLOR = {
 } as const;
 
 export const FINGER_COLORS = [
-  '#666',    // neutral (0/muted)
+  '#666', // neutral (0/muted)
   '#3b82f6', // blue-500 (1)
   '#10b981', // green-500 (2)
   '#f59e0b', // amber-500 (3)

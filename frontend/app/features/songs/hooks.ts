@@ -3,14 +3,25 @@
 import { useApiQuery, useApiMutation } from '@/app/hooks/query-hooks';
 import { songKeys } from '@/app/features/songs/keys';
 import { songOptions, songMutations } from '@/app/features/songs/options';
-import { toSongsListView, toSongDetailView, toSearchView } from '@/app/features/songs/transformers/song-view.transformer';
+import {
+  toSongsListView,
+  toSongDetailView,
+  toSearchView,
+} from '@/app/features/songs/transformers/song-view.transformer';
 import type {
   SavedSongResponse,
   SongDetailResponse,
   SearchResponseData,
 } from '@/app/features/songs/dto/song-response.schema';
-import type { SavedSongView, SongDetailView, SearchView } from '@/app/features/songs/transformers/song-view.transformer';
-import type { DownloadRequestInput, SearchRequestInput } from '@/app/features/songs/dto/song-request.schema';
+import type {
+  SavedSongView,
+  SongDetailView,
+  SearchView,
+} from '@/app/features/songs/transformers/song-view.transformer';
+import type {
+  DownloadRequestInput,
+  SearchRequestInput,
+} from '@/app/features/songs/dto/song-request.schema';
 
 /**
  * Component API - Feature hooks that components import

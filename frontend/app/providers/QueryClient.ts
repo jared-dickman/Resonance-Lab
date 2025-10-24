@@ -16,7 +16,7 @@ const queryCache = new QueryCache({
 });
 
 const mutationCache = new MutationCache({
-  onError: (error) => {
+  onError: error => {
     logger.error('Mutation Error:', error instanceof Error ? error.message : String(error));
 
     // Note: Toast notifications would go here if we add a toast library
@@ -30,7 +30,7 @@ export const queryClient = new QueryClient({
     queries: {
       staleTime: 5 * 60 * 1000, // 5 minutes
       retry: 3,
-      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+      retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000),
       refetchOnWindowFocus: false, // Disable for music app (less disruptive)
     },
     mutations: {

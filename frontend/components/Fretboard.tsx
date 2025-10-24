@@ -9,10 +9,7 @@ import { FRETBOARD } from '@/lib/constants/game.constants';
 import type { ChordVoicing } from '@/lib/chordPositions';
 import { createAudioContext } from '@/lib/utils/audio/audioContext';
 import { drawFretboardBackground } from '@/lib/utils/canvas/fretboard/drawFretboardBackground';
-import {
-  drawBarres,
-  drawFingerPositions,
-} from '@/lib/utils/canvas/fretboard/drawFingerPositions';
+import { drawBarres, drawFingerPositions } from '@/lib/utils/canvas/fretboard/drawFingerPositions';
 import { drawFrets } from '@/lib/utils/canvas/fretboard/drawFrets';
 import { drawMarkers } from '@/lib/utils/canvas/fretboard/drawMarkers';
 import { drawStrings } from '@/lib/utils/canvas/fretboard/drawStrings';

@@ -49,82 +49,98 @@ e2e/steps/{domain}/
 ## MANDATORY RULES
 
 ### Rule 1: TestIds in Fixtures ONLY
+
 **✅ CORRECT**:
+
 ```typescript
 // app/testing/fixtures/billing/billing-fixtures.ts
 export const BillingTestIds = {
   pageHeader: 'billing-page-header',
   saveButton: 'billing-save-button',
-} as const
+} as const;
 
 // e2e/locators/billing-page.locators.ts
-import {BillingTestIds} from '@/app/testing/fixtures/billing/billing-fixtures'
+import { BillingTestIds } from '@/app/testing/fixtures/billing/billing-fixtures';
 export const createBillingPageLocators = (page: Page) => ({
   saveButton: page.getByTestId(BillingTestIds.saveButton),
-})
+});
 ```
 
 **❌ WRONG**:
+
 ```typescript
 // e2e/locators/billing-page.locators.ts
-saveButton: page.getByTestId('billing-save-button') // ❌ NO hardcoded strings!
+saveButton: page.getByTestId('billing-save-button'); // ❌ NO hardcoded strings!
 ```
 
 ### Rule 2: Flows Are 1-3 Lines Max
+
 **✅ CORRECT**:
+
 ```typescript
 export const createBillingPageFlow = (basePage: BasePagePom, locators: BillingPageLocators) => ({
   clickSaveButton: async () => await locators.saveButton.click(), // 1 line
-})
+});
 ```
 
 **❌ WRONG**:
+
 ```typescript
 clickSaveButton: async () => {
-  if (await locators.saveButton.isVisible()) { // ❌ NO logic!
-    await locators.saveButton.click()
-    await basePage.page.waitForTimeout(1000) // ❌ NO waits!
+  if (await locators.saveButton.isVisible()) {
+    // ❌ NO logic!
+    await locators.saveButton.click();
+    await basePage.page.waitForTimeout(1000); // ❌ NO waits!
   }
-}
+};
 ```
 
 ### Rule 3: Assertions Are 1-2 Expects Max
+
 **✅ CORRECT**:
+
 ```typescript
-export const createBillingPageAssertions = (basePage: BasePagePom, locators: BillingPageLocators) => ({
+export const createBillingPageAssertions = (
+  basePage: BasePagePom,
+  locators: BillingPageLocators
+) => ({
   showsSaveButton: async () => await expect(locators.saveButton).toBeVisible(),
-})
+});
 ```
 
 **❌ WRONG**:
+
 ```typescript
 showsSaveButton: async () => {
-  await expect(locators.saveButton).toBeVisible()
-  await expect(locators.saveButton).toBeEnabled()
-  const text = await locators.saveButton.textContent()
-  expect(text).toBe('Save') // ❌ Too many expects!
-}
+  await expect(locators.saveButton).toBeVisible();
+  await expect(locators.saveButton).toBeEnabled();
+  const text = await locators.saveButton.textContent();
+  expect(text).toBe('Save'); // ❌ Too many expects!
+};
 ```
 
 ### Rule 4: Step Definitions Use Safe-Steps + Unified Pattern
+
 **✅ CORRECT**:
+
 ```typescript
-import {Given, When, Then} from '@/e2e/support/safe-steps'
-import {createBillingPage} from '@/e2e/pages/billing-page.pom'
+import { Given, When, Then } from '@/e2e/support/safe-steps';
+import { createBillingPage } from '@/e2e/pages/billing-page.pom';
 
 When('I click save', async (page: Page) => {
-  await createBillingPage(page).flows.clickSaveButton()
-})
+  await createBillingPage(page).flows.clickSaveButton();
+});
 ```
 
 **❌ WRONG**:
-```typescript
-import {When} from '@cucumber/cucumber' // ❌ NO! Use safe-steps
-import {createBillingPageFlow} from '@/e2e/flows/billing-page.flow' // ❌ NO separate imports!
 
-When('I click save', async function() {
-  await createBillingPageFlow(this.basePage, this.locators).clickSaveButton() // ❌ Wrong pattern!
-})
+```typescript
+import { When } from '@cucumber/cucumber'; // ❌ NO! Use safe-steps
+import { createBillingPageFlow } from '@/e2e/flows/billing-page.flow'; // ❌ NO separate imports!
+
+When('I click save', async function () {
+  await createBillingPageFlow(this.basePage, this.locators).clickSaveButton(); // ❌ Wrong pattern!
+});
 ```
 
 ---
@@ -134,29 +150,32 @@ When('I click save', async function() {
 ### Step 1: Parse Feature File
 
 **Extract from generated .feature**:
+
 ```typescript
 {
-  domain: string            // from tags: @billing
-  feature: string           // from filename: billing.feature
+  domain: string; // from tags: @billing
+  feature: string; // from filename: billing.feature
   scenarios: Array<{
-    name: string
+    name: string;
     steps: Array<{
-      type: 'Given' | 'When' | 'Then' | 'And'
-      text: string
-    }>
-  }>
+      type: 'Given' | 'When' | 'Then' | 'And';
+      text: string;
+    }>;
+  }>;
 }
 ```
 
 ### Step 2: Identify Required Elements
 
 **For each step, determine:**
+
 - **Locator**: Does step interact with UI element? → Extract element name
 - **Flow**: Does step perform action? → Create flow method
 - **Assertion**: Does step verify state? → Create assertion method
 - **Intercept**: Does step mock API? → Create intercept method
 
 **Example**:
+
 ```gherkin
 When I click the save button
   → Locator: saveButton
@@ -173,6 +192,7 @@ Given the billing API will fail
 ### Step 3: Generate Fixtures File
 
 **Template**:
+
 ```typescript
 // app/testing/fixtures/{domain}/{domain}-fixtures.ts
 export const {Domain}TestIds = {
@@ -195,6 +215,7 @@ export const mock{Entity}Data = {
 ```
 
 **Naming convention**:
+
 - TestIds: `{domain}-{element-name}` (kebab-case)
 - Keys: camelCase
 - Export as `const`
@@ -202,6 +223,7 @@ export const mock{Entity}Data = {
 ### Step 4: Generate Locators File
 
 **Template**:
+
 ```typescript
 // e2e/locators/{domain}-page.locators.ts
 import type {Page} from '@playwright/test'
@@ -217,6 +239,7 @@ export type {Domain}PageLocators = ReturnType<typeof create{Domain}PageLocators>
 ```
 
 **Rules**:
+
 - Import TestIds from fixtures
 - NEVER hardcode testId strings
 - Use `page.getByTestId()` exclusively
@@ -225,6 +248,7 @@ export type {Domain}PageLocators = ReturnType<typeof create{Domain}PageLocators>
 ### Step 5: Generate Flows File
 
 **Template**:
+
 ```typescript
 // e2e/flows/{domain}-page.flow.ts
 import type {BasePagePom} from '@/e2e/pages/base-page.pom'
@@ -252,6 +276,7 @@ export type {Domain}PageFlow = ReturnType<typeof create{Domain}PageFlow>
 ```
 
 **Rules**:
+
 - Accept `basePage` and `locators` as parameters
 - Each method is 1-3 lines
 - Only call locator methods (`.click()`, `.fill()`, `.check()`, etc.)
@@ -261,6 +286,7 @@ export type {Domain}PageFlow = ReturnType<typeof create{Domain}PageFlow>
 ### Step 6: Generate Assertions File
 
 **Template**:
+
 ```typescript
 // e2e/assertions/{domain}-page.assertions.ts
 import {expect} from '@playwright/test'
@@ -287,6 +313,7 @@ export type {Domain}PageAssertions = ReturnType<typeof create{Domain}PageAsserti
 ```
 
 **Rules**:
+
 - Accept `basePage` and `locators` as parameters
 - Each method is 1-2 expect statements
 - Use locators from parameter
@@ -301,6 +328,7 @@ export type {Domain}PageAssertions = ReturnType<typeof create{Domain}PageAsserti
 ### Step 7: Generate Intercepts File
 
 **Template**:
+
 ```typescript
 // e2e/intercepts/{domain}.intercepts.ts
 import type {Page} from '@playwright/test'
@@ -332,6 +360,7 @@ export type {Domain}Intercepts = ReturnType<typeof create{Domain}Intercepts>
 ```
 
 **Rules**:
+
 - Accept `page` as parameter
 - Use `intercept()` utility from `@/e2e/utils/intercept`
 - Import API routes from `@/app/config/apiRoutes`
@@ -341,6 +370,7 @@ export type {Domain}Intercepts = ReturnType<typeof create{Domain}Intercepts>
 ### Step 8: Generate POM File
 
 **Template** (EXACTLY this structure):
+
 ```typescript
 // e2e/pages/{domain}-page.pom.ts
 import type {Page} from '@playwright/test'
@@ -363,6 +393,7 @@ export type {Domain}Page = ReturnType<typeof create{Domain}Page>
 ```
 
 **Rules**:
+
 - ALWAYS use `createPageObject` factory
 - ALWAYS provide ALL 5 parameters (page, locators, assertions, flows, intercepts)
 - Import order: assertions, flows, locators, intercepts
@@ -371,6 +402,7 @@ export type {Domain}Page = ReturnType<typeof create{Domain}Page>
 ### Step 9: Generate Step Definitions
 
 **Template**:
+
 ```typescript
 // e2e/steps/{domain}/{feature}.steps.ts
 import type {Page} from '@playwright/test'
@@ -416,6 +448,7 @@ Then('I see {string}', async (page: Page, expectedText: string) => {
 ```
 
 **Rules**:
+
 - Import from `@/e2e/support/safe-steps` (NOT `@cucumber/cucumber`)
 - Organize with comment sections: Given / When / Then
 - Each step is 1-2 lines max
@@ -427,6 +460,7 @@ Then('I see {string}', async (page: Page, expectedText: string) => {
 ## EXAMPLES
 
 ### Input: Generated Feature
+
 ```gherkin
 Feature: Subscription Management
 
@@ -455,6 +489,7 @@ Feature: Subscription Management
 ### Output: 7 Generated Files
 
 #### 1. Fixtures
+
 ```typescript
 export const BillingTestIds = {
   pageHeader: 'billing-page-header',
@@ -462,119 +497,127 @@ export const BillingTestIds = {
   loadingSkeleton: 'billing-loading-skeleton',
   errorMessage: 'billing-error-message',
   retryButton: 'billing-retry-button',
-} as const
+} as const;
 
 export const BillingText = {
   pageTitle: 'Billing & Usage',
   loadError: 'Failed to load',
   retryButton: 'Retry',
-} as const
+} as const;
 
 export const mockPlanData = {
   name: 'Pro',
   price: 45000,
-} as const
+} as const;
 ```
 
 #### 2. Locators
+
 ```typescript
-import type {Page} from '@playwright/test'
-import {BillingTestIds} from '@/app/testing/fixtures/billing/billing-fixtures'
+import type { Page } from '@playwright/test';
+import { BillingTestIds } from '@/app/testing/fixtures/billing/billing-fixtures';
 
-export const createBillingPageLocators = (page: Page) => ({
-  pageHeader: page.getByTestId(BillingTestIds.pageHeader),
-  currentPlanName: page.getByTestId(BillingTestIds.currentPlanName),
-  loadingSkeleton: page.getByTestId(BillingTestIds.loadingSkeleton),
-  errorMessage: page.getByTestId(BillingTestIds.errorMessage),
-  retryButton: page.getByTestId(BillingTestIds.retryButton),
-} as const)
+export const createBillingPageLocators = (page: Page) =>
+  ({
+    pageHeader: page.getByTestId(BillingTestIds.pageHeader),
+    currentPlanName: page.getByTestId(BillingTestIds.currentPlanName),
+    loadingSkeleton: page.getByTestId(BillingTestIds.loadingSkeleton),
+    errorMessage: page.getByTestId(BillingTestIds.errorMessage),
+    retryButton: page.getByTestId(BillingTestIds.retryButton),
+  }) as const;
 
-export type BillingPageLocators = ReturnType<typeof createBillingPageLocators>
+export type BillingPageLocators = ReturnType<typeof createBillingPageLocators>;
 ```
 
 #### 3. Flows
+
 ```typescript
-import type {BasePagePom} from '@/e2e/pages/base-page.pom'
-import type {BillingPageLocators} from '@/e2e/locators/billing-page.locators'
-import {pageRoutes} from '@/app/config/pageRoutes'
+import type { BasePagePom } from '@/e2e/pages/base-page.pom';
+import type { BillingPageLocators } from '@/e2e/locators/billing-page.locators';
+import { pageRoutes } from '@/app/config/pageRoutes';
 
 export const createBillingPageFlow = (basePage: BasePagePom, locators: BillingPageLocators) => {
   return {
     navigateToBillingPage: async () => {
-      await basePage.flows.goto(pageRoutes.billing)
+      await basePage.flows.goto(pageRoutes.billing);
     },
 
     clickRetryButton: async () => {
-      await locators.retryButton.click()
+      await locators.retryButton.click();
     },
-  } as const
-}
+  } as const;
+};
 
-export type BillingPageFlow = ReturnType<typeof createBillingPageFlow>
+export type BillingPageFlow = ReturnType<typeof createBillingPageFlow>;
 ```
 
 #### 4. Assertions
+
 ```typescript
-import {expect} from '@playwright/test'
-import type {BillingPageLocators} from '@/e2e/locators/billing-page.locators'
-import type {BasePagePom} from '@/e2e/pages/base-page.pom'
+import { expect } from '@playwright/test';
+import type { BillingPageLocators } from '@/e2e/locators/billing-page.locators';
+import type { BasePagePom } from '@/e2e/pages/base-page.pom';
 
-export const createBillingPageAssertions = (basePage: BasePagePom, locators: BillingPageLocators) => ({
-  showsCurrentPlanName: async () => {
-    await expect(locators.currentPlanName).toBeVisible()
-  },
+export const createBillingPageAssertions = (basePage: BasePagePom, locators: BillingPageLocators) =>
+  ({
+    showsCurrentPlanName: async () => {
+      await expect(locators.currentPlanName).toBeVisible();
+    },
 
-  showsLoadingSkeleton: async () => {
-    await expect(locators.loadingSkeleton).toBeVisible()
-  },
+    showsLoadingSkeleton: async () => {
+      await expect(locators.loadingSkeleton).toBeVisible();
+    },
 
-  showsErrorMessage: async (message: string) => {
-    await expect(locators.errorMessage).toContainText(message)
-  },
+    showsErrorMessage: async (message: string) => {
+      await expect(locators.errorMessage).toContainText(message);
+    },
 
-  showsRetryButton: async () => {
-    await expect(locators.retryButton).toBeVisible()
-  },
-} as const)
+    showsRetryButton: async () => {
+      await expect(locators.retryButton).toBeVisible();
+    },
+  }) as const;
 
-export type BillingPageAssertions = ReturnType<typeof createBillingPageAssertions>
+export type BillingPageAssertions = ReturnType<typeof createBillingPageAssertions>;
 ```
 
 #### 5. Intercepts
+
 ```typescript
-import type {Page} from '@playwright/test'
-import {apiRoutes} from '@/app/config/apiRoutes'
-import {API_ERROR_MESSAGES} from '@/app/config/constants'
-import {mockPlanData} from '@/app/testing/fixtures/billing/billing-fixtures'
-import {intercept} from '@/e2e/utils/intercept'
+import type { Page } from '@playwright/test';
+import { apiRoutes } from '@/app/config/apiRoutes';
+import { API_ERROR_MESSAGES } from '@/app/config/constants';
+import { mockPlanData } from '@/app/testing/fixtures/billing/billing-fixtures';
+import { intercept } from '@/e2e/utils/intercept';
 
-export const createBillingIntercepts = (page: Page) => ({
-  mockSlowBillingAPI: async () => {
-    await intercept(page, `api/${apiRoutes.billing}`, {
-      delay: 3000,
-      body: mockPlanData,
-    })
-  },
+export const createBillingIntercepts = (page: Page) =>
+  ({
+    mockSlowBillingAPI: async () => {
+      await intercept(page, `api/${apiRoutes.billing}`, {
+        delay: 3000,
+        body: mockPlanData,
+      });
+    },
 
-  mockFailingBillingAPI: async () => {
-    await intercept(page, `api/${apiRoutes.billing}`, {
-      status: 500,
-      body: { error: API_ERROR_MESSAGES.internalServerError },
-    })
-  },
-} as const)
+    mockFailingBillingAPI: async () => {
+      await intercept(page, `api/${apiRoutes.billing}`, {
+        status: 500,
+        body: { error: API_ERROR_MESSAGES.internalServerError },
+      });
+    },
+  }) as const;
 
-export type BillingIntercepts = ReturnType<typeof createBillingIntercepts>
+export type BillingIntercepts = ReturnType<typeof createBillingIntercepts>;
 ```
 
 #### 6. POM
+
 ```typescript
-import type {Page} from '@playwright/test'
-import {createPageObject} from './page-factory'
-import {createBillingPageAssertions} from '@/e2e/assertions/billing-page.assertions'
-import {createBillingPageFlow} from '@/e2e/flows/billing-page.flow'
-import {createBillingPageLocators} from '@/e2e/locators/billing-page.locators'
-import {createBillingIntercepts} from '@/e2e/intercepts/billing.intercepts'
+import type { Page } from '@playwright/test';
+import { createPageObject } from './page-factory';
+import { createBillingPageAssertions } from '@/e2e/assertions/billing-page.assertions';
+import { createBillingPageFlow } from '@/e2e/flows/billing-page.flow';
+import { createBillingPageLocators } from '@/e2e/locators/billing-page.locators';
+import { createBillingIntercepts } from '@/e2e/intercepts/billing.intercepts';
 
 export const createBillingPage = (page: Page) =>
   createPageObject(
@@ -583,62 +626,63 @@ export const createBillingPage = (page: Page) =>
     createBillingPageAssertions,
     createBillingPageFlow,
     createBillingIntercepts
-  )
+  );
 
-export type BillingPage = ReturnType<typeof createBillingPage>
+export type BillingPage = ReturnType<typeof createBillingPage>;
 ```
 
 #### 7. Step Definitions
+
 ```typescript
-import type {Page} from '@playwright/test'
-import {Given, When, Then} from '@/e2e/support/safe-steps'
-import {createBillingPage} from '@/e2e/pages/billing-page.pom'
+import type { Page } from '@playwright/test';
+import { Given, When, Then } from '@/e2e/support/safe-steps';
+import { createBillingPage } from '@/e2e/pages/billing-page.pom';
 
 // ============================================================================
 // Given Steps
 // ============================================================================
 
 Given('I am on the billing page', async (page: Page) => {
-  await createBillingPage(page).flows.navigateToBillingPage()
-})
+  await createBillingPage(page).flows.navigateToBillingPage();
+});
 
 Given('the billing API is slow', async (page: Page) => {
-  await createBillingPage(page).intercepts.mockSlowBillingAPI()
-})
+  await createBillingPage(page).intercepts.mockSlowBillingAPI();
+});
 
 Given('the billing API will fail', async (page: Page) => {
-  await createBillingPage(page).intercepts.mockFailingBillingAPI()
-})
+  await createBillingPage(page).intercepts.mockFailingBillingAPI();
+});
 
 // ============================================================================
 // When Steps
 // ============================================================================
 
 When('I visit the billing page', async (page: Page) => {
-  await createBillingPage(page).flows.navigateToBillingPage()
-})
+  await createBillingPage(page).flows.navigateToBillingPage();
+});
 
 // ============================================================================
 // Then Steps
 // ============================================================================
 
 Then('I see my current plan name', async (page: Page) => {
-  await createBillingPage(page).assertions.showsCurrentPlanName()
-})
+  await createBillingPage(page).assertions.showsCurrentPlanName();
+});
 
 Then('I see loading skeleton', async (page: Page) => {
-  await createBillingPage(page).assertions.showsLoadingSkeleton()
-})
+  await createBillingPage(page).assertions.showsLoadingSkeleton();
+});
 
 Then('I see {string}', async (page: Page, text: string) => {
-  await createBillingPage(page).assertions.showsErrorMessage(text)
-})
+  await createBillingPage(page).assertions.showsErrorMessage(text);
+});
 
 Then('I see {string} button', async (page: Page, buttonText: string) => {
   if (buttonText === 'Retry') {
-    await createBillingPage(page).assertions.showsRetryButton()
+    await createBillingPage(page).assertions.showsRetryButton();
   }
-})
+});
 ```
 
 ---
@@ -646,6 +690,7 @@ Then('I see {string} button', async (page: Page, buttonText: string) => {
 ## VALIDATION BEFORE OUTPUT
 
 **Before showing generated files, verify:**
+
 - [ ] All 7 files created
 - [ ] Fixtures: TestIds use kebab-case, exported as const
 - [ ] Locators: Use TestIds from fixtures (no hardcoded strings)
@@ -665,6 +710,7 @@ Then('I see {string} button', async (page: Page, buttonText: string) => {
 ## Implementation Complete
 
 **Generated 7 files**:
+
 1. ✅ app/testing/fixtures/{domain}/{domain}-fixtures.ts ({N} TestIds, {M} constants)
 2. ✅ e2e/locators/{domain}-page.locators.ts ({N} locators)
 3. ✅ e2e/flows/{domain}-page.flow.ts ({X} flow methods)
@@ -674,6 +720,7 @@ Then('I see {string} button', async (page: Page, buttonText: string) => {
 7. ✅ e2e/steps/{domain}/{feature}.steps.ts ({K} step definitions)
 
 **Coverage**:
+
 - {X} user actions (flows)
 - {Y} verifications (assertions)
 - {Z} API scenarios (intercepts)
@@ -707,7 +754,7 @@ Then('I see {string} button', async (page: Page, buttonText: string) => {
 [api-generator]
   • Fixtures
   • Rest endpoints
-  • Security 
+  • Security
   ↓
 Tests run ✅
   ↓
@@ -723,11 +770,12 @@ Done ✅
 
 # **Critical!!**
 
-## API Security Test Patterns 
+## API Security Test Patterns
 
 When generating tests for API routes, include these security scenarios:
 
 **Authentication tests** - Mock unauthenticated requests expecting 401
+
 ```gherkin
 Scenario: Unauthorized access blocked
   Given I am not logged in
@@ -736,6 +784,7 @@ Scenario: Unauthorized access blocked
 ```
 
 **Cross-tenant isolation** - Mock requests with different companyId
+
 ```gherkin
 Scenario: Company data isolation
   Given I belong to Company A
@@ -744,6 +793,7 @@ Scenario: Company data isolation
 ```
 
 **Input validation** - Test invalid schemas return 400
+
 ```gherkin
 Scenario: Invalid input rejected
   Given I am logged in
@@ -752,14 +802,16 @@ Scenario: Invalid input rejected
 ```
 
 **Intercept patterns for security tests:**
+
 ```typescript
 mockUnauthorizedAccess: async () => {
   await intercept(page, `api/${apiRoutes.route}`, {
     status: 401,
     body: { error: API_ERROR_MESSAGES.unauthorized },
-  })
-}
+  });
+};
 
-mockCrossTenantAttempt: async () => {}
+mockCrossTenantAttempt: async () => {};
 ```
+
 ---

@@ -11,6 +11,5 @@ export const songKeys = {
   details: () => [...songKeys.all, 'detail'] as const,
   detail: (artistSlug: string, songSlug: string) =>
     [...songKeys.details(), artistSlug, songSlug] as const,
-  search: (artist: string, title: string) =>
-    [...songKeys.all, 'search', artist, title] as const,
+  search: (artist: string, title: string) => [...songKeys.all, 'search', artist, title] as const,
 } as const;

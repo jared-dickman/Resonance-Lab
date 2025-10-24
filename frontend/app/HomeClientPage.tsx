@@ -304,4 +304,3 @@ function ResultList({
     </div>
   );
 }
-

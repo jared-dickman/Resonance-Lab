@@ -1,37 +1,34 @@
-"use client"
+'use client';
 
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
-import { listSavedSongs } from "@/lib/api"
-import { useAsyncApi } from "@/lib/hooks"
-import type { SavedSong } from "@/lib/types"
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import { listSavedSongs } from '@/lib/api';
+import { useAsyncApi } from '@/lib/hooks';
+import type { SavedSong } from '@/lib/types';
 
 interface SongsContextType {
-  songs: SavedSong[]
-  isLoadingSongs: boolean
-  refreshSongs: () => Promise<void>
-  error: string | null
+  songs: SavedSong[];
+  isLoadingSongs: boolean;
+  refreshSongs: () => Promise<void>;
+  error: string | null;
 }
 
-const SongsContext = createContext<SongsContextType | undefined>(undefined)
+const SongsContext = createContext<SongsContextType | undefined>(undefined);
 
 export function SongsProvider({ children }: { children: ReactNode }) {
-  const [isMounted, setIsMounted] = useState(false)
-  const { data, isLoading, error, execute } = useAsyncApi(
-    listSavedSongs,
-    "Failed to load songs"
-  )
+  const [isMounted, setIsMounted] = useState(false);
+  const { data, isLoading, error, execute } = useAsyncApi(listSavedSongs, 'Failed to load songs');
 
   const refreshSongs = async () => {
-    await execute()
-  }
+    await execute();
+  };
 
   useEffect(() => {
-    setIsMounted(true)
-    refreshSongs()
-  }, [])
+    setIsMounted(true);
+    refreshSongs();
+  }, []);
 
   if (!isMounted) {
-    return null
+    return null;
   }
 
   return (
@@ -45,11 +42,11 @@ export function SongsProvider({ children }: { children: ReactNode }) {
     >
       {children}
     </SongsContext.Provider>
-  )
+  );
 }
 
 export function useSongs() {
-  const context = useContext(SongsContext)
+  const context = useContext(SongsContext);
   if (context === undefined) {
     // Return default values when used outside provider (e.g., in not-found pages)
     return {
@@ -57,7 +54,7 @@ export function useSongs() {
       isLoadingSongs: false,
       refreshSongs: async () => {},
       error: null,
-    }
+    };
   }
-  return context
+  return context;
 }

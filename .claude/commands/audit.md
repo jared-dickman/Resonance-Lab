@@ -11,6 +11,7 @@ You are conducting a thorough security, performance, and quality audit on a spec
 ## Setup
 
 Focus on these rule files:
+
 - `llm/rules/security.md`
 - `llm/rules/code-standards.md`
 - `llm/rules/testing-playwright.md`

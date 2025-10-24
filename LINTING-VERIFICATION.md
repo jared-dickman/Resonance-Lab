@@ -3,6 +3,7 @@
 ## Setup Completed
 
 ✅ **Dependencies Installed**
+
 - ESLint with TypeScript support
 - Prettier for code formatting
 - ast-grep for security scanning
@@ -10,6 +11,7 @@
 - All necessary plugins
 
 ✅ **Scripts Added to package.json**
+
 - `npm run lint` - Lint and auto-fix code
 - `npm run lint:check` - Check for lint errors (no fix)
 - `npm run format` - Format code with Prettier
@@ -20,7 +22,9 @@
 ✅ **Husky Git Hooks Configured**
 
 ### Pre-commit Hook
+
 Runs automatically on every commit:
+
 1. Database migration integrity check (if schema changed)
 2. Blocks commits to master/main branches
 3. Prevents TODO/FIXME/XXX/HACK/TEMP in code
@@ -37,13 +41,17 @@ Runs automatically on every commit:
 14. Checks for merge conflicts
 
 ### Commit Message Hook
+
 Enforces conventional commits format:
+
 - Types: feat, fix, docs, style, refactor, perf, test, chore, build, ci
 - Format: `type(scope): description`
 - Blocks WIP/TEMP/DEBUG commits
 
 ### Pre-push Hook
+
 Runs before pushing to remote:
+
 1. Tests ast-grep rules
 2. Runs E2E smoke tests
 3. **Verifies build succeeds**

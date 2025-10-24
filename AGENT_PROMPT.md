@@ -1,18 +1,22 @@
 # Agent Prompt for Resonance Lab Development
 
 ## Project Overview
+
 You are working on the Resonance Lab project - a music/tone analysis application with a frontend, scraper, and Ultimate Guitar integration. The project has enterprise-grade code quality and security enforcement tools configured.
 
 ## Critical: Code Quality Enforcement
+
 This project has **STRICT** code quality rules that are automatically enforced. You CANNOT bypass these checks:
 
 ### 🔒 Security Rules (MUST FOLLOW)
+
 1. **NO hardcoded secrets**: Use environment variables for API keys, tokens, passwords
 2. **NO unsafe innerHTML**: Never use dangerouslySetInnerHTML or .innerHTML
 3. **NO SQL injection**: Use parameterized queries only
 4. **REQUIRE validation**: All API endpoints must use Zod validation
 
 ### 📝 Code Standards (ENFORCED)
+
 1. **Function components only**: Use `export function Component()` NOT arrow functions
 2. **NO console.log**: Use proper logging utilities
 3. **NO template literal classNames**: Use cn() utility
@@ -21,6 +25,7 @@ This project has **STRICT** code quality rules that are automatically enforced. 
 6. **NO magic strings**: Use constants for routes, test IDs
 
 ### 🚨 Git Hooks (CANNOT SKIP)
+
 - **Pre-commit**: Runs ESLint, Prettier, ast-grep, TypeScript checks
 - **Commit messages**: Must follow format: `type(scope): description`
   - Types: feat, fix, docs, style, refactor, perf, test, chore
@@ -29,11 +34,13 @@ This project has **STRICT** code quality rules that are automatically enforced. 
 ## Before Starting Any Work
 
 1. **Run the setup if not done:**
+
    ```bash
    ./setup-linting-enhanced.sh
    ```
 
 2. **Test the rules work:**
+
    ```bash
    npm run test:ast-grep-rules
    npm run ast-grep:scan
@@ -46,6 +53,7 @@ This project has **STRICT** code quality rules that are automatically enforced. 
    ```
 
 ## Project Structure
+
 ```
 resonance-lab/
 ├── frontend/          # Next.js frontend application
@@ -59,6 +67,7 @@ resonance-lab/
 ```
 
 ## Available Commands
+
 ```bash
 # Development
 npm run dev           # Start development server
@@ -77,6 +86,7 @@ npm run check:all            # Run everything
 ## Common Tasks
 
 ### Adding a New Component
+
 ```typescript
 // ✅ CORRECT - Function declaration
 export function MyComponent({ data }: Props) {
@@ -88,13 +98,14 @@ export const MyComponent = () => { ... }
 ```
 
 ### Adding API Endpoints
+
 ```typescript
 // ✅ CORRECT - With validation
 import { z } from 'zod';
 
 const schema = z.object({
   name: z.string().min(1),
-  email: z.string().email()
+  email: z.string().email(),
 });
 
 export async function POST(request: Request) {
@@ -110,6 +121,7 @@ export async function POST(request: Request) {
 ```
 
 ### Using Environment Variables
+
 ```typescript
 // ✅ CORRECT
 const apiKey = process.env.ULTIMATE_GUITAR_API_KEY;
@@ -119,6 +131,7 @@ const apiKey = 'sk-1234567890'; // BLOCKED BY no-exposed-secrets
 ```
 
 ### Data Fetching
+
 ```typescript
 // ✅ CORRECT - Feature hook
 // In: app/hooks/useSongs.ts
@@ -135,6 +148,7 @@ import { useQuery } from '@tanstack/react-query'; // BLOCKED
 ## Working with Frontend
 
 The frontend is a Next.js application. Key points:
+
 - Server/client boundary awareness required
 - Use App Router patterns
 - Follow Next.js 14+ best practices
@@ -142,6 +156,7 @@ The frontend is a Next.js application. Key points:
 ## Working with Scraper
 
 The scraper is written in Go. When modifying:
+
 - Maintain existing patterns
 - Update tests if changing functionality
 - Ensure API compatibility with frontend
@@ -168,23 +183,27 @@ The scraper is written in Go. When modifying:
 ## Troubleshooting
 
 ### ESLint Errors
+
 ```bash
 npm run lint        # Auto-fix what's possible
 npm run lint:check  # See what needs manual fixing
 ```
 
 ### ast-grep Violations
+
 ```bash
 npm run ast-grep:scan  # See violations
 npm run test:ast-grep-rules  # Test rules
 ```
 
 ### Type Errors
+
 ```bash
 npm run typecheck  # See TypeScript errors
 ```
 
 ### Commit Rejected
+
 - Check commit message format: `type(scope): description`
 - Run `npm run check:all` and fix all issues
 - Ensure no TODO/FIXME/console.log in code
@@ -192,6 +211,7 @@ npm run typecheck  # See TypeScript errors
 ## Rule Documentation
 
 See `rules-documentation.ts` for complete details on all 16 enforced rules including:
+
 - Detailed explanations
 - Valid/invalid examples
 - Business justification
@@ -200,14 +220,17 @@ See `rules-documentation.ts` for complete details on all 16 enforced rules inclu
 ## Emergency Override (NOT RECOMMENDED)
 
 If absolutely necessary (should never be):
+
 ```bash
 HUSKY=0 git commit ...  # Temporarily disable hooks
 ```
+
 **Note**: This will still fail in CI/CD, so violations must be fixed eventually.
 
 ## Summary
 
 This project enforces enterprise-grade code quality. Every commit must pass:
+
 - 16 security and quality rules
 - TypeScript type checking
 - ESLint standards
