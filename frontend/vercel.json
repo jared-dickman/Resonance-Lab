@@ -1,8 +1,26 @@
 {
-  "alias": ["resonance-lab.vercel.app"],
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "framework": "nextjs",
   "git": {
     "deploymentEnabled": {
-      "master": true
+      "main": true,
+      "master": true,
+      "develop": true
     }
+  },
+  "github": {
+    "silent": false,
+    "autoJobCancelation": true
+  },
+  "functions": {
+    "api/*.ts": {
+      "maxDuration": 10
+    }
+  },
+  "env": {
+    "NEXT_TELEMETRY_DISABLED": "1"
   }
 }
