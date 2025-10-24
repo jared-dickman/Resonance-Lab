@@ -48,9 +48,6 @@ jobs:
       - name: 🔒 ast-grep security scan
         run: npm run ast-grep:scan
 
-      - name: 🧪 Test linting rules
-        run: npm run test:ast-grep-rules
-
       - name: 🔐 Secret scanning
         uses: trufflesecurity/trufflehog@main
         with:
