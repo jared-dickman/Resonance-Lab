@@ -1,0 +1,8 @@
+{
+  "alias": ["resonance-lab.vercel.app"],
+  "git": {
+    "deploymentEnabled": {
+      "master": true
+    }
+  }
+}
