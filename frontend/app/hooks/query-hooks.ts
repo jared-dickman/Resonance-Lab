@@ -81,7 +81,6 @@ export function useApiMutation<
 
       // User-provided onSuccess callback
       if (userOnSuccess) {
-        // @ts-expect-error - TanStack Query v5 type signature compatibility
         userOnSuccess(data, variables, context, ...args);
       }
     },

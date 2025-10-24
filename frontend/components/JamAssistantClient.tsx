@@ -13,15 +13,15 @@ import { ProTipsCard } from './jam/ProTipsCard';
 import { EmptyBuildState } from './jam/EmptyBuildState';
 import JamBuilder from './jam/JamBuilder';
 import { getProgressionsByVibe, type ChordProgression } from '@/lib/jamProgressions';
-import { Vibe } from '@/lib/enums/vibe.enum';
+import { type Vibe } from '@/lib/jamProgressions';
 import { SkillLevel } from '@/lib/enums/skillLevel.enum';
 import { ANIMATION_DURATION, FADE_VARIANTS } from '@/lib/constants/animation.constants';
 import { MAX_WIDTH } from '@/lib/constants/ui.constants';
 
 const ICON_SIZE = 4;
 
-export default function JamAssistantClient(): JSX.Element {
-  const [selectedVibe, setSelectedVibe] = useState<Vibe>(Vibe.Pop);
+export default function JamAssistantClient(): React.JSX.Element {
+  const [selectedVibe, setSelectedVibe] = useState<Vibe>('pop');
   const [skillLevel, setSkillLevel] = useState<SkillLevel>(SkillLevel.Intermediate);
   const [selectedProgression, setSelectedProgression] = useState<ChordProgression | null>(null);
   const [customProgression, setCustomProgression] = useState<ChordProgression | null>(null);
@@ -33,7 +33,7 @@ export default function JamAssistantClient(): JSX.Element {
 
   useEffect(() => {
     if (filteredProgressions.length > 0 && !selectedProgression) {
-      setSelectedProgression(filteredProgressions[0]);
+      setSelectedProgression(filteredProgressions[0] ?? null);
     }
   }, [filteredProgressions, selectedProgression]);
 
@@ -65,7 +65,7 @@ export default function JamAssistantClient(): JSX.Element {
         </TabsList>
 
         <TabsContent value="discover" className="space-y-6">
-          <VibeSelector selectedVibe={selectedVibe} onSelectVibe={(v: Vibe) => setSelectedVibe(v)} />
+          <VibeSelector selectedVibe={selectedVibe} onSelectVibe={setSelectedVibe} />
           <ProgressionsGrid
             vibe={selectedVibe}
             progressions={filteredProgressions}

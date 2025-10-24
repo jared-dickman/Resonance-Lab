@@ -52,7 +52,7 @@ export function ChordJourneyVisualization({
   song,
   currentChord,
   className = '',
-}: ChordJourneyProps): JSX.Element {
+}: ChordJourneyProps): React.JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [chordNodes, setChordNodes] = useState<Map<string, ChordNode>>(new Map());
   const [transitions, setTransitions] = useState<ChordTransition[]>([]);

@@ -14,28 +14,22 @@ import DraftManager from './DraftManager';
 import { createEmptySongState, updateSongTitle, updateLyricsText } from './state/songStateManager';
 import { createLocalStorageAdapter } from './persistence/localStorageAdapter';
 import type { CompleteSongState } from './types/song';
-import type { PanelLayoutState, GlobalUIState, FocusArea } from './types/ui';
+import type { FocusArea } from './types/ui';
 import type { ConversationHistory } from './types/chat';
 
 const PANEL_LAYOUT_KEY = 'songwriter-panel-layout';
 const DEFAULT_PANEL_SIZES = [25, 40, 35];
 const MIN_PANEL_SIZE = 15;
 
-export default function SongwriterClient(): JSX.Element {
+export default function SongwriterClient(): React.JSX.Element {
   const [songState, setSongState] = useState<CompleteSongState>(createEmptySongState());
   const [showDraftManager, setShowDraftManager] = useState<boolean>(false);
   const [selectedChord, setSelectedChord] = useState<string | null>(null);
   const [panelSizes, setPanelSizes] = useState<number[]>(DEFAULT_PANEL_SIZES);
-  const [focusArea, setFocusArea] = useState<FocusArea>('lyrics');
+  const [_focusArea, _setFocusArea] = useState<FocusArea>('lyrics');
   const [isMobile, setIsMobile] = useState<boolean>(false);
-  const [conversationHistory, setConversationHistory] = useState<ConversationHistory>({
+  const [_conversationHistory, _setConversationHistory] = useState<ConversationHistory>({
     messages: [],
-    totalMessages: 0,
-    conversationStartTime: new Date(),
-    lastMessageTime: new Date(),
-    userMessageCount: 0,
-    assistantMessageCount: 0,
-    appliedSuggestionsCount: 0,
   });
 
   const storage = createLocalStorageAdapter();
@@ -78,11 +72,11 @@ export default function SongwriterClient(): JSX.Element {
   }
 
   function handleSaveDraft(): void {
-    const draftId = `draft_${Date.now()}`;
     // TODO: Implement draft saving functionality
+    // const draftId = `draft_${Date.now()}`;
   }
 
-  function handleChordsChange(chords: { name: string; timing: number }[]): void {
+  function handleChordsChange(_chords: { name: string; timing: number }[]): void {
     // TODO: Implement chords change handling
   }
 

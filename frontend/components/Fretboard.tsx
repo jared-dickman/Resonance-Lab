@@ -43,7 +43,7 @@ export function Fretboard({
   onVoicingChange,
   showFingerNumbers = true,
   className = '',
-}: FretboardProps): JSX.Element {
+}: FretboardProps): React.JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
   const [isSoundEnabled, setIsSoundEnabled] = useState(false);

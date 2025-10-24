@@ -33,9 +33,9 @@ const getKeyIndex = (key: string) => {
   return index === -1 ? KEY_SIGNATURES.indexOf('C') : index;
 };
 
-export function SongClient({ song, artistSlug }: SongClientProps): JSX.Element {
+export function SongClient({ song, artistSlug }: SongClientProps): React.JSX.Element {
   const normalizedOriginalKey = getNormalizedKey(song.key);
-  const originalKeyIndex = getKeyIndex(normalizedOriginalKey);
+  const originalKeyIndex = getKeyIndex(normalizedOriginalKey ?? 'C');
 
   const [transpose, setTranspose] = useState(0);
   const [bpm, setBpm] = useState(120);
@@ -179,7 +179,7 @@ export function SongClient({ song, artistSlug }: SongClientProps): JSX.Element {
       <SongControls
         transpose={transpose}
         onTransposeChange={handleTransposeChange}
-        currentKey={currentKey}
+        currentKey={currentKey ?? 'C'}
         onKeyChange={handleKeyChange}
         bpm={bpm}
         onBpmChange={setBpm}
@@ -264,7 +264,7 @@ export function SongClient({ song, artistSlug }: SongClientProps): JSX.Element {
         onBpmChange={setBpm}
         isAutoScrollEnabled={isAutoScrollEnabled}
         onToggleAutoScroll={toggleAutoScroll}
-        lyricsContainerRef={lyricsContainerRef}
+        lyricsContainerRef={lyricsContainerRef as React.RefObject<HTMLDivElement>}
         className="mt-6"
       />
 

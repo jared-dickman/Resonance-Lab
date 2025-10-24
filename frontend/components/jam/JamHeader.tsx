@@ -13,7 +13,7 @@ const ICON_SCALE = [1, 1.1, 1.1, 1];
 const ICON_ANIMATION_DURATION = 2;
 const ICON_REPEAT_DELAY = 3;
 
-export function JamHeader(): JSX.Element {
+export function JamHeader(): React.JSX.Element {
   return (
     <motion.div
       className="mb-8 text-center"

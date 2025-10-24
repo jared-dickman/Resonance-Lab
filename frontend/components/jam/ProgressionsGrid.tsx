@@ -2,13 +2,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 import { ScrollArea } from '@/components/ui/scroll-area';
 import ProgressionCard from './ProgressionCard';
-import type { ChordProgression } from '@/lib/jamProgressions';
+import type { ChordProgression, Vibe } from '@/lib/jamProgressions';
 import { SCROLL_AREA_HEIGHT, GRID_COLUMNS } from '@/lib/constants/ui.constants';
 import { ANIMATION_DURATION, SPRING_CONFIG } from '@/lib/constants/animation.constants';
 import { TAB_SELECTOR } from '@/lib/constants/dom.constants';
 import { clickElement, capitalize, formatCount } from '@/lib/utils';
 import { VIBE_INFO } from '@/lib/jamProgressions';
-import type { Vibe } from '@/lib/enums/vibe.enum';
 
 interface ProgressionsGridProps {
   vibe: Vibe;
@@ -30,7 +29,7 @@ export function ProgressionsGrid({
   selectedProgressionId,
   onSelectProgression,
   onBuildProgression,
-}: ProgressionsGridProps): JSX.Element {
+}: ProgressionsGridProps): React.JSX.Element {
   const handleBuild = (progression: ChordProgression): void => {
     onBuildProgression(progression);
     navigateToBuildTab();

@@ -37,7 +37,7 @@ function navigateToDiscoverTab(): void {
   clickElement(TAB_SELECTOR.DISCOVER);
 }
 
-export function EmptyBuildState({ onCreateProgression }: EmptyBuildStateProps): JSX.Element {
+export function EmptyBuildState({ onCreateProgression }: EmptyBuildStateProps): React.JSX.Element {
   const handleStartFromScratch = (): void => {
     onCreateProgression(createDefaultProgression());
   };

@@ -20,7 +20,7 @@ const SCALE_TAP = 0.95;
 export function SkillLevelSelector({
   selectedLevel,
   onSelectLevel,
-}: SkillLevelSelectorProps): JSX.Element {
+}: SkillLevelSelectorProps): React.JSX.Element {
   return (
     <motion.div
       className="mb-6 flex justify-center"

@@ -9,7 +9,7 @@ const PRO_TIPS = [
   'Use the Build tab to customize progressions and create your own variations',
 ];
 
-export function ProTipsCard(): JSX.Element {
+export function ProTipsCard(): React.JSX.Element {
   return (
     <Card className="border-primary/20 bg-primary/5">
       <CardHeader>

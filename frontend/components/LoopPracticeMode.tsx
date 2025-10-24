@@ -35,7 +35,7 @@ export function LoopPracticeMode({
   onToggleAutoScroll,
   lyricsContainerRef,
   className = '',
-}: LoopPracticeModeProps): JSX.Element | null {
+}: LoopPracticeModeProps): React.JSX.Element | null {
   const [isLoopEnabled, setIsLoopEnabled] = useState(false);
   const [loopRange, setLoopRange] = useState<LoopRange | null>(null);
   const [loopCount, setLoopCount] = useState(0);
