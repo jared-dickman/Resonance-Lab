@@ -109,20 +109,23 @@ export default function HomePage() {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Filter Songs</CardTitle>
-          <CardDescription>Filter songs by key and search by title or artist.</CardDescription>
+          <CardTitle className="text-base font-semibold">Quick Filter</CardTitle>
+          <CardDescription className="text-xs">
+            Search your library by title, artist, or key
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex gap-4">
+          <div className="flex gap-3">
             <Input
-              placeholder="Search by title or artist..."
+              placeholder="Search songs..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
+              className="flex-1"
             />
             <select
               value={selectedKey}
               onChange={event => setSelectedKey(event.target.value)}
-              className="w-[180px] rounded-md border border-input bg-transparent px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              className="w-[140px] rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               {availableKeys.map(key => (
                 <option key={key} value={key}>
@@ -131,27 +134,32 @@ export default function HomePage() {
               ))}
             </select>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1">
             {filteredSongs.map(song => (
-              <div key={`${song.artistSlug}/${song.songSlug}`} className="rounded-md border p-3">
-                <div className="flex justify-between">
-                  <div>
+              <div
+                key={`${song.artistSlug}/${song.songSlug}`}
+                className="group rounded-lg border border-border/40 p-3 transition-all hover:border-border hover:bg-accent/30 hover:shadow-sm"
+              >
+                <div className="flex justify-between items-start gap-3">
+                  <div className="flex-1 min-w-0">
                     <Link
                       href={`/songs/${song.artistSlug}/${song.songSlug}`}
-                      className="font-medium hover:text-primary transition-colors"
+                      className="font-medium text-sm hover:text-primary transition-colors block truncate"
                     >
                       {song.title}
                     </Link>
-                    <div className="text-sm text-muted-foreground">
-                      <Link
-                        href={`/songs/${song.artistSlug}`}
-                        className="hover:text-foreground transition-colors"
-                      >
-                        {song.artist}
-                      </Link>
-                    </div>
+                    <Link
+                      href={`/songs/${song.artistSlug}`}
+                      className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {song.artist}
+                    </Link>
                   </div>
-                  {song.key && <div className="text-sm text-muted-foreground">Key: {song.key}</div>}
+                  {song.key && (
+                    <div className="text-xs font-medium text-muted-foreground bg-muted px-2 py-1 rounded">
+                      {song.key}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -160,15 +168,15 @@ export default function HomePage() {
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Search Ultimate Guitar</CardTitle>
-          <CardDescription>
-            Pick a chord and optional tab to import into your library.
+          <CardTitle className="text-base font-semibold">Add New Song</CardTitle>
+          <CardDescription className="text-xs">
+            Import chords and tabs from Ultimate Guitar
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form className="space-y-4" onSubmit={handleSearch}>
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-muted-foreground" htmlFor="artist">
+            <div className="space-y-2">
+              <label className="text-xs font-medium" htmlFor="artist">
                 Artist
               </label>
               <Input
@@ -179,8 +187,8 @@ export default function HomePage() {
                 autoComplete="off"
               />
             </div>
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-muted-foreground" htmlFor="title">
+            <div className="space-y-2">
+              <label className="text-xs font-medium" htmlFor="title">
                 Song Title
               </label>
               <Input
@@ -209,10 +217,10 @@ export default function HomePage() {
 
           {searchApi.isLoading && (
             <div className="mt-6 space-y-4">
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-24" />
+              <div className="space-y-3">
+                <Skeleton className="h-3.5 w-24" />
                 {[...Array(PAGINATION.SONGS_PER_PAGE)].map((_, i) => (
-                  <div key={i} className="rounded-md border px-3 py-2">
+                  <div key={i} className="rounded-lg border px-3 py-3">
                     <Skeleton className="h-4 w-3/4 mb-2" />
                     <Skeleton className="h-3 w-1/2" />
                   </div>
@@ -221,7 +229,7 @@ export default function HomePage() {
             </div>
           )}
           {!searchApi.isLoading && searchResults && (
-            <div className="mt-6 space-y-4">
+            <div className="mt-6 space-y-5">
               <ResultList
                 title="Chord Charts"
                 results={searchResults.chords}
@@ -236,7 +244,7 @@ export default function HomePage() {
               />
               <Button
                 className="w-full"
-                variant="secondary"
+                size="lg"
                 onClick={handleDownload}
                 disabled={downloadApi.isLoading || (!selectedChord && !selectedTab)}
               >
@@ -248,7 +256,7 @@ export default function HomePage() {
                 ) : (
                   <span className="flex items-center gap-2">
                     <Download className="h-4 w-4" />
-                    Download Selection
+                    Save to Library
                   </span>
                 )}
               </Button>
@@ -276,8 +284,10 @@ function ResultList({
   }
 
   return (
-    <div className="space-y-2">
-      <div className="text-xs font-semibold uppercase text-muted-foreground">{title}</div>
+    <div className="space-y-3">
+      <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+        {title}
+      </div>
       <div className="space-y-2">
         {results.map(result => {
           const isActive = selected === result.id;
@@ -285,17 +295,22 @@ function ResultList({
             <button
               key={result.id}
               onClick={() => onSelect(isActive ? null : result)}
-              className={`w-full rounded-md border px-3 py-2 text-left text-sm transition hover:border-primary hover:bg-muted ${
-                isActive ? 'border-primary bg-muted' : 'border-border'
+              className={`w-full rounded-lg border px-3.5 py-3 text-left text-sm transition-all ${
+                isActive
+                  ? 'border-primary bg-accent/50 shadow-sm'
+                  : 'border-border/40 hover:border-border hover:bg-accent/30 hover:shadow-sm'
               }`}
             >
-              <div className="flex items-center justify-between">
-                <span className="font-medium text-foreground">{result.title}</span>
-                <span className="text-xs text-muted-foreground">{result.artist}</span>
+              <div className="flex items-start justify-between gap-3">
+                <span className="font-medium text-foreground flex-1">{result.title}</span>
+                <span className="text-xs text-muted-foreground shrink-0">{result.artist}</span>
               </div>
-              <div className="mt-1 text-xs text-muted-foreground">
-                Rating {result.rating.toFixed(1)} • Votes {result.votes} • Score{' '}
-                {result.score.toFixed(2)}
+              <div className="mt-1.5 flex gap-3 text-xs text-muted-foreground">
+                <span>★ {result.rating.toFixed(1)}</span>
+                <span>•</span>
+                <span>{result.votes} votes</span>
+                <span>•</span>
+                <span>Score {result.score.toFixed(2)}</span>
               </div>
             </button>
           );
