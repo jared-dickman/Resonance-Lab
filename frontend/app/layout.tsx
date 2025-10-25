@@ -1,6 +1,6 @@
 import './globals.css';
 import { QueryClientProvider } from '@/app/providers/QueryClientProvider';
-import { LayoutContent } from './LayoutContent';
+import { LayoutContent } from '@/app/LayoutContent';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
