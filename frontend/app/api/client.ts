@@ -1,4 +1,5 @@
 import { apiBaseUrl } from '@/lib/utils';
+import { withRetry, withTimeout, requestDeduplicator } from '@/lib/utils/api-resilience';
 
 export class ApiClientError extends Error {
   constructor(
@@ -10,6 +11,12 @@ export class ApiClientError extends Error {
     super(message);
     this.name = 'ApiClientError';
   }
+}
+
+interface RequestOptions extends RequestInit {
+  retry?: boolean;
+  timeout?: number;
+  deduplicate?: boolean;
 }
 
 class ApiClient {
@@ -54,42 +61,85 @@ class ApiClient {
     return response.json() as Promise<T>;
   }
 
-  async get<T>(endpoint: string, options?: RequestInit): Promise<T> {
-    const response = await fetch(`${this.baseURL}${endpoint}`, {
-      ...options,
-      method: 'GET',
-      headers: await this.buildHeaders(options?.headers as Record<string, string>),
-    });
-    return this.handleResponse<T>(response);
+  async get<T>(endpoint: string, options?: RequestOptions): Promise<T> {
+    const { retry = true, timeout = 30000, deduplicate = true, ...fetchOptions } = options || {};
+    const url = `${this.baseURL}${endpoint}`;
+
+    const makeRequest = async () => {
+      const response = await fetch(url, {
+        ...fetchOptions,
+        method: 'GET',
+        headers: await this.buildHeaders(fetchOptions?.headers as Record<string, string>),
+      });
+      return this.handleResponse<T>(response);
+    };
+
+    let requestPromise: Promise<T>;
+
+    // Apply request deduplication for GET requests
+    if (deduplicate) {
+      requestPromise = requestDeduplicator.deduplicate(url, makeRequest);
+    } else {
+      requestPromise = makeRequest();
+    }
+
+    // Apply retry logic if enabled
+    if (retry) {
+      requestPromise = withRetry(() => requestPromise);
+    }
+
+    // Apply timeout
+    return withTimeout(requestPromise, timeout, `Request to ${endpoint} timed out`);
   }
 
-  async post<T>(endpoint: string, data?: unknown, options?: RequestInit): Promise<T> {
-    const response = await fetch(`${this.baseURL}${endpoint}`, {
-      ...options,
-      method: 'POST',
-      headers: await this.buildHeaders(options?.headers as Record<string, string>),
-      body: data ? JSON.stringify(data) : undefined,
-    });
-    return this.handleResponse<T>(response);
+  async post<T>(endpoint: string, data?: unknown, options?: RequestOptions): Promise<T> {
+    const { retry = true, timeout = 30000, ...fetchOptions } = options || {};
+
+    const makeRequest = async () => {
+      const response = await fetch(`${this.baseURL}${endpoint}`, {
+        ...fetchOptions,
+        method: 'POST',
+        headers: await this.buildHeaders(fetchOptions?.headers as Record<string, string>),
+        body: data ? JSON.stringify(data) : undefined,
+      });
+      return this.handleResponse<T>(response);
+    };
+
+    const requestPromise = retry ? withRetry(makeRequest) : makeRequest();
+    return withTimeout(requestPromise, timeout, `Request to ${endpoint} timed out`);
   }
 
-  async put<T>(endpoint: string, data?: unknown, options?: RequestInit): Promise<T> {
-    const response = await fetch(`${this.baseURL}${endpoint}`, {
-      ...options,
-      method: 'PUT',
-      headers: await this.buildHeaders(options?.headers as Record<string, string>),
-      body: data ? JSON.stringify(data) : undefined,
-    });
-    return this.handleResponse<T>(response);
+  async put<T>(endpoint: string, data?: unknown, options?: RequestOptions): Promise<T> {
+    const { retry = true, timeout = 30000, ...fetchOptions } = options || {};
+
+    const makeRequest = async () => {
+      const response = await fetch(`${this.baseURL}${endpoint}`, {
+        ...fetchOptions,
+        method: 'PUT',
+        headers: await this.buildHeaders(fetchOptions?.headers as Record<string, string>),
+        body: data ? JSON.stringify(data) : undefined,
+      });
+      return this.handleResponse<T>(response);
+    };
+
+    const requestPromise = retry ? withRetry(makeRequest) : makeRequest();
+    return withTimeout(requestPromise, timeout, `Request to ${endpoint} timed out`);
   }
 
-  async delete<T>(endpoint: string, options?: RequestInit): Promise<T> {
-    const response = await fetch(`${this.baseURL}${endpoint}`, {
-      ...options,
-      method: 'DELETE',
-      headers: await this.buildHeaders(options?.headers as Record<string, string>),
-    });
-    return this.handleResponse<T>(response);
+  async delete<T>(endpoint: string, options?: RequestOptions): Promise<T> {
+    const { retry = false, timeout = 30000, ...fetchOptions } = options || {};
+
+    const makeRequest = async () => {
+      const response = await fetch(`${this.baseURL}${endpoint}`, {
+        ...fetchOptions,
+        method: 'DELETE',
+        headers: await this.buildHeaders(fetchOptions?.headers as Record<string, string>),
+      });
+      return this.handleResponse<T>(response);
+    };
+
+    const requestPromise = retry ? withRetry(makeRequest) : makeRequest();
+    return withTimeout(requestPromise, timeout, `Request to ${endpoint} timed out`);
   }
 }
 

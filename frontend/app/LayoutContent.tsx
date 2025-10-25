@@ -1,10 +1,11 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { RefreshCcw, Menu, Library } from 'lucide-react';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
+import { initializeApp } from '@/lib/init';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -22,6 +23,10 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
   const [mobileLibraryOpen, setMobileLibraryOpen] = useState(false);
   const [loadingSongSlug, setLoadingSongSlug] = useState<string | null>(null);
   const pathname = usePathname();
+
+  useEffect(() => {
+    initializeApp();
+  }, []);
 
   const groupedSongs = useMemo(() => {
     const groups = new Map<string, SavedSongView[]>();
