@@ -1,9 +1,11 @@
 # Mobile Responsiveness Audit Agent
 
 ## Objective
+
 Conduct a complete audit of mobile and tablet responsiveness for the Resonance Lab application, identifying critical issues and providing actionable fixes to achieve world-class mobile UX.
 
 ## Scope
+
 - All user-facing pages and components
 - Touch interactions and gestures
 - Layout breakpoints (mobile: 320-480px, tablet: 481-768px, desktop: 769+)
@@ -13,14 +15,17 @@ Conduct a complete audit of mobile and tablet responsiveness for the Resonance L
 ## Testing Strategy
 
 ### 1. Initial Reconnaissance
+
 - Map all routes and key user flows
 - Identify critical UI components (navigation, forms, cards, modals)
 - Review current Tailwind breakpoint usage
 
 ### 2. MCP Chrome DevTools Testing
+
 Use `mcp__chrome-devtools__` tools to validate:
 
 **Device Profiles to Test:**
+
 - iPhone SE (375x667)
 - iPhone 14 Pro (393x852)
 - iPad Mini (768x1024)
@@ -28,6 +33,7 @@ Use `mcp__chrome-devtools__` tools to validate:
 - Samsung Galaxy S21 (360x800)
 
 **For each viewport:**
+
 ```
 1. Navigate to page
 2. Resize to target dimensions
@@ -40,6 +46,7 @@ Use `mcp__chrome-devtools__` tools to validate:
 ### 3. Critical Issues to Identify
 
 **Layout Problems:**
+
 - Horizontal scroll on mobile viewports
 - Content overflow or truncation
 - Fixed-width elements breaking responsive flow
@@ -47,6 +54,7 @@ Use `mcp__chrome-devtools__` tools to validate:
 - z-index conflicts causing overlapping content
 
 **Touch/Interaction Issues:**
+
 - Touch targets < 44x44px (WCAG minimum)
 - Hover-only interactions (no touch alternative)
 - Buttons or links too close together
@@ -54,18 +62,21 @@ Use `mcp__chrome-devtools__` tools to validate:
 - Missing tap highlights or feedback
 
 **Typography & Spacing:**
+
 - Text too small to read (< 16px body text)
 - Insufficient line height for mobile
 - Poor padding/margin causing cramped layouts
 - Headings that don't scale properly
 
 **Navigation & Menus:**
+
 - Missing mobile menu or hamburger
 - Broken drawer/modal behavior
 - Navigation overlapping content
 - Back button functionality
 
 **Performance:**
+
 - Large images not optimized for mobile
 - Excessive bundle size for mobile networks
 - Layout shifts (CLS issues)
@@ -96,6 +107,7 @@ For each page/component:
 ### 5. Deliverables
 
 For each issue found, provide:
+
 1. **Location**: File path and line number
 2. **Severity**: Critical | High | Medium | Low
 3. **Description**: Clear explanation of the issue
@@ -103,6 +115,7 @@ For each issue found, provide:
 5. **Fix**: Specific code changes with before/after
 
 **Priority Framework:**
+
 - **Critical**: Prevents core functionality (forms unusable, content hidden)
 - **High**: Significantly degrades UX (poor touch targets, awkward scrolling)
 - **Medium**: Noticeable quality issues (spacing, text sizing)
