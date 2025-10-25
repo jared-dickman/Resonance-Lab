@@ -176,7 +176,7 @@ export default function JamBuilder({ progression, onUpdate, onClear }: JamBuilde
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2, duration: 0.4 }}
               >
-                <CardTitle className="text-2xl mb-1">{progression.name}</CardTitle>
+                <CardTitle className="text-xl md:text-2xl mb-1">{progression.name}</CardTitle>
                 <motion.p
                   className="text-sm text-muted-foreground"
                   key={`${progression.key}-${progression.chords.length}`}

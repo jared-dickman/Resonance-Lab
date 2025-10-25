@@ -19,8 +19,6 @@ import { SkillLevel } from '@/lib/enums/skillLevel.enum';
 import { ANIMATION_DURATION, FADE_VARIANTS } from '@/lib/constants/animation.constants';
 import { MAX_WIDTH } from '@/lib/constants/ui.constants';
 
-const ICON_SIZE = 4;
-
 export default function JamAssistantClient(): React.JSX.Element {
   const [selectedVibe, setSelectedVibe] = useState<Vibe>('pop');
   const [skillLevel, setSkillLevel] = useState<SkillLevel>(SkillLevel.Intermediate);
@@ -44,7 +42,7 @@ export default function JamAssistantClient(): React.JSX.Element {
 
   return (
     <motion.div
-      className={cn('container mx-auto py-8 px-4 overflow-x-hidden', MAX_WIDTH.EXTRA_LARGE)}
+      className={cn('container mx-auto py-6 md:py-8 px-4 overflow-x-hidden', MAX_WIDTH.EXTRA_LARGE)}
       variants={FADE_VARIANTS}
       initial="hidden"
       animate="show"
@@ -54,13 +52,13 @@ export default function JamAssistantClient(): React.JSX.Element {
       <SkillLevelSelector selectedLevel={skillLevel} onSelectLevel={setSkillLevel} />
 
       <Tabs defaultValue="discover" className="w-full">
-        <TabsList className={cn('grid w-full mx-auto grid-cols-2 mb-8', MAX_WIDTH.SMALL)}>
-          <TabsTrigger value="discover" className="flex items-center gap-2">
-            <Lightbulb className={`w-${ICON_SIZE} h-${ICON_SIZE}`} />
+        <TabsList className={cn('grid w-full mx-auto grid-cols-2 mb-6 md:mb-8', MAX_WIDTH.SMALL)}>
+          <TabsTrigger value="discover" className="flex items-center gap-2 h-11">
+            <Lightbulb className="w-4 h-4" />
             Discover
           </TabsTrigger>
-          <TabsTrigger value="build" className="flex items-center gap-2">
-            <Music2 className={`w-${ICON_SIZE} h-${ICON_SIZE}`} />
+          <TabsTrigger value="build" className="flex items-center gap-2 h-11">
+            <Music2 className="w-4 h-4" />
             Build
           </TabsTrigger>
         </TabsList>

@@ -44,7 +44,7 @@ export function ProgressionsGrid({
         transition={{ delay: 0.2 }}
       >
         <motion.h2
-          className="text-2xl font-semibold"
+          className="text-xl md:text-2xl font-semibold"
           key={vibe}
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}

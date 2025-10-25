@@ -146,8 +146,12 @@ export default function ProgressionCard({
           </div>
         </CardContent>
 
-        <CardFooter className="pt-3 gap-2">
-          <motion.div className="flex-1" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+        <CardFooter className="pt-3 gap-2 flex-col sm:flex-row">
+          <motion.div
+            className="flex-1 w-full"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
             <Button
               size="sm"
               variant="outline"
@@ -161,7 +165,11 @@ export default function ProgressionCard({
               Customize
             </Button>
           </motion.div>
-          <motion.div className="flex-1" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+          <motion.div
+            className="flex-1 w-full"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
             <Button
               size="sm"
               className="w-full"

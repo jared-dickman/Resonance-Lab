@@ -7,7 +7,6 @@ import {
   FADE_VARIANTS,
 } from '@/lib/constants/animation.constants';
 
-const ICON_SIZE = 10;
 const ICON_ROTATION = [0, 10, -10, 0];
 const ICON_SCALE = [1, 1.1, 1.1, 1];
 const ICON_ANIMATION_DURATION = 2;
@@ -16,12 +15,12 @@ const ICON_REPEAT_DELAY = 3;
 export function JamHeader(): React.JSX.Element {
   return (
     <motion.div
-      className="mb-8 text-center"
+      className="mb-6 md:mb-8 text-center"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: ANIMATION_DELAY.SHORT }}
     >
-      <div className="flex items-center justify-center gap-3 mb-3">
+      <div className="flex items-center justify-center gap-2 md:gap-3 mb-2 md:mb-3">
         <motion.div
           animate={{
             rotate: ICON_ROTATION,
@@ -33,10 +32,10 @@ export function JamHeader(): React.JSX.Element {
             repeatDelay: ICON_REPEAT_DELAY,
           }}
         >
-          <Sparkles className={`w-${ICON_SIZE} h-${ICON_SIZE} text-primary`} />
+          <Sparkles className="w-8 h-8 md:w-10 md:h-10 text-primary" />
         </motion.div>
         <motion.h1
-          className="text-4xl font-bold tracking-tight"
+          className="text-2xl md:text-4xl font-bold tracking-tight"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.3, duration: ANIMATION_DURATION.NORMAL }}
@@ -45,7 +44,7 @@ export function JamHeader(): React.JSX.Element {
         </motion.h1>
       </div>
       <motion.p
-        className="text-lg text-muted-foreground max-w-2xl mx-auto"
+        className="text-sm md:text-lg text-muted-foreground max-w-2xl mx-auto px-4"
         variants={FADE_VARIANTS}
         initial="hidden"
         animate="show"

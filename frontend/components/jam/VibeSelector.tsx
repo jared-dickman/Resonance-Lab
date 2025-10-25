@@ -95,7 +95,7 @@ export default function VibeSelector({ selectedVibe, onSelectVibe }: VibeSelecto
                   {/* Content */}
                   <div className="relative z-10">
                     <motion.div
-                      className="text-3xl mb-1"
+                      className="text-2xl md:text-3xl mb-1"
                       animate={{
                         scale: isSelected ? [1, 1.2, 1] : 1,
                         rotate: isSelected ? [0, 10, -10, 0] : 0,
@@ -104,7 +104,7 @@ export default function VibeSelector({ selectedVibe, onSelectVibe }: VibeSelecto
                     >
                       {info.emoji}
                     </motion.div>
-                    <div className="text-sm font-medium capitalize">{vibe}</div>
+                    <div className="text-xs md:text-sm font-medium capitalize">{vibe}</div>
                   </div>
 
                   {/* Selection ring animation */}
