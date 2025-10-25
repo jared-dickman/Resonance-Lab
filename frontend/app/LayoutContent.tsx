@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { RefreshCcw, Menu, Library } from 'lucide-react';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 
@@ -19,6 +20,8 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
   const { data: songs = [], isLoading: isLoadingSongs, refetch: refreshSongs, error } = useSongs();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [mobileLibraryOpen, setMobileLibraryOpen] = useState(false);
+  const [loadingSongSlug, setLoadingSongSlug] = useState<string | null>(null);
+  const pathname = usePathname();
 
   const groupedSongs = useMemo(() => {
     const groups = new Map<string, SavedSongView[]>();
@@ -84,24 +87,38 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
                     {artist}
                   </Link>
                   <div className="space-y-1">
-                    {items.map(song => (
-                      <Link
-                        href={`/songs/${song.artistSlug}/${song.songSlug}`}
-                        key={`${song.artistSlug}-${song.songSlug}`}
-                        className="group block rounded-lg border border-transparent px-3 py-2.5 text-left text-sm transition-all hover:border-border/50 hover:bg-accent/50 hover:shadow-sm"
-                        onClick={() => setMobileLibraryOpen(false)}
-                      >
-                        <div className="font-medium group-hover:text-foreground transition-colors">
-                          {song.title}
-                        </div>
-                        <div className="text-xs text-muted-foreground mt-0.5">
-                          {new Date(song.updatedAt).toLocaleDateString('en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                          })}
-                        </div>
-                      </Link>
-                    ))}
+                    {items.map(song => {
+                      const songKey = `${song.artistSlug}-${song.songSlug}`;
+                      const songPath = `/songs/${song.artistSlug}/${song.songSlug}`;
+                      const isCurrentSong = pathname === songPath;
+                      const isLoadingSong = loadingSongSlug === songKey;
+
+                      return (
+                        <Link
+                          href={songPath}
+                          key={songKey}
+                          className={`group relative block rounded-lg border px-3 py-2.5 text-left text-sm transition-all hover:border-border/50 hover:bg-accent/50 hover:shadow-sm ${
+                            isCurrentSong ? 'border-primary/50 bg-accent/30' : 'border-transparent'
+                          } ${isLoadingSong ? 'opacity-60' : ''}`}
+                          onClick={() => {
+                            setLoadingSongSlug(songKey);
+                            setMobileLibraryOpen(false);
+                            setTimeout(() => setLoadingSongSlug(null), 2000);
+                          }}
+                        >
+                          <div className="font-medium group-hover:text-foreground transition-colors flex items-center gap-2">
+                            {song.title}
+                            {isLoadingSong && <Spinner className="h-3 w-3" />}
+                          </div>
+                          <div className="text-xs text-muted-foreground mt-0.5">
+                            {new Date(song.updatedAt).toLocaleDateString('en-US', {
+                              month: 'short',
+                              day: 'numeric',
+                            })}
+                          </div>
+                        </Link>
+                      );
+                    })}
                   </div>
                 </div>
               ))}
