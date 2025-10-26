@@ -19,12 +19,13 @@ export function savePanelLayoutToLocalStorage(layout: PanelLayoutState): void {
 }
 
 export function loadPanelLayoutFromLocalStorage(): PanelLayoutState | null {
-  return withLocalStorage(
-    storage => {
-      const serialized = storage.getItem(PANEL_LAYOUT_STORAGE_KEY);
-      if (!serialized) {
-        return null;
-      }
+  return (
+    withLocalStorage(
+      storage => {
+        const serialized = storage.getItem(PANEL_LAYOUT_STORAGE_KEY);
+        if (!serialized) {
+          return null;
+        }
 
       const parsed = JSON.parse(serialized);
       const layout: PanelLayoutState = {
@@ -37,6 +38,7 @@ export function loadPanelLayoutFromLocalStorage(): PanelLayoutState | null {
       return hasAllRequiredPanels(layout) ? layout : null;
     },
     () => null
+  ) ?? null
   );
 }
 

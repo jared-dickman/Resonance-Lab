@@ -343,7 +343,7 @@ interface WorkspaceColumnProps {
   lyrics: string;
   title: string;
   selectedChord: string | null;
-  chordProgression: ReadonlyArray<WorkspaceChord>;
+  chordProgression: WorkspaceChord[];
   onTitleChange: (title: string) => void;
   onLyricsChange: (lyrics: string) => void;
   onChordsChange: (chords: WorkspaceChord[]) => void;
