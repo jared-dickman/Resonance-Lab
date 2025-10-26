@@ -46,11 +46,12 @@ export class ReverbPedal {
   constructor(config: ReverbPedalConfig = {}) {
     const Pizzicato = loadPizzicato();
     const audioContext = Tone.getContext().rawContext as AudioContext;
+    const pizzicatoContext = ((Pizzicato as unknown as { context?: AudioContext }).context) ?? audioContext;
 
     // Create bridge nodes
     this.inputNode = new Tone.Gain(1);
     this.outputNode = new Tone.Gain(1);
-    this.mediaStreamDestination = audioContext.createMediaStreamDestination();
+    this.mediaStreamDestination = pizzicatoContext.createMediaStreamDestination();
 
     // Create Pizzicato sound
     this.sound = new Pizzicato.Sound({

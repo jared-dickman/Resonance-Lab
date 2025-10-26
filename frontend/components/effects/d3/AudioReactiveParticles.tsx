@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useMemo, useEffect } from 'react';
+import type { CSSProperties } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
@@ -245,8 +246,8 @@ function Particles({ audioNode, count = PARTICLE_CONFIG.DEFAULT_COUNT }: Particl
 
 interface AudioReactiveParticlesProps {
   audioNode?: Tone.ToneAudioNode;
-  width?: number;
-  height?: number;
+  width?: number | string;
+  height?: number | string;
   particleCount?: number;
 }
 
@@ -278,12 +279,16 @@ export const AudioReactiveParticles: React.FC<AudioReactiveParticlesProps> = ({
 }) => {
   const cameraConfig = createCameraConfiguration();
   const lightConfig = createLightConfiguration();
+  const canvasStyle: CSSProperties = {
+    width: typeof width === 'number' ? `${width}px` : width ?? '100%',
+    height: typeof height === 'number' ? `${height}px` : height,
+  };
 
   return (
-    <div className="bg-black rounded-lg overflow-hidden border border-gray-800">
+    <div className="relative bg-black rounded-lg overflow-hidden border border-gray-800">
       <Canvas
         camera={cameraConfig}
-        style={{ width, height }}
+        style={canvasStyle}
         gl={{ antialias: true }}
       >
         <ambientLight intensity={lightConfig.ambientIntensity} />

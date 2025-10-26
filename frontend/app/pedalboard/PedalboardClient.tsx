@@ -30,7 +30,12 @@ import {
   SpectrumAnalyzer,
   WaveformOscilloscope,
   SignalPathDiagram,
+  AudioReactiveParticles,
+  GenerativeArtVisualizer,
 } from '@/components/effects/d3';
+import type { VisualizationStyle } from '@/lib/utils/visualization/generative-art.utils';
+
+const ART_STYLES: VisualizationStyle[] = ['flow-field', 'spiral', 'mandala', 'particles'];
 
 interface Cable {
   id: string;
@@ -50,6 +55,7 @@ export default function UltimatePedalboardPage() {
   const [slots, setSlots] = useState<any[]>([]);
   const [showVisualizations, setShowVisualizations] = useState(true);
   const [visualizationLayout, setVisualizationLayout] = useState<'grid' | 'stack'>('grid');
+  const [artStyle, setArtStyle] = useState<VisualizationStyle>('flow-field');
   const synthRef = useRef<Tone.PolySynth | null>(null);
 
   // Connect pedalboard to output
@@ -284,7 +290,7 @@ export default function UltimatePedalboardPage() {
           transition={{ delay: 0.2 }}
           className="mb-8"
         >
-          {pedalboard ? <PedalboardUI pedalboard={pedalboard} showVisualizer={false} /> : null}
+          {pedalboard ? <PedalboardUI pedalboard={pedalboard} showVisualizer={true} /> : null}
         </motion.div>
 
         {/* D3.js Visualizations */}
@@ -312,6 +318,74 @@ export default function UltimatePedalboardPage() {
                   <AnimatedCableRouting cables={cables} width={1400} height={350} />
                 </motion.div>
               )}
+
+              {/* Audio Reactive 3D Particles */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 }}
+                className="border-2 border-pink-500/30 shadow-xl shadow-pink-500/10 rounded-xl overflow-hidden"
+              >
+                <div className="flex items-center justify-between px-6 pt-5 pb-3 border-b border-pink-500/20 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-indigo-500/10">
+                  <div>
+                    <h3 className="text-xl font-bold text-white">Audio Reactive Particles</h3>
+                    <p className="text-sm text-pink-200/80">
+                      Three.js particle nebula synced to your current tone
+                    </p>
+                  </div>
+                  <div className="text-xs font-mono text-pink-200/70 uppercase tracking-wide">
+                    Drag to orbit • Scroll to zoom
+                  </div>
+                </div>
+                <div className="p-4 bg-black">
+                  <AudioReactiveParticles
+                    audioNode={pedalboard.getOutput()}
+                    width="100%"
+                    height={visualizationLayout === 'grid' ? 360 : 420}
+                    particleCount={1200}
+                  />
+                </div>
+              </motion.div>
+
+              {/* Generative Art Visualizer */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="border-2 border-purple-500/30 shadow-xl shadow-purple-500/10 rounded-xl overflow-hidden"
+              >
+                <div className="flex flex-wrap items-center justify-between gap-4 px-6 pt-5 pb-3 border-b border-purple-500/20 bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-emerald-500/10">
+                  <div>
+                    <h3 className="text-xl font-bold text-white">Generative Art Flow Field</h3>
+                    <p className="text-sm text-purple-200/80">
+                      P5.js visuals evolving in real-time with your signal
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {ART_STYLES.map(style => (
+                      <button
+                        key={style}
+                        onClick={() => setArtStyle(style)}
+                        className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors ${
+                          artStyle === style
+                            ? 'bg-purple-500 text-white shadow-md shadow-purple-500/30'
+                            : 'bg-white/5 text-purple-100 hover:bg-white/10'
+                        }`}
+                      >
+                        {style.replace('-', ' ')}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="p-4 bg-black">
+                  <GenerativeArtVisualizer
+                    audioNode={pedalboard.getOutput()}
+                    width="auto"
+                    height={visualizationLayout === 'grid' ? 320 : 380}
+                    style={artStyle}
+                  />
+                </div>
+              </motion.div>
 
               {/* Audio Analysis Grid */}
               <div className={`grid ${visualizationLayout === 'grid' ? 'lg:grid-cols-2' : 'grid-cols-1'} gap-6`}>

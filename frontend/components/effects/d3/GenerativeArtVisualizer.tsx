@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type * as Tone from 'tone';
 import p5 from 'p5';
 import { GENERATIVE_ART } from '@/lib/constants/visualization.constants';
@@ -22,7 +22,7 @@ import {
 
 interface GenerativeArtVisualizerProps {
   audioNode?: Tone.ToneAudioNode;
-  width?: number;
+  width?: number | 'auto';
   height?: number;
   style?: VisualizationStyle;
 }
@@ -79,10 +79,35 @@ export const GenerativeArtVisualizer: React.FC<GenerativeArtVisualizerProps> = (
   const analyzerRef = useRef<Tone.Analyser | null>(null);
 
   const defaultDimensions = getDefaultDimensions();
-  const dimensions: P5Dimensions = {
-    width: width ?? defaultDimensions.width,
+  const [dimensions, setDimensions] = useState<P5Dimensions>({
+    width: typeof width === 'number' ? width : defaultDimensions.width,
     height: height ?? defaultDimensions.height,
-  };
+  });
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const resolveDimensions = () => {
+      const containerWidth = containerRef.current?.offsetWidth ?? defaultDimensions.width;
+      setDimensions({
+        width: typeof width === 'number' ? width : containerWidth,
+        height: height ?? defaultDimensions.height,
+      });
+    };
+
+    resolveDimensions();
+
+    if (typeof width === 'number') {
+      return;
+    }
+
+    const resizeObserver = new ResizeObserver(() => resolveDimensions());
+    resizeObserver.observe(containerRef.current);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [width, height, defaultDimensions.width, defaultDimensions.height]);
 
   useEffect(() => {
     if (!containerRef.current) return;

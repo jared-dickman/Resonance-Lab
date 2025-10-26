@@ -2,12 +2,12 @@ import { useEffect } from 'react';
 import type { PanelId } from '../types/ui';
 
 export interface KeyboardShortcutHandlers {
-  onToggleChat?: () => void;
-  onToggleLyrics?: () => void;
-  onToggleChords?: () => void;
-  onFocusChat?: () => void;
-  onFocusLyrics?: () => void;
-  onFocusChords?: () => void;
+  onToggleNavigator?: () => void;
+  onToggleWorkspace?: () => void;
+  onToggleAssistant?: () => void;
+  onFocusNavigator?: () => void;
+  onFocusWorkspace?: () => void;
+  onFocusAssistant?: () => void;
   onSave?: () => void;
 }
 
@@ -31,9 +31,9 @@ function handleMetaKey(event: KeyboardEvent, handlers: KeyboardShortcutHandlers)
   const key = event.key.toLowerCase();
 
   const shortcuts: Record<string, (() => void) | undefined> = {
-    '1': handlers.onFocusChat,
-    '2': handlers.onFocusLyrics,
-    '3': handlers.onFocusChords,
+    '1': handlers.onFocusNavigator,
+    '2': handlers.onFocusWorkspace,
+    '3': handlers.onFocusAssistant,
     's': handlers.onSave,
   };
 
@@ -53,9 +53,9 @@ function handleShiftMetaKey(event: KeyboardEvent, handlers: KeyboardShortcutHand
   const key = event.key.toLowerCase();
 
   const shiftShortcuts: Record<string, (() => void) | undefined> = {
-    '1': handlers.onToggleChat,
-    '2': handlers.onToggleLyrics,
-    '3': handlers.onToggleChords,
+    '1': handlers.onToggleNavigator,
+    '2': handlers.onToggleWorkspace,
+    '3': handlers.onToggleAssistant,
   };
 
   const handler = shiftShortcuts[key];
@@ -72,12 +72,12 @@ export function createPanelShortcutHandlers(
   onSave?: () => void
 ): KeyboardShortcutHandlers {
   return {
-    onToggleChat: (): void => togglePanel('chat'),
-    onToggleLyrics: (): void => togglePanel('lyrics'),
-    onToggleChords: (): void => togglePanel('chords'),
-    onFocusChat: (): void => focusPanel('chat'),
-    onFocusLyrics: (): void => focusPanel('lyrics'),
-    onFocusChords: (): void => focusPanel('chords'),
+    onToggleNavigator: (): void => togglePanel('navigator'),
+    onToggleWorkspace: (): void => togglePanel('workspace'),
+    onToggleAssistant: (): void => togglePanel('assistant'),
+    onFocusNavigator: (): void => focusPanel('navigator'),
+    onFocusWorkspace: (): void => focusPanel('workspace'),
+    onFocusAssistant: (): void => focusPanel('assistant'),
     onSave,
   };
 }

@@ -1,10 +1,19 @@
-export type PanelId = 'chat' | 'lyrics' | 'chords';
+export type PanelId = 'navigator' | 'workspace' | 'assistant';
 
 export type PanelState = 'expanded' | 'collapsed' | 'minimized';
 
 export type EditorMode = 'editing' | 'viewing' | 'selecting' | 'readOnly';
 
-export type FocusArea = 'chat' | 'lyrics' | 'chords' | 'general' | 'structure' | 'none';
+export type FocusArea =
+  | 'assistant'
+  | 'workspace'
+  | 'navigator'
+  | 'chat'
+  | 'lyrics'
+  | 'chords'
+  | 'general'
+  | 'structure'
+  | 'none';
 
 export type LoadingState = 'idle' | 'loading' | 'success' | 'error';
 

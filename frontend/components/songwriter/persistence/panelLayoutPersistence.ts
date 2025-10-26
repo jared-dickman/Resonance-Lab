@@ -1,69 +1,75 @@
-import type { PanelConfiguration, PanelLayoutState } from '../types/ui';
+import { withLocalStorage } from '@/lib/utils/dom/safeBrowserStorage';
 
-const PANEL_LAYOUT_STORAGE_KEY = 'songwriter_panel_layout_v1';
+import type { PanelConfiguration, PanelId, PanelLayoutState } from '../types/ui';
+
+const PANEL_LAYOUT_STORAGE_KEY = 'songwriter_panel_layout_v2';
+const REQUIRED_PANELS: ReadonlyArray<PanelId> = ['navigator', 'workspace', 'assistant'];
 
 export function savePanelLayoutToLocalStorage(layout: PanelLayoutState): void {
-  try {
+  withLocalStorage(storage => {
     const serialized = JSON.stringify({
       panels: layout.panels,
       totalWidth: layout.totalWidth,
       layoutVersion: layout.layoutVersion,
       lastResizedAt: layout.lastResizedAt?.toISOString() || null,
     });
-    localStorage.setItem(PANEL_LAYOUT_STORAGE_KEY, serialized);
-  } catch (error) {
-    console.error('Failed to save panel layout:', error);
-  }
+
+    storage.setItem(PANEL_LAYOUT_STORAGE_KEY, serialized);
+  });
 }
 
 export function loadPanelLayoutFromLocalStorage(): PanelLayoutState | null {
-  try {
-    const serialized = localStorage.getItem(PANEL_LAYOUT_STORAGE_KEY);
-    if (!serialized) return null;
+  return withLocalStorage(
+    storage => {
+      const serialized = storage.getItem(PANEL_LAYOUT_STORAGE_KEY);
+      if (!serialized) {
+        return null;
+      }
 
-    const parsed = JSON.parse(serialized);
-    return {
-      panels: parsed.panels,
-      totalWidth: parsed.totalWidth,
-      layoutVersion: parsed.layoutVersion,
-      lastResizedAt: parsed.lastResizedAt ? new Date(parsed.lastResizedAt) : null,
-    };
-  } catch (error) {
-    console.error('Failed to load panel layout:', error);
-    return null;
-  }
+      const parsed = JSON.parse(serialized);
+      const layout: PanelLayoutState = {
+        panels: parsed.panels,
+        totalWidth: parsed.totalWidth,
+        layoutVersion: parsed.layoutVersion,
+        lastResizedAt: parsed.lastResizedAt ? new Date(parsed.lastResizedAt) : null,
+      };
+
+      return hasAllRequiredPanels(layout) ? layout : null;
+    },
+    () => null
+  );
 }
 
 export function createDefaultPanelLayout(): PanelLayoutState {
   return {
     panels: [
-      createDefaultChatPanel(),
-      createDefaultLyricsPanel(),
-      createDefaultChordsPanel(),
+      createDefaultNavigatorPanel(),
+      createDefaultWorkspacePanel(),
+      createDefaultAssistantPanel(),
     ],
-    totalWidth: 1200,
+    totalWidth: 1440,
     lastResizedAt: null,
     layoutVersion: 1,
   };
 }
 
-function createDefaultChatPanel(): PanelConfiguration {
+function createDefaultNavigatorPanel(): PanelConfiguration {
   return {
-    panelId: 'chat',
-    widthPercentage: 25,
-    minWidthPixels: 300,
-    maxWidthPixels: 600,
+    panelId: 'navigator',
+    widthPercentage: 22,
+    minWidthPixels: 260,
+    maxWidthPixels: 420,
     state: 'expanded',
     isResizable: true,
     order: 0,
   };
 }
 
-function createDefaultLyricsPanel(): PanelConfiguration {
+function createDefaultWorkspacePanel(): PanelConfiguration {
   return {
-    panelId: 'lyrics',
-    widthPercentage: 45,
-    minWidthPixels: 400,
+    panelId: 'workspace',
+    widthPercentage: 50,
+    minWidthPixels: 520,
     maxWidthPixels: null,
     state: 'expanded',
     isResizable: true,
@@ -71,12 +77,12 @@ function createDefaultLyricsPanel(): PanelConfiguration {
   };
 }
 
-function createDefaultChordsPanel(): PanelConfiguration {
+function createDefaultAssistantPanel(): PanelConfiguration {
   return {
-    panelId: 'chords',
-    widthPercentage: 30,
-    minWidthPixels: 300,
-    maxWidthPixels: 500,
+    panelId: 'assistant',
+    widthPercentage: 28,
+    minWidthPixels: 320,
+    maxWidthPixels: 520,
     state: 'expanded',
     isResizable: true,
     order: 2,
@@ -158,4 +164,10 @@ export function redistributePanelWidths(layout: PanelLayoutState): PanelLayoutSt
     lastResizedAt: new Date(),
     layoutVersion: layout.layoutVersion + 1,
   };
+}
+
+function hasAllRequiredPanels(layout: PanelLayoutState): boolean {
+  return REQUIRED_PANELS.every(requiredId =>
+    layout.panels.some(panel => panel.panelId === requiredId)
+  );
 }
