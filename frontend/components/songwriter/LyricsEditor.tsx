@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { CardHeader, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { FileText, Type, AlignLeft, List, Sparkles } from 'lucide-react';
+import { PanelLabel } from '@/components/ui/panel-label';
 
 interface LyricsEditorProps {
   title: string;
@@ -15,6 +16,32 @@ interface LyricsEditorProps {
   onLyricsChange: (lyrics: string) => void;
   onTitleChange: (title: string) => void;
   selectedChord?: string | null;
+}
+
+function calculateWordAndLineCounts(text: string): { words: number; lines: number } {
+  const words = text.trim().split(/\s+/).filter(Boolean);
+  const lines = text.split('\n').filter((line) => line.trim());
+  return { words: words.length, lines: lines.length };
+}
+
+function extractSections(lyrics: string): string[] {
+  const sections: string[] = [];
+  const lines = lyrics.split('\n');
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
+      sections.push(trimmed);
+    }
+  }
+
+  return sections.length > 0 ? sections : ['No sections detected'];
+}
+
+function insertSectionAtCursor(lyrics: string, sectionName: string, cursorPos: number): string {
+  const newSection = `\n[${sectionName}]\n`;
+  const position = cursorPos || lyrics.length;
+  return lyrics.substring(0, position) + newSection + lyrics.substring(position);
 }
 
 export default function LyricsEditor({
@@ -34,56 +61,44 @@ export default function LyricsEditor({
   }, [lyrics]);
 
   useEffect(() => {
-    const words = localLyrics.trim().split(/\s+/).filter(Boolean);
-    const lines = localLyrics.split('\n').filter(line => line.trim());
-    setWordCount(words.length);
-    setLineCount(lines.length);
+    const counts = calculateWordAndLineCounts(localLyrics);
+    setWordCount(counts.words);
+    setLineCount(counts.lines);
   }, [localLyrics]);
 
-  const handleLyricsChange = (value: string) => {
+  const handleLyricsChange = (value: string): void => {
     setLocalLyrics(value);
     onLyricsChange(value);
   };
 
-  const detectSections = () => {
-    const sections: string[] = [];
-    const lines = localLyrics.split('\n');
-
-    lines.forEach(line => {
-      const trimmed = line.trim().toLowerCase();
-      if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
-        sections.push(line.trim());
-      }
-    });
-
-    return sections.length > 0 ? sections : ['No sections detected'];
-  };
-
-  const insertSection = (sectionName: string) => {
-    const newSection = `\n[${sectionName}]\n`;
+  const insertSection = (sectionName: string): void => {
     const textarea = document.querySelector('textarea');
     if (textarea) {
-      const start = textarea.selectionStart || localLyrics.length;
-      const newLyrics = localLyrics.substring(0, start) + newSection + localLyrics.substring(start);
+      const newLyrics = insertSectionAtCursor(
+        localLyrics,
+        sectionName,
+        textarea.selectionStart
+      );
       handleLyricsChange(newLyrics);
     }
   };
 
-  const sections = detectSections();
+  const sections = extractSections(localLyrics);
 
   return (
     <>
       <CardHeader className="border-b">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg flex items-center gap-2">
-            <FileText className="w-5 h-5 text-primary" />
-            Lyrics
-          </CardTitle>
+          <PanelLabel
+            icon={<FileText className="w-5 h-5" />}
+            title="Lyrics Editor"
+            description="Write and organize your song with automatic structure detection"
+          />
           <div className="flex gap-2">
-            <Badge variant="outline" className="text-xs">
+            <Badge variant="outline" className="text-xs border-2">
               {lineCount} lines
             </Badge>
-            <Badge variant="outline" className="text-xs">
+            <Badge variant="outline" className="text-xs border-2">
               {wordCount} words
             </Badge>
           </div>
@@ -118,7 +133,7 @@ export default function LyricsEditor({
                   variant="outline"
                   size="sm"
                   onClick={() => insertSection(section)}
-                  className="text-xs"
+                  className="text-xs border-2"
                 >
                   + {section}
                 </Button>
@@ -172,7 +187,7 @@ export default function LyricsEditor({
         )}
 
         {/* AI Writing Tips */}
-        <div className="p-3 rounded-lg bg-muted/50 border border-border">
+        <div className="p-3 rounded-lg bg-muted/50 border-2 border-border">
           <p className="text-xs text-muted-foreground leading-relaxed">
             <strong>Pro tip:</strong> Use [Section Name] to organize your song structure. Try
             varying line lengths and rhyme schemes to keep things interesting. Ask the AI assistant

@@ -10,7 +10,10 @@ import { Wand2, Save, History } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { SimpleTooltip } from '@/components/ui/simple-tooltip';
+import { HelpPanel } from '@/components/ui/help-panel';
 import { ANIMATION_DURATION } from '@/lib/constants/songwriter.constants';
+import { SONGWRITER_HELP } from '@/lib/constants/help-content.constants';
 
 interface SongwriterHeaderProps {
   onToggleDrafts: () => void;
@@ -90,20 +93,25 @@ interface HeaderActionsProps {
 function HeaderActions({ onToggleDrafts, onSaveDraft, showDraftManager }: HeaderActionsProps): React.JSX.Element {
   return (
     <div className="flex items-center gap-2">
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={onToggleDrafts}
-        className="gap-2"
-        aria-pressed={showDraftManager}
-      >
-        <History className="w-4 h-4" />
-        Drafts
-      </Button>
-      <Button variant="default" size="sm" onClick={onSaveDraft} className="gap-2">
-        <Save className="w-4 h-4" />
-        Save Draft
-      </Button>
+      <SimpleTooltip content="Access and manage your saved song drafts">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={onToggleDrafts}
+          className="gap-2"
+          aria-pressed={showDraftManager}
+        >
+          <History className="w-4 h-4" />
+          Drafts
+        </Button>
+      </SimpleTooltip>
+      <SimpleTooltip content="Save your current work as a draft">
+        <Button variant="default" size="sm" onClick={onSaveDraft} className="gap-2">
+          <Save className="w-4 h-4" />
+          Save Draft
+        </Button>
+      </SimpleTooltip>
+      <HelpPanel title={SONGWRITER_HELP.title} sections={SONGWRITER_HELP.sections} />
     </div>
   );
 }

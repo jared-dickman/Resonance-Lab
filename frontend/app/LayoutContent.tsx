@@ -24,6 +24,9 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
   const [loadingSongSlug, setLoadingSongSlug] = useState<string | null>(null);
   const pathname = usePathname();
 
+  // Library collapsed by default on songwriter page
+  const isSongwriterPage = pathname === '/songwriter';
+
   useEffect(() => {
     initializeApp();
   }, []);
@@ -189,9 +192,24 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
                         Jam
                       </Button>
                     </Link>
+                    <Link href={pageRoutes.musicTheory} onClick={() => setMobileNavOpen(false)}>
+                      <Button variant="ghost" className="w-full justify-start h-11 text-base">
+                        Music Theory
+                      </Button>
+                    </Link>
                     <Link href={pageRoutes.metronome} onClick={() => setMobileNavOpen(false)}>
                       <Button variant="ghost" className="w-full justify-start h-11 text-base">
                         Metronome
+                      </Button>
+                    </Link>
+                    <Link href={pageRoutes.composer} onClick={() => setMobileNavOpen(false)}>
+                      <Button variant="ghost" className="w-full justify-start h-11 text-base">
+                        Composer
+                      </Button>
+                    </Link>
+                    <Link href={pageRoutes.pedalboard} onClick={() => setMobileNavOpen(false)}>
+                      <Button variant="ghost" className="w-full justify-start h-11 text-base">
+                        Pedalboard
                       </Button>
                     </Link>
                   </nav>
@@ -210,9 +228,24 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
                 Jam
               </Button>
             </Link>
+            <Link href={pageRoutes.musicTheory}>
+              <Button variant="ghost" size="sm" className="font-medium h-10">
+                Music Theory
+              </Button>
+            </Link>
             <Link href={pageRoutes.metronome}>
               <Button variant="ghost" size="sm" className="font-medium h-10">
                 Metronome
+              </Button>
+            </Link>
+            <Link href={pageRoutes.composer}>
+              <Button variant="ghost" size="sm" className="font-medium h-10">
+                Composer
+              </Button>
+            </Link>
+            <Link href={pageRoutes.pedalboard}>
+              <Button variant="ghost" size="sm" className="font-medium h-10">
+                Pedalboard
               </Button>
             </Link>
           </nav>
@@ -221,12 +254,18 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
       <div className="container mx-auto px-4 md:px-6 pt-4 max-w-7xl">
         <Breadcrumbs />
       </div>
-      <main className="container mx-auto px-4 md:px-6 max-w-7xl grid gap-6 py-6 lg:grid-cols-[340px_minmax(0,1fr)]">
-        <aside className="hidden lg:block space-y-4 w-full">
-          <LibraryContent />
-        </aside>
-        <div className="min-h-[calc(100vh-12rem)] w-full">{children}</div>
-      </main>
+      {isSongwriterPage ? (
+        // Songwriter page manages its own layout
+        <main className="w-full">{children}</main>
+      ) : (
+        // Other pages use grid layout with library sidebar
+        <main className="container mx-auto px-4 md:px-6 max-w-7xl grid gap-6 py-6 lg:grid-cols-[340px_minmax(0,1fr)]">
+          <aside className="hidden lg:block space-y-4 w-full">
+            <LibraryContent />
+          </aside>
+          <div className="min-h-[calc(100vh-12rem)] w-full">{children}</div>
+        </main>
+      )}
     </div>
   );
 }

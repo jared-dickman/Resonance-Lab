@@ -12,6 +12,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { cn, transposeChord } from '@/lib/utils';
+import { SimpleTooltip } from '@/components/ui/simple-tooltip';
+import { InfoCard } from '@/components/ui/info-card';
+import { QUICK_TIPS } from '@/lib/constants/help-content.constants';
+import { getChordPlayer } from '@/lib/audio/chordPlayer';
 import {
   Play,
   Pause,
@@ -44,8 +48,10 @@ export default function JamBuilder({ progression, onUpdate, onClear }: JamBuilde
   const [isMuted, setIsMuted] = useState(false);
   const [loopCount, setLoopCount] = useState(0);
   const [editingChordIndex, setEditingChordIndex] = useState<number | null>(null);
+  const [audioInitialized, setAudioInitialized] = useState(false);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const chordPlayerRef = useRef(getChordPlayer());
 
   // Calculate interval based on BPM and chord duration
   const getChordInterval = useCallback(
@@ -57,11 +63,17 @@ export default function JamBuilder({ progression, onUpdate, onClear }: JamBuilde
     [bpm]
   );
 
-  // Play progression
+  // Play progression with audio
   useEffect(() => {
     if (isPlaying && progression.chords.length > 0) {
       const currentChord = progression.chords[currentChordIndex];
       if (!currentChord) return undefined;
+
+      // Play the chord audio if not muted
+      if (!isMuted && audioInitialized) {
+        const duration = currentChord.duration || 4;
+        chordPlayerRef.current.playChord(currentChord.name, duration);
+      }
 
       const interval = getChordInterval(currentChord);
 
@@ -80,11 +92,18 @@ export default function JamBuilder({ progression, onUpdate, onClear }: JamBuilde
       };
     }
     return undefined;
-  }, [isPlaying, currentChordIndex, progression.chords, bpm, getChordInterval]);
+  }, [isPlaying, currentChordIndex, progression.chords, bpm, isMuted, audioInitialized, getChordInterval]);
 
-  const handlePlayPause = () => {
+  const handlePlayPause = async () => {
+    // Initialize audio on first play
+    if (!audioInitialized) {
+      await chordPlayerRef.current.initialize();
+      setAudioInitialized(true);
+    }
+
     if (isPlaying) {
       setIsPlaying(false);
+      chordPlayerRef.current.stop();
       if (intervalRef.current) clearTimeout(intervalRef.current);
     } else {
       setIsPlaying(true);
@@ -162,6 +181,15 @@ export default function JamBuilder({ progression, onUpdate, onClear }: JamBuilde
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
+      {/* Quick Tips */}
+      <InfoCard title="Quick Start" variant="tip" defaultVisible={progression.chords.length === 0}>
+        <ul className="space-y-1 text-xs">
+          {QUICK_TIPS.jam.map((tip, i) => (
+            <li key={i}>• {tip}</li>
+          ))}
+        </ul>
+      </InfoCard>
+
       {/* Header Controls */}
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
@@ -193,18 +221,22 @@ export default function JamBuilder({ progression, onUpdate, onClear }: JamBuilde
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3, duration: 0.4 }}
               >
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button variant="outline" size="sm" onClick={onClear}>
-                    <Trash2 className="w-4 h-4 mr-1" />
-                    Clear
-                  </Button>
-                </motion.div>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button size="sm">
-                    <Save className="w-4 h-4 mr-1" />
-                    Save
-                  </Button>
-                </motion.div>
+                <SimpleTooltip content="Clear the entire progression">
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Button variant="outline" size="sm" onClick={onClear}>
+                      <Trash2 className="w-4 h-4 mr-1" />
+                      Clear
+                    </Button>
+                  </motion.div>
+                </SimpleTooltip>
+                <SimpleTooltip content="Save this progression for later">
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Button size="sm">
+                      <Save className="w-4 h-4 mr-1" />
+                      Save
+                    </Button>
+                  </motion.div>
+                </SimpleTooltip>
               </motion.div>
             </div>
           </CardHeader>
@@ -217,8 +249,9 @@ export default function JamBuilder({ progression, onUpdate, onClear }: JamBuilde
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.3 }}
             >
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button size="lg" onClick={handlePlayPause} className="w-24">
+              <SimpleTooltip content={isPlaying ? 'Pause playback' : 'Start playing the progression'}>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button size="lg" onClick={handlePlayPause} className="w-24">
                   <motion.div
                     key={isPlaying ? 'pause' : 'play'}
                     initial={{ rotate: -90, opacity: 0 }}
@@ -241,22 +274,26 @@ export default function JamBuilder({ progression, onUpdate, onClear }: JamBuilde
                   </motion.div>
                 </Button>
               </motion.div>
+              </SimpleTooltip>
 
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button variant="outline" size="lg" onClick={handleReset}>
+              <SimpleTooltip content="Reset to the first chord">
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button variant="outline" size="lg" onClick={handleReset}>
                   <motion.div whileHover={{ rotate: -180 }} transition={{ duration: 0.3 }}>
                     <RotateCcw className="w-5 h-5 mr-2" />
                   </motion.div>
                   Reset
                 </Button>
               </motion.div>
+              </SimpleTooltip>
 
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                animate={isMuted ? { opacity: 0.5 } : { opacity: 1 }}
-              >
-                <Button variant="ghost" size="lg" onClick={() => setIsMuted(!isMuted)}>
+              <SimpleTooltip content={isMuted ? 'Unmute audio' : 'Mute audio'}>
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  animate={isMuted ? { opacity: 0.5 } : { opacity: 1 }}
+                >
+                  <Button variant="ghost" size="lg" onClick={() => setIsMuted(!isMuted)}>
                   <motion.div
                     key={isMuted ? 'muted' : 'unmuted'}
                     initial={{ scale: 0.5, opacity: 0 }}
@@ -267,16 +304,19 @@ export default function JamBuilder({ progression, onUpdate, onClear }: JamBuilde
                   </motion.div>
                 </Button>
               </motion.div>
+              </SimpleTooltip>
 
-              <motion.div
-                className="ml-auto text-sm text-muted-foreground"
-                key={loopCount}
-                initial={{ scale: 1.5, color: '#3b82f6' }}
-                animate={{ scale: 1, color: 'currentColor' }}
-                transition={{ duration: 0.3 }}
-              >
-                Loop: {loopCount}
-              </motion.div>
+              <SimpleTooltip content="Number of times the progression has looped">
+                <motion.div
+                  className="ml-auto text-sm text-muted-foreground cursor-help"
+                  key={loopCount}
+                  initial={{ scale: 1.5, color: '#3b82f6' }}
+                  animate={{ scale: 1, color: 'currentColor' }}
+                  transition={{ duration: 0.3 }}
+                >
+                  Loop: {loopCount}
+                </motion.div>
+              </SimpleTooltip>
             </motion.div>
 
             {/* BPM Control */}

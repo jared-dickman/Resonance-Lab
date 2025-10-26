@@ -15,7 +15,9 @@ import { ChordJourneyVisualization } from '@/components/ChordJourneyVisualizatio
 import { ChordRhythmGame } from '@/components/ChordRhythmGame';
 import { LoopPracticeMode } from '@/components/LoopPracticeMode';
 import { Button } from '@/components/ui/button';
-import { Guitar, Piano } from 'lucide-react';
+import { Guitar, Piano, Volume2, VolumeX } from 'lucide-react';
+import { useGuitarPlayback } from '@/lib/hooks';
+import IntelligentMusicPanel from '@/components/music-theory/IntelligentMusicPanel';
 
 interface SongClientProps {
   song: Song;
@@ -42,6 +44,15 @@ export function SongClient({ song, artistSlug }: SongClientProps): React.JSX.Ele
   const [isAutoScrollEnabled, setIsAutoScrollEnabled] = useState(false);
   const [currentChord, setCurrentChord] = useState<string | null>(null);
   const [instrument, setInstrument] = useState<'guitar' | 'piano'>('guitar');
+  const [isAudioEnabled, setIsAudioEnabled] = useState(true);
+
+  // Initialize guitar playback
+  useGuitarPlayback({
+    enabled: isAutoScrollEnabled && isAudioEnabled,
+    currentChord,
+    preset: 'strumming',
+    volume: -6,
+  });
 
   const transposeForKey = ((transpose % 12) + 12) % 12;
   const currentKey = KEY_SIGNATURES[(originalKeyIndex + transposeForKey) % 12];
@@ -176,17 +187,41 @@ export function SongClient({ song, artistSlug }: SongClientProps): React.JSX.Ele
         </Link>
       </h2>
 
-      <SongControls
-        transpose={transpose}
-        onTransposeChange={handleTransposeChange}
-        currentKey={currentKey ?? 'C'}
-        onKeyChange={handleKeyChange}
-        bpm={bpm}
-        onBpmChange={setBpm}
-        isAutoScrollEnabled={isAutoScrollEnabled}
-        onToggleAutoScroll={toggleAutoScroll}
-        originalKey={song.key ?? 'C'}
-      />
+      <div className="space-y-4">
+        <SongControls
+          transpose={transpose}
+          onTransposeChange={handleTransposeChange}
+          currentKey={currentKey ?? 'C'}
+          onKeyChange={handleKeyChange}
+          bpm={bpm}
+          onBpmChange={setBpm}
+          isAutoScrollEnabled={isAutoScrollEnabled}
+          onToggleAutoScroll={toggleAutoScroll}
+          originalKey={song.key ?? 'C'}
+        />
+
+        {/* Audio Playback Toggle */}
+        <div className="flex justify-center">
+          <Button
+            variant={isAudioEnabled ? 'default' : 'outline'}
+            onClick={() => setIsAudioEnabled(!isAudioEnabled)}
+            size="sm"
+            className="gap-2"
+          >
+            {isAudioEnabled ? (
+              <>
+                <Volume2 className="h-4 w-4" />
+                Guitar Audio Enabled
+              </>
+            ) : (
+              <>
+                <VolumeX className="h-4 w-4" />
+                Guitar Audio Disabled
+              </>
+            )}
+          </Button>
+        </div>
+      </div>
 
       {/* Lyrics Container */}
       <div ref={lyricsContainerRef} className={styles.lyricsContainer}>
@@ -256,6 +291,19 @@ export function SongClient({ song, artistSlug }: SongClientProps): React.JSX.Ele
           <PianoDisplay chordName={currentChord} />
         )}
       </div>
+
+      {/* 🎯 INTELLIGENT MUSIC ENGINE - THE UNIVERSE-SAVING FEATURE */}
+      <IntelligentMusicPanel
+        chords={transposedSections.flatMap(s => s.lines).filter(l => l.chord?.name).map(l => l.chord!.name)}
+        currentChordIndex={transposedSections.flatMap(s => s.lines).filter(l => l.chord?.name).findIndex(l => l.chord!.name === currentChord)}
+        onChordClick={chord => {
+          setCurrentChord(chord);
+          setIsAutoScrollEnabled(false);
+        }}
+        onPlayChord={chord => {
+          setCurrentChord(chord);
+        }}
+      />
 
       {/* Loop Practice Mode */}
       <LoopPracticeMode

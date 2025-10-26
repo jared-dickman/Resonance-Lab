@@ -1,0 +1,70 @@
+{
+  "host": "srv1015344.hstgr.cloud",
+  "user": "root",
+  "sshKey": "~/.ssh/id_ed25519",
+  "projectPath": "/root/Resonance-Lab",
+  "composeFile": "/root/docker-compose.yml",
+  "lastUpdated": "2025-10-26T04:00:00Z",
+  "containers": {
+    "backend": {
+      "name": "resonance-backend",
+      "image": "resonance-lab_backend",
+      "internalPort": 8080,
+      "status": "Up 3 days",
+      "healthCheck": "/api/artists",
+      "logKeywords": ["GET /api", "Starting server on :8080"],
+      "volumes": ["./songs:/app/songs"],
+      "env": {
+        "SONGS_DIR": "/app/songs",
+        "ADDR": ":8080"
+      }
+    },
+    "traefik": {
+      "name": "root-traefik-1",
+      "image": "traefik",
+      "ports": [80, 443],
+      "status": "Up 3 days",
+      "healthCheck": "http://localhost/api/health",
+      "labels": {
+        "domain": "srv1015344.hstgr.cloud",
+        "pathPrefix": "/api",
+        "tls": true
+      }
+    },
+    "n8n": {
+      "name": "root-n8n-1",
+      "image": "docker.n8n.io/n8nio/n8n",
+      "port": 5678,
+      "status": "Up 4 days",
+      "internalOnly": true
+    }
+  },
+  "network": {
+    "name": "root_default",
+    "external": true
+  },
+  "domains": {
+    "api": "https://srv1015344.hstgr.cloud/api",
+    "apiInternal": "http://localhost:8080/api",
+    "frontend": "https://resonance-lab.vercel.app"
+  },
+  "endpoints": {
+    "/api/artists": "GET - List all artists",
+    "/api/songs": "GET - List all songs",
+    "/api/songs/:artist/:song": "GET - Get specific song"
+  },
+  "commonIssues": {
+    "containerStopped": "docker-compose up -d",
+    "highMemory": "docker system prune -f && docker-compose restart",
+    "apiUnresponsive": "docker-compose restart backend",
+    "permissionError": "chmod -R 755 songs && docker-compose restart backend",
+    "diskFull": "docker system prune -af --volumes"
+  },
+  "diagnosticCommands": {
+    "quickStatus": "docker ps -a && docker stats --no-stream",
+    "apiTest": "curl -s http://localhost:8080/api/artists | head -5",
+    "logs": "docker logs resonance-backend --tail=50",
+    "diskSpace": "df -h /",
+    "fullHealth": "docker ps && curl -sf http://localhost:8080/api/artists && docker stats --no-stream"
+  }
+}

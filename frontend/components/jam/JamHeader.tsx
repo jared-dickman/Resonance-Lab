@@ -6,6 +6,8 @@ import {
   ANIMATION_DURATION,
   FADE_VARIANTS,
 } from '@/lib/constants/animation.constants';
+import { HelpPanel } from '@/components/ui/help-panel';
+import { JAM_HELP } from '@/lib/constants/help-content.constants';
 
 const ICON_ROTATION = [0, 10, -10, 0];
 const ICON_SCALE = [1, 1.1, 1.1, 1];
@@ -15,36 +17,39 @@ const ICON_REPEAT_DELAY = 3;
 export function JamHeader(): React.JSX.Element {
   return (
     <motion.div
-      className="mb-6 md:mb-8 text-center"
+      className="mb-6 md:mb-8"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: ANIMATION_DELAY.SHORT }}
     >
-      <div className="flex items-center justify-center gap-2 md:gap-3 mb-2 md:mb-3">
-        <motion.div
-          animate={{
-            rotate: ICON_ROTATION,
-            scale: ICON_SCALE,
-          }}
-          transition={{
-            duration: ICON_ANIMATION_DURATION,
-            repeat: Infinity,
-            repeatDelay: ICON_REPEAT_DELAY,
-          }}
-        >
-          <Sparkles className="w-8 h-8 md:w-10 md:h-10 text-primary" />
-        </motion.div>
-        <motion.h1
-          className="text-2xl md:text-4xl font-bold tracking-tight"
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.3, duration: ANIMATION_DURATION.NORMAL }}
-        >
-          Jam Assistant
-        </motion.h1>
+      <div className="flex items-center justify-between mb-2 md:mb-3">
+        <div className="flex items-center gap-2 md:gap-3">
+          <motion.div
+            animate={{
+              rotate: ICON_ROTATION,
+              scale: ICON_SCALE,
+            }}
+            transition={{
+              duration: ICON_ANIMATION_DURATION,
+              repeat: Infinity,
+              repeatDelay: ICON_REPEAT_DELAY,
+            }}
+          >
+            <Sparkles className="w-8 h-8 md:w-10 md:h-10 text-primary" />
+          </motion.div>
+          <motion.h1
+            className="text-2xl md:text-4xl font-bold tracking-tight"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3, duration: ANIMATION_DURATION.NORMAL }}
+          >
+            Jam Assistant
+          </motion.h1>
+        </div>
+        <HelpPanel title={JAM_HELP.title} sections={JAM_HELP.sections} />
       </div>
       <motion.p
-        className="text-sm md:text-lg text-muted-foreground max-w-2xl mx-auto px-4"
+        className="text-sm md:text-lg text-muted-foreground max-w-2xl px-4"
         variants={FADE_VARIANTS}
         initial="hidden"
         animate="show"

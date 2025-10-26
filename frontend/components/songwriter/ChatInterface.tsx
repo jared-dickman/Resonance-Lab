@@ -8,15 +8,19 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { CardHeader, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
-import { Send, Sparkles, Lightbulb, Music, PenTool, Bot } from 'lucide-react';
+import { Send, Sparkles, Lightbulb, Music, PenTool, MessageSquare } from 'lucide-react';
 
 import type { SongDraft } from '@/components/songwriter/types/legacy';
 import { cn } from '@/lib/utils';
+import { PanelLabel } from '@/components/ui/panel-label';
+import { InfoCard } from '@/components/ui/info-card';
+import { SimpleTooltip } from '@/components/ui/simple-tooltip';
+import { QUICK_TIPS } from '@/lib/constants/help-content.constants';
 import {
   CHAT_RESPONSES,
   WELCOME_MESSAGE,
@@ -130,15 +134,24 @@ export default function ChatInterface({
   return (
     <>
       <CardHeader className="border-b">
-        <CardTitle className="text-lg flex items-center gap-2">
-          <Bot className="w-5 h-5 text-primary" />
-          AI Songwriting Assistant
-        </CardTitle>
+        <PanelLabel
+          icon={<MessageSquare className="w-5 h-5" />}
+          title="AI Songwriting Assistant"
+          description="Ask for lyrics, chord suggestions, rhymes, and creative direction"
+        />
       </CardHeader>
 
       <CardContent className="p-0 flex flex-col h-[calc(100%-80px)]">
         <ScrollArea className="flex-1 p-4">
           <div className="space-y-4">
+            <InfoCard title="Quick Start" variant="tip" defaultVisible={messages.length <= 1}>
+              <ul className="space-y-1 text-xs">
+                {QUICK_TIPS.songwriter.map((tip, i) => (
+                  <li key={i}>• {tip}</li>
+                ))}
+              </ul>
+            </InfoCard>
+
             <AnimatePresence mode="popLayout">
               {messages.map((message) => (
                 <ChatMessage key={message.id} message={message} />
@@ -163,9 +176,11 @@ export default function ChatInterface({
               disabled={isTyping}
               maxLength={CHAT_CONFIG.MAX_MESSAGE_LENGTH}
             />
-            <Button size="icon" onClick={handleSend} disabled={!input.trim() || isTyping}>
-              <Send className="w-4 h-4" />
-            </Button>
+            <SimpleTooltip content="Send message (or press Enter)">
+              <Button size="icon" onClick={handleSend} disabled={!input.trim() || isTyping}>
+                <Send className="w-4 h-4" />
+              </Button>
+            </SimpleTooltip>
           </div>
         </div>
       </CardContent>

@@ -1,181 +1,220 @@
-/**
- * Songwriter Client Component
- * Main orchestrator for songwriting interface
- * REFACTORED: Clean code with single responsibility functions
- */
-
 'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Panel, PanelGroup } from 'react-resizable-panels';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
+import { GripVertical } from 'lucide-react';
 
 import { Card } from '@/components/ui/card';
 import ChatInterface from '@/components/songwriter/ChatInterface';
 import LyricsEditor from '@/components/songwriter/LyricsEditor';
 import ChordProgressionBuilder from '@/components/songwriter/ChordProgressionBuilder';
-import DraftManager from '@/components/songwriter/DraftManager';
 import { SongwriterHeader } from '@/components/songwriter/SongwriterHeader';
-import { PanelDivider } from '@/components/songwriter/PanelDivider';
 import {
   createEmptySongState,
   updateSongTitle,
   updateLyricsText,
 } from '@/components/songwriter/state/songStateManager';
-import { usePanelLayout } from '@/lib/hooks/usePanelLayout';
-import { useMobileDetection } from '@/lib/hooks/useMobileDetection';
 import { convertStateToDraft } from '@/lib/utils/songwriter/draftTransformer';
 import { flattenSongSections } from '@/lib/utils/songwriter/lyricsFormatter';
-import { PANEL_CONFIG, ANIMATION_DELAY, ANIMATION_DURATION } from '@/lib/constants/songwriter.constants';
+import {
+  loadPanelLayoutFromLocalStorage,
+  savePanelLayoutToLocalStorage,
+  createDefaultPanelLayout,
+} from '@/components/songwriter/persistence/panelLayoutPersistence';
 import type { CompleteSongState } from '@/components/songwriter/types/song';
-import type { FocusArea } from '@/components/songwriter/types/ui';
-import type { ConversationHistory } from '@/components/songwriter/types/chat';
+import type { PanelLayoutState } from '@/components/songwriter/types/ui';
+import { usePanelInteractions } from '@/components/songwriter/hooks/usePanelInteractions';
+import {
+  useKeyboardShortcuts,
+  createPanelShortcutHandlers,
+} from '@/components/songwriter/hooks/useKeyboardShortcuts';
 
 export default function SongwriterClient(): React.JSX.Element {
   const [songState, setSongState] = useState<CompleteSongState>(createEmptySongState());
-  const [showDraftManager, setShowDraftManager] = useState<boolean>(false);
-  const [selectedChord, setSelectedChord] = useState<string | null>(null);
-  const [_focusArea, _setFocusArea] = useState<FocusArea>('lyrics');
-  const [_conversationHistory, _setConversationHistory] = useState<ConversationHistory>({
-    messages: [],
+  const [panelLayout, setPanelLayout] = useState<PanelLayoutState>(() => {
+    const saved = loadPanelLayoutFromLocalStorage();
+    return saved || createDefaultPanelLayout();
   });
+  const [selectedChord, setSelectedChord] = useState<string | null>(null);
+  const [showDraftManager, setShowDraftManager] = useState<boolean>(false);
 
-  const { panelSizes, handlePanelResize } = usePanelLayout();
-  const isMobile = useMobileDetection();
+  const { togglePanel, focusPanel } = usePanelInteractions(
+    panelLayout,
+    setPanelLayout
+  );
 
-  function handleTitleChange(newTitle: string): void {
-    setSongState(updateSongTitle(songState, newTitle));
-  }
+  const handleSaveDraft = useCallback((): void => {
+    console.log('Draft saved');
+  }, []);
 
-  function handleLyricsChange(newLyrics: string): void {
-    setSongState(updateLyricsText(songState, newLyrics));
-  }
+  const shortcutHandlers = createPanelShortcutHandlers(
+    togglePanel,
+    focusPanel,
+    handleSaveDraft
+  );
 
-  function appendLyricsSuggestion(suggestion: string): void {
-    const currentLyrics = flattenSongSections(songState.lyrics);
-    const updatedLyrics = `${currentLyrics}\n${suggestion}`;
-    handleLyricsChange(updatedLyrics);
-  }
+  useKeyboardShortcuts(shortcutHandlers);
 
-  function toggleDraftManager(): void {
-    setShowDraftManager(!showDraftManager);
-  }
+  useEffect(() => {
+    savePanelLayoutToLocalStorage(panelLayout);
+  }, [panelLayout]);
 
-  function handleSaveDraft(): void {
-    // TODO: Implement draft saving functionality
-  }
+  const handleTitleChange = useCallback(
+    (newTitle: string): void => {
+      setSongState((prev) => updateSongTitle(prev, newTitle));
+    },
+    []
+  );
 
-  function handleChordsChange(_chords: { name: string; timing: number }[]): void {
-    // TODO: Implement chords change handling
-  }
+  const handleLyricsChange = useCallback(
+    (newLyrics: string): void => {
+      setSongState((prev) => updateLyricsText(prev, newLyrics));
+    },
+    []
+  );
 
-  function handleLoadDraft(draft: { title: string; lyrics: string }): void {
-    handleTitleChange(draft.title);
-    handleLyricsChange(draft.lyrics);
-  }
+  const appendLyricsSuggestion = useCallback(
+    (suggestion: string): void => {
+      const currentLyrics = flattenSongSections(songState.lyrics);
+      const updatedLyrics = currentLyrics ? `${currentLyrics}\n${suggestion}` : suggestion;
+      handleLyricsChange(updatedLyrics);
+    },
+    [songState.lyrics, handleLyricsChange]
+  );
+
+  const handleChordsChange = useCallback(
+    (_chords: { name: string; timing: number }[]): void => {
+      // TODO: Implement
+    },
+    []
+  );
+
+  const handlePanelResize = useCallback((): void => {
+    setPanelLayout((prev) => ({
+      ...prev,
+      lastResizedAt: new Date(),
+      layoutVersion: prev.layoutVersion + 1,
+    }));
+  }, []);
 
   const currentDraft = convertStateToDraft(songState);
+  const chatPanel = panelLayout.panels.find((p) => p.panelId === 'chat');
+  const lyricsPanel = panelLayout.panels.find((p) => p.panelId === 'lyrics');
+  const chordsPanel = panelLayout.panels.find((p) => p.panelId === 'chords');
 
   return (
-    <motion.div
-      className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 overflow-x-hidden"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: ANIMATION_DURATION.FADE_IN / 1000 }}
-    >
+    <div className="min-h-screen bg-background flex flex-col">
       <SongwriterHeader
-        onToggleDrafts={toggleDraftManager}
-        onSaveDraft={handleSaveDraft}
+        onToggleDrafts={() => setShowDraftManager(!showDraftManager)}
+        onSaveDraft={() => {}}
         showDraftManager={showDraftManager}
       />
 
-      <div className="container mx-auto px-4 py-6 max-w-full overflow-x-hidden">
-        <PanelGroup
-          direction={isMobile ? 'vertical' : 'horizontal'}
-          onLayout={handlePanelResize}
-          className={isMobile ? 'min-h-[calc(100vh-180px)]' : 'h-[calc(100vh-180px)]'}
-        >
-          <Panel
-            defaultSize={panelSizes[0]}
-            minSize={PANEL_CONFIG.MIN_SIZE}
-            className={isMobile ? 'pb-3' : 'pr-3'}
-          >
-            <motion.div
-              className="h-full"
-              initial={{ x: -30, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: ANIMATION_DELAY.CHAT_PANEL / 1000, duration: ANIMATION_DURATION.SLIDE / 1000 }}
-            >
-              <Card className="h-full border-primary/20">
-                <ChatInterface
-                  onLyricsSuggestion={appendLyricsSuggestion}
-                  onChordSuggestion={setSelectedChord}
-                  currentDraft={currentDraft}
-                />
-              </Card>
-            </motion.div>
-          </Panel>
-
-          <PanelDivider isMobile={isMobile} />
-
-          <Panel
-            defaultSize={panelSizes[1]}
-            minSize={PANEL_CONFIG.MIN_SIZE}
-            className={isMobile ? 'py-3' : 'px-3'}
-          >
-            <motion.div
-              className="h-full"
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: ANIMATION_DELAY.LYRICS_PANEL / 1000, duration: ANIMATION_DURATION.SLIDE / 1000 }}
-            >
-              <Card className="h-full border-primary/20">
-                <LyricsEditor
-                  title={songState.metadata.title}
-                  lyrics={flattenSongSections(songState.lyrics)}
-                  onLyricsChange={handleLyricsChange}
-                  onTitleChange={handleTitleChange}
-                  selectedChord={selectedChord}
-                />
-              </Card>
-            </motion.div>
-          </Panel>
-
-          <PanelDivider isMobile={isMobile} />
-
-          <Panel
-            defaultSize={panelSizes[2]}
-            minSize={PANEL_CONFIG.MIN_SIZE}
-            className={isMobile ? 'pt-3' : 'pl-3'}
-          >
-            <motion.div
-              className="h-full"
-              initial={{ x: 30, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: ANIMATION_DELAY.CHORDS_PANEL / 1000, duration: ANIMATION_DURATION.SLIDE / 1000 }}
-            >
-              <Card className="h-full border-primary/20">
-                <ChordProgressionBuilder
-                  chords={[]}
-                  onChordsChange={handleChordsChange}
-                  selectedChord={selectedChord}
-                  onChordSelect={setSelectedChord}
-                />
-              </Card>
-            </motion.div>
-          </Panel>
-        </PanelGroup>
-
-        <AnimatePresence>
-          {showDraftManager && (
-            <DraftManager
-              currentDraft={currentDraft}
-              onClose={() => setShowDraftManager(false)}
-              onLoadDraft={handleLoadDraft}
-            />
+      <div className="flex-1 overflow-hidden">
+        <PanelGroup direction="horizontal" onLayout={handlePanelResize}>
+          {chatPanel && chatPanel.state === 'expanded' && (
+            <>
+              <Panel
+                id="chat-panel"
+                defaultSize={chatPanel.widthPercentage}
+                minSize={20}
+                maxSize={40}
+                className="relative"
+              >
+                <div className="h-full border-r bg-background">
+                  <div className="p-4 border-b">
+                    <h2 className="font-semibold text-lg">AI Assistant</h2>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Songwriting help and suggestions
+                    </p>
+                  </div>
+                  <div className="h-[calc(100%-80px)]">
+                    <Card className="h-full rounded-none border-0">
+                      <ChatInterface
+                        onLyricsSuggestion={appendLyricsSuggestion}
+                        onChordSuggestion={setSelectedChord}
+                        currentDraft={currentDraft}
+                      />
+                    </Card>
+                  </div>
+                </div>
+              </Panel>
+              <ResizeHandle />
+            </>
           )}
-        </AnimatePresence>
+
+          {lyricsPanel && lyricsPanel.state === 'expanded' && (
+            <>
+              <Panel
+                id="lyrics-panel"
+                defaultSize={lyricsPanel.widthPercentage}
+                minSize={30}
+                className="relative"
+              >
+                <div className="h-full bg-background">
+                  <div className="p-4 border-b">
+                    <h2 className="font-semibold text-lg">Lyrics</h2>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Write and edit your song lyrics
+                    </p>
+                  </div>
+                  <div className="h-[calc(100%-80px)] overflow-y-auto p-6">
+                    <Card className="shadow-lg">
+                      <LyricsEditor
+                        title={songState.metadata.title}
+                        lyrics={flattenSongSections(songState.lyrics)}
+                        onLyricsChange={handleLyricsChange}
+                        onTitleChange={handleTitleChange}
+                        selectedChord={selectedChord}
+                      />
+                    </Card>
+                  </div>
+                </div>
+              </Panel>
+              <ResizeHandle />
+            </>
+          )}
+
+          {chordsPanel && chordsPanel.state === 'expanded' && (
+            <Panel
+              id="chords-panel"
+              defaultSize={chordsPanel.widthPercentage}
+              minSize={20}
+              maxSize={40}
+              className="relative"
+            >
+              <div className="h-full border-l bg-background">
+                <div className="p-4 border-b">
+                  <h2 className="font-semibold text-lg">Chord Progression</h2>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Build your harmonic structure
+                  </p>
+                </div>
+                <div className="h-[calc(100%-80px)] overflow-y-auto p-4">
+                  <ChordProgressionBuilder
+                    chords={[]}
+                    onChordsChange={handleChordsChange}
+                    selectedChord={selectedChord}
+                    onChordSelect={setSelectedChord}
+                  />
+                </div>
+              </div>
+            </Panel>
+          )}
+        </PanelGroup>
       </div>
-    </motion.div>
+    </div>
+  );
+}
+
+function ResizeHandle(): React.JSX.Element {
+  return (
+    <PanelResizeHandle className="group relative w-px bg-border hover:bg-primary transition-colors">
+      <div className="absolute inset-y-0 -left-1 -right-1 flex items-center justify-center">
+        <div className="w-4 h-12 rounded-sm bg-border group-hover:bg-primary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+          <GripVertical className="w-3 h-3 text-muted-foreground group-hover:text-primary-foreground" />
+        </div>
+      </div>
+    </PanelResizeHandle>
   );
 }

@@ -2,11 +2,13 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence, Reorder } from 'framer-motion';
-import { CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { CardHeader, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Music2, Plus, Trash2, GripVertical, Sparkles, RotateCcw } from 'lucide-react';
+import { PanelLabel } from '@/components/ui/panel-label';
+import { SimpleTooltip } from '@/components/ui/simple-tooltip';
 
 interface ChordProgressionBuilderProps {
   chords: { name: string; timing: number }[];
@@ -89,14 +91,17 @@ export default function ChordProgressionBuilder({
     <>
       <CardHeader className="border-b">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg flex items-center gap-2">
-            <Music2 className="w-5 h-5 text-primary" />
-            Chord Progression
-          </CardTitle>
+          <PanelLabel
+            icon={<Music2 className="w-5 h-5" />}
+            title="Chord Progression"
+            description="Build and arrange chords with visual diagrams and drag-to-reorder"
+          />
           <div className="flex gap-2">
-            <Button variant="ghost" size="sm" onClick={clearAll} disabled={chords.length === 0}>
-              <RotateCcw className="w-4 h-4" />
-            </Button>
+            <SimpleTooltip content="Clear all chords">
+              <Button variant="ghost" size="sm" onClick={clearAll} disabled={chords.length === 0}>
+                <RotateCcw className="w-4 h-4" />
+              </Button>
+            </SimpleTooltip>
           </div>
         </div>
       </CardHeader>
@@ -116,7 +121,7 @@ export default function ChordProgressionBuilder({
                   <Reorder.Item
                     key={`${chord.name}-${index}`}
                     value={chord}
-                    className="flex items-center gap-2 p-3 bg-muted/50 border border-border rounded-lg cursor-grab active:cursor-grabbing"
+                    className="flex items-center gap-2 p-3 bg-muted/50 border-2 border-border rounded-lg cursor-grab active:cursor-grabbing"
                     whileHover={{ scale: 1.02 }}
                     whileDrag={{ scale: 1.05, boxShadow: '0 10px 30px rgba(0,0,0,0.2)' }}
                   >
@@ -168,7 +173,7 @@ export default function ChordProgressionBuilder({
                   variant="outline"
                   size="sm"
                   onClick={() => loadProgression(prog.chords)}
-                  className="text-xs"
+                  className="text-xs border-2"
                 >
                   {prog.name}
                 </Button>
@@ -211,7 +216,7 @@ export default function ChordProgressionBuilder({
         </div>
 
         {/* Pro Tip */}
-        <div className="p-3 rounded-lg bg-muted/50 border border-border flex-shrink-0">
+        <div className="p-3 rounded-lg bg-muted/50 border-2 border-border flex-shrink-0">
           <p className="text-xs text-muted-foreground leading-relaxed">
             <strong>Pro tip:</strong> Drag to reorder chords. Try starting with a suggested
             progression, then customize it! Common patterns: I-V-vi-IV or ii-V-I.

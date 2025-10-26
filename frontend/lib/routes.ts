@@ -7,6 +7,9 @@ export const pageRoutes = {
   songwriter: '/songwriter',
   jam: '/jam',
   metronome: '/metronome',
+  musicTheory: '/music-theory',
+  composer: '/composer',
+  pedalboard: '/pedalboard',
 } as const;
 
 export type PageRoute = (typeof pageRoutes)[keyof typeof pageRoutes];
