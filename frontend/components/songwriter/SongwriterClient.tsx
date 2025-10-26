@@ -309,46 +309,538 @@ function NavigatorColumn({
           <Card className="border-2 bg-background">
             <CardHeader className="pb-2">
               <div className="flex items-center gap-2">
-                <LayoutTemplate className="h-4 w-4 text-primary" />
-                <span className="text-sm font-semibold uppercase tracking-wide">Song Map</span>
+                <Target className="h-4 w-4 text-primary" />
+                <span className="text-sm font-semibold uppercase tracking-wide">Session Insights</span>
               </div>
               <p className="text-xs text-muted-foreground">
-                Jump between sections and preserve the arc.
+                Keep track of progress and creative momentum.
               </p>
             </CardHeader>
-            <CardContent className="space-y-2">
-              {sections.length === 0 ? (
-                <EmptyState message="Label sections like [Verse] to build your structure." />
-              ) : (
-                <div className="space-y-2">
-                  {sections.map(section => (
-                    <button
-                      key={section.id}
-                      type="button"
-                      onClick={() => onSectionSelect(section.id)}
-                      className={cn(
-                        'w-full rounded-lg border px-3 py-2 text-left transition-colors',
-                        activeSectionId === section.id
-                          ? 'border-primary bg-primary/10'
-                          : 'border-border hover:border-primary/60 hover:bg-primary/5'
-                      )}
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-semibold">{section.label}</span>
-                        <Badge variant="outline" className="text-[10px]">
-                          {section.lines} lines
-                        </Badge>
-                      </div>
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        Mood: {formatDisplayValue(section.emotionalTone)} · Rhyme: {section.rhymeScheme}
-                      </p>
-                    </button>
-                  ))}
-                </div>
-              )}
+            <CardContent className="space-y-3 text-sm">
+              <div className="grid grid-cols-2 gap-3">
+                <InsightStat label="Completion" value={formatPercentage(metrics.completion)} />
+                <InsightStat label="Edits" value={metrics.editCount.toString()} />
+                <InsightStat label="Focus Time" value={formatDuration(metrics.totalTimeSpentSeconds)} />
+                <InsightStat label="Chords" value={metrics.chordCount.toString()} />
+                <InsightStat label="Created" value={formatRelativeTime(metrics.createdAt)} />
+                <InsightStat label="Updated" value={formatRelativeTime(metrics.lastUpdated)} />
+              </div>
+              <div className="rounded-lg border border-dashed border-border bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
+                <strong>Instrumentation notes:</strong>{' '}
+                {metrics.instrumentationNotes
+                  ? metrics.instrumentationNotes
+                  : 'Add arrangement notes to guide future production.'}
+              </div>
             </CardContent>
           </Card>
+        </div>
+      </ScrollArea>
+    </div>
+  );
+}
 
- 425	Intentional truncation? The patch is long. Need to ensure entire file is added.
-*** End Patch
-++ Output truncated (exceeds limit) +++
+interface WorkspaceColumnProps {
+  lyrics: string;
+  title: string;
+  selectedChord: string | null;
+  chordProgression: ReadonlyArray<WorkspaceChord>;
+  onTitleChange: (title: string) => void;
+  onLyricsChange: (lyrics: string) => void;
+  onChordsChange: (chords: WorkspaceChord[]) => void;
+  onChordSelect: (chord: string) => void;
+}
+
+function WorkspaceColumn({
+  lyrics,
+  title,
+  selectedChord,
+  chordProgression,
+  onTitleChange,
+  onLyricsChange,
+  onChordsChange,
+  onChordSelect,
+}: WorkspaceColumnProps): React.JSX.Element {
+  return (
+    <div className="flex h-full flex-col bg-background" tabIndex={-1}>
+      <PanelGroup direction="vertical" className="h-full">
+        <Panel defaultSize={70} minSize={55} className="relative">
+          <div className="flex h-full flex-col">
+            <ScrollArea className="flex-1 p-4">
+              <Card className="border-2 shadow-sm">
+                <LyricsEditor
+                  title={title}
+                  lyrics={lyrics}
+                  onLyricsChange={onLyricsChange}
+                  onTitleChange={onTitleChange}
+                  selectedChord={selectedChord}
+                />
+              </Card>
+            </ScrollArea>
+          </div>
+        </Panel>
+        <VerticalResizeHandle />
+        <Panel defaultSize={30} minSize={20} className="relative">
+          <div className="flex h-full flex-col border-t bg-background">
+            <Card className="h-full rounded-none border-0">
+              <ChordProgressionBuilder
+                chords={chordProgression}
+                onChordsChange={onChordsChange}
+                selectedChord={selectedChord}
+                onChordSelect={onChordSelect}
+              />
+            </Card>
+          </div>
+        </Panel>
+      </PanelGroup>
+    </div>
+  );
+}
+
+interface AssistantColumnProps {
+  draft: SongDraft;
+  selectedChord: string | null;
+  onLyricsSuggestion: (lyrics: string) => void;
+  onChordSuggestion: (chord: string) => void;
+  onApplyConfiguration: () => void;
+}
+
+function AssistantColumn({
+  draft,
+  selectedChord,
+  onLyricsSuggestion,
+  onChordSuggestion,
+  onApplyConfiguration,
+}: AssistantColumnProps): React.JSX.Element {
+  return (
+    <div className="flex h-full flex-col border-l bg-background" tabIndex={-1}>
+      <PanelGroup direction="vertical" className="h-full">
+        <Panel defaultSize={65} minSize={50} className="relative">
+          <div className="flex h-full flex-col">
+            <Card className="h-full rounded-none border-0">
+              <ChatInterface
+                onLyricsSuggestion={onLyricsSuggestion}
+                onChordSuggestion={onChordSuggestion}
+                currentDraft={draft}
+              />
+            </Card>
+          </div>
+        </Panel>
+        <VerticalResizeHandle />
+        <Panel defaultSize={35} minSize={25} className="relative">
+          <SongConfigurationPreview
+            draft={draft}
+            selectedChord={selectedChord}
+            onApply={onApplyConfiguration}
+          />
+        </Panel>
+      </PanelGroup>
+    </div>
+  );
+}
+
+interface SongConfigurationPreviewProps {
+  draft: SongDraft;
+  selectedChord: string | null;
+  onApply: () => void;
+}
+
+function SongConfigurationPreview({
+  draft,
+  selectedChord,
+  onApply,
+}: SongConfigurationPreviewProps): React.JSX.Element {
+  const formattedJson = useMemo(() => JSON.stringify(draft, null, 2), [draft]);
+  const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'error'>('idle');
+
+  useEffect(() => {
+    if (copyStatus === 'copied' || copyStatus === 'error') {
+      const timeout = setTimeout(() => setCopyStatus('idle'), 2000);
+      return () => clearTimeout(timeout);
+    }
+    return undefined;
+  }, [copyStatus]);
+
+  const handleCopy = useCallback(async (): Promise<void> => {
+    try {
+      if (navigator?.clipboard?.writeText) {
+        await navigator.clipboard.writeText(formattedJson);
+        setCopyStatus('copied');
+      } else {
+        throw new Error('Clipboard API unavailable');
+      }
+    } catch (error) {
+      console.error('Unable to copy song configuration', error);
+      setCopyStatus('error');
+    }
+  }, [formattedJson]);
+
+  const copyLabel =
+    copyStatus === 'copied' ? 'Copied' : copyStatus === 'error' ? 'Retry' : 'Copy';
+
+  const CopyIcon = copyStatus === 'copied' ? ClipboardCheck : Clipboard;
+
+  return (
+    <Card className="h-full rounded-none border-0 border-t bg-background/95">
+      <CardHeader className="gap-3 border-b pb-3">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <Braces className="h-4 w-4 text-primary" />
+            <span className="text-sm font-semibold uppercase tracking-wide">
+              Song Configuration Preview
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            {selectedChord && (
+              <Badge variant="outline" className="text-xs">
+                Chord Focus: {selectedChord}
+              </Badge>
+            )}
+            <Badge variant="secondary" className="text-xs">
+              AI Mock
+            </Badge>
+          </div>
+        </div>
+        <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
+          <span>
+            The assistant responds with updated JSON that syncs directly into your song.
+          </span>
+          <div className="flex items-center gap-2">
+            <Button
+              variant={copyStatus === 'error' ? 'destructive' : 'outline'}
+              size="sm"
+              onClick={handleCopy}
+              className="gap-1"
+            >
+              <CopyIcon className="h-3 w-3" />
+              {copyLabel}
+            </Button>
+            <SimpleTooltip content="Integration coming soon">
+              <Button variant="default" size="sm" className="gap-1" disabled onClick={onApply}>
+                <Sparkles className="h-3 w-3" />
+                Apply
+              </Button>
+            </SimpleTooltip>
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent className="h-full p-0">
+        <ScrollArea className="h-full">
+          <pre className="px-4 py-3 text-xs font-mono leading-relaxed">
+            {formattedJson}
+          </pre>
+        </ScrollArea>
+      </CardContent>
+    </Card>
+  );
+}
+
+interface WorkspaceSummaryBarProps {
+  title: string;
+  metrics: WorkspaceMetrics;
+  panelVisibility: PanelVisibilityMap;
+  onTogglePanel: (panelId: PanelId) => void;
+}
+
+function WorkspaceSummaryBar({
+  title,
+  metrics,
+  panelVisibility,
+  onTogglePanel,
+}: WorkspaceSummaryBarProps): React.JSX.Element {
+  return (
+    <div className="border-b bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+      <div className="mx-auto flex w-full max-w-[1600px] flex-wrap items-center justify-between gap-4 px-6 py-4">
+        <div className="space-y-1">
+          <p className="text-xs uppercase tracking-wide text-muted-foreground">Now Editing</p>
+          <div className="flex items-center gap-3">
+            <h2 className="text-xl font-semibold leading-none">{title}</h2>
+            <Badge variant="outline" className="text-xs">
+              Updated {formatRelativeTime(metrics.lastUpdated)}
+            </Badge>
+          </div>
+        </div>
+
+        <div className="flex flex-1 flex-wrap items-center justify-end gap-4">
+          <SummaryMetric label="Completion" value={formatPercentage(metrics.completion)} />
+          <SummaryMetric label="Sections" value={metrics.sectionCount.toString()} />
+          <SummaryMetric label="Words" value={metrics.wordCount.toString()} />
+          <SummaryMetric label="Chords" value={metrics.chordCount.toString()} />
+          <SummaryMetric
+            label="Tempo"
+            value={metrics.tempo ? `${metrics.tempo} BPM` : '—'}
+          />
+          <SummaryMetric label="Key" value={formatKey(metrics.key, metrics.mode)} />
+          <div className="flex items-center gap-2 border-l border-border pl-3">
+            <PanelToggleButton
+              label="Navigator"
+              isActive={panelVisibility.navigator}
+              onClick={() => onTogglePanel('navigator')}
+            />
+            <PanelToggleButton
+              label="Assistant"
+              isActive={panelVisibility.assistant}
+              onClick={() => onTogglePanel('assistant')}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SummaryMetric({ label, value }: { label: string; value: string }): React.JSX.Element {
+  return (
+    <div className="flex flex-col items-start">
+      <span className="text-[11px] uppercase tracking-wide text-muted-foreground">{label}</span>
+      <span className="text-sm font-semibold">{value}</span>
+    </div>
+  );
+}
+
+interface PanelToggleButtonProps {
+  label: string;
+  isActive: boolean;
+  onClick: () => void;
+}
+
+function PanelToggleButton({ label, isActive, onClick }: PanelToggleButtonProps): React.JSX.Element {
+  return (
+    <SimpleTooltip content={`${isActive ? 'Hide' : 'Show'} ${label}`}>
+      <Button
+        type="button"
+        variant={isActive ? 'default' : 'outline'}
+        size="sm"
+        onClick={onClick}
+        className={cn('text-xs', isActive ? 'shadow-sm' : '')}
+      >
+        {label}
+      </Button>
+    </SimpleTooltip>
+  );
+}
+
+function MetadataRow({ label, value }: { label: string; value: string }): React.JSX.Element {
+  return (
+    <div className="flex items-center justify-between gap-2">
+      <span className="text-xs uppercase tracking-wide text-muted-foreground">{label}</span>
+      <span className="text-sm font-medium">{value}</span>
+    </div>
+  );
+}
+
+function InsightStat({ label, value }: { label: string; value: string }): React.JSX.Element {
+  return (
+    <div>
+      <span className="text-[11px] uppercase tracking-wide text-muted-foreground">{label}</span>
+      <div className="text-sm font-semibold">{value}</div>
+    </div>
+  );
+}
+
+function EmptyState({ message }: { message: string }): React.JSX.Element {
+  return (
+    <div className="rounded-lg border border-dashed border-border bg-muted/30 px-4 py-6 text-center">
+      <Sparkles className="mx-auto mb-2 h-5 w-5 text-muted-foreground" />
+      <p className="text-xs text-muted-foreground">{message}</p>
+    </div>
+  );
+}
+
+function HorizontalResizeHandle(): React.JSX.Element {
+  return (
+    <PanelResizeHandle className="group relative w-px bg-border transition-colors hover:bg-primary">
+      <div className="absolute inset-y-0 -left-1 -right-1 flex items-center justify-center">
+        <div className="flex h-12 w-4 items-center justify-center rounded-sm bg-border opacity-0 transition-opacity group-hover:bg-primary group-hover:opacity-100">
+          <GripVertical className="h-3 w-3 text-muted-foreground group-hover:text-primary-foreground" />
+        </div>
+      </div>
+    </PanelResizeHandle>
+  );
+}
+
+function VerticalResizeHandle(): React.JSX.Element {
+  return (
+    <PanelResizeHandle className="group relative h-px bg-border transition-colors hover:bg-primary">
+      <div className="absolute inset-x-0 -top-1 -bottom-1 flex items-center justify-center">
+        <div className="flex h-4 w-12 rotate-90 items-center justify-center rounded-sm bg-border opacity-0 transition-opacity group-hover:bg-primary group-hover:opacity-100">
+          <GripVertical className="h-3 w-3 text-muted-foreground group-hover:text-primary-foreground" />
+        </div>
+      </div>
+    </PanelResizeHandle>
+  );
+}
+
+function initializePanelLayout(): PanelLayoutState {
+  const saved = loadPanelLayoutFromLocalStorage();
+  if (saved && containsRequiredPanels(saved)) {
+    return saved;
+  }
+  return createDefaultPanelLayout();
+}
+
+function containsRequiredPanels(layout: PanelLayoutState): boolean {
+  return REQUIRED_PANEL_IDS.every(id =>
+    layout.panels.some(panel => panel.panelId === id)
+  );
+}
+
+function findPanelConfig(layout: PanelLayoutState, panelId: PanelId): PanelConfiguration | null {
+  return layout.panels.find(panel => panel.panelId === panelId) ?? null;
+}
+
+function mapSizesToLayout(layout: PanelLayoutState, sizes: ReadonlyArray<number>): PanelLayoutState {
+  const visiblePanels = getVisiblePanelsInOrder(layout);
+  if (visiblePanels.length !== sizes.length) {
+    return {
+      ...layout,
+      lastResizedAt: new Date(),
+      layoutVersion: layout.layoutVersion + 1,
+    };
+  }
+
+  const updatedPanels = layout.panels.map(panel => {
+    const index = visiblePanels.findIndex(visible => visible.panelId === panel.panelId);
+    if (index === -1) {
+      return panel;
+    }
+
+    const size = sizes[index];
+    return typeof size === 'number' ? { ...panel, widthPercentage: size } : panel;
+  });
+
+  return {
+    ...layout,
+    panels: updatedPanels,
+    lastResizedAt: new Date(),
+    layoutVersion: layout.layoutVersion + 1,
+  };
+}
+
+function getVisiblePanelsInOrder(layout: PanelLayoutState): PanelConfiguration[] {
+  return [...layout.panels]
+    .filter(panel => panel.state === 'expanded')
+    .sort((a, b) => a.order - b.order);
+}
+
+function buildWorkspaceMetrics(
+  state: CompleteSongState,
+  lyricsText: string,
+  chordProgression: ReadonlyArray<WorkspaceChord>
+): WorkspaceMetrics {
+  return {
+    completion: sanitizePercentage(state.metadata.completionPercentage),
+    sectionCount: state.lyrics.length,
+    wordCount: countWords(lyricsText),
+    chordCount: chordProgression.length,
+    tempo: state.musicalElements.tempo,
+    key: state.musicalElements.key,
+    mode: state.musicalElements.keyMode,
+    timeSignature: state.musicalElements.timeSignature,
+    genre: state.metadata.genre,
+    releaseIntent: state.metadata.releaseIntent,
+    targetAudience: state.metadata.targetAudience,
+    productionStyle: state.musicalElements.productionStyle,
+    instrumentationNotes: state.musicalElements.instrumentationNotes,
+    editCount: state.editHistory.length,
+    totalTimeSpentSeconds: state.timeAnalytics.totalTimeSpentSeconds,
+    createdAt: coerceDate(state.metadata.createdAt),
+    lastUpdated: coerceDate(state.metadata.updatedAt),
+  };
+}
+
+function buildSectionSummaries(sections: ReadonlyArray<SectionLyrics>): SectionSummary[] {
+  return sections.map(section => ({
+    id: `${section.sectionType}-${section.sectionIndex}`,
+    label: formatSectionLabel(section.sectionType, section.sectionIndex),
+    lines: section.lines.length,
+    emotionalTone: section.emotionalTone,
+    rhymeScheme: section.rhymeScheme,
+  }));
+}
+
+const SECTION_LABELS: Record<SectionType, string> = {
+  intro: 'Intro',
+  verse: 'Verse',
+  prechorus: 'Pre-Chorus',
+  chorus: 'Chorus',
+  bridge: 'Bridge',
+  outro: 'Outro',
+  interlude: 'Interlude',
+  breakdown: 'Breakdown',
+  hook: 'Hook',
+  refrain: 'Refrain',
+};
+
+function formatSectionLabel(sectionType: SectionType, index: number): string {
+  const base = SECTION_LABELS[sectionType] ?? formatDisplayValue(sectionType);
+  const requiresIndex = !['intro', 'outro', 'interlude', 'breakdown', 'hook', 'refrain'].includes(sectionType);
+  return requiresIndex ? `${base} ${index + 1}` : base;
+}
+
+function sanitizePercentage(value: number | null | undefined): number {
+  if (!Number.isFinite(value)) {
+    return 0;
+  }
+  return Math.min(100, Math.max(0, value ?? 0));
+}
+
+function countWords(text: string): number {
+  if (!text.trim()) return 0;
+  return text.trim().split(/\s+/).filter(Boolean).length;
+}
+
+function formatPercentage(value: number): string {
+  return `${Math.round(value)}%`;
+}
+
+function formatDuration(totalSeconds: number): string {
+  if (!Number.isFinite(totalSeconds) || totalSeconds <= 0) return '0:00';
+  const seconds = Math.floor(totalSeconds);
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  if (minutes >= 60) {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return `${hours}h ${remainingMinutes}m`;
+  }
+  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+}
+
+function formatRelativeTime(value: Date | string | null | undefined): string {
+  const date = coerceDate(value);
+  if (!date) return '—';
+  const diff = Date.now() - date.getTime();
+  if (diff < 0) {
+    return date.toLocaleString();
+  }
+  if (diff < 60_000) return 'moments ago';
+  if (diff < 3_600_000) {
+    const minutes = Math.round(diff / 60_000);
+    return `${minutes} min ago`;
+  }
+  if (diff < 86_400_000) {
+    const hours = Math.round(diff / 3_600_000);
+    return `${hours} hr ago`;
+  }
+  return date.toLocaleDateString();
+}
+
+function coerceDate(value: Date | string | null | undefined): Date | null {
+  if (!value) return null;
+  return value instanceof Date ? value : new Date(value);
+}
+
+function formatDisplayValue(value: string | null | undefined): string {
+  if (!value) return '—';
+  return value
+    .split(/[_-]/)
+    .filter(Boolean)
+    .map(segment => segment.charAt(0).toUpperCase() + segment.slice(1))
+    .join(' ');
+}
+
+function formatKey(key: string | null | undefined, mode: string | null | undefined): string {
+  if (!key) return '—';
+  const modeLabel = mode ? formatDisplayValue(mode) : 'Major';
+  return `${key} · ${modeLabel}`;
+}

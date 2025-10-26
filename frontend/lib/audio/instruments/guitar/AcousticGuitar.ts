@@ -174,7 +174,7 @@ export class AcousticGuitar extends Instrument {
         note,
         duration,
         time: scheduledTime,
-        velocity: velocity * (0.9 + Math.random() * 0.1), // Slcommight velocity variation
+        velocity: velocity * (0.9 + Math.random() * 0.1),
       });
     });
   }
