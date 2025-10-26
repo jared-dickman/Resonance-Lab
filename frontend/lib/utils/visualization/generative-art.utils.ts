@@ -105,7 +105,9 @@ export function createFlowField(p: p5, _dimensions: P5Dimensions): p5.Vector[][]
       const angle = p.noise(x * NOISE_SCALE, y * NOISE_SCALE) * p.TWO_PI * VISUAL_CONFIG.FLOW_FIELD.NOISE_MULTIPLIER;
       const v = p5.Vector.fromAngle(angle);
       v.setMag(VISUAL_CONFIG.FLOW_FIELD.BASE_MAG);
-      flowField[x][y] = v;
+      const column = flowField[x] ?? [];
+      column[y] = v;
+      flowField[x] = column;
     }
   }
 
@@ -130,9 +132,9 @@ export function updateFlowField(
         (1 + amplitude * VISUAL_CONFIG.FLOW_FIELD.AMPLITUDE_FORCE_MULTIPLIER);
       const v = p5.Vector.fromAngle(angle);
       v.setMag(VISUAL_CONFIG.FLOW_FIELD.BASE_MAG + amplitude * VISUAL_CONFIG.FLOW_FIELD.AMPLITUDE_MULTIPLIER);
-      if (flowField[x]?.[y]) {
-        flowField[x][y] = v;
-      }
+      const column = flowField[x] ?? [];
+      column[y] = v;
+      flowField[x] = column;
     }
   }
 }

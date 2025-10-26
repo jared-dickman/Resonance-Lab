@@ -4,8 +4,9 @@
  * Rolling Stones "Gimme Shelter", The Smiths "How Soon Is Now"
  */
 
-import Pizzicato from 'pizzicato';
+import type { Sound } from 'pizzicato';
 import * as Tone from 'tone';
+import { loadPizzicato } from './loadPizzicato';
 
 export interface TremoloPreset {
   name: string;
@@ -27,7 +28,7 @@ export interface TremoloPedalConfig {
  */
 export class TremoloPedal {
   // Pizzicato sound for processing
-  private sound: Pizzicato.Sound;
+  private sound: Sound;
   private tremoloEffect: any;
 
   // Bridge nodes for Tone.js compatibility
@@ -43,6 +44,7 @@ export class TremoloPedal {
   private currentDepth = 0.5;
 
   constructor(config: TremoloPedalConfig = {}) {
+    const Pizzicato = loadPizzicato();
     const audioContext = Tone.getContext().rawContext as AudioContext;
 
     // Create bridge nodes
@@ -90,6 +92,8 @@ export class TremoloPedal {
     if (this.sound && (this.sound as any).sourceNode) {
       (this.sound as any).sourceNode.connect((this.outputNode as any).context.rawContext);
     }
+
+    this.sound.connect(this.mediaStreamDestination);
   }
 
   /**
@@ -238,7 +242,7 @@ export class TremoloPedal {
   dispose(): void {
     try {
       this.sound.removeEffect(this.tremoloEffect);
-      this.sound.disconnect();
+      this.sound.disconnect(this.mediaStreamDestination);
     } catch (e) {
       // Pizzicato may already be disposed
     }

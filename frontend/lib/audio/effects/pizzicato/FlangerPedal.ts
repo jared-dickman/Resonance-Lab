@@ -4,8 +4,9 @@
  * Van Halen "Unchained", Gilmour's dreamy Animals tone
  */
 
-import Pizzicato from 'pizzicato';
+import type { Sound } from 'pizzicato';
 import * as Tone from 'tone';
+import { loadPizzicato } from './loadPizzicato';
 
 export interface FlangerPreset {
   name: string;
@@ -31,7 +32,7 @@ export interface FlangerPedalConfig {
  */
 export class FlangerPedal {
   // Pizzicato sound for processing
-  private sound: Pizzicato.Sound;
+  private sound: Sound;
   private flangerEffect: any;
 
   // Bridge nodes for Tone.js compatibility
@@ -49,6 +50,7 @@ export class FlangerPedal {
   private currentMix = 0.5;
 
   constructor(config: FlangerPedalConfig = {}) {
+    const Pizzicato = loadPizzicato();
     const audioContext = Tone.getContext().rawContext as AudioContext;
 
     // Create bridge nodes
@@ -100,6 +102,8 @@ export class FlangerPedal {
     if (this.sound && (this.sound as any).sourceNode) {
       (this.sound as any).sourceNode.connect((this.outputNode as any).context.rawContext);
     }
+
+    this.sound.connect(this.mediaStreamDestination);
   }
 
   /**
@@ -282,7 +286,7 @@ export class FlangerPedal {
   dispose(): void {
     try {
       this.sound.removeEffect(this.flangerEffect);
-      this.sound.disconnect();
+      this.sound.disconnect(this.mediaStreamDestination);
     } catch (e) {
       // Pizzicato may already be disposed
     }

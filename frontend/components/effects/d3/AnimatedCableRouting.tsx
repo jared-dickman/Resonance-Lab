@@ -8,10 +8,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 
-import {
-  CABLE_ROUTING,
-  VISUALIZATION_COLORS,
-} from '@/lib/constants/visualization.constants';
+import { CABLE_ROUTING, VISUALIZATION_COLORS } from '@/lib/constants/visualization.constants';
 
 interface Cable {
   id: string;
@@ -29,6 +26,11 @@ interface AnimatedCableRoutingProps {
   height?: number;
   className?: string;
 }
+
+type SvgDefsSelection = d3.Selection<SVGDefsElement, unknown, SVGSVGElement | null, unknown>;
+type SvgGroupSelection = d3.Selection<SVGGElement, unknown, SVGSVGElement | null, unknown>;
+type SvgPathSelection = d3.Selection<SVGPathElement, unknown, SVGGElement | null, unknown>;
+type SvgCircleSelection = d3.Selection<SVGCircleElement, unknown, SVGGElement | null, unknown>;
 
 interface BezierControlPoints {
   midX: number;
@@ -57,7 +59,7 @@ function generateBezierPathData(cable: Cable, controlPoints: BezierControlPoints
   return `M ${fromX},${fromY} Q ${midX},${midY} ${toX},${toY}`;
 }
 
-function createGlowFilter(defs: d3.Selection<SVGDefsElement, unknown, null, undefined>): void {
+function createGlowFilter(defs: SvgDefsSelection): void {
   const filter = defs
     .append('filter')
     .attr('id', GLOW_FILTER_ID)
@@ -76,9 +78,7 @@ function createGlowFilter(defs: d3.Selection<SVGDefsElement, unknown, null, unde
   feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
 }
 
-function createSignalGradient(
-  defs: d3.Selection<SVGDefsElement, unknown, null, undefined>
-): void {
+function createSignalGradient(defs: SvgDefsSelection): void {
   const gradient = defs
     .append('linearGradient')
     .attr('id', GRADIENT_ID)
@@ -105,10 +105,7 @@ function getCableOpacity(cable: Cable): number {
   return cable.active ? ACTIVE_OPACITY : INACTIVE_OPACITY;
 }
 
-function drawCableShadow(
-  group: d3.Selection<SVGGElement, unknown, null, undefined>,
-  pathData: string
-): void {
+function drawCableShadow(group: SvgGroupSelection, pathData: string): void {
   const { SHADOW_STROKE_WIDTH, SHADOW_OPACITY } = CABLE_ROUTING.CABLE;
 
   group
@@ -120,10 +117,7 @@ function drawCableShadow(
     .attr('opacity', SHADOW_OPACITY);
 }
 
-function attachHoverInteractions(
-  path: d3.Selection<SVGPathElement, unknown, SVGGElement, unknown>,
-  cable: Cable
-): void {
+function attachHoverInteractions(path: SvgPathSelection, cable: Cable): void {
   const { HOVER_DURATION, BASE_STROKE_WIDTH, HOVER_STROKE_WIDTH, HOVER_OPACITY } =
     CABLE_ROUTING.CABLE;
 
@@ -144,11 +138,7 @@ function attachHoverInteractions(
     });
 }
 
-function drawMainCable(
-  group: d3.Selection<SVGGElement, unknown, null, undefined>,
-  pathData: string,
-  cable: Cable
-): d3.Selection<SVGPathElement, unknown, SVGGElement, unknown> {
+function drawMainCable(group: SvgGroupSelection, pathData: string, cable: Cable): SvgPathSelection {
   const cablePath = group
     .append('path')
     .attr('d', pathData)
@@ -174,8 +164,8 @@ function calculateParticleRadius(signalStrength: number): number {
 }
 
 function animateParticleAlongPath(
-  particle: d3.Selection<SVGCircleElement, unknown, SVGGElement, unknown>,
-  cablePath: d3.Selection<SVGPathElement, unknown, SVGGElement, unknown>,
+  particle: SvgCircleSelection,
+  cablePath: SvgPathSelection,
   particleIndex: number,
   particleCount: number
 ): void {
@@ -214,9 +204,9 @@ function animateParticleAlongPath(
 }
 
 function createSignalParticles(
-  cablesGroup: d3.Selection<SVGGElement, unknown, null, undefined>,
+  cablesGroup: SvgGroupSelection,
   cable: Cable,
-  cablePath: d3.Selection<SVGPathElement, unknown, SVGGElement, unknown>
+  cablePath: SvgPathSelection
 ): void {
   if (!cable.active) return;
 
@@ -235,10 +225,7 @@ function createSignalParticles(
   }
 }
 
-function renderCable(
-  cablesGroup: d3.Selection<SVGGElement, unknown, null, undefined>,
-  cable: Cable
-): void {
+function renderCable(cablesGroup: SvgGroupSelection, cable: Cable): void {
   const controlPoints = calculateBezierControlPoints(cable);
   const pathData = generateBezierPathData(cable, controlPoints);
 
@@ -261,11 +248,11 @@ export const AnimatedCableRouting: React.FC<AnimatedCableRoutingProps> = ({
     const svg = d3.select(svgRef.current);
     svg.selectAll('*').remove();
 
-    const defs = svg.append('defs');
+    const defs: SvgDefsSelection = svg.append('defs');
     createGlowFilter(defs);
     createSignalGradient(defs);
 
-    const cablesGroup = svg.append('g').attr('class', 'cables');
+    const cablesGroup: SvgGroupSelection = svg.append('g').attr('class', 'cables');
 
     cables.forEach((cable) => renderCable(cablesGroup, cable));
   }, [cables]);

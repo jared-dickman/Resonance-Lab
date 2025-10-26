@@ -4,8 +4,9 @@
  * Kurt Cobain's Come As You Are, The Police shimmer
  */
 
-import Pizzicato from 'pizzicato';
+import type { Sound } from 'pizzicato';
 import * as Tone from 'tone';
+import { loadPizzicato } from './loadPizzicato';
 
 export interface ChorusPreset {
   name: string;
@@ -29,7 +30,7 @@ export interface ChorusPedalConfig {
  */
 export class ChorusPedal {
   // Pizzicato sound for processing
-  private sound: Pizzicato.Sound;
+  private sound: Sound;
   private chorusEffect: any;
 
   // Bridge nodes for Tone.js compatibility
@@ -46,6 +47,7 @@ export class ChorusPedal {
   private currentMix = 0.5;
 
   constructor(config: ChorusPedalConfig = {}) {
+    const Pizzicato = loadPizzicato();
     const audioContext = Tone.getContext().rawContext as AudioContext;
 
     // Create bridge nodes
@@ -96,6 +98,8 @@ export class ChorusPedal {
     if (this.sound && (this.sound as any).sourceNode) {
       (this.sound as any).sourceNode.connect((this.outputNode as any).context.rawContext);
     }
+
+    this.sound.connect(this.mediaStreamDestination);
   }
 
   /**
@@ -261,7 +265,7 @@ export class ChorusPedal {
   dispose(): void {
     try {
       this.sound.removeEffect(this.chorusEffect);
-      this.sound.disconnect();
+      this.sound.disconnect(this.mediaStreamDestination);
     } catch (e) {
       // Pizzicato may already be disposed
     }

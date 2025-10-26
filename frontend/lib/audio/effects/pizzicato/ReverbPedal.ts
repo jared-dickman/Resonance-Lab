@@ -4,8 +4,9 @@
  * Abbey Road chamber, Cathedral shimmer, Spring '65
  */
 
-import Pizzicato from 'pizzicato';
+import type { Sound } from 'pizzicato';
 import * as Tone from 'tone';
+import { loadPizzicato } from './loadPizzicato';
 
 export interface ReverbPreset {
   name: string;
@@ -27,7 +28,7 @@ export interface ReverbPedalConfig {
  */
 export class ReverbPedal {
   // Pizzicato sound for processing
-  private sound: Pizzicato.Sound;
+  private sound: Sound;
   private reverbEffect: any;
 
   // Bridge nodes for Tone.js compatibility
@@ -43,6 +44,7 @@ export class ReverbPedal {
   private currentMix = 0.3;
 
   constructor(config: ReverbPedalConfig = {}) {
+    const Pizzicato = loadPizzicato();
     const audioContext = Tone.getContext().rawContext as AudioContext;
 
     // Create bridge nodes
@@ -91,6 +93,8 @@ export class ReverbPedal {
     if (this.sound && (this.sound as any).sourceNode) {
       (this.sound as any).sourceNode.connect((this.outputNode as any).context.rawContext);
     }
+
+    this.sound.connect(this.mediaStreamDestination);
   }
 
   /**
@@ -240,7 +244,7 @@ export class ReverbPedal {
   dispose(): void {
     try {
       this.sound.removeEffect(this.reverbEffect);
-      this.sound.disconnect();
+      this.sound.disconnect(this.mediaStreamDestination);
     } catch (e) {
       // Pizzicato may already be disposed
     }

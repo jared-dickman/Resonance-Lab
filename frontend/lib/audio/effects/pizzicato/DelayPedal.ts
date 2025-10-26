@@ -4,8 +4,9 @@
  * The Edge's dotted eighth, Gilmour's ambient wash, Elvis slapback
  */
 
-import Pizzicato from 'pizzicato';
+import type { Sound } from 'pizzicato';
 import * as Tone from 'tone';
+import { loadPizzicato } from './loadPizzicato';
 
 export interface DelayPreset {
   name: string;
@@ -33,7 +34,7 @@ export interface DelayPedalConfig {
  */
 export class DelayPedal {
   // Pizzicato sound for processing
-  private sound: Pizzicato.Sound;
+  private sound: Sound;
   private delayEffect: any;
 
   // Bridge nodes for Tone.js compatibility
@@ -51,6 +52,7 @@ export class DelayPedal {
   private currentMix = 0.35;
 
   constructor(config: DelayPedalConfig = {}) {
+    const Pizzicato = loadPizzicato();
     const audioContext = Tone.getContext().rawContext as AudioContext;
 
     // Create bridge nodes
@@ -105,6 +107,8 @@ export class DelayPedal {
     if (this.sound && (this.sound as any).sourceNode) {
       (this.sound as any).sourceNode.connect((this.outputNode as any).context.rawContext);
     }
+
+    this.sound.connect(this.mediaStreamDestination);
   }
 
   /**
@@ -275,7 +279,7 @@ export class DelayPedal {
   dispose(): void {
     try {
       this.sound.removeEffect(this.delayEffect);
-      this.sound.disconnect();
+      this.sound.disconnect(this.mediaStreamDestination);
     } catch (e) {
       // Pizzicato may already be disposed
     }

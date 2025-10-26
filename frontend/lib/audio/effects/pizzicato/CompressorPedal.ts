@@ -4,8 +4,9 @@
  * Sustains notes forever, adds Nashville snap, evens out dynamics
  */
 
-import Pizzicato from 'pizzicato';
+import type { Sound } from 'pizzicato';
 import * as Tone from 'tone';
+import { loadPizzicato } from './loadPizzicato';
 
 export interface CompressorPreset {
   name: string;
@@ -33,7 +34,7 @@ export interface CompressorPedalConfig {
  */
 export class CompressorPedal {
   // Pizzicato sound for processing
-  private sound: Pizzicato.Sound;
+  private sound: Sound;
   private compressorEffect: any;
 
   // Bridge nodes for Tone.js compatibility
@@ -52,6 +53,7 @@ export class CompressorPedal {
   private currentRelease = 0.05;
 
   constructor(config: CompressorPedalConfig = {}) {
+    const Pizzicato = loadPizzicato();
     const audioContext = Tone.getContext().rawContext as AudioContext;
 
     // Create bridge nodes
@@ -104,6 +106,8 @@ export class CompressorPedal {
     if (this.sound && (this.sound as any).sourceNode) {
       (this.sound as any).sourceNode.connect((this.outputNode as any).context.rawContext);
     }
+
+    this.sound.connect(this.mediaStreamDestination);
   }
 
   /**
@@ -303,7 +307,7 @@ export class CompressorPedal {
   dispose(): void {
     try {
       this.sound.removeEffect(this.compressorEffect);
-      this.sound.disconnect();
+      this.sound.disconnect(this.mediaStreamDestination);
     } catch (e) {
       // Pizzicato may already be disposed
     }
