@@ -16,7 +16,6 @@ export default function MusicTheoryPage() {
   const [selectedProgression, setSelectedProgression] = useState<'I-IV-V-I' | 'ii-V-I' | 'I-V-vi-IV' | 'custom'>('I-IV-V-I');
   const [customChords, setCustomChords] = useState<string[]>(['C', 'F', 'G', 'C']);
   const [currentChordIndex, setCurrentChordIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
 
   // Predefined progressions
   const progressions = {
@@ -55,11 +54,6 @@ export default function MusicTheoryPage() {
       const notes = chordData.notes.map(note => note + '4');
       synth.triggerAttackRelease(notes, '1n');
     }
-  };
-
-  // Add chord to custom progression
-  const addChord = (chord: string) => {
-    setCustomChords([...customChords, chord]);
   };
 
   return (
