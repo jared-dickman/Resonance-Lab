@@ -107,10 +107,16 @@ export function detectKey(chordSymbols: string[]): KeyAnalysis | null {
         // Normalize chord symbol for comparison
         const normalizedChord = chordSymbol.replace(/\s+/g, '');
         const keyChords = 'chords' in keyData ? keyData.chords : [];
-        if (keyChords.some((keyChord: string) =>
-          keyChord.replace(/\s+/g, '') === normalizedChord ||
-          normalizedChord.startsWith(keyChord.split(/[^A-G#b]/)[0])
-        )) {
+        if (
+          keyChords.some((keyChord: string) => {
+            const normalizedKeyChord = keyChord.replace(/\s+/g, '');
+            if (normalizedKeyChord === normalizedChord) {
+              return true;
+            }
+            const chordRoot = keyChord.split(/[^A-G#b]/)[0];
+            return chordRoot ? normalizedChord.startsWith(chordRoot) : false;
+          })
+        ) {
           score++;
         }
       });
@@ -126,17 +132,18 @@ export function detectKey(chordSymbols: string[]): KeyAnalysis | null {
     }
 
     // Get full key analysis
-    const isMinor = bestKey.endsWith('m');
-    const tonic = isMinor ? bestKey.replace('m', '') : bestKey;
+    const resolvedKey = bestKey as string;
+    const isMinor = resolvedKey.endsWith('m');
+    const tonic = isMinor ? resolvedKey.replace('m', '') : resolvedKey;
     const keyData = isMinor ? Key.minorKey(tonic) : Key.majorKey(tonic);
     const scale = isMinor ? Scale.get(`${tonic} minor`) : Scale.get(`${tonic} major`);
 
-    const keyChords = 'chords' in keyData ? keyData.chords : [];
+    const keyChords = 'chords' in keyData ? Array.from(keyData.chords) : [];
 
     return {
       tonic,
       type: isMinor ? 'minor' : 'major',
-      scale: scale.notes,
+      scale: Array.from(scale.notes),
       chords: keyChords,
       relativeKey: isMinor
         ? Note.transpose(tonic, '3m') // Relative major
@@ -194,10 +201,15 @@ export function suggestNextChords(
   ];
 
   // Find position of last chord in key
-  const lastChordIndex = key.chords.findIndex(c =>
-    c.replace(/\s+/g, '') === lastChord.replace(/\s+/g, '') ||
-    lastChord.startsWith(c.split(/[^A-G#b]/)[0])
-  );
+  const lastChordNormalized = lastChord.replace(/\s+/g, '');
+  const lastChordIndex = key.chords.findIndex(c => {
+    const normalizedKeyChord = c.replace(/\s+/g, '');
+    if (normalizedKeyChord === lastChordNormalized) {
+      return true;
+    }
+    const chordRoot = c.split(/[^A-G#b]/)[0];
+    return chordRoot ? lastChordNormalized.startsWith(chordRoot) : false;
+  });
 
   if (lastChordIndex !== -1) {
     progressionRules.forEach(rule => {
@@ -245,6 +257,9 @@ export function generateBassLine(chords: string[], style: 'root' | 'walking' | '
     if (!chord) return;
 
     const root = chord.root;
+    if (!root) {
+      return;
+    }
 
     switch (style) {
       case 'root':
@@ -266,10 +281,17 @@ export function generateBassLine(chords: string[], style: 'root' | 'walking' | '
 
         // Connect to next chord
         if (index < chords.length - 1) {
-          const nextChord = analyzeChord(chords[index + 1]);
+          const nextSymbol = chords[index + 1];
+          if (!nextSymbol) {
+            break;
+          }
+          const nextChord = analyzeChord(nextSymbol);
           if (nextChord) {
-            const connectingNote = Note.transpose(nextChord.root, '-2M');
-            bassNotes.push(connectingNote + '2');
+            const nextRoot = nextChord.root;
+            if (nextRoot) {
+              const connectingNote = Note.transpose(nextRoot, '-2M');
+              bassNotes.push(connectingNote + '2');
+            }
           }
         }
         break;

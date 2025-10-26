@@ -34,6 +34,16 @@ interface SignalPathDiagramProps {
 
 type NodeDatum = d3.SimulationNodeDatum & PedalNode;
 type LinkDatum = d3.SimulationLinkDatum<NodeDatum>;
+type DragSubject = NodeDatum | d3.SubjectPosition;
+
+function isNodeDatum(subject: DragSubject | undefined | null): subject is NodeDatum {
+  return (
+    !!subject &&
+    typeof (subject as NodeDatum).id === 'string' &&
+    typeof (subject as NodeDatum).name === 'string' &&
+    typeof (subject as NodeDatum).type === 'string'
+  );
+}
 
 const DIAGRAM_CONFIG = {
   INPUT_X_OFFSET: 50,
@@ -126,9 +136,15 @@ function createLinksData(nodes: NodeDatum[]): LinkDatum[] {
   const links: LinkDatum[] = [];
 
   for (let i = 0; i < nodes.length - 1; i++) {
+    const sourceNode = nodes[i];
+    const targetNode = nodes[i + 1];
+    if (!sourceNode || !targetNode) {
+      continue;
+    }
+
     links.push({
-      source: nodes[i].id,
-      target: nodes[i + 1].id,
+      source: sourceNode.id,
+      target: targetNode.id,
     });
   }
 
@@ -149,8 +165,8 @@ function createForceSimulation(
     .force(
       'link',
       d3
-        .forceLink(links)
-        .id((d: any) => d.id)
+        .forceLink<NodeDatum, LinkDatum>(links)
+        .id((d) => d.id)
         .distance(LINK_DISTANCE)
     )
     .force('charge', d3.forceManyBody().strength(CHARGE_STRENGTH))
@@ -291,40 +307,67 @@ function drawNodeTypeLabels(
 }
 
 function handleDragStart(
-  event: d3.D3DragEvent<SVGGElement, NodeDatum, unknown>,
+  event: d3.D3DragEvent<SVGGElement, NodeDatum, DragSubject>,
   simulation: d3.Simulation<NodeDatum, undefined>
 ): void {
+  const subject = event.subject;
+  if (!isNodeDatum(subject)) {
+    return;
+  }
+
   if (!event.active) {
     simulation.alphaTarget(DIAGRAM_CONFIG.DRAG.ALPHA_TARGET).restart();
   }
-  event.subject.fx = event.subject.x;
-  event.subject.fy = event.subject.y;
+  subject.fx = subject.x ?? 0;
+  subject.fy = subject.y ?? 0;
 }
 
-function handleDrag(event: d3.D3DragEvent<SVGGElement, NodeDatum, unknown>): void {
-  event.subject.fx = event.x;
-  event.subject.fy = event.y;
+function handleDrag(event: d3.D3DragEvent<SVGGElement, NodeDatum, DragSubject>): void {
+  const subject = event.subject;
+  if (!isNodeDatum(subject)) {
+    return;
+  }
+
+  subject.fx = event.x;
+  subject.fy = event.y;
 }
 
 function handleDragEnd(
-  event: d3.D3DragEvent<SVGGElement, NodeDatum, unknown>,
+  event: d3.D3DragEvent<SVGGElement, NodeDatum, DragSubject>,
   simulation: d3.Simulation<NodeDatum, undefined>
 ): void {
+  const subject = event.subject;
+  if (!isNodeDatum(subject)) {
+    return;
+  }
+
   if (!event.active) {
     simulation.alphaTarget(0);
   }
-  event.subject.fx = null;
-  event.subject.fy = null;
+  subject.fx = null;
+  subject.fy = null;
 }
 
 function createDragBehavior(
   simulation: d3.Simulation<NodeDatum, undefined>
-): d3.DragBehavior<SVGGElement, NodeDatum, unknown> {
+): d3.DragBehavior<SVGGElement, NodeDatum, DragSubject> {
   return d3
     .drag<SVGGElement, NodeDatum>()
+    .subject((_event, d) => d)
     .on('start', (event) => handleDragStart(event, simulation))
     .on('drag', handleDrag)
     .on('end', (event) => handleDragEnd(event, simulation));
+}
+
+function getCoordinate(
+  value: NodeDatum | string | number | undefined,
+  axis: 'x' | 'y'
+): number {
+  if (typeof value === 'object' && value !== null) {
+    const coordinate = (value as NodeDatum)[axis];
+    return typeof coordinate === 'number' ? coordinate : 0;
+  }
+  return 0;
 }
 
 function updatePositionsOnTick(
@@ -332,12 +375,12 @@ function updatePositionsOnTick(
   nodeGroup: d3.Selection<SVGGElement, NodeDatum, SVGGElement, unknown>
 ): void {
   linkSelection
-    .attr('x1', (d: any) => d.source.x)
-    .attr('y1', (d: any) => d.source.y)
-    .attr('x2', (d: any) => d.target.x)
-    .attr('y2', (d: any) => d.target.y);
+    .attr('x1', (d) => getCoordinate(d.source as NodeDatum, 'x'))
+    .attr('y1', (d) => getCoordinate(d.source as NodeDatum, 'y'))
+    .attr('x2', (d) => getCoordinate(d.target as NodeDatum, 'x'))
+    .attr('y2', (d) => getCoordinate(d.target as NodeDatum, 'y'));
 
-  nodeGroup.attr('transform', (d: any) => `translate(${d.x},${d.y})`);
+  nodeGroup.attr('transform', (d) => `translate(${d.x ?? 0},${d.y ?? 0})`);
 }
 
 export const SignalPathDiagram: React.FC<SignalPathDiagramProps> = ({
@@ -351,7 +394,7 @@ export const SignalPathDiagram: React.FC<SignalPathDiagramProps> = ({
   useEffect(() => {
     if (!svgRef.current || pedals.length === 0) return;
 
-    const svg = d3.select(svgRef.current);
+    const svg = d3.select<SVGSVGElement, unknown>(svgRef.current);
     svg.selectAll('*').remove();
 
     const nodes = createNodesData(pedals, width, height);
@@ -360,7 +403,7 @@ export const SignalPathDiagram: React.FC<SignalPathDiagramProps> = ({
 
     const container = svg.append('g');
     const zoom = createZoomBehavior(container);
-    svg.call(zoom as any);
+    svg.call(zoom);
 
     const defs = container.append('defs');
     createArrowMarker(defs);
@@ -374,7 +417,7 @@ export const SignalPathDiagram: React.FC<SignalPathDiagramProps> = ({
       .data(nodes)
       .enter()
       .append('g')
-      .call(createDragBehavior(simulation) as any);
+      .call(createDragBehavior(simulation));
 
     drawNodeCircles(nodeGroup);
     drawNodeLabels(nodeGroup);

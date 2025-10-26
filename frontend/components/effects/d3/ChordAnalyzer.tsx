@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import * as Tone from 'tone';
+import type { ReactElement } from 'react';
+import type * as Tone from 'tone';
 import { Chord, Note } from 'tonal';
 import * as d3 from 'd3';
 
@@ -73,6 +74,10 @@ function findPeaksInFFTData(fftData: Float32Array, numPeaks: number): number[] {
     const current = fftData[i];
     const prev = fftData[i - 1];
     const next = fftData[i + 1];
+
+    if (current === undefined || prev === undefined || next === undefined) {
+      continue;
+    }
 
     if (current > prev && current > next) {
       peaks.push({ index: i, value: current });
@@ -265,7 +270,7 @@ function drawYAxisLabel(
     .text('Confidence');
 }
 
-function renderConfidenceIndicator(chord: DetectedChord): JSX.Element {
+function renderConfidenceIndicator(chord: DetectedChord): ReactElement {
   const confidencePercentage = Math.round(
     chord.confidence * CHORD_CONFIG.PERCENTAGE_MULTIPLIER
   );
@@ -286,7 +291,7 @@ function renderConfidenceIndicator(chord: DetectedChord): JSX.Element {
   );
 }
 
-function renderDetectedChordDisplay(chord: DetectedChord): JSX.Element {
+function renderDetectedChordDisplay(chord: DetectedChord): ReactElement {
   return (
     <div className="flex items-center space-x-4">
       <div className="text-right">
@@ -307,7 +312,7 @@ export const ChordAnalyzer: React.FC<ChordAnalyzerProps> = ({
   const [detectedChord, setDetectedChord] = useState<DetectedChord | null>(null);
   const [chordHistory, setChordHistory] = useState<DetectedChord[]>([]);
   const analyzerRef = useRef<Tone.FFT | null>(null);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | null>(null);
 
   useEffect(() => {
     const analyzer = createConnectedFFTAnalyzer(
@@ -333,7 +338,7 @@ export const ChordAnalyzer: React.FC<ChordAnalyzerProps> = ({
     detectChord();
 
     return () => {
-      if (animationRef.current) {
+      if (animationRef.current !== null) {
         cancelAnimationFrame(animationRef.current);
       }
       analyzer.dispose();

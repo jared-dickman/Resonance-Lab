@@ -148,7 +148,9 @@ export class AcousticGuitar extends Instrument {
     };
 
     // Apply volume setting
-    this.synth.volume.value = settings.volume;
+    if (this.synth.volume) {
+      this.synth.volume.value = settings.volume;
+    }
 
     // Apply release time if using Sampler
     if (this.synth instanceof Tone.Sampler && settings.release) {
@@ -161,17 +163,18 @@ export class AcousticGuitar extends Instrument {
    * Slightly delays each note in a chord for natural strum effect
    */
   playStrum(notes: string[], duration: Tone.Unit.Time, time?: Tone.Unit.Time, velocity = 0.8, direction: 'down' | 'up' = 'down'): void {
-    const triggerTime = time ?? Tone.now();
+    const triggerTime = time !== undefined ? Tone.Time(time).toSeconds() : Tone.now();
     const strumDelay = 0.02; // 20ms between each note
 
     const orderedNotes = direction === 'down' ? notes : [...notes].reverse();
 
     orderedNotes.forEach((note, index) => {
+      const scheduledTime = triggerTime + index * strumDelay;
       this.playNote({
         note,
         duration,
-        time: triggerTime + (index * strumDelay),
-        velocity: velocity * (0.9 + Math.random() * 0.1), // Slight velocity variation
+        time: scheduledTime,
+        velocity: velocity * (0.9 + Math.random() * 0.1), // Slcommight velocity variation
       });
     });
   }

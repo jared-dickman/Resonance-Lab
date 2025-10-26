@@ -1,10 +1,11 @@
 'use client';
 
 import { useRef, useMemo, useEffect } from 'react';
+import type { ReactElement } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import * as THREE from 'three';
-import * as Tone from 'tone';
+import type * as THREE from 'three';
+import type * as Tone from 'tone';
 
 import {
   CANVAS_DIMENSIONS,
@@ -85,12 +86,8 @@ const FRAGMENT_SHADER = `
   }
 `;
 
-interface ShaderUniforms {
-  uTime: { value: number };
-  uAudioLow: { value: number };
-  uAudioMid: { value: number };
-  uAudioHigh: { value: number };
-}
+type ShaderUniformKey = 'uTime' | 'uAudioLow' | 'uAudioMid' | 'uAudioHigh';
+type ShaderUniforms = Record<ShaderUniformKey, THREE.IUniform<number>> & Record<string, THREE.IUniform<number>>;
 
 interface AudioShaderMaterialProps {
   audioNode?: Tone.ToneAudioNode;
@@ -102,7 +99,7 @@ function createInitialUniforms(): ShaderUniforms {
     uAudioLow: { value: 0 },
     uAudioMid: { value: 0 },
     uAudioHigh: { value: 0 },
-  };
+  } as ShaderUniforms;
 }
 
 function updateUniformsWithAudioData(
@@ -126,7 +123,7 @@ function rotateMeshWithTime(mesh: THREE.Mesh, elapsedTime: number): void {
   mesh.rotation.x = Math.sin(elapsedTime * NORMAL / 2) * NORMAL;
 }
 
-function AudioShaderMaterial({ audioNode }: AudioShaderMaterialProps): JSX.Element {
+function AudioShaderMaterial({ audioNode }: AudioShaderMaterialProps): ReactElement {
   const meshRef = useRef<THREE.Mesh>(null);
   const analyzerRef = useRef<Tone.FFT | null>(null);
 

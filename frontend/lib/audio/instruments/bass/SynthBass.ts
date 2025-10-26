@@ -6,6 +6,8 @@
 import * as Tone from 'tone';
 import { Instrument } from '../base/Instrument';
 import type { InstrumentConfig, InstrumentPreset } from '../base/InstrumentConfig';
+import type { OmniOscillatorType } from 'tone/build/esm/source/oscillator/OscillatorInterface.js';
+import type { MonoSynthOptions } from 'tone/build/esm/instrument/MonoSynth.js';
 
 export class SynthBass extends Instrument {
   private ready = false;
@@ -98,7 +100,7 @@ export class SynthBass extends Instrument {
     }
 
     const settings = preset.settings as {
-      oscillator: { type: string };
+      oscillator: { type: OmniOscillatorType };
       filter: { Q: number; frequency: number };
       envelope: { attack: number; decay: number; sustain: number; release: number };
       filterEnvelope: { baseFrequency: number; octaves: number };
@@ -111,7 +113,7 @@ export class SynthBass extends Instrument {
         filter: settings.filter,
         envelope: settings.envelope,
         filterEnvelope: settings.filterEnvelope,
-      });
+      } as Partial<MonoSynthOptions>);
       this.synth.volume.value = settings.volume;
     }
   }

@@ -144,12 +144,12 @@ export class WaveformController {
    * Event listeners
    */
   on(event: string, callback: (...args: unknown[]) => void): void {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     this.wavesurfer.on(event as any, callback as any);
   }
 
   off(event: string, callback: (...args: unknown[]) => void): void {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     this.wavesurfer.un(event as any, callback as any);
   }
 

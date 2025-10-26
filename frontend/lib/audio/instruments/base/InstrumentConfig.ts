@@ -3,7 +3,7 @@
  * Part of the composable audio system
  */
 
-import * as Tone from 'tone';
+import type * as Tone from 'tone';
 
 export interface InstrumentConfig {
   /** Preset name to load */

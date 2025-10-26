@@ -4,7 +4,7 @@
  * Gilmour, The Edge, Frusciante, Cobain, Van Halen
  */
 
-import { Pedalboard } from './Pedalboard';
+import type { Pedalboard } from './Pedalboard';
 import { DistortionPedal } from './DistortionPedal';
 import {
   DelayPedal,

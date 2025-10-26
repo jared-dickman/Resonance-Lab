@@ -16,7 +16,7 @@ export function loadPizzicato(): PizzicatoModule {
     throw new Error('Pizzicato is only available in browser environments.');
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+   
   const module = require('pizzicato') as PizzicatoModule & { default?: PizzicatoModule };
   const resolved = module.default ?? module;
 

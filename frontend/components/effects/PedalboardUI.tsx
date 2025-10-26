@@ -8,7 +8,8 @@
 import React, { useState, useCallback } from 'react';
 import { motion, Reorder } from 'framer-motion';
 import { Plus, Trash2, GripVertical, Volume2, Power, Star, X } from 'lucide-react';
-import { Pedalboard, PedalSlot } from '@/lib/audio/effects/Pedalboard';
+import type { PedalSlot } from '@/lib/audio/effects/Pedalboard';
+import { Pedalboard } from '@/lib/audio/effects/Pedalboard';
 import { DistortionPedal } from '@/lib/audio/effects/DistortionPedal';
 import {
   DelayPedal,

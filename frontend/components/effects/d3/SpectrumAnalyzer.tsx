@@ -12,7 +12,7 @@ import {
 import { normalizeDBValue } from '@/lib/utils/audio/analyzer.utils';
 
 interface SpectrumAnalyzerProps {
-  audioNode?: Tone.ToneAudioNode;
+  audioNode?: Tone.OutputNode;
   width?: number;
   height?: number;
   barCount?: number;
@@ -34,15 +34,15 @@ const SPECTRUM_CONFIG = {
 function createSpectrumAnalyzer(
   barCount: number,
   smoothing: number,
-  audioNode?: Tone.ToneAudioNode
+  audioNode?: Tone.OutputNode
 ): Tone.Analyser {
   const analyzer = new Tone.Analyser('fft', barCount * 2);
   analyzer.smoothing = smoothing;
 
   if (audioNode) {
-    audioNode.connect(analyzer);
+    Tone.connect(audioNode, analyzer);
   } else {
-    Tone.getDestination().connect(analyzer);
+    Tone.connect(Tone.getDestination(), analyzer);
   }
 
   return analyzer;
@@ -81,13 +81,13 @@ function createFrequencyBars(
   barCount: number,
   width: number,
   height: number
-): d3.Selection<d3.BaseType | SVGRectElement, number, SVGGElement, unknown> {
+): d3.Selection<SVGRectElement, number, SVGGElement, unknown> {
   const barsGroup = svg.append('g').attr('class', 'bars');
   const barWidth = width / barCount;
 
   return barsGroup
-    .selectAll('rect')
-    .data(Array.from({ length: barCount }))
+    .selectAll<SVGRectElement, number>('rect')
+    .data(d3.range(barCount))
     .enter()
     .append('rect')
     .attr('x', (_, i) => i * barWidth)
@@ -111,7 +111,10 @@ function createFrequencyLabels(
     .data(FREQUENCY_LABELS)
     .enter()
     .append('text')
-    .attr('x', (_, i) => LABEL_POSITIONS[i] * width)
+    .attr('x', (_, i) => {
+      const position = LABEL_POSITIONS[i] ?? 0;
+      return position * width;
+    })
     .attr('y', height + SPECTRUM_CONFIG.LABEL_OFFSET)
     .attr('text-anchor', 'middle')
     .attr('fill', VISUALIZATION_COLORS.UI.TEXT_MUTED)
@@ -121,7 +124,7 @@ function createFrequencyLabels(
 }
 
 function updateBarsWithFrequencyData(
-  bars: d3.Selection<d3.BaseType | SVGRectElement, number, SVGGElement, unknown>,
+  bars: d3.Selection<SVGRectElement, number, SVGGElement, unknown>,
   frequencyData: Float32Array,
   barCount: number,
   height: number
@@ -151,7 +154,7 @@ export const SpectrumAnalyzer: React.FC<SpectrumAnalyzerProps> = ({
 }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const analyzerRef = useRef<Tone.Analyser | null>(null);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (!svgRef.current) return;
@@ -159,7 +162,7 @@ export const SpectrumAnalyzer: React.FC<SpectrumAnalyzerProps> = ({
     const analyzer = createSpectrumAnalyzer(barCount, smoothing, audioNode);
     analyzerRef.current = analyzer;
 
-    const svg = d3.select(svgRef.current);
+    const svg = d3.select<SVGSVGElement, unknown>(svgRef.current);
     svg.selectAll('*').remove();
 
     createSpectrumGradient(svg);
@@ -178,7 +181,7 @@ export const SpectrumAnalyzer: React.FC<SpectrumAnalyzerProps> = ({
     animate();
 
     return () => {
-      if (animationFrameRef.current) {
+      if (animationFrameRef.current !== null) {
         cancelAnimationFrame(animationFrameRef.current);
       }
       analyzer.dispose();

@@ -112,8 +112,10 @@ export function drawWaveform(
     .attr('filter', 'url(#glow)');
 }
 
+type SvgRootSelection = d3.Selection<SVGSVGElement, unknown, null, undefined>;
+
 export function createSVGStructure(
-  svg: d3.Selection<SVGSVGElement | null, unknown, null, undefined>,
+  svg: SvgRootSelection,
   width: number,
   playNote: (note: string) => void,
   releaseNote: (note: string) => void
@@ -196,7 +198,10 @@ function addPianoKeys(
 
     addKeyBackground(keyG, note, keyWidth, playNote, releaseNote);
     addKeyLabel(keyG, note, keyWidth);
-    addKeyHint(keyG, hints[i], keyWidth);
+    const hint = hints[i];
+    if (hint) {
+      addKeyHint(keyG, hint, keyWidth);
+    }
   });
 }
 
@@ -259,7 +264,7 @@ function addKeyHint(
     .text(hint);
 }
 
-function addGlowFilter(svg: d3.Selection<SVGSVGElement | null, unknown, null, undefined>): void {
+function addGlowFilter(svg: SvgRootSelection): void {
   const defs = svg.append('defs');
   const filter = defs.append('filter').attr('id', 'glow');
   filter.append('feGaussianBlur')
@@ -274,7 +279,10 @@ export function updateKeyStates(
   svgRef: SVGSVGElement | null,
   activeNotes: Set<string>
 ): void {
-  const svg = d3.select(svgRef);
+  if (!svgRef) {
+    return;
+  }
+  const svg = d3.select<SVGSVGElement, unknown>(svgRef);
 
   INTERACTIVE_SYNTH.NOTES.forEach((note) => {
     const isActive = activeNotes.has(note);

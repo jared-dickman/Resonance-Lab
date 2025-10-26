@@ -41,6 +41,10 @@ export default function SongwriterClient(): React.JSX.Element {
   const [_focusArea, _setFocusArea] = useState<FocusArea>('lyrics');
   const [_conversationHistory, _setConversationHistory] = useState<ConversationHistory>({
     messages: [],
+    sessionStartTime: new Date(),
+    totalMessages: 0,
+    userMessageCount: 0,
+    assistantMessageCount: 0,
   });
 
   const isMobile = useMobileDetection();

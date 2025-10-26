@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import * as Tone from 'tone';
+import type * as Tone from 'tone';
 import p5 from 'p5';
 import { GENERATIVE_ART } from '@/lib/constants/visualization.constants';
 import {

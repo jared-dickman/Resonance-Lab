@@ -36,13 +36,13 @@ export class DrumKit extends Instrument {
       envelope: { attack: 0.001, decay: 0.2, sustain: 0 },
     });
     this.hihat = new Tone.MetalSynth({
-      frequency: 200,
       envelope: { attack: 0.001, decay: 0.1, release: 0.01 },
       harmonicity: 5.1,
       modulationIndex: 32,
       resonance: 4000,
       octaves: 1.5,
     });
+    this.hihat.frequency.value = 200;
     this.initializeSynth();
     if (config.preset) {
       this.loadPreset(config.preset);

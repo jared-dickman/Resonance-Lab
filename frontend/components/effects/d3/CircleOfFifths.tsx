@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import type { ReactElement } from 'react';
 import * as d3 from 'd3';
 import { Scale } from 'tonal';
 
@@ -307,7 +308,7 @@ function getScaleName(key: string): string {
   return `${key} ${isMajor ? 'major' : 'minor'}`;
 }
 
-function renderSelectedKeyInfo(selectedKey: string): JSX.Element {
+function renderSelectedKeyInfo(selectedKey: string): ReactElement {
   const scale = Scale.get(getScaleName(selectedKey));
 
   return (

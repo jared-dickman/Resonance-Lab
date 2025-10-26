@@ -6,8 +6,20 @@
 import * as Tone from 'tone';
 import type { InstrumentConfig, InstrumentPreset, Note, ChordOptions } from './InstrumentConfig';
 
+type TriggerableInstrument = Tone.ToneAudioNode & {
+  triggerAttackRelease(
+    note: string | number,
+    duration: Tone.Unit.Time,
+    time?: Tone.Unit.Time,
+    velocity?: number
+  ): void;
+  volume?: {
+    value: number;
+  };
+};
+
 export abstract class Instrument {
-  protected synth: Tone.Instrument | Tone.Sampler;
+  protected synth: TriggerableInstrument;
   protected volume: Tone.Volume;
   protected config: InstrumentConfig;
 
@@ -16,7 +28,7 @@ export abstract class Instrument {
     this.volume = new Tone.Volume(this.config.volume);
 
     // Subclass must initialize this.synth
-    this.synth = null as unknown as Tone.Instrument;
+    this.synth = null as unknown as TriggerableInstrument;
   }
 
   /**

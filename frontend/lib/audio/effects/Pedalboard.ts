@@ -228,7 +228,7 @@ export class Pedalboard {
   /**
    * Get output node
    */
-  getOutput(): Tone.OutputNode {
+  getOutput(): Tone.ToneAudioNode {
     return this.output;
   }
 

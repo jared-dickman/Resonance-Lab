@@ -3,7 +3,7 @@
  * Particle class for flow field visualization
  */
 
-import p5 from 'p5';
+import type p5 from 'p5';
 import { GENERATIVE_ART } from '@/lib/constants/visualization.constants';
 
 export class FlowFieldParticle {

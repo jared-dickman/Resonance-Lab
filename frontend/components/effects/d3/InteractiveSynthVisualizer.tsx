@@ -60,7 +60,7 @@ export const InteractiveSynthVisualizer: React.FC<InteractiveSynthVisualizerProp
 }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const synthRef = useRef<ReturnType<typeof createSynth> | null>(null);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | null>(null);
   const [activeNotes, setActiveNotes] = useState<Set<string>>(new Set());
   const [noteHistory, setNoteHistory] = useState<Note[]>([]);
 
@@ -95,7 +95,7 @@ export const InteractiveSynthVisualizer: React.FC<InteractiveSynthVisualizerProp
       if (!svgRef.current || !synthRef.current) return;
 
       const waveform = synthRef.current.analyzer.getValue() as Float32Array;
-      const svg = d3.select(svgRef.current);
+      const svg = d3.select<SVGSVGElement, unknown>(svgRef.current);
       const vizGroup = svg.select<SVGGElement>('.visualization');
 
       if (!vizGroup.empty()) {
@@ -108,7 +108,7 @@ export const InteractiveSynthVisualizer: React.FC<InteractiveSynthVisualizerProp
     visualize();
 
     return () => {
-      if (animationRef.current) {
+      if (animationRef.current !== null) {
         cancelAnimationFrame(animationRef.current);
       }
       resources.synth.dispose();
@@ -119,7 +119,7 @@ export const InteractiveSynthVisualizer: React.FC<InteractiveSynthVisualizerProp
   useEffect(() => {
     if (!svgRef.current) return;
 
-    const svg = d3.select(svgRef.current);
+    const svg = d3.select<SVGSVGElement, unknown>(svgRef.current);
     createSVGStructure(svg, width, playNote, releaseNote);
   }, [width, height]);
 

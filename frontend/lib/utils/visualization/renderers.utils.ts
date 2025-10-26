@@ -3,7 +3,7 @@
  * Specialized rendering functions for each generative art style
  */
 
-import p5 from 'p5';
+import type p5 from 'p5';
 import type { AudioData, P5Dimensions } from './generative-art.utils';
 import {
   drawFlowFieldBackground,

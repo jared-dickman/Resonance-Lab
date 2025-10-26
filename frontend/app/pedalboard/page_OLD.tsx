@@ -33,6 +33,12 @@ export default function PedalboardPage() {
   }, []);
 
   const startAudio = async () => {
+    const currentPedalboard = pedalboard;
+    if (!currentPedalboard) {
+      // Guard against the pedalboard not being ready yet
+      return;
+    }
+
     await Tone.start();
     setAudioStarted(true);
 
@@ -51,7 +57,7 @@ export default function PedalboardPage() {
       });
 
       // Connect synth to pedalboard
-      synthRef.current.connect(pedalboard.getInput());
+      synthRef.current.connect(currentPedalboard.getInput());
     }
   };
 
@@ -141,7 +147,7 @@ export default function PedalboardPage() {
         </motion.div>
 
         {/* Pedalboard */}
-        {pedalboard && <PedalboardUI pedalboard={pedalboard} showVisualizer={true} />}
+        {pedalboard ? <PedalboardUI pedalboard={pedalboard} showVisualizer={true} /> : null}
 
         {/* Info cards */}
         <motion.div

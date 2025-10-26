@@ -85,11 +85,13 @@ export default function ChordWheel({
       const y = outerRadius * Math.sin(angleRad);
 
       const normalizedChord = chord.replace('♯', '#').replace('♭', 'b');
+      const chordRoot = normalizedChord.split(/[^A-G#b]/)[0] ?? normalizedChord;
       const analysis = analyzeChord(normalizedChord);
       const isCurrentChord = currentChord && currentChord.replace('♯', '#').replace('♭', 'b') === normalizedChord;
-      const isSuggested = suggestedChords.some(sc =>
-        sc.replace('♯', '#').replace('♭', 'b').startsWith(chord.replace('♯', '#').replace('♭', 'b').split(/[^A-G#b]/)[0])
-      );
+      const isSuggested = suggestedChords.some((sc) => {
+        const normalizedSuggested = sc.replace('♯', '#').replace('♭', 'b');
+        return normalizedSuggested.startsWith(chordRoot);
+      });
 
       // Draw connecting line
       g.append('line')

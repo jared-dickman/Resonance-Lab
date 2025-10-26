@@ -11,7 +11,7 @@ import {
 } from '@/lib/constants/visualization.constants';
 
 interface WaveformOscilloscopeProps {
-  audioNode?: Tone.ToneAudioNode;
+  audioNode?: Tone.OutputNode;
   width?: number;
   height?: number;
   color?: string;
@@ -30,13 +30,13 @@ const WAVEFORM_CONFIG = {
   },
 } as const;
 
-function createWaveformAnalyzer(audioNode?: Tone.ToneAudioNode): Tone.Waveform {
+function createWaveformAnalyzer(audioNode?: Tone.OutputNode): Tone.Waveform {
   const waveform = new Tone.Waveform(WAVEFORM_CONFIG.SAMPLE_SIZE);
 
   if (audioNode) {
-    audioNode.connect(waveform);
+    Tone.connect(audioNode, waveform);
   } else {
-    Tone.getDestination().connect(waveform);
+    Tone.connect(Tone.getDestination(), waveform);
   }
 
   return waveform;
@@ -122,7 +122,7 @@ export const WaveformOscilloscope: React.FC<WaveformOscilloscopeProps> = ({
 }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const analyzerRef = useRef<Tone.Waveform | null>(null);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (!svgRef.current) return;
@@ -160,7 +160,7 @@ export const WaveformOscilloscope: React.FC<WaveformOscilloscopeProps> = ({
     animate();
 
     return () => {
-      if (animationFrameRef.current) {
+      if (animationFrameRef.current !== null) {
         cancelAnimationFrame(animationFrameRef.current);
       }
       analyzer.dispose();

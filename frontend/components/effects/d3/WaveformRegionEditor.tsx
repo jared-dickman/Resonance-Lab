@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import WaveSurfer from 'wavesurfer.js';
-import RegionsPlugin from 'wavesurfer.js/dist/plugins/regions';
+import type WaveSurfer from 'wavesurfer.js';
+import type RegionsPlugin from 'wavesurfer.js/dist/plugins/regions';
 import { CANVAS_DIMENSIONS } from '@/lib/constants/visualization.constants';
 import {
   type Region,

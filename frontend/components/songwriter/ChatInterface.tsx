@@ -248,7 +248,7 @@ function TypingDot({ delay }: { delay: number }): React.JSX.Element {
 
 interface QuickPromptsProps {
   prompts: Array<{
-    icon: React.ElementType;
+    icon: React.ComponentType<{ className?: string }>;
     label: string;
     prompt: string;
   }>;

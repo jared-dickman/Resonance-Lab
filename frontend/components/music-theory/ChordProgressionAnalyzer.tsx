@@ -40,28 +40,38 @@ export default function ChordProgressionAnalyzer({
     setKeyAnalysis(key);
 
     // Analyze each chord
-    const analyses = chords.map(c => analyzeChord(c));
+    const analyses = chords.map((chord) => analyzeChord(chord));
     setChordAnalyses(analyses);
 
     // Determine chord functions
     if (key) {
-      const functions = analyses.map((analysis, i) => {
+      const functions = analyses.map<string>((analysis, i) => {
         if (!analysis) return '?';
 
         // Find position in key
-        const chordIndex = key.chords.findIndex((kc: string) =>
-          kc.replace(/\s+/g, '') === chords[i]?.replace(/\s+/g, '') ||
-          chords[i]?.startsWith(kc.split(/[^A-G#b]/)[0])
-        );
+        const chordSymbol = chords[i];
+        if (!chordSymbol) return '?';
+        const normalizedChord = chordSymbol.replace(/\s+/g, '');
+
+        const chordIndex = key.chords.findIndex((kc: string) => {
+          const normalizedKeyChord = kc.replace(/\s+/g, '');
+          return (
+            normalizedKeyChord === normalizedChord ||
+            normalizedChord.startsWith(kc.split(/[^A-G#b]/)[0] ?? '')
+          );
+        });
 
         const romanNumerals = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
         if (chordIndex >= 0 && chordIndex < romanNumerals.length) {
-          return romanNumerals[chordIndex];
+          const romanNumeral = romanNumerals[chordIndex];
+          return romanNumeral ?? '?';
         }
 
         return '?';
       });
       setChordFunctions(functions);
+    } else {
+      setChordFunctions([]);
     }
   }, [chords]);
 
