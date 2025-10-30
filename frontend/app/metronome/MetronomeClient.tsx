@@ -6,6 +6,7 @@ import { Pause, Volume2 } from 'lucide-react';
 import styles from './Metronome.module.css';
 import { logger } from '@/lib/logger';
 import { METRONOME } from '@/lib/constants/metronome.constants';
+import * as Tone from 'tone';
 
 const TEMPO_PRESETS = [
   { label: 'Largo', bpm: 50 },
@@ -25,23 +26,24 @@ export function MetronomeClient() {
   const [accentFirstBeat, setAccentFirstBeat] = useState(true);
   const [clickSound, setClickSound] = useState(0); // 0, 1, 2 for different click sounds
 
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const nextBeatTimeRef = useRef<number>(0);
-  const schedulerIntervalRef = useRef<number | null>(null);
+  const sliderRef = useRef<HTMLInputElement>(null);
+  const synthRef = useRef<Tone.Synth | null>(null);
+  const loopRef = useRef<Tone.Loop | null>(null);
 
-  // Initialize audio context
+  // Initialize Tone.js synth
   useEffect(() => {
-    // Handle Safari's prefixed AudioContext
-    const AudioContextClass =
-      window.AudioContext ||
-      (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-    if (AudioContextClass) {
-      audioContextRef.current = new AudioContextClass();
-    }
+    synthRef.current = new Tone.Synth({
+      oscillator: { type: 'sine' },
+      envelope: {
+        attack: 0.001,
+        decay: 0.1,
+        sustain: 0,
+        release: 0.1,
+      },
+    }).toDestination();
+
     return () => {
-      if (audioContextRef.current) {
-        audioContextRef.current.close();
-      }
+      synthRef.current?.dispose();
     };
   }, []);
 
@@ -50,95 +52,74 @@ export function MetronomeClient() {
     return beats ? parseInt(beats, 10) : 4;
   }, [timeSignature]);
 
-  const scheduleNote = useCallback(
-    (beatNumber: number, time: number) => {
-      // Schedule the visual update
-      const delay = (time - audioContextRef.current!.currentTime) * 1000;
-      setTimeout(() => {
-        setCurrentBeat(beatNumber);
-      }, delay);
+  // Update slider gradient
+  useEffect(() => {
+    if (sliderRef.current) {
+      const percentage = ((bpm - 30) / (300 - 30)) * 100;
+      sliderRef.current.style.setProperty('--value', `${percentage}%`);
+    }
+  }, [bpm]);
 
-      // Schedule the audio
-      if (audioContextRef.current) {
-        const context = audioContextRef.current;
-        const isAccent = accentFirstBeat && beatNumber === 0;
+  // Handle metronome playback with Tone.js
+  useEffect(() => {
+    if (isPlaying) {
+      const beatsPerMeasure = getBeatsPerMeasure();
+      let beat = 0;
 
+      // Start Tone.js audio context
+      Tone.start();
+      Tone.Transport.bpm.value = bpm;
+
+      // Create a loop for the metronome
+      loopRef.current = new Tone.Loop(time => {
+        const isAccent = accentFirstBeat && beat === 0;
+
+        // Get frequency based on sound type and accent
         const frequencies = [
-          [880, 440],
-          [1000, 600],
-          [800, 500],
+          [880, 440], // Sound 1
+          [1000, 600], // Sound 2
+          [800, 500], // Sound 3
         ] as const;
 
         const soundFreqs = frequencies[clickSound] ?? frequencies[0];
         const [accentFreq, normalFreq] = soundFreqs;
         const frequency = isAccent ? accentFreq : normalFreq;
-        const duration = isAccent ? 0.08 : 0.05;
 
-        const oscillator = context.createOscillator();
-        const gainNode = context.createGain();
-        const filter = context.createBiquadFilter();
+        // Play the sound
+        if (synthRef.current) {
+          synthRef.current.triggerAttackRelease(frequency, '16n', time);
+        }
 
-        oscillator.connect(filter);
-        filter.connect(gainNode);
-        gainNode.connect(context.destination);
+        // Update UI beat indicator
+        Tone.Draw.schedule(() => {
+          setCurrentBeat(beat);
+        }, time);
 
-        oscillator.type = 'sine';
-        oscillator.frequency.value = frequency;
+        beat = (beat + 1) % beatsPerMeasure;
+      }, '4n');
 
-        filter.type = 'lowpass';
-        filter.frequency.value = 2000;
-        filter.Q.value = 1;
-
-        const volume = isAccent ? 0.3 : 0.2;
-
-        gainNode.gain.setValueAtTime(0, time);
-        gainNode.gain.linearRampToValueAtTime(volume, time + 0.001);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, time + duration);
-
-        oscillator.start(time);
-        oscillator.stop(time + duration);
-      }
-    },
-    [accentFirstBeat, clickSound]
-  );
-
-  const scheduler = useCallback(() => {
-    if (!audioContextRef.current) return;
-
-    const scheduleAheadTime = 0.1; // Schedule 100ms ahead
-    const currentTime = audioContextRef.current.currentTime;
-
-    while (nextBeatTimeRef.current < currentTime + scheduleAheadTime) {
-      const beatsPerMeasure = getBeatsPerMeasure();
-      const beatNumber = currentBeat % beatsPerMeasure;
-
-      scheduleNote(beatNumber, nextBeatTimeRef.current);
-
-      const secondsPerBeat = 60.0 / bpm;
-      nextBeatTimeRef.current += secondsPerBeat;
-
-      setCurrentBeat(prev => (prev + 1) % beatsPerMeasure);
-    }
-  }, [bpm, currentBeat, getBeatsPerMeasure, scheduleNote]);
-
-  useEffect(() => {
-    if (isPlaying && audioContextRef.current) {
-      setCurrentBeat(0);
-      nextBeatTimeRef.current = audioContextRef.current.currentTime;
-      schedulerIntervalRef.current = window.setInterval(scheduler, 25);
+      loopRef.current.start(0);
+      Tone.Transport.start();
     } else {
-      if (schedulerIntervalRef.current) {
-        clearInterval(schedulerIntervalRef.current);
-        schedulerIntervalRef.current = null;
+      // Stop playback
+      if (loopRef.current) {
+        loopRef.current.stop();
+        loopRef.current.dispose();
+        loopRef.current = null;
       }
+      Tone.Transport.stop();
+      setCurrentBeat(0);
     }
 
     return () => {
-      if (schedulerIntervalRef.current) {
-        clearInterval(schedulerIntervalRef.current);
+      if (loopRef.current) {
+        loopRef.current.stop();
+        loopRef.current.dispose();
+        loopRef.current = null;
       }
+      Tone.Transport.stop();
     };
-  }, [isPlaying, scheduler]);
+  }, [isPlaying, bpm, timeSignature, accentFirstBeat, clickSound, getBeatsPerMeasure]);
 
   const handleBpmChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
@@ -147,10 +128,9 @@ export function MetronomeClient() {
     }
   };
 
-  const togglePlay = () => {
-    if (audioContextRef.current?.state === 'suspended') {
-      audioContextRef.current.resume();
-    }
+  const togglePlay = async () => {
+    // Start Tone.js audio context on user interaction
+    await Tone.start();
     setIsPlaying(!isPlaying);
   };
 
@@ -186,6 +166,7 @@ export function MetronomeClient() {
           <label className={styles.tempoLabel}>Tempo</label>
           <div className={styles.sliderContainer}>
             <input
+              ref={sliderRef}
               type="range"
               min="30"
               max="300"
