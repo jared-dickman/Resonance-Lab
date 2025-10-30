@@ -76,7 +76,7 @@ export function MetronomeClient() {
       Tone.Transport.bpm.value = bpm;
 
       // Create a loop for the metronome
-      loopRef.current = new Tone.Loop(time => {
+      loopRef.current = new Tone.Loop((time) => {
         const isAccent = accentFirstBeat && beat === 0;
 
         // Get frequency based on sound type and accent
@@ -184,7 +184,7 @@ export function MetronomeClient() {
   };
 
   const cycleClickSound = () => {
-    setClickSound(prev => (prev + 1) % 3);
+    setClickSound((prev) => (prev + 1) % 3);
   };
 
   return (
@@ -192,11 +192,7 @@ export function MetronomeClient() {
       <Card className={styles.metronomeCard}>
         {/* Indicator light */}
         <div className={styles.indicatorContainer}>
-          <div
-            className={`${styles.indicator} ${
-              isPlaying && currentBeat === 0 ? styles.indicatorActive : ''
-            }`}
-          />
+          <div className={`${styles.indicator} ${isPlaying && currentBeat === 0 ? styles.indicatorActive : ''}`} />
         </div>
 
         {/* BPM Display */}
@@ -231,13 +227,11 @@ export function MetronomeClient() {
 
         {/* Tempo Presets */}
         <div className={styles.presets}>
-          {TEMPO_PRESETS.map(preset => (
+          {TEMPO_PRESETS.map((preset) => (
             <button
               key={preset.label}
               onClick={() => setBpm(preset.bpm)}
-              className={`${styles.presetButton} ${
-                bpm === preset.bpm ? styles.presetButtonActive : ''
-              }`}
+              className={`${styles.presetButton} ${bpm === preset.bpm ? styles.presetButtonActive : ''}`}
             >
               <div className={styles.presetLabel}>{preset.label}</div>
               <div className={styles.presetBpm}>{preset.bpm}</div>
@@ -249,7 +243,7 @@ export function MetronomeClient() {
         <div className={styles.timeSignatureSection}>
           <label className={styles.timeSignatureLabel}>Time Signature</label>
           <div className={styles.timeSignatureGrid}>
-            {TIME_SIGNATURES.map(sig => (
+            {TIME_SIGNATURES.map((sig) => (
               <button
                 key={sig}
                 onClick={() => {
