@@ -14,7 +14,7 @@ import { drawBarres, drawFingerPositions } from '@/lib/utils/canvas/fretboard/dr
 import { drawFrets } from '@/lib/utils/canvas/fretboard/drawFrets';
 import { drawMarkers } from '@/lib/utils/canvas/fretboard/drawMarkers';
 import { drawStrings } from '@/lib/utils/canvas/fretboard/drawStrings';
-import { ChevronLeft, ChevronRight, Volume2, VolumeX } from 'lucide-react';
+import { ChevronLeft, ChevronRight, FlipVertical2, Volume2, VolumeX } from 'lucide-react';
 
 interface FretboardProps {
   voicings: ChordVoicing[];
@@ -45,6 +45,7 @@ export function Fretboard({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
   const [isSoundEnabled, setIsSoundEnabled] = useState(false);
+  const [isInverted, setIsInverted] = useState(false);
 
   const currentVoicing = voicings[currentVoicingIndex] || null;
 
@@ -89,7 +90,7 @@ export function Fretboard({
       fretboardHeight,
     });
 
-    drawStrings(ctx, { width, padding: PADDING, stringSpacing });
+    drawStrings(ctx, { width, padding: PADDING, stringSpacing, isInverted });
 
     drawFrets(ctx, {
       padding: PADDING,
@@ -126,6 +127,7 @@ export function Fretboard({
       startFret,
       endFret,
       showFingerNumbers,
+      isInverted,
     });
 
     if (barres) {
@@ -134,6 +136,7 @@ export function Fretboard({
         stringSpacing,
         fretWidth,
         startFret,
+        isInverted,
       });
     }
 
@@ -142,10 +145,11 @@ export function Fretboard({
     ctx.textAlign = 'right';
     ctx.textBaseline = 'middle';
     STRING_NAMES.forEach((name, i) => {
-      const y = PADDING + i * stringSpacing;
+      const stringPosition = isInverted ? STRING_NAMES.length - 1 - i : i;
+      const y = PADDING + stringPosition * stringSpacing;
       ctx.fillText(name, PADDING - STRING_NAME_OFFSET_X, y);
     });
-  }, [currentVoicing, showFingerNumbers]);
+  }, [currentVoicing, showFingerNumbers, isInverted]);
 
   const handlePrevVoicing = () => {
     if (voicings.length <= 1) return;
@@ -200,6 +204,10 @@ export function Fretboard({
     }
   };
 
+  const toggleInvert = () => {
+    setIsInverted(!isInverted);
+  };
+
   if (!currentVoicing) {
     return (
       <div className={cn('p-6 bg-muted rounded-lg', className)}>
@@ -230,6 +238,9 @@ export function Fretboard({
         </div>
 
         <div className="flex items-center gap-2">
+          <Button variant="outline" size="icon" onClick={toggleInvert} title="Invert fretboard">
+            <FlipVertical2 className="h-4 w-4" />
+          </Button>
           <Button variant="outline" size="icon" onClick={toggleSound} title="Toggle sound">
             {isSoundEnabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
           </Button>

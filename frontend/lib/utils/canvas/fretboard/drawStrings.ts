@@ -8,14 +8,16 @@ export function drawStrings(
     width: number;
     padding: number;
     stringSpacing: number;
+    isInverted?: boolean;
   }
 ): void {
-  const { width, padding, stringSpacing } = dimensions;
+  const { width, padding, stringSpacing, isInverted = false } = dimensions;
 
   ctx.strokeStyle = '#e0e0e0';
 
   for (let i = 0; i < STRING_COUNT; i++) {
-    const y = padding + i * stringSpacing;
+    const stringPosition = isInverted ? STRING_COUNT - 1 - i : i;
+    const y = padding + stringPosition * stringSpacing;
     const stringWidth = STRING_WIDTH_BASE + (STRING_COUNT - 1 - i) * STRING_WIDTH_INCREMENT;
     ctx.lineWidth = stringWidth;
     ctx.beginPath();
