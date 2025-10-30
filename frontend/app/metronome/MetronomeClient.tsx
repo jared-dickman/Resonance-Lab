@@ -29,6 +29,8 @@ export function MetronomeClient() {
   const sliderRef = useRef<HTMLInputElement>(null);
   const synthRef = useRef<Tone.Synth | null>(null);
   const loopRef = useRef<Tone.Loop | null>(null);
+  const tapTimesRef = useRef<number[]>([]);
+  const tapTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Initialize Tone.js synth
   useEffect(() => {
@@ -44,6 +46,9 @@ export function MetronomeClient() {
 
     return () => {
       synthRef.current?.dispose();
+      if (tapTimeoutRef.current) {
+        clearTimeout(tapTimeoutRef.current);
+      }
     };
   }, []);
 
@@ -135,8 +140,43 @@ export function MetronomeClient() {
   };
 
   const handleTap = () => {
-    // Tap tempo functionality can be added here
-    logger.log('Tap tempo');
+    const now = Date.now();
+
+    // Clear existing timeout
+    if (tapTimeoutRef.current) {
+      clearTimeout(tapTimeoutRef.current);
+    }
+
+    // Add current tap time
+    tapTimesRef.current.push(now);
+
+    // Keep only the last 4 taps for averaging
+    if (tapTimesRef.current.length > 4) {
+      tapTimesRef.current.shift();
+    }
+
+    // Calculate BPM if we have at least 2 taps
+    if (tapTimesRef.current.length >= 2) {
+      const intervals: number[] = [];
+      for (let i = 1; i < tapTimesRef.current.length; i++) {
+        intervals.push(tapTimesRef.current[i] - tapTimesRef.current[i - 1]);
+      }
+
+      // Calculate average interval in milliseconds
+      const avgInterval = intervals.reduce((sum, interval) => sum + interval, 0) / intervals.length;
+
+      // Convert to BPM (60000 ms per minute / interval in ms)
+      const calculatedBpm = Math.round(60000 / avgInterval);
+
+      // Clamp to valid range
+      const newBpm = Math.max(30, Math.min(300, calculatedBpm));
+      setBpm(newBpm);
+    }
+
+    // Reset tap times after 2 seconds of no tapping
+    tapTimeoutRef.current = setTimeout(() => {
+      tapTimesRef.current = [];
+    }, 2000);
   };
 
   const cycleClickSound = () => {
