@@ -159,7 +159,11 @@ export function MetronomeClient() {
     if (tapTimesRef.current.length >= 2) {
       const intervals: number[] = [];
       for (let i = 1; i < tapTimesRef.current.length; i++) {
-        intervals.push(tapTimesRef.current[i] - tapTimesRef.current[i - 1]);
+        const currentTap = tapTimesRef.current[i];
+        const previousTap = tapTimesRef.current[i - 1];
+        if (currentTap !== undefined && previousTap !== undefined) {
+          intervals.push(currentTap - previousTap);
+        }
       }
 
       // Calculate average interval in milliseconds
