@@ -34,6 +34,7 @@ const BASE_FRET_THRESHOLD = 1;
 const FRET_NUMBER_OFFSET_X = 20;
 const FRET_NUMBER_OFFSET_Y = 2.5;
 const STRING_NAME_OFFSET_X = 25;
+const FRETBOARD_INVERT_STORAGE_KEY = 'fretboard-inverted-preference';
 
 export function Fretboard({
   voicings,
@@ -45,7 +46,11 @@ export function Fretboard({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
   const [isSoundEnabled, setIsSoundEnabled] = useState(false);
-  const [isInverted, setIsInverted] = useState(false);
+  const [isInverted, setIsInverted] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return true;
+    const saved = localStorage.getItem(FRETBOARD_INVERT_STORAGE_KEY);
+    return saved !== null ? JSON.parse(saved) : true;
+  });
 
   const currentVoicing = voicings[currentVoicingIndex] || null;
 
@@ -55,6 +60,12 @@ export function Fretboard({
       setAudioContext(ctx);
     }
   }, [audioContext]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(FRETBOARD_INVERT_STORAGE_KEY, JSON.stringify(isInverted));
+    }
+  }, [isInverted]);
 
   useEffect(() => {
     if (!currentVoicing || !canvasRef.current) return;
