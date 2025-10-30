@@ -68,12 +68,14 @@ export function drawFingerPositions(
     startFret: number;
     endFret: number;
     showFingerNumbers: boolean;
+    isInverted?: boolean;
   }
 ): void {
-  const { padding, stringSpacing, fretWidth, startFret, endFret, showFingerNumbers } = config;
+  const { padding, stringSpacing, fretWidth, startFret, endFret, showFingerNumbers, isInverted = false } = config;
 
   frets.forEach((fret, stringIndex) => {
-    const y = padding + stringIndex * stringSpacing;
+    const stringPosition = isInverted ? STRING_COUNT - 1 - stringIndex : stringIndex;
+    const y = padding + stringPosition * stringSpacing;
     const finger = fingers[stringIndex] ?? 0;
 
     if (fret === MUTED_STRING) {
@@ -96,15 +98,23 @@ export function drawBarres(
     stringSpacing: number;
     fretWidth: number;
     startFret: number;
+    isInverted?: boolean;
   }
 ): void {
-  const { padding, stringSpacing, fretWidth, startFret } = config;
+  const { padding, stringSpacing, fretWidth, startFret, isInverted = false } = config;
 
   barres.forEach(barre => {
     const fretIndex = barre.fret - startFret;
     const x = padding + (fretIndex - 0.5) * fretWidth;
-    const y1 = padding + (STRING_COUNT - barre.fromString) * stringSpacing;
-    const y2 = padding + (STRING_COUNT - barre.toString) * stringSpacing;
+
+    const fromStringPos = STRING_COUNT - barre.fromString;
+    const toStringPos = STRING_COUNT - barre.toString;
+
+    const y1Position = isInverted ? STRING_COUNT - 1 - fromStringPos : fromStringPos;
+    const y2Position = isInverted ? STRING_COUNT - 1 - toStringPos : toStringPos;
+
+    const y1 = padding + y1Position * stringSpacing;
+    const y2 = padding + y2Position * stringSpacing;
 
     ctx.strokeStyle = '#3b82f6';
     ctx.lineWidth = BARRE_LINE_WIDTH;
