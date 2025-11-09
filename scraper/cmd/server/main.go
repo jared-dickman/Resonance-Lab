@@ -74,7 +74,7 @@ func withCORS(next http.Handler) http.Handler {
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Accept, Accept-Language, Content-Language, Range")
 
 		// Allow methods used by the API
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
 
 		// Cache preflight requests for 24 hours to reduce overhead
 		w.Header().Set("Access-Control-Max-Age", "86400")
