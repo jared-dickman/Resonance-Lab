@@ -34,8 +34,8 @@ COPY --from=builder /app/scraper/server .
 # Copy songify script from frontend
 COPY frontend/scripts /app/frontend/scripts
 
-# Install tsx globally for running TypeScript scripts
-RUN npm install -g tsx
+# Install tsx and linkedom globally for running TypeScript scripts
+RUN npm install -g tsx linkedom
 
 # Create directory for songs
 RUN mkdir -p /app/songs
