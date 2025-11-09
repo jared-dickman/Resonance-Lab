@@ -157,6 +157,7 @@ func (s *Service) GetSong(ctx context.Context, artistSlug, songSlug string) (Son
 }
 
 // Search queries Ultimate Guitar for chords and tabs matching the provided artist/title.
+// Performs concurrent searches for chords and tabs to minimize latency.
 func (s *Service) Search(_ context.Context, artist, title string) (SearchResponse, error) {
 	title = strings.TrimSpace(title)
 	artist = strings.TrimSpace(artist)
@@ -167,17 +168,36 @@ func (s *Service) Search(_ context.Context, artist, title string) (SearchRespons
 	scraper := ultimateguitar.New()
 	resp := SearchResponse{Query: SearchQuery{Artist: artist, Title: title}}
 
-	chords, err := s.searchByType(scraper, artist, title, ultimateguitar.TabTypeChords)
-	if err != nil {
-		return SearchResponse{}, err
+	// Search for chords and tabs concurrently to reduce total latency
+	type searchResult struct {
+		results []SearchResult
+		err     error
 	}
-	resp.Chords = chords
 
-	tabs, err := s.searchByType(scraper, artist, title, ultimateguitar.TabTypeTabs)
-	if err != nil {
-		return SearchResponse{}, err
+	chordsChan := make(chan searchResult, 1)
+	tabsChan := make(chan searchResult, 1)
+
+	go func() {
+		chords, err := s.searchByType(scraper, artist, title, ultimateguitar.TabTypeChords)
+		chordsChan <- searchResult{results: chords, err: err}
+	}()
+
+	go func() {
+		tabs, err := s.searchByType(scraper, artist, title, ultimateguitar.TabTypeTabs)
+		tabsChan <- searchResult{results: tabs, err: err}
+	}()
+
+	chordsResult := <-chordsChan
+	if chordsResult.err != nil {
+		return SearchResponse{}, chordsResult.err
 	}
-	resp.Tabs = tabs
+	resp.Chords = chordsResult.results
+
+	tabsResult := <-tabsChan
+	if tabsResult.err != nil {
+		return SearchResponse{}, tabsResult.err
+	}
+	resp.Tabs = tabsResult.results
 
 	return resp, nil
 }

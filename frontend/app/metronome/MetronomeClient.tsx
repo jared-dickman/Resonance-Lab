@@ -71,8 +71,7 @@ export function MetronomeClient() {
       const beatsPerMeasure = getBeatsPerMeasure();
       let beat = 0;
 
-      // Start Tone.js audio context
-      Tone.start();
+      // Set tempo (AudioContext is already started by user gesture in togglePlay)
       Tone.Transport.bpm.value = bpm;
 
       // Create a loop for the metronome

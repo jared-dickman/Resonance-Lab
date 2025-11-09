@@ -131,7 +131,7 @@ export function registerDefaultHealthChecks(apiBaseUrl: string): void {
   healthCheck.register('api', async () => {
     const startTime = Date.now();
     try {
-      const response = await fetch(`${apiBaseUrl}/health`, {
+      const response = await fetch(`${apiBaseUrl}/api/health`, {
         method: 'GET',
         signal: AbortSignal.timeout(5000),
       });
