@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  # Your Go backend API
+  # Production backend API
   backend:
     build:
       context: .
@@ -24,6 +24,30 @@ services:
       - "traefik.http.routers.resonance-api.tls=true"
       - "traefik.http.routers.resonance-api.tls.certresolver=mytlschallenge"
       - "traefik.http.services.resonance-api.loadbalancer.server.port=8080"
+
+  # Development backend API (for Vercel preview deployments)
+  backend-dev:
+    build:
+      context: .
+      dockerfile: ./scraper/Dockerfile
+    container_name: resonance-backend-dev
+    expose:
+      - "8081"  # Internal port for Traefik
+    volumes:
+      - ./songs:/app/songs  # Shared songs data
+    environment:
+      - SONGS_DIR=/app/songs
+      - ADDR=:8081
+    restart: unless-stopped
+    networks:
+      - root_default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.resonance-api-dev.rule=Host(`dev.srv1015344.hstgr.cloud`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.resonance-api-dev.entrypoints=web,websecure"
+      - "traefik.http.routers.resonance-api-dev.tls=true"
+      - "traefik.http.routers.resonance-api-dev.tls.certresolver=mytlschallenge"
+      - "traefik.http.services.resonance-api-dev.loadbalancer.server.port=8081"
 
 networks:
   root_default:

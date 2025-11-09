@@ -1,0 +1,415 @@
+{
+  "artist": "The Beatles",
+  "title": "Help",
+  "sections": [
+    {
+      "name": "Intro",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "Help!"
+        },
+        {
+          "chord": null,
+          "lyric": "(Lennon/McCartney)"
+        },
+        {
+          "chord": null,
+          "lyric": "The Beatles"
+        },
+        {
+          "chord": null,
+          "lyric": "Help! (1965)"
+        },
+        {
+          "chord": null,
+          "lyric": "x02222"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "Help! I need someb"
+        },
+        {
+          "chord": {
+            "name": "Bm/A"
+          },
+          "lyric": "ody"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "Help! Not just any"
+        },
+        {
+          "chord": {
+            "name": "G/F#"
+          },
+          "lyric": "body"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Help! You know I need someone,"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "Help!"
+        }
+      ]
+    },
+    {
+      "name": "Verse",
+      "lines": [
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "When I was younger, so much y"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "ounger than today,"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "elp in a"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "ny w"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "ay."
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "not so self-assured,"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "ened"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "up the d"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "oors."
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "elp me if you can I'm feeling down,"
+        },
+        {
+          "chord": {
+            "name": "Bm/A"
+          },
+          "lyric": "and I d"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "o appreciate you being 'round"
+        },
+        {
+          "chord": {
+            "name": "G/F#"
+          },
+          "lyric": "."
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "elp me get my feet back on the ground, won't you pl"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "ease please help me."
+        }
+      ]
+    },
+    {
+      "name": "Verse",
+      "lines": [
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "oh so many ways,"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "anish"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "in the h"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "aze."
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "feel so insecure,"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "ver d"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "one be"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "fore."
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "elp me if you can I'm feeling down,"
+        },
+        {
+          "chord": {
+            "name": "Bm/A"
+          },
+          "lyric": "and I d"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "o appreciate you being 'round"
+        },
+        {
+          "chord": {
+            "name": "G/F#"
+          },
+          "lyric": "."
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "elp me get my feet back on the ground, won't you p"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "lease please help me."
+        }
+      ]
+    },
+    {
+      "name": "Verse",
+      "lines": [
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "When I was younger, so much y"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "ounger than today,"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "elp in a"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "ny w"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "ay."
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "not so self-assured,"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "ened"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "up the d"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "oors."
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "elp me if you can I'm feeling down,"
+        },
+        {
+          "chord": {
+            "name": "Bm/A"
+          },
+          "lyric": "and I d"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "o appreciate you being 'round"
+        },
+        {
+          "chord": {
+            "name": "G/F#"
+          },
+          "lyric": "."
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "elp me get my feet back on the ground, won't you pl"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "ease please help"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "me."
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "me,"
+        },
+        {
+          "chord": {
+            "name": "A6"
+          },
+          "lyric": "ooo."
+        }
+      ]
+    }
+  ]
+}

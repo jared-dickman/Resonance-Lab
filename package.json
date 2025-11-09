@@ -1,4 +1,10 @@
 {
+  "name": "resonance-lab-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "frontend"
+  ],
   "dependencies": {
     "@radix-ui/react-scroll-area": "^1.2.10",
     "@radix-ui/react-slot": "^1.2.3",
@@ -27,15 +33,15 @@
     "typescript": "^5.9.3"
   },
   "scripts": {
-    "build": "cd frontend && npm run build",
-    "dev": "cd frontend && npm run dev",
-    "start": "cd frontend && npm start",
+    "build": "npm run build -w frontend",
+    "dev": "npm run dev -w frontend",
+    "start": "npm run start -w frontend",
     "test": "echo \"No unit tests configured yet\" && exit 0",
     "lint": "eslint . --fix",
     "lint:check": "eslint .",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
-    "typecheck": "cd frontend && npm run type-check",
+    "typecheck": "npm run type-check -w frontend",
     "test:ast-grep-rules": "tsx scripts/test-ast-grep-rules.ts",
     "ast-grep:scan": "ast-grep scan",
     "check:all": "npm run lint:check && npm run format:check && npm run ast-grep:scan",

@@ -6,16 +6,15 @@ import { Music, ArrowLeft, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useSongs } from '@/lib/SongsContext';
+import { useSongs, useDeleteSong } from '@/app/features/songs/hooks';
 import { pageRoutes } from '@/lib/routes';
-import { useDeleteSong } from '@/app/features/songs/hooks';
 
 interface ArtistClientProps {
   artistSlug: string;
 }
 
 export default function ArtistClient({ artistSlug }: ArtistClientProps) {
-  const { songs, isLoadingSongs, refreshSongs } = useSongs();
+  const { data: songs = [], isLoading: isLoadingSongs } = useSongs();
   const { mutate: deleteSongMutation, isPending: isDeleting } = useDeleteSong();
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
@@ -55,8 +54,7 @@ export default function ArtistClient({ artistSlug }: ArtistClientProps) {
       { artistSlug: songArtistSlug, songSlug },
       {
         onSuccess: () => {
-          setStatusMessage(`${title} deleted successfully.`);
-          refreshSongs();
+          setStatusMessage(`✨ ${title} deleted successfully.`);
           setTimeout(() => setStatusMessage(null), 3000);
         },
         onError: (error) => {
