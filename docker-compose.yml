@@ -14,6 +14,7 @@ services:
     environment:
       - SONGS_DIR=/app/songs
       - ADDR=:8080
+      - SONGIFY_SCRIPT=/app/frontend/scripts/songify.ts
     restart: unless-stopped  # Auto-restart if it crashes
     networks:
       - root_default
@@ -38,6 +39,7 @@ services:
     environment:
       - SONGS_DIR=/app/songs
       - ADDR=:8081
+      - SONGIFY_SCRIPT=/app/frontend/scripts/songify.ts
     restart: unless-stopped
     networks:
       - root_default
