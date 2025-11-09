@@ -1,0 +1,678 @@
+{
+  "artist": "The Beatles",
+  "title": "While My Guitar Gently Weeps",
+  "sections": [
+    {
+      "name": "Chords",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "x02210"
+        },
+        {
+          "chord": null,
+          "lyric": "320003"
+        },
+        {
+          "chord": null,
+          "lyric": "x02220"
+        },
+        {
+          "chord": null,
+          "lyric": "3x2210"
+        },
+        {
+          "chord": null,
+          "lyric": "xx0232"
+        },
+        {
+          "chord": null,
+          "lyric": "x46654"
+        },
+        {
+          "chord": null,
+          "lyric": "2x2210"
+        },
+        {
+          "chord": null,
+          "lyric": "022100"
+        },
+        {
+          "chord": null,
+          "lyric": "244222"
+        },
+        {
+          "chord": null,
+          "lyric": "1x2210"
+        },
+        {
+          "chord": null,
+          "lyric": "x32010"
+        },
+        {
+          "chord": null,
+          "lyric": "x24432"
+        },
+        {
+          "chord": null,
+          "lyric": "xx0233"
+        },
+        {
+          "chord": null,
+          "lyric": "xx0230"
+        },
+        {
+          "chord": null,
+          "lyric": "022200"
+        }
+      ]
+    },
+    {
+      "name": "Intro",
+      "lines": []
+    },
+    {
+      "name": "Verse 1",
+      "lines": [
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "look at you"
+        },
+        {
+          "chord": {
+            "name": "Am/G"
+          },
+          "lyric": "all, see the"
+        },
+        {
+          "chord": {
+            "name": "F#m7b5"
+          },
+          "lyric": "love there that's"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "sleeping"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "While my gui"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "tar gently"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "we"
+        },
+        {
+          "chord": {
+            "name": "Dsus4"
+          },
+          "lyric": "eps"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Dsus2"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Esus4"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "look at the"
+        },
+        {
+          "chord": {
+            "name": "Am/G"
+          },
+          "lyric": "floor, and I"
+        },
+        {
+          "chord": {
+            "name": "F#m7b5"
+          },
+          "lyric": "see it needs"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "sweeping"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Still my gui"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "tar gently"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "weeps"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Chorus 1",
+      "lines": [
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "I don't know"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "why"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "nobody"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "told you"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "How to unfold your"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "lo"
+        },
+        {
+          "chord": {
+            "name": "Esus4"
+          },
+          "lyric": "ve"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "I don't know"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "how"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "someone con"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "trolled you"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "They bought and sold"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "yo"
+        },
+        {
+          "chord": {
+            "name": "Esus4"
+          },
+          "lyric": "u"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Verse 2",
+      "lines": [
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "look at the"
+        },
+        {
+          "chord": {
+            "name": "Am/G"
+          },
+          "lyric": "world, and I"
+        },
+        {
+          "chord": {
+            "name": "F#m7b5"
+          },
+          "lyric": "notice it's"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "turning"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "While my gui"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "tar gently"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "we"
+        },
+        {
+          "chord": {
+            "name": "Dsus4"
+          },
+          "lyric": "eps"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Dsus2"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Esus4"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "every mis"
+        },
+        {
+          "chord": {
+            "name": "Am/G"
+          },
+          "lyric": "take we must"
+        },
+        {
+          "chord": {
+            "name": "F#m7b5"
+          },
+          "lyric": "surely be"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "learning"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Still my gui"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "tar gently"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "weeps"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Intrumental",
+      "lines": []
+    },
+    {
+      "name": "Chorus 2",
+      "lines": [
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "I don't know"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "how"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "you were di"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "verted"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "You were perverted"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "to"
+        },
+        {
+          "chord": {
+            "name": "Esus4"
+          },
+          "lyric": "o"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "I don't know"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "how"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "you were in"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "verted"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "No one alerted"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "yo"
+        },
+        {
+          "chord": {
+            "name": "Esus4"
+          },
+          "lyric": "u"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Verse 3",
+      "lines": [
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "look at you"
+        },
+        {
+          "chord": {
+            "name": "Am/G"
+          },
+          "lyric": "all, see the"
+        },
+        {
+          "chord": {
+            "name": "F#m7b5"
+          },
+          "lyric": "love there that's"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "sleeping"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "While my gui"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "tar gently"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "we"
+        },
+        {
+          "chord": {
+            "name": "Dsus4"
+          },
+          "lyric": "eps"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Dsus2"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Esus4"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Look at you"
+        },
+        {
+          "chord": {
+            "name": "Am/G"
+          },
+          "lyric": "all..."
+        },
+        {
+          "chord": {
+            "name": "F#m7b5"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Still my gui"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "tar gently"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "weeps"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Outro",
+      "lines": []
+    }
+  ]
+}
