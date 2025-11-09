@@ -180,8 +180,9 @@ jobs:
           script: |
             cd /root/Resonance-Lab
             git fetch origin
-            git checkout master
-            git pull origin master
+            git reset --hard origin/master
+            docker-compose stop backend backend-dev
+            docker-compose rm -f backend backend-dev
             docker-compose up -d --build backend backend-dev
             echo "✅ Backend deployed successfully"
 
