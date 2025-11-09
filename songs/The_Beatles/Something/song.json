@@ -1,0 +1,654 @@
+{
+  "artist": "The Beatles",
+  "title": "Something",
+  "sections": [
+    {
+      "name": "Intro",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "Lick 1 (F to C)"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "1 + 2 +"
+        },
+        {
+          "chord": {
+            "name": "Eb"
+          },
+          "lyric": "3 +"
+        },
+        {
+          "chord": {
+            "name": "G/D"
+          },
+          "lyric": "4 +"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "1 + 2 + 3 + 4 +"
+        },
+        {
+          "chord": null,
+          "lyric": "B|----10--12-p10--11------12-------|13------------------------------| p = Pull off"
+        },
+        {
+          "chord": null,
+          "lyric": "Lick 2 (F to A)"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "1 + 2 +"
+        },
+        {
+          "chord": {
+            "name": "Eb"
+          },
+          "lyric": "3 +"
+        },
+        {
+          "chord": {
+            "name": "G/D"
+          },
+          "lyric": "4 +"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "1 + 2 + 3 + 4 +"
+        },
+        {
+          "chord": null,
+          "lyric": "B|----10--12-p10--11------12------/|14------------------------------|"
+        }
+      ]
+    },
+    {
+      "name": "Middle 8",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "Walkdown 1 (A to A) Walkdown 2 (C to C)"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "1 + 2 + 3 + 4 + 1 + 2 + 3 + 4 +"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "1 + 2 + 3 + 4 + 1 + 2 + 3 + 4 +"
+        },
+        {
+          "chord": null,
+          "lyric": "B|----------------|----------------| |1---------------|----------------|"
+        }
+      ]
+    },
+    {
+      "name": "Chords",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "Cmaj7 x-3-2-0-0-0"
+        },
+        {
+          "chord": null,
+          "lyric": "Am7 x-0-2-0-1-0"
+        },
+        {
+          "chord": null,
+          "lyric": "F#m7 2-4-2-2-2-2"
+        }
+      ]
+    },
+    {
+      "name": "Intro",
+      "lines": [
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "(Lic"
+        },
+        {
+          "chord": {
+            "name": "Eb"
+          },
+          "lyric": "k 1"
+        },
+        {
+          "chord": {
+            "name": "G/D"
+          },
+          "lyric": ")"
+        }
+      ]
+    },
+    {
+      "name": "Verse 1",
+      "lines": [
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Something in the way she"
+        },
+        {
+          "chord": {
+            "name": "Cmaj7"
+          },
+          "lyric": "moves,"
+        },
+        {
+          "chord": {
+            "name": "C7"
+          },
+          "lyric": "Attracts me like no other l"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "over."
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "F/E"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D7"
+          },
+          "lyric": "Something in the way she w"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "oo"
+        },
+        {
+          "chord": {
+            "name": "G/A"
+          },
+          "lyric": "s me"
+        },
+        {
+          "chord": {
+            "name": "G7/B"
+          },
+          "lyric": "."
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "don't wanna leave her"
+        },
+        {
+          "chord": {
+            "name": "Ammaj7"
+          },
+          "lyric": "now,"
+        },
+        {
+          "chord": {
+            "name": "Am7"
+          },
+          "lyric": "know I believe, and"
+        },
+        {
+          "chord": {
+            "name": "D9"
+          },
+          "lyric": "how."
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "(Lic"
+        },
+        {
+          "chord": {
+            "name": "Eb"
+          },
+          "lyric": "k 1"
+        },
+        {
+          "chord": {
+            "name": "G/D"
+          },
+          "lyric": ")"
+        }
+      ]
+    },
+    {
+      "name": "Verse 2",
+      "lines": [
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Somewhere in her smile she"
+        },
+        {
+          "chord": {
+            "name": "Cmaj7"
+          },
+          "lyric": "knows,"
+        },
+        {
+          "chord": {
+            "name": "C7"
+          },
+          "lyric": "That I don't need no other l"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "over."
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "F/E"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D7"
+          },
+          "lyric": "Something in her style that s"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "ho"
+        },
+        {
+          "chord": {
+            "name": "G/A"
+          },
+          "lyric": "ws m"
+        },
+        {
+          "chord": {
+            "name": "G7/B"
+          },
+          "lyric": "e."
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "don't wanna leave her"
+        },
+        {
+          "chord": {
+            "name": "Ammaj7"
+          },
+          "lyric": "now,"
+        },
+        {
+          "chord": {
+            "name": "Am7"
+          },
+          "lyric": "know I believe and"
+        },
+        {
+          "chord": {
+            "name": "D9"
+          },
+          "lyric": "how"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "(Li"
+        },
+        {
+          "chord": {
+            "name": "Eb"
+          },
+          "lyric": "ck"
+        },
+        {
+          "chord": {
+            "name": "G/D"
+          },
+          "lyric": "2)"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Middle 8",
+      "lines": [
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "You're asking"
+        },
+        {
+          "chord": {
+            "name": "C#m/G#"
+          },
+          "lyric": "me will my love"
+        },
+        {
+          "chord": {
+            "name": "F#m7"
+          },
+          "lyric": "grow,"
+        },
+        {
+          "chord": {
+            "name": "A/E"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "know,"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "I don't"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "know (Walkdown 1)"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "You stick a"
+        },
+        {
+          "chord": {
+            "name": "C#m/G#"
+          },
+          "lyric": "round now, it may"
+        },
+        {
+          "chord": {
+            "name": "F#m7"
+          },
+          "lyric": "show,"
+        },
+        {
+          "chord": {
+            "name": "A/E"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "know,"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "I don't"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "know (Walkdown 2)"
+        }
+      ]
+    },
+    {
+      "name": "Solo",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "(Lic"
+        },
+        {
+          "chord": {
+            "name": "Eb"
+          },
+          "lyric": "k 1"
+        },
+        {
+          "chord": {
+            "name": "G/D"
+          },
+          "lyric": ")"
+        }
+      ]
+    },
+    {
+      "name": "Verse 4",
+      "lines": [
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Something in the way she"
+        },
+        {
+          "chord": {
+            "name": "Cmaj7"
+          },
+          "lyric": "knows,"
+        },
+        {
+          "chord": {
+            "name": "C7"
+          },
+          "lyric": "And all I have to do is t"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "hink of her."
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "F/E"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D7"
+          },
+          "lyric": "Something in the things she sho"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "ws me"
+        },
+        {
+          "chord": {
+            "name": "G/A"
+          },
+          "lyric": "."
+        },
+        {
+          "chord": {
+            "name": "G7/B"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "don't wanna leave her"
+        },
+        {
+          "chord": {
+            "name": "Ammaj7"
+          },
+          "lyric": "now."
+        },
+        {
+          "chord": {
+            "name": "Am7"
+          },
+          "lyric": "know I believe and"
+        },
+        {
+          "chord": {
+            "name": "D9"
+          },
+          "lyric": "how."
+        }
+      ]
+    },
+    {
+      "name": "Outro",
+      "lines": [
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "(Lic"
+        },
+        {
+          "chord": {
+            "name": "Eb"
+          },
+          "lyric": "k 2"
+        },
+        {
+          "chord": {
+            "name": "G/D"
+          },
+          "lyric": ")"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "(Lic"
+        },
+        {
+          "chord": {
+            "name": "Eb"
+          },
+          "lyric": "k 1"
+        },
+        {
+          "chord": {
+            "name": "G/D"
+          },
+          "lyric": ")"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": ""
+        }
+      ]
+    }
+  ]
+}

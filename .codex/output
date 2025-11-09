@@ -1,0 +1,15 @@
+Executive Summary
+-----------------
+Latest work already landed on `master` as commit `9a9cf6e` (“feat(songwriter): add session insights metrics”). It introduces the Songwriter “Session Insights” panel (`frontend/components/songwriter/SongwriterClient.tsx`) with supporting analytics helpers, normalizes guitar velocity handling (`frontend/lib/audio/instruments/guitar/AcousticGuitar.ts`), and checks in the generated `frontend/pnpm-lock.yaml`.
+
+Outstanding Issues
+------------------
+1. Husky’s pre-commit hook runs `eslint --fix` and currently fails because the repo still contains many `no-console` violations (e.g. `frontend/components/ErrorBoundary.tsx:40`, `frontend/components/effects/d3/NotationDisplay.tsx:56`, `frontend/lib/music-theory/intelligentChordEngine.ts:82,156`, `frontend/lib/utils/api-resilience.ts:73,150`). Decide whether to remove, gate behind a logger, or disable rule case-by-case.
+2. ESLint’s `no-restricted-imports` rule now requires internal modules to use the `@/` alias instead of relative paths. Offenders include `frontend/components/effects/PedalboardUI.tsx`, `frontend/components/effects/index.ts`, `frontend/lib/music-theory/intelligence/**/*`, and `frontend/lib/utils/visualization/renderers.utils.ts`.
+3. `.husky/pre-push` still sources the deprecated shim block (`#!/usr/bin/env sh` + `._/husky.sh`); Husky warns this will break in v10.
+
+Recommended Next Actions
+------------------------
+1. Run `pnpm lint` to reproduce hook failures, refactor imports to `@/…`, and replace `console.*` usage with the project’s logging utility (or remove entirely).
+2. Clean up `.husky/pre-push` per Husky v10 guidance by removing the shim lines.
+3. Re-run `pnpm lint` and `pnpm lint:fix` to verify a clean working tree and ensure Husky hooks pass without `HUSKY=0`.
