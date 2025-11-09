@@ -31,6 +31,7 @@ func (s *Server) Register(mux *http.ServeMux) {
 	mux.HandleFunc("GET /api/songs/{artist}/{song}", s.handleGetSong)
 	mux.HandleFunc("POST /api/search", s.handleSearch)
 	mux.HandleFunc("POST /api/songs", s.handleDownload)
+	mux.HandleFunc("DELETE /api/songs/{artist}/{song}", s.handleDeleteSong)
 }
 
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
@@ -101,6 +102,24 @@ func (s *Server) handleDownload(w http.ResponseWriter, r *http.Request) {
 
 	s.cache.Invalidate("songs:list")
 	writeJSON(w, http.StatusOK, detail)
+}
+
+func (s *Server) handleDeleteSong(w http.ResponseWriter, r *http.Request) {
+	artist := r.PathValue("artist")
+	song := r.PathValue("song")
+
+	err := s.svc.Delete(r.Context(), artist, song)
+	if err != nil {
+		if errors.Is(err, songmanager.ErrSongNotFound) {
+			writeError(w, http.StatusNotFound, err)
+			return
+		}
+		writeError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	s.cache.Invalidate("songs:list")
+	w.WriteHeader(http.StatusNoContent)
 }
 
 func writeJSON(w http.ResponseWriter, status int, payload any) {

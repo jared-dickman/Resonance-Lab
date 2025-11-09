@@ -1,7 +1,7 @@
 'use client';
 
 import { type FormEvent, useState, useMemo } from 'react';
-import { Download, Search } from 'lucide-react';
+import { Download, Search, Trash2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,6 +14,7 @@ import Link from 'next/link';
 import { useSongs } from '@/lib/SongsContext';
 import { useAsyncApi } from '@/lib/hooks/useAsyncApi';
 import { PAGINATION } from '@/lib/constants/timing.constants';
+import { useDeleteSong } from '@/app/features/songs/hooks';
 
 interface StatusMessage {
   type: 'success' | 'error' | 'info';
@@ -24,6 +25,7 @@ export default function HomePage() {
   const { songs, refreshSongs } = useSongs();
   const searchApi = useAsyncApi(searchLibrary, 'Search failed');
   const downloadApi = useAsyncApi(downloadSong, 'Download failed');
+  const { mutate: deleteSongMutation, isPending: isDeleting } = useDeleteSong();
   const [_status, setStatus] = useState<StatusMessage | null>(null);
   const [searchArtist, setSearchArtist] = useState('');
   const [searchTitle, setSearchTitle] = useState('');
@@ -105,6 +107,25 @@ export default function HomePage() {
     }
   };
 
+  const handleDelete = (artistSlug: string, songSlug: string, title: string) => {
+    if (!confirm(`Are you sure you want to delete "${title}"? This cannot be undone.`)) {
+      return;
+    }
+
+    deleteSongMutation(
+      { artistSlug, songSlug },
+      {
+        onSuccess: () => {
+          setStatus({ type: 'success', message: `${title} deleted successfully.` });
+          refreshSongs();
+        },
+        onError: (error) => {
+          setStatus({ type: 'error', message: error.message || 'Failed to delete song.' });
+        },
+      }
+    );
+  };
+
   return (
     <div className="space-y-6">
       <Card>
@@ -155,11 +176,21 @@ export default function HomePage() {
                       {song.artist}
                     </Link>
                   </div>
-                  {song.key && (
-                    <div className="text-xs font-medium text-muted-foreground bg-muted px-2 py-1 rounded">
-                      {song.key}
-                    </div>
-                  )}
+                  <div className="flex items-center gap-2">
+                    {song.key && (
+                      <div className="text-xs font-medium text-muted-foreground bg-muted px-2 py-1 rounded">
+                        {song.key}
+                      </div>
+                    )}
+                    <button
+                      onClick={() => handleDelete(song.artistSlug, song.songSlug, song.title)}
+                      disabled={isDeleting}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-destructive/10 rounded text-destructive disabled:opacity-50"
+                      title="Delete song"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}

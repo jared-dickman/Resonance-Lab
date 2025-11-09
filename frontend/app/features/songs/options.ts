@@ -4,6 +4,7 @@ import {
   fetchSongDetail,
   searchSongs,
   downloadSong,
+  deleteSong,
 } from '@/app/features/songs/queries';
 import type {
   SearchRequestInput,
@@ -34,4 +35,5 @@ export const songOptions = {
 
 export const songMutations = {
   download: (input: DownloadRequestInput) => downloadSong(input),
+  delete: (artistSlug: string, songSlug: string) => deleteSong(artistSlug, songSlug),
 };
