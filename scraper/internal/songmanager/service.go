@@ -166,22 +166,24 @@ func (s *Service) Search(_ context.Context, artist, title string) (SearchRespons
 		return SearchResponse{}, errors.New("either artist or title is required for search")
 	}
 
-	// When only artist is provided, search for popular songs by that artist
-	searchTerm := title
-	if searchTerm == "" {
-		searchTerm = artist
-	}
-
 	scraper := ultimateguitar.New()
 	resp := SearchResponse{Query: SearchQuery{Artist: artist, Title: title}}
 
-	chords, err := s.searchByType(scraper, artist, searchTerm, ultimateguitar.TabTypeChords)
+	// When only artist is provided, search by artist name and use fuzzy matching
+	// When title is provided, search by title and use exact artist matching if specified
+	artistOnlySearch := title == ""
+	searchTerm := title
+	if artistOnlySearch {
+		searchTerm = artist
+	}
+
+	chords, err := s.searchByType(scraper, artist, searchTerm, artistOnlySearch, ultimateguitar.TabTypeChords)
 	if err != nil {
 		return SearchResponse{}, err
 	}
 	resp.Chords = chords
 
-	tabs, err := s.searchByType(scraper, artist, searchTerm, ultimateguitar.TabTypeTabs)
+	tabs, err := s.searchByType(scraper, artist, searchTerm, artistOnlySearch, ultimateguitar.TabTypeTabs)
 	if err != nil {
 		return SearchResponse{}, err
 	}
@@ -244,7 +246,7 @@ func (s *Service) fetchAndWriteTab(ctx context.Context, scraper ultimateguitar.S
 	return nil
 }
 
-func (s *Service) searchByType(scraper ultimateguitar.Scraper, artist, title string, tabType ultimateguitar.TabType) ([]SearchResult, error) {
+func (s *Service) searchByType(scraper ultimateguitar.Scraper, artist, title string, artistOnlySearch bool, tabType ultimateguitar.TabType) ([]SearchResult, error) {
 	params := ultimateguitar.SearchParams{
 		Title: title,
 		Type:  []ultimateguitar.TabType{tabType},
@@ -257,9 +259,19 @@ func (s *Service) searchByType(scraper ultimateguitar.Scraper, artist, title str
 
 	matches := make([]SearchResult, 0, len(result.Tabs))
 	for _, tab := range result.Tabs {
-		if artist != "" && !strings.EqualFold(string(tab.ArtistName), artist) {
-			continue
+		// When doing artist-only search, use fuzzy matching (contains)
+		// When doing title search with optional artist filter, use exact matching
+		if artist != "" && !artistOnlySearch {
+			if !strings.EqualFold(string(tab.ArtistName), artist) {
+				continue
+			}
+		} else if artistOnlySearch {
+			// For artist-only search, check if the artist name contains the search term
+			if !strings.Contains(strings.ToLower(string(tab.ArtistName)), strings.ToLower(artist)) {
+				continue
+			}
 		}
+
 		score := tab.Rating
 		if tab.Votes > 0 {
 			score = tab.Rating * math.Log(float64(tab.Votes))
@@ -286,7 +298,9 @@ func (s *Service) searchByType(scraper ultimateguitar.Scraper, artist, title str
 }
 
 func (s *Service) findBestTab(scraper ultimateguitar.Scraper, artist, title string, tabType ultimateguitar.TabType) (ultimateguitar.Tab, error) {
-	results, err := s.searchByType(scraper, artist, title, tabType)
+	// findBestTab is used during download, where both artist and title are provided
+	// Use exact artist matching (artistOnlySearch = false)
+	results, err := s.searchByType(scraper, artist, title, false, tabType)
 	if err != nil {
 		return ultimateguitar.Tab{}, err
 	}
