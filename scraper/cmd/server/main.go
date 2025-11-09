@@ -67,13 +67,27 @@ func getenv(key, fallback string) string {
 
 func withCORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Allow all origins (consider restricting in production)
 		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-		w.Header().Set("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
+
+		// Allow common headers that browsers send
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Accept, Accept-Language, Content-Language, Range")
+
+		// Allow methods used by the API
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+
+		// Cache preflight requests for 24 hours to reduce overhead
+		w.Header().Set("Access-Control-Max-Age", "86400")
+
+		// Expose headers that frontend might need to read
+		w.Header().Set("Access-Control-Expose-Headers", "Content-Length, Content-Type")
+
+		// Handle preflight requests
 		if r.Method == http.MethodOptions {
 			w.WriteHeader(http.StatusNoContent)
 			return
 		}
+
 		next.ServeHTTP(w, r)
 	})
 }
