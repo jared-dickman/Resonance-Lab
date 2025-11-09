@@ -160,20 +160,28 @@ func (s *Service) GetSong(ctx context.Context, artistSlug, songSlug string) (Son
 func (s *Service) Search(_ context.Context, artist, title string) (SearchResponse, error) {
 	title = strings.TrimSpace(title)
 	artist = strings.TrimSpace(artist)
-	if title == "" {
-		return SearchResponse{}, errors.New("title is required for search")
+
+	// Require either artist or title
+	if title == "" && artist == "" {
+		return SearchResponse{}, errors.New("either artist or title is required for search")
+	}
+
+	// When only artist is provided, search for popular songs by that artist
+	searchTerm := title
+	if searchTerm == "" {
+		searchTerm = artist
 	}
 
 	scraper := ultimateguitar.New()
 	resp := SearchResponse{Query: SearchQuery{Artist: artist, Title: title}}
 
-	chords, err := s.searchByType(scraper, artist, title, ultimateguitar.TabTypeChords)
+	chords, err := s.searchByType(scraper, artist, searchTerm, ultimateguitar.TabTypeChords)
 	if err != nil {
 		return SearchResponse{}, err
 	}
 	resp.Chords = chords
 
-	tabs, err := s.searchByType(scraper, artist, title, ultimateguitar.TabTypeTabs)
+	tabs, err := s.searchByType(scraper, artist, searchTerm, ultimateguitar.TabTypeTabs)
 	if err != nil {
 		return SearchResponse{}, err
 	}

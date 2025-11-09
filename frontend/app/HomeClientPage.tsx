@@ -50,8 +50,8 @@ export default function HomePage() {
 
   const handleSearch = async (event: FormEvent) => {
     event.preventDefault();
-    if (!searchTitle.trim()) {
-      setStatus({ type: 'error', message: 'Song title is required for search.' });
+    if (!searchTitle.trim() && !searchArtist.trim()) {
+      setStatus({ type: 'error', message: 'Either artist or song title is required for search.' });
       return;
     }
     setStatus({ type: 'info', message: 'Searching Ultimate Guitar...' });
@@ -170,7 +170,7 @@ export default function HomePage() {
         <CardHeader>
           <CardTitle className="text-base font-semibold">Add New Song</CardTitle>
           <CardDescription className="text-xs">
-            Import chords and tabs from Ultimate Guitar
+            Search by artist, song title, or both to find chords and tabs
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -196,7 +196,6 @@ export default function HomePage() {
                 placeholder="e.g. Stand By Me"
                 value={searchTitle}
                 onChange={event => setSearchTitle(event.target.value)}
-                required
                 autoComplete="off"
               />
             </div>
