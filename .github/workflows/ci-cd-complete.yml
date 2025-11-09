@@ -171,6 +171,20 @@ jobs:
           vercel-args: '--prod'
           working-directory: ./frontend
 
+      - name: 🖥️ Deploy Backend to VPS
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: srv1015344.hstgr.cloud
+          username: root
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd /root/Resonance-Lab
+            git fetch origin
+            git checkout master
+            git pull origin master
+            docker-compose up -d --build backend backend-dev
+            echo "✅ Backend deployed successfully"
+
       - name: 💬 Notify Slack (if configured)
         uses: 8398a7/action-slack@v3
         with:
