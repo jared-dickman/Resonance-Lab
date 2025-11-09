@@ -127,7 +127,10 @@ export const healthCheck = new HealthCheckSystem();
  * Register default health checks
  */
 export function registerDefaultHealthChecks(apiBaseUrl: string): void {
-  // API Health Check
+  // API Health Check with dev-friendly logging
+  let consecutiveFailures = 0;
+  let hasLoggedDevTip = false;
+
   healthCheck.register('api', async () => {
     const startTime = Date.now();
     try {
@@ -139,6 +142,7 @@ export function registerDefaultHealthChecks(apiBaseUrl: string): void {
       const latency = Date.now() - startTime;
 
       if (!response.ok) {
+        consecutiveFailures++;
         return {
           service: 'api',
           status: 'unhealthy',
@@ -148,6 +152,10 @@ export function registerDefaultHealthChecks(apiBaseUrl: string): void {
         };
       }
 
+      // Reset on success
+      consecutiveFailures = 0;
+      hasLoggedDevTip = false;
+
       return {
         service: 'api',
         status: latency < 1000 ? 'healthy' : 'degraded',
@@ -155,11 +163,23 @@ export function registerDefaultHealthChecks(apiBaseUrl: string): void {
         timestamp: Date.now(),
       };
     } catch (error) {
+      consecutiveFailures++;
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+
+      // In development, show helpful tip on first connection failure
+      if (process.env.NODE_ENV === 'development' && !hasLoggedDevTip && errorMessage.includes('fetch')) {
+        console.info(
+          '💡 Backend API unavailable. To enable full features, start the server:\n' +
+          '   cd scraper && go run cmd/server/main.go'
+        );
+        hasLoggedDevTip = true;
+      }
+
       return {
         service: 'api',
         status: 'unhealthy',
         latency: Date.now() - startTime,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: errorMessage,
         timestamp: Date.now(),
       };
     }

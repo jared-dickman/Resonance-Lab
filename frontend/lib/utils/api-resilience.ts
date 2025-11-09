@@ -70,7 +70,16 @@ export async function withRetry<T>(
 
       // Wait before retrying
       const delay = calculateBackoff(attempt, finalConfig);
-      console.warn(`Request failed (attempt ${attempt + 1}/${finalConfig.maxRetries}). Retrying in ${delay}ms...`);
+
+      // Suppress retry logs in development for connection errors (backend not running)
+      // to reduce console noise during development
+      const shouldLog = process.env.NODE_ENV !== 'development' ||
+        !(error instanceof Error && error.message.includes('fetch'));
+
+      if (shouldLog) {
+        console.warn(`Request failed (attempt ${attempt + 1}/${finalConfig.maxRetries}). Retrying in ${delay}ms...`);
+      }
+
       await new Promise(resolve => setTimeout(resolve, delay));
     }
   }
