@@ -1,6 +1,8 @@
 module scraper
 
-go 1.25.1
+go 1.24.0
+
+toolchain go1.24.7
 
 replace github.com/Pilfer/ultimate-guitar-scraper => ../ultimate-guitar-scraper
 
@@ -17,6 +19,5 @@ require (
 	github.com/mattn/go-runewidth v0.0.14 // indirect
 	github.com/nedpals/supabase-go v0.5.0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
-	golang.org/x/net v0.44.0
 	golang.org/x/sys v0.36.0 // indirect
 )
