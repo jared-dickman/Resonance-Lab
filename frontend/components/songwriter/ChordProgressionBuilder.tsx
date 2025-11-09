@@ -89,7 +89,7 @@ export default function ChordProgressionBuilder({
 
   return (
     <>
-      <CardHeader className="border-b">
+      <CardHeader className="border-b flex-shrink-0">
         <div className="flex items-center justify-between">
           <PanelLabel
             icon={<Music2 className="w-5 h-5" />}
@@ -106,9 +106,9 @@ export default function ChordProgressionBuilder({
         </div>
       </CardHeader>
 
-      <CardContent className="p-4 space-y-4 h-[calc(100%-80px)] flex flex-col">
+      <CardContent className="flex flex-1 flex-col gap-4 overflow-hidden p-4">
         {/* Current Progression */}
-        <div className="space-y-2 flex-shrink-0">
+        <div className="flex-shrink-0 space-y-2">
           <label className="text-sm font-medium flex items-center gap-2">
             <GripVertical className="w-4 h-4 text-muted-foreground" />
             Your Progression ({chords.length} chords)
@@ -161,7 +161,7 @@ export default function ChordProgressionBuilder({
         </div>
 
         {/* Suggested Progressions */}
-        <div className="space-y-2 flex-shrink-0">
+        <div className="flex-shrink-0 space-y-2">
           <label className="text-sm font-medium flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-muted-foreground" />
             Quick Start
@@ -188,8 +188,8 @@ export default function ChordProgressionBuilder({
             <Plus className="w-4 h-4 text-muted-foreground" />
             Chord Palette
           </label>
-          <ScrollArea className="flex-1">
-            <div className="grid grid-cols-3 gap-2 pr-2">
+          <ScrollArea className="flex-1 pr-2">
+            <div className="grid grid-cols-3 gap-2">
               {COMMON_CHORDS.map(chord => (
                 <motion.div
                   key={chord.name}

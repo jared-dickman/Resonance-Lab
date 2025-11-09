@@ -32,6 +32,8 @@ Environment variables can also be used:
 - `POST /api/songs` – body `{ "artist": string, "title": string, "chordId"?: number, "tabId"?: number }`
   - When chords are saved, the server automatically runs `frontend/scripts/songify.ts` to materialise `song.json` alongside the HTML.
 
+> Need a shorter walk through? See `cmd/server/README.md` for a quickstart focused on booting the Go API.
+
 All endpoints respond with JSON and include permissive CORS headers for the frontend running on another port.
 
 ## CLI usage

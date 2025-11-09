@@ -1,19 +1,16 @@
 'use client';
 
 import { type FormEvent, useState, useMemo } from 'react';
-import { Download, Search } from 'lucide-react';
+import { Download } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinner';
-import { Skeleton } from '@/components/ui/skeleton';
-import { downloadSong, searchLibrary } from '@/lib/api';
-import type { SearchResult, SearchResponse } from '@/lib/types';
+import { searchLibrary } from '@/lib/api';
 import Link from 'next/link';
-import { useSongs } from '@/lib/SongsContext';
+import { useSongs, useDownloadSong } from '@/app/features/songs/hooks';
 import { useAsyncApi } from '@/lib/hooks/useAsyncApi';
-import { PAGINATION } from '@/lib/constants/timing.constants';
 
 interface StatusMessage {
   type: 'success' | 'error' | 'info';
@@ -21,15 +18,12 @@ interface StatusMessage {
 }
 
 export default function HomePage() {
-  const { songs, refreshSongs } = useSongs();
+  const { data: songs = [] } = useSongs();
   const searchApi = useAsyncApi(searchLibrary, 'Search failed');
-  const downloadApi = useAsyncApi(downloadSong, 'Download failed');
-  const [_status, setStatus] = useState<StatusMessage | null>(null);
+  const { mutate: downloadSong, isPending: isDownloading } = useDownloadSong();
+  const [status, setStatus] = useState<StatusMessage | null>(null);
   const [searchArtist, setSearchArtist] = useState('');
   const [searchTitle, setSearchTitle] = useState('');
-  const [searchResults, setSearchResults] = useState<SearchResponse | null>(null);
-  const [selectedChord, setSelectedChord] = useState<SearchResult | null>(null);
-  const [selectedTab, setSelectedTab] = useState<SearchResult | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedKey, setSelectedKey] = useState('all');
 
@@ -51,58 +45,50 @@ export default function HomePage() {
   const handleSearch = async (event: FormEvent) => {
     event.preventDefault();
     if (!searchTitle.trim()) {
-      setStatus({ type: 'error', message: 'Song title is required for search.' });
+      setStatus({ type: 'error', message: '🎸 Song title is required!' });
       return;
     }
-    setStatus({ type: 'info', message: 'Searching Ultimate Guitar...' });
+
+    setStatus({ type: 'info', message: '🔍 Searching Ultimate Guitar...' });
     const results = await searchApi.execute(searchArtist.trim(), searchTitle.trim());
-    if (results) {
-      setSearchResults(results);
-      setSelectedChord(null);
-      setSelectedTab(null);
-      if (!results.chords.length && !results.tabs.length) {
-        setStatus({ type: 'info', message: 'No results found. Try a different query.' });
-      } else {
-        setStatus(null);
+
+    if (!results) {
+      setStatus({ type: 'error', message: searchApi.error || '❌ Search failed' });
+      return;
+    }
+
+    if (!results.chords.length && !results.tabs.length) {
+      setStatus({ type: 'info', message: '🤔 No results found. Try a different search.' });
+      return;
+    }
+
+    // Auto-download the best rated version
+    const bestChord = results.chords[0];
+    const bestTab = results.tabs[0];
+
+    setStatus({ type: 'info', message: '⬇️ Downloading best version...' });
+    downloadSong(
+      {
+        artist: bestChord?.artist || bestTab?.artist || searchArtist.trim(),
+        title: bestChord?.title || bestTab?.title || searchTitle.trim(),
+        chordId: bestChord?.id,
+        tabId: bestTab?.id,
+      },
+      {
+        onSuccess: (data) => {
+          setStatus({
+            type: 'success',
+            message: `✨ "${data.summary.title}" by ${data.summary.artist} added to your library! 🎉`
+          });
+          setSearchArtist('');
+          setSearchTitle('');
+          setTimeout(() => setStatus(null), 5000);
+        },
+        onError: (error) => {
+          setStatus({ type: 'error', message: `❌ ${error.message}` });
+        },
       }
-    } else if (searchApi.error) {
-      setStatus({ type: 'error', message: searchApi.error });
-    }
-  };
-
-  const handleDownload = async () => {
-    if (!searchTitle.trim() && !selectedChord && !selectedTab) {
-      setStatus({
-        type: 'error',
-        message: 'Provide a search query and select at least a chord result.',
-      });
-      return;
-    }
-
-    const artist = selectedChord?.artist || selectedTab?.artist || searchArtist.trim();
-    const title = selectedChord?.title || selectedTab?.title || searchTitle.trim();
-
-    if (!artist || !title) {
-      setStatus({
-        type: 'error',
-        message: 'Select a chord result or provide both artist and title.',
-      });
-      return;
-    }
-
-    setStatus({ type: 'info', message: 'Downloading song and saving locally...' });
-    const detail = await downloadApi.execute({
-      artist,
-      title,
-      chordId: selectedChord?.id,
-      tabId: selectedTab?.id,
-    });
-    if (detail) {
-      setStatus({ type: 'success', message: `${detail.summary.title} saved successfully.` });
-      await refreshSongs();
-    } else if (downloadApi.error) {
-      setStatus({ type: 'error', message: downloadApi.error });
-    }
+    );
   };
 
   return (
@@ -200,122 +186,36 @@ export default function HomePage() {
                 autoComplete="off"
               />
             </div>
-            <Button type="submit" className="w-full" disabled={searchApi.isLoading}>
-              {searchApi.isLoading ? (
+            <Button type="submit" className="w-full" disabled={searchApi.isLoading || isDownloading}>
+              {searchApi.isLoading || isDownloading ? (
                 <span className="flex items-center gap-2">
                   <Spinner />
-                  Searching...
+                  {searchApi.isLoading ? 'Searching...' : 'Saving...'}
                 </span>
               ) : (
                 <span className="flex items-center gap-2">
-                  <Search className="h-4 w-4" />
-                  Search
+                  <Download className="h-4 w-4" />
+                  Add to Library
                 </span>
               )}
             </Button>
           </form>
 
-          {searchApi.isLoading && (
-            <div className="mt-6 space-y-4">
-              <div className="space-y-3">
-                <Skeleton className="h-3.5 w-24" />
-                {[...Array(PAGINATION.SONGS_PER_PAGE)].map((_, i) => (
-                  <div key={i} className="rounded-lg border px-3 py-3">
-                    <Skeleton className="h-4 w-3/4 mb-2" />
-                    <Skeleton className="h-3 w-1/2" />
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-          {!searchApi.isLoading && searchResults && (
-            <div className="mt-6 space-y-5">
-              <ResultList
-                title="Chord Charts"
-                results={searchResults.chords}
-                selected={selectedChord?.id}
-                onSelect={setSelectedChord}
-              />
-              <ResultList
-                title="Tabs"
-                results={searchResults.tabs}
-                selected={selectedTab?.id}
-                onSelect={setSelectedTab}
-              />
-              <Button
-                className="w-full"
-                size="lg"
-                onClick={handleDownload}
-                disabled={downloadApi.isLoading || (!selectedChord && !selectedTab)}
-              >
-                {downloadApi.isLoading ? (
-                  <span className="flex items-center gap-2">
-                    <Spinner />
-                    Saving...
-                  </span>
-                ) : (
-                  <span className="flex items-center gap-2">
-                    <Download className="h-4 w-4" />
-                    Save to Library
-                  </span>
-                )}
-              </Button>
+          {status && (
+            <div
+              className={`mt-4 rounded-lg border p-4 text-sm ${
+                status.type === 'success'
+                  ? 'bg-green-50 border-green-200 text-green-800 dark:bg-green-950 dark:border-green-800 dark:text-green-200'
+                  : status.type === 'error'
+                  ? 'bg-red-50 border-red-200 text-red-800 dark:bg-red-950 dark:border-red-800 dark:text-red-200'
+                  : 'bg-blue-50 border-blue-200 text-blue-800 dark:bg-blue-950 dark:border-blue-800 dark:text-blue-200'
+              }`}
+            >
+              {status.message}
             </div>
           )}
         </CardContent>
       </Card>
-    </div>
-  );
-}
-
-function ResultList({
-  title,
-  results,
-  selected,
-  onSelect,
-}: {
-  title: string;
-  results: SearchResult[];
-  selected: number | null | undefined;
-  onSelect: (result: SearchResult | null) => void;
-}) {
-  if (!results.length) {
-    return null;
-  }
-
-  return (
-    <div className="space-y-3">
-      <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-        {title}
-      </div>
-      <div className="space-y-2">
-        {results.map(result => {
-          const isActive = selected === result.id;
-          return (
-            <button
-              key={result.id}
-              onClick={() => onSelect(isActive ? null : result)}
-              className={`w-full rounded-lg border px-3.5 py-3 text-left text-sm transition-all ${
-                isActive
-                  ? 'border-primary bg-accent/50 shadow-sm'
-                  : 'border-border/40 hover:border-border hover:bg-accent/30 hover:shadow-sm'
-              }`}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <span className="font-medium text-foreground flex-1">{result.title}</span>
-                <span className="text-xs text-muted-foreground shrink-0">{result.artist}</span>
-              </div>
-              <div className="mt-1.5 flex gap-3 text-xs text-muted-foreground">
-                <span>★ {result.rating.toFixed(1)}</span>
-                <span>•</span>
-                <span>{result.votes} votes</span>
-                <span>•</span>
-                <span>Score {result.score.toFixed(2)}</span>
-              </div>
-            </button>
-          );
-        })}
-      </div>
     </div>
   );
 }

@@ -180,15 +180,15 @@ export default function SongwriterClient(): React.JSX.Element {
   const showAssistant = panelVisibility.assistant;
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="grid min-h-screen grid-rows-[auto_1fr] bg-background">
       <SongwriterHeader
         onToggleDrafts={handleToggleDrafts}
         onSaveDraft={handleSaveDraft}
         showDraftManager={showDraftManager}
       />
 
-      <main className="flex-1 overflow-hidden bg-muted/20">
-        <div className="flex h-full flex-col">
+      <main className="min-h-0 bg-muted/20 overflow-hidden">
+        <div className="flex h-full min-h-0 flex-col">
           <WorkspaceSummaryBar
             title={songState.metadata.title}
             metrics={workspaceMetrics}
@@ -196,69 +196,75 @@ export default function SongwriterClient(): React.JSX.Element {
             onTogglePanel={togglePanel}
           />
 
-          <div className="flex-1">
-            <PanelGroup direction="horizontal" className="h-full" onLayout={handlePanelLayoutChange}>
-              {showNavigator && (
-                <>
-                  <Panel
-                    id="navigator-panel"
-                    defaultSize={panelConfigs.navigator?.widthPercentage ?? 22}
-                    minSize={18}
-                    maxSize={35}
-                    className="relative"
-                  >
-                    <NavigatorColumn
-                      sections={sectionSummaries}
-                      metrics={workspaceMetrics}
-                      activeSectionId={activeSectionId}
-                      onSectionSelect={handleSectionSelect}
-                    />
-                  </Panel>
-                  {(showWorkspace || showAssistant) && <HorizontalResizeHandle />}
-                </>
-              )}
+          <div className="flex-1 min-h-0 overflow-y-auto px-4 pb-6 sm:px-6 lg:px-8">
+            <div className="mx-auto h-full min-h-0 w-full max-w-[1600px]">
+              <PanelGroup
+                direction="horizontal"
+                className="h-full min-h-0"
+                onLayout={handlePanelLayoutChange}
+              >
+                {showNavigator && (
+                  <>
+                    <Panel
+                      id="navigator-panel"
+                      defaultSize={panelConfigs.navigator?.widthPercentage ?? 22}
+                      minSize={18}
+                      maxSize={35}
+                      className="relative min-h-0"
+                    >
+                      <NavigatorColumn
+                        sections={sectionSummaries}
+                        metrics={workspaceMetrics}
+                        activeSectionId={activeSectionId}
+                        onSectionSelect={handleSectionSelect}
+                      />
+                    </Panel>
+                    {(showWorkspace || showAssistant) && <HorizontalResizeHandle />}
+                  </>
+                )}
 
-              {showWorkspace && (
-                <>
+                {showWorkspace && (
+                  <>
+                    <Panel
+                      id="workspace-panel"
+                      defaultSize={panelConfigs.workspace?.widthPercentage ?? 50}
+                      minSize={40}
+                      className="relative min-h-0"
+                    >
+                      <WorkspaceColumn
+                        lyrics={lyricsText}
+                        title={songState.metadata.title}
+                        selectedChord={selectedChord}
+                        chordProgression={chordProgression}
+                        onTitleChange={handleTitleChange}
+                        onLyricsChange={handleLyricsChange}
+                        onChordsChange={handleChordsChange}
+                        onChordSelect={setSelectedChord}
+                      />
+                    </Panel>
+                    {showAssistant && <HorizontalResizeHandle />}
+                  </>
+                )}
+
+                {showAssistant && (
                   <Panel
-                    id="workspace-panel"
-                    defaultSize={panelConfigs.workspace?.widthPercentage ?? 50}
-                    minSize={40}
-                    className="relative"
+                    id="assistant-panel"
+                    defaultSize={panelConfigs.assistant?.widthPercentage ?? 28}
+                    minSize={24}
+                    maxSize={38}
+                    className="relative min-h-0"
                   >
-                    <WorkspaceColumn
-                      lyrics={lyricsText}
-                      title={songState.metadata.title}
+                    <AssistantColumn
+                      draft={currentDraft}
                       selectedChord={selectedChord}
-                      chordProgression={chordProgression}
-                      onTitleChange={handleTitleChange}
-                      onLyricsChange={handleLyricsChange}
-                      onChordsChange={handleChordsChange}
-                      onChordSelect={setSelectedChord}
+                      onLyricsSuggestion={appendLyricsSuggestion}
+                      onChordSuggestion={setSelectedChord}
+                      onApplyConfiguration={handleApplyConfiguration}
                     />
                   </Panel>
-                  {showAssistant && <HorizontalResizeHandle />}
-                </>
-              )}
-
-              {showAssistant && (
-                <Panel
-                  id="assistant-panel"
-                  defaultSize={panelConfigs.assistant?.widthPercentage ?? 28}
-                  minSize={24}
-                  maxSize={38}
-                  className="relative"
-                >
-                  <AssistantColumn
-                    draft={currentDraft}
-                    selectedChord={selectedChord}
-                    onLyricsSuggestion={appendLyricsSuggestion}
-                    onChordSuggestion={setSelectedChord}
-                    onApplyConfiguration={handleApplyConfiguration}
-                  />
-                </Panel>
-              )}
-            </PanelGroup>
+                )}
+              </PanelGroup>
+            </div>
           </div>
         </div>
       </main>
@@ -280,8 +286,8 @@ function NavigatorColumn({
   onSectionSelect,
 }: NavigatorColumnProps): React.JSX.Element {
   return (
-    <div className="flex h-full flex-col border-r bg-background/95" tabIndex={-1}>
-      <ScrollArea className="h-full">
+    <div className="flex h-full min-h-0 flex-col border-r bg-background/95" tabIndex={-1}>
+      <ScrollArea className="flex-1">
         <div className="flex flex-col gap-4 p-4">
           <Card className="border-2 bg-background">
             <CardHeader className="pb-2">
@@ -361,10 +367,10 @@ function WorkspaceColumn({
   onChordSelect,
 }: WorkspaceColumnProps): React.JSX.Element {
   return (
-    <div className="flex h-full flex-col bg-background" tabIndex={-1}>
-      <PanelGroup direction="vertical" className="h-full">
-        <Panel defaultSize={70} minSize={55} className="relative">
-          <div className="flex h-full flex-col">
+    <div className="flex h-full min-h-0 flex-col bg-background" tabIndex={-1}>
+      <PanelGroup direction="vertical" className="h-full min-h-0">
+        <Panel defaultSize={70} minSize={55} className="relative min-h-0">
+          <div className="flex h-full min-h-0 flex-col">
             <ScrollArea className="flex-1 p-4">
               <Card className="border-2 shadow-sm">
                 <LyricsEditor
@@ -379,9 +385,9 @@ function WorkspaceColumn({
           </div>
         </Panel>
         <VerticalResizeHandle />
-        <Panel defaultSize={30} minSize={20} className="relative">
-          <div className="flex h-full flex-col border-t bg-background">
-            <Card className="h-full rounded-none border-0">
+        <Panel defaultSize={30} minSize={20} className="relative min-h-0">
+          <div className="flex h-full min-h-0 flex-col border-t bg-background">
+            <Card className="flex h-full flex-col rounded-none border-0">
               <ChordProgressionBuilder
                 chords={chordProgression}
                 onChordsChange={onChordsChange}
@@ -412,11 +418,11 @@ function AssistantColumn({
   onApplyConfiguration,
 }: AssistantColumnProps): React.JSX.Element {
   return (
-    <div className="flex h-full flex-col border-l bg-background" tabIndex={-1}>
-      <PanelGroup direction="vertical" className="h-full">
-        <Panel defaultSize={65} minSize={50} className="relative">
-          <div className="flex h-full flex-col">
-            <Card className="h-full rounded-none border-0">
+    <div className="flex h-full min-h-0 flex-col border-l bg-background" tabIndex={-1}>
+      <PanelGroup direction="vertical" className="h-full min-h-0">
+        <Panel defaultSize={65} minSize={50} className="relative min-h-0">
+          <div className="flex h-full min-h-0 flex-col">
+            <Card className="flex h-full flex-col rounded-none border-0">
               <ChatInterface
                 onLyricsSuggestion={onLyricsSuggestion}
                 onChordSuggestion={onChordSuggestion}
@@ -426,7 +432,7 @@ function AssistantColumn({
           </div>
         </Panel>
         <VerticalResizeHandle />
-        <Panel defaultSize={35} minSize={25} className="relative">
+        <Panel defaultSize={35} minSize={25} className="relative min-h-0">
           <SongConfigurationPreview
             draft={draft}
             selectedChord={selectedChord}
@@ -480,8 +486,8 @@ function SongConfigurationPreview({
   const CopyIcon = copyStatus === 'copied' ? ClipboardCheck : Clipboard;
 
   return (
-    <Card className="h-full rounded-none border-0 border-t bg-background/95">
-      <CardHeader className="gap-3 border-b pb-3">
+    <Card className="flex h-full flex-col rounded-none border-0 border-t bg-background/95">
+      <CardHeader className="gap-3 border-b pb-3 flex-shrink-0">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <Braces className="h-4 w-4 text-primary" />
@@ -523,7 +529,7 @@ function SongConfigurationPreview({
           </div>
         </div>
       </CardHeader>
-      <CardContent className="h-full p-0">
+      <CardContent className="flex-1 overflow-hidden p-0">
         <ScrollArea className="h-full">
           <pre className="px-4 py-3 text-xs font-mono leading-relaxed">
             {formattedJson}
