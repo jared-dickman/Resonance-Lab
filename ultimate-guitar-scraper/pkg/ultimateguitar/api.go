@@ -15,7 +15,7 @@ import (
 
 // API constants
 const ugAPIEndpoint = "https://api.ultimate-guitar.com/api/v1" // API Base URL
-const ugUserAgent = "UGT_ANDROID/4.11.1 (Pixel; 8.1.0)"        // Default useragent for a pixel device
+const ugUserAgent = "UGT_ANDROID/5.8.1 (Nexus 6; Android 9)"   // Default useragent for a Nexus device
 const UGTimeFormat = "2006-01-02"                              // API Key datetime format
 
 // 8:10pm getMd5 called! 97cae2a9bdf334ba2022-05-13:20createLog()
@@ -104,6 +104,9 @@ func (s *Scraper) ConfigureHeaders(req *http.Request) {
 	}
 	req.Header["X-UG-CLIENT-ID"] = []string{s.DeviceID}
 	req.Header["X-UG-API-KEY"] = []string{s.generateAPIKey()}
+	req.Header["X-UG-CLIENT-BACKEND"] = []string{"1"}
+	req.Header["X-UG-CLIENT-BUILD"] = []string{"3000652"}
+	req.Header["X-UG-AB-VARIATION-ID"] = []string{"8513"}
 
 	// This header isn't sent in the app, so we remove it.
 	req.Header.Del("Accept-Encoding")
