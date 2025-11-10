@@ -31,14 +31,13 @@ WORKDIR /app
 # Copy binary from builder stage
 COPY --from=builder /app/scraper/server .
 
-# Copy songify script and dependencies from frontend
+# Copy songify script from frontend
 COPY frontend/scripts /app/frontend/scripts
-COPY frontend/package.json frontend/package-lock.json /app/frontend/
 
-# Install tsx globally and frontend dependencies locally
+# Install tsx globally and script dependencies locally
 RUN npm install -g tsx && \
-    cd /app/frontend && \
-    npm ci --omit=dev --ignore-scripts
+    cd /app/frontend/scripts && \
+    npm install
 
 # Create directory for songs
 RUN mkdir -p /app/songs
