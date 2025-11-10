@@ -1,12 +1,12 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { Music, ArrowLeft } from 'lucide-react';
+import { Music, ArrowLeft, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useSongs } from '@/lib/SongsContext';
+import { useSongs, useDeleteSong } from '@/app/features/songs/hooks';
 import { pageRoutes } from '@/lib/routes';
 
 interface ArtistClientProps {
@@ -14,7 +14,9 @@ interface ArtistClientProps {
 }
 
 export default function ArtistClient({ artistSlug }: ArtistClientProps) {
-  const { songs, isLoadingSongs } = useSongs();
+  const { data: songs = [], isLoading: isLoadingSongs } = useSongs();
+  const { mutate: deleteSongMutation, isPending: isDeleting } = useDeleteSong();
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
   const artistData = useMemo(() => {
     const artistSongs = songs.filter(song => song.artistSlug === artistSlug);
@@ -39,6 +41,29 @@ export default function ArtistClient({ artistSlug }: ArtistClientProps) {
       lastUpdated,
     };
   }, [songs, artistSlug]);
+
+  const handleDelete = (songArtistSlug: string, songSlug: string, title: string, event: React.MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!confirm(`Are you sure you want to delete "${title}"? This cannot be undone.`)) {
+      return;
+    }
+
+    deleteSongMutation(
+      { artistSlug: songArtistSlug, songSlug },
+      {
+        onSuccess: () => {
+          setStatusMessage(`✨ ${title} deleted successfully.`);
+          setTimeout(() => setStatusMessage(null), 3000);
+        },
+        onError: (error) => {
+          setStatusMessage(error.message || 'Failed to delete song.');
+          setTimeout(() => setStatusMessage(null), 3000);
+        },
+      }
+    );
+  };
 
   if (isLoadingSongs) {
     return (
@@ -152,27 +177,44 @@ export default function ArtistClient({ artistSlug }: ArtistClientProps) {
 
           <div className="space-y-2">
             <h3 className="text-sm font-medium text-muted-foreground">Songs</h3>
+            {statusMessage && (
+              <div className="p-3 rounded-md bg-muted text-sm">
+                {statusMessage}
+              </div>
+            )}
             <div className="space-y-2">
               {artistData.songs.map(song => (
-                <Link
+                <div
                   key={`${song.artistSlug}/${song.songSlug}`}
-                  href={`/songs/${song.artistSlug}/${song.songSlug}`}
-                  className="block rounded-md border p-4 transition hover:border-primary hover:bg-muted"
+                  className="group rounded-md border p-4 transition hover:border-primary hover:bg-muted"
                 >
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-1">
-                      <div className="font-medium">{song.title}</div>
+                  <div className="flex items-start justify-between gap-3">
+                    <Link
+                      href={`/songs/${song.artistSlug}/${song.songSlug}`}
+                      className="flex-1 space-y-1"
+                    >
+                      <div className="font-medium hover:text-primary transition-colors">{song.title}</div>
                       <div className="text-sm text-muted-foreground">
                         Updated {new Date(song.updatedAt).toLocaleDateString()}
                       </div>
+                    </Link>
+                    <div className="flex items-center gap-2">
+                      {song.key && (
+                        <span className="inline-flex items-center rounded-md bg-muted px-2.5 py-0.5 text-xs font-medium">
+                          {song.key}
+                        </span>
+                      )}
+                      <button
+                        onClick={(e) => handleDelete(song.artistSlug, song.songSlug, song.title, e)}
+                        disabled={isDeleting}
+                        className="opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-destructive/10 rounded text-destructive disabled:opacity-50"
+                        title="Delete song"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
                     </div>
-                    {song.key && (
-                      <span className="inline-flex items-center rounded-md bg-muted px-2.5 py-0.5 text-xs font-medium">
-                        {song.key}
-                      </span>
-                    )}
                   </div>
-                </Link>
+                </div>
               ))}
             </div>
           </div>

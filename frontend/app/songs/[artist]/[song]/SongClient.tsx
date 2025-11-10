@@ -15,13 +15,16 @@ import { ChordJourneyVisualization } from '@/components/ChordJourneyVisualizatio
 import { ChordRhythmGame } from '@/components/ChordRhythmGame';
 import { LoopPracticeMode } from '@/components/LoopPracticeMode';
 import { Button } from '@/components/ui/button';
-import { Guitar, Piano, Volume2, VolumeX } from 'lucide-react';
+import { Guitar, Piano, Volume2, VolumeX, Trash2 } from 'lucide-react';
 import { useGuitarPlayback } from '@/lib/hooks';
 import IntelligentMusicPanel from '@/components/music-theory/IntelligentMusicPanel';
+import { useDeleteSong } from '@/app/features/songs/hooks';
+import { useRouter } from 'next/navigation';
 
 interface SongClientProps {
   song: Song;
   artistSlug: string;
+  songSlug: string;
 }
 
 const getNormalizedKey = (key?: string) => {
@@ -35,7 +38,8 @@ const getKeyIndex = (key: string) => {
   return index === -1 ? KEY_SIGNATURES.indexOf('C') : index;
 };
 
-export function SongClient({ song, artistSlug }: SongClientProps): React.JSX.Element {
+export function SongClient({ song, artistSlug, songSlug }: SongClientProps): React.JSX.Element {
+  const router = useRouter();
   const normalizedOriginalKey = getNormalizedKey(song.key);
   const originalKeyIndex = getKeyIndex(normalizedOriginalKey ?? 'C');
 
@@ -45,6 +49,8 @@ export function SongClient({ song, artistSlug }: SongClientProps): React.JSX.Ele
   const [currentChord, setCurrentChord] = useState<string | null>(null);
   const [instrument, setInstrument] = useState<'guitar' | 'piano'>('guitar');
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
+
+  const { mutate: deleteSongMutation, isPending: isDeleting } = useDeleteSong();
 
   // Initialize guitar playback
   useGuitarPlayback({
@@ -178,14 +184,43 @@ export function SongClient({ song, artistSlug }: SongClientProps): React.JSX.Ele
     setIsAutoScrollEnabled(prev => !prev);
   };
 
+  const handleDelete = () => {
+    if (!confirm(`Are you sure you want to delete "${song.title}"? This cannot be undone.`)) {
+      return;
+    }
+
+    deleteSongMutation(
+      { artistSlug, songSlug },
+      {
+        onSuccess: () => {
+          router.push('/');
+        },
+      }
+    );
+  };
+
   return (
     <div className={styles.songContainer}>
-      <h1 className={styles.songTitle}>{song.title}</h1>
-      <h2 className={styles.songArtist}>
-        <Link href={`/songs/${artistSlug}`} className="hover:underline">
-          {song.artist}
-        </Link>
-      </h2>
+      <div className="flex justify-between items-start gap-4 mb-2">
+        <div className="flex-1">
+          <h1 className={styles.songTitle}>{song.title}</h1>
+          <h2 className={styles.songArtist}>
+            <Link href={`/songs/${artistSlug}`} className="hover:underline">
+              {song.artist}
+            </Link>
+          </h2>
+        </div>
+        <Button
+          variant="destructive"
+          size="sm"
+          onClick={handleDelete}
+          disabled={isDeleting}
+          className="gap-2"
+        >
+          <Trash2 className="h-4 w-4" />
+          Delete
+        </Button>
+      </div>
 
       <div className="space-y-4">
         <SongControls

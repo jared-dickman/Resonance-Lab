@@ -212,6 +212,28 @@ func (s *Service) Download(ctx context.Context, req DownloadRequest) (SongDetail
 	return s.GetSong(ctx, artistSlug, songSlug)
 }
 
+// Delete removes a song from the library by deleting its directory.
+func (s *Service) Delete(_ context.Context, artistSlug, songSlug string) error {
+	basePath := s.songPath(artistSlug, songSlug)
+
+	if _, err := os.Stat(basePath); os.IsNotExist(err) {
+		return ErrSongNotFound
+	}
+
+	if err := os.RemoveAll(basePath); err != nil {
+		return fmt.Errorf("delete song directory: %w", err)
+	}
+
+	// Check if artist directory is empty and remove it if so
+	artistPath := filepath.Join(s.songsDir, artistSlug)
+	entries, err := os.ReadDir(artistPath)
+	if err == nil && len(entries) == 0 {
+		_ = os.Remove(artistPath)
+	}
+
+	return nil
+}
+
 func (s *Service) fetchAndWriteTab(ctx context.Context, scraper ultimateguitar.Scraper, tabID int64, dest string) error {
 	tabResult, err := scraper.GetTabByID(tabID)
 	if err != nil {

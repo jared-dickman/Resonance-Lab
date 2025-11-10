@@ -98,3 +98,19 @@ export function useDownloadSong() {
     }
   );
 }
+
+/**
+ * Delete a song from the library
+ *
+ * @example
+ * const { mutate: deleteSong, isPending } = useDeleteSong();
+ * deleteSong({ artistSlug: 'the-beatles', songSlug: 'let-it-be' });
+ */
+export function useDeleteSong() {
+  return useApiMutation<void, Error, { artistSlug: string; songSlug: string }>(
+    ({ artistSlug, songSlug }) => songMutations.delete(artistSlug, songSlug),
+    {
+      invalidationKeys: [songKeys.all], // Invalidate all song queries on successful delete
+    }
+  );
+}

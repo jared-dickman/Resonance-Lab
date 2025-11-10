@@ -32,3 +32,7 @@ export async function searchSongs(input: SearchRequestInput): Promise<SearchResp
 export async function downloadSong(input: DownloadRequestInput): Promise<SongDetailResponse> {
   return apiClient.post<SongDetailResponse>(apiRoutes.songs, input);
 }
+
+export async function deleteSong(artistSlug: string, songSlug: string): Promise<void> {
+  return apiClient.delete(apiRoutes.songDetail(artistSlug, songSlug));
+}

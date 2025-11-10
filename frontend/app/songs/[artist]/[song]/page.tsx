@@ -41,6 +41,7 @@ export default function SongPage({ params }: SongPageProps) {
         sections: songData.sections,
       }}
       artistSlug={artist}
+      songSlug={song}
     />
   );
 }

@@ -1,7 +1,8 @@
 'use client';
 
 import { type FormEvent, useState, useMemo } from 'react';
-import { Download } from 'lucide-react';
+import { Download, Trash2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinner';
 import { searchLibrary } from '@/lib/api';
 import Link from 'next/link';
-import { useSongs, useDownloadSong } from '@/app/features/songs/hooks';
+import { useSongs, useDownloadSong, useDeleteSong } from '@/app/features/songs/hooks';
 import { useAsyncApi } from '@/lib/hooks/useAsyncApi';
 
 interface StatusMessage {
@@ -18,9 +19,11 @@ interface StatusMessage {
 }
 
 export default function HomePage() {
+  const router = useRouter();
   const { data: songs = [] } = useSongs();
   const searchApi = useAsyncApi(searchLibrary, 'Search failed');
   const { mutate: downloadSong, isPending: isDownloading } = useDownloadSong();
+  const { mutate: deleteSongMutation, isPending: isDeleting } = useDeleteSong();
   const [status, setStatus] = useState<StatusMessage | null>(null);
   const [searchArtist, setSearchArtist] = useState('');
   const [searchTitle, setSearchTitle] = useState('');
@@ -82,10 +85,30 @@ export default function HomePage() {
           });
           setSearchArtist('');
           setSearchTitle('');
-          setTimeout(() => setStatus(null), 5000);
+          // Navigate to the newly downloaded song
+          router.push(`/songs/${data.summary.artistSlug}/${data.summary.songSlug}`);
         },
         onError: (error) => {
           setStatus({ type: 'error', message: `❌ ${error.message}` });
+        },
+      }
+    );
+  };
+
+  const handleDelete = (artistSlug: string, songSlug: string, title: string) => {
+    if (!confirm(`Are you sure you want to delete "${title}"? This cannot be undone.`)) {
+      return;
+    }
+
+    deleteSongMutation(
+      { artistSlug, songSlug },
+      {
+        onSuccess: () => {
+          setStatus({ type: 'success', message: `✨ ${title} deleted successfully.` });
+          setTimeout(() => setStatus(null), 3000);
+        },
+        onError: (error) => {
+          setStatus({ type: 'error', message: error.message || 'Failed to delete song.' });
         },
       }
     );
@@ -141,11 +164,21 @@ export default function HomePage() {
                       {song.artist}
                     </Link>
                   </div>
-                  {song.key && (
-                    <div className="text-xs font-medium text-muted-foreground bg-muted px-2 py-1 rounded">
-                      {song.key}
-                    </div>
-                  )}
+                  <div className="flex items-center gap-2">
+                    {song.key && (
+                      <div className="text-xs font-medium text-muted-foreground bg-muted px-2 py-1 rounded">
+                        {song.key}
+                      </div>
+                    )}
+                    <button
+                      onClick={() => handleDelete(song.artistSlug, song.songSlug, song.title)}
+                      disabled={isDeleting}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-destructive/10 rounded text-destructive disabled:opacity-50"
+                      title="Delete song"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
