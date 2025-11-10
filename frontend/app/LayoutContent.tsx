@@ -147,14 +147,14 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
       <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex flex-col md:flex-row items-start md:items-center justify-between gap-3 md:gap-4 py-3 md:py-4 max-w-7xl mx-auto px-4 md:px-6">
           <div className="flex items-center justify-between w-full md:w-auto gap-3">
-            <div className="flex flex-col gap-0.5">
+            <Link href="/" className="flex flex-col gap-0.5 group transition-opacity hover:opacity-80">
               <h1 className="text-xl md:text-2xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
                 Resonance Lab
               </h1>
               <p className="text-xs text-muted-foreground leading-tight">
                 Professional music workspace
               </p>
-            </div>
+            </Link>
             <div className="flex md:hidden gap-2">
               <Sheet open={mobileLibraryOpen} onOpenChange={setMobileLibraryOpen}>
                 <SheetTrigger asChild>
