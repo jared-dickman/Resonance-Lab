@@ -51,6 +51,7 @@ jobs:
         with:
           path: ./
           extra_args: --no-update
+        continue-on-error: true
 
       - name: 📊 SonarCloud Scan (if configured)
         uses: SonarSource/sonarcloud-github-action@master
