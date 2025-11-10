@@ -38,7 +38,7 @@ COPY frontend/package.json frontend/package-lock.json /app/frontend/
 # Install tsx globally and frontend dependencies locally
 RUN npm install -g tsx && \
     cd /app/frontend && \
-    npm install --production
+    npm ci --omit=dev --ignore-scripts
 
 # Create directory for songs
 RUN mkdir -p /app/songs
