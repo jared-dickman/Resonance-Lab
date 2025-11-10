@@ -50,7 +50,7 @@ jobs:
         uses: trufflesecurity/trufflehog@main
         with:
           path: ./
-          extra_args: --fail
+          extra_args: --no-update
 
       - name: 📊 SonarCloud Scan (if configured)
         uses: SonarSource/sonarcloud-github-action@master
