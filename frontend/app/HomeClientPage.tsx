@@ -2,6 +2,7 @@
 
 import { type FormEvent, useState, useMemo } from 'react';
 import { Download, Trash2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,6 +19,7 @@ interface StatusMessage {
 }
 
 export default function HomePage() {
+  const router = useRouter();
   const { data: songs = [] } = useSongs();
   const searchApi = useAsyncApi(searchLibrary, 'Search failed');
   const { mutate: downloadSong, isPending: isDownloading } = useDownloadSong();
@@ -83,7 +85,8 @@ export default function HomePage() {
           });
           setSearchArtist('');
           setSearchTitle('');
-          setTimeout(() => setStatus(null), 5000);
+          // Navigate to the newly downloaded song
+          router.push(`/songs/${data.summary.artistSlug}/${data.summary.songSlug}`);
         },
         onError: (error) => {
           setStatus({ type: 'error', message: `❌ ${error.message}` });
