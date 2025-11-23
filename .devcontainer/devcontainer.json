@@ -1,6 +1,6 @@
 {
   "name": "Resonance Lab Dev Environment",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bullseye",
 
   "features": {
     "ghcr.io/devcontainers/features/go:1": {
@@ -65,12 +65,6 @@
     "NEXT_PUBLIC_API_URL": "https://dev.srv1015344.hstgr.cloud/api",
     "NEXT_TELEMETRY_DISABLED": "1"
   },
-
-  "mounts": [
-    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/node/.ssh,readonly,type=bind,consistency=cached"
-  ],
-
-  "remoteUser": "node",
 
   "postAttachCommand": {
     "server": "echo '✅ Codespace ready! Run npm run dev in the frontend directory to start the dev server.'"
