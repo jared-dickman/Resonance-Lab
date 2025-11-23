@@ -59,7 +59,7 @@
     }
   },
 
-  "postCreateCommand": "npm ci && cd frontend && npm ci",
+  "postCreateCommand": "npm ci && cd frontend && npm ci && echo '✅ Dependencies installed successfully'",
 
   "remoteEnv": {
     "NEXT_PUBLIC_API_URL": "https://dev.srv1015344.hstgr.cloud/api",
