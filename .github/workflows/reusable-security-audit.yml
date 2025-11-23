@@ -2,9 +2,6 @@ name: Security Audit
 
 on:
   workflow_call:
-    secrets:
-      SNYK_TOKEN:
-        required: false
 
 jobs:
   security-audit:

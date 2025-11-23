@@ -19,9 +19,6 @@ on:
         description: 'Health check endpoint URL'
         type: string
         required: true
-    secrets:
-      VPS_SSH_KEY:
-        required: true
 
 jobs:
   deploy-backend:

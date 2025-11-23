@@ -10,9 +10,7 @@ jobs:
     uses: ./.github/workflows/reusable-quality-security.yml
     with:
       enable_sonarcloud: true
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    secrets: inherit
 
   build-test:
     name: Build & Test
@@ -25,8 +23,7 @@ jobs:
     name: Security Audit
     needs: quality-security
     uses: ./.github/workflows/reusable-security-audit.yml
-    secrets:
-      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    secrets: inherit
 
   deploy-vercel:
     name: Deploy to Vercel Production
@@ -55,8 +52,7 @@ jobs:
       branch: master
       container_name: backend
       health_check_url: https://srv1015344.hstgr.cloud/api/health
-    secrets:
-      VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+    secrets: inherit
 
   notify:
     name: Notify Deployment

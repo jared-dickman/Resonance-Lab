@@ -12,8 +12,7 @@ jobs:
     uses: ./.github/workflows/reusable-quality-security.yml
     with:
       enable_sonarcloud: false
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    secrets: inherit
 
   build-test:
     name: Build & Test
@@ -51,8 +50,7 @@ jobs:
       branch: ${{ github.ref_name }}
       container_name: backend-dev
       health_check_url: https://dev.srv1015344.hstgr.cloud/api/health
-    secrets:
-      VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+    secrets: inherit
 
   enforce-protection:
     name: Enforce Quality Gates
