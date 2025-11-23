@@ -29,18 +29,61 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: 🔍 Validate SSH Key
+        run: |
+          if [ -z "${{ secrets.VPS_SSH_KEY }}" ]; then
+            echo "❌ VPS_SSH_KEY secret is empty or not set"
+            exit 1
+          fi
+
+          echo "${{ secrets.VPS_SSH_KEY }}" > /tmp/test_key
+
+          if ! grep -q "BEGIN.*PRIVATE KEY" /tmp/test_key; then
+            echo "❌ SSH key doesn't contain valid BEGIN marker"
+            rm -f /tmp/test_key
+            exit 1
+          fi
+
+          if ! grep -q "END.*PRIVATE KEY" /tmp/test_key; then
+            echo "❌ SSH key doesn't contain valid END marker"
+            rm -f /tmp/test_key
+            exit 1
+          fi
+
+          rm -f /tmp/test_key
+          echo "✅ SSH key format appears valid"
+
       - name: 🖥️ Deploy Backend to VPS
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: srv1015344.hstgr.cloud
           username: root
           key: ${{ secrets.VPS_SSH_KEY }}
+          debug: true
           script: |
+            echo "📍 Deploying to: ${{ inputs.environment }}"
+            echo "🌿 Branch: ${{ inputs.branch }}"
+            echo "📦 Container: ${{ inputs.container_name }}"
+
             cd /root/Resonance-Lab
             git fetch origin
             git checkout ${{ inputs.branch }}
             git pull origin ${{ inputs.branch }}
+
+            echo "🏗️ Building and starting container..."
             docker-compose up -d --build ${{ inputs.container_name }}
+
+            echo "⏳ Waiting for container to be ready..."
+            sleep 5
+
+            if docker ps | grep -q ${{ inputs.container_name }}; then
+              echo "✅ Container is running"
+            else
+              echo "❌ Container failed to start"
+              docker logs ${{ inputs.container_name }} --tail 50
+              exit 1
+            fi
+
             echo "✅ Backend deployed to ${{ inputs.environment }} successfully"
 
       - name: 🏥 Health Check
