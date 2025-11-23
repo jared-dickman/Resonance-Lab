@@ -28,7 +28,7 @@ jobs:
           cache: 'npm'
 
       - name: 📦 Install dependencies
-        run: npm ci --prefer-offline --no-audit
+        run: npm ci --prefer-offline --no-audit --force
 
       - name: 🔍 TypeScript type check
         run: npm run typecheck
@@ -81,7 +81,7 @@ jobs:
           cache: 'npm'
 
       - name: 📦 Install dependencies
-        run: npm ci --prefer-offline --no-audit
+        run: npm ci --prefer-offline --no-audit --force
 
       - name: 🏗️ Build frontend
         run: npm run build
