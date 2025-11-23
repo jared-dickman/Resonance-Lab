@@ -8,8 +8,6 @@ on:
         type: boolean
         default: false
     secrets:
-      GITHUB_TOKEN:
-        required: true
       SONAR_TOKEN:
         required: false
 
