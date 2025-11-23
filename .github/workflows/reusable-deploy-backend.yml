@@ -54,14 +54,6 @@ jobs:
             exit 1
           fi
 
-          # Check for passphrase encryption
-          if grep -q "ENCRYPTED" /tmp/test_key; then
-            echo "⚠️  Key appears to be passphrase-encrypted"
-            echo "❌ Passphrase-encrypted keys require the 'passphrase' parameter"
-            rm -f /tmp/test_key
-            exit 1
-          fi
-
           # Check key format type
           if grep -q "BEGIN RSA PRIVATE KEY" /tmp/test_key; then
             echo "🔑 Key type: RSA (PEM format)"
@@ -83,8 +75,30 @@ jobs:
             exit 1
           fi
 
+          # Check for PEM passphrase encryption (old format)
+          if grep -q "ENCRYPTED" /tmp/test_key; then
+            echo "⚠️  Key is passphrase-encrypted (PEM format)"
+            echo "❌ Passphrase-encrypted keys require the 'passphrase' parameter"
+            rm -f /tmp/test_key
+            exit 1
+          fi
+
+          # Deep validation: try to parse the key with ssh-keygen
+          echo "🔬 Testing key parsability..."
+          if ssh-keygen -y -P "" -f /tmp/test_key > /dev/null 2>&1; then
+            echo "✅ Key is valid and unencrypted"
+          else
+            echo "❌ Key validation failed!"
+            echo "This could mean:"
+            echo "  • Key is encrypted with a passphrase (add 'passphrase' parameter)"
+            echo "  • Key format is corrupted or invalid"
+            echo "  • Key was not copied completely (missing content)"
+            rm -f /tmp/test_key
+            exit 1
+          fi
+
           rm -f /tmp/test_key
-          echo "✅ SSH key format validation passed"
+          echo "✅ SSH key validation passed"
 
       - name: 🖥️ Deploy Backend to VPS
         uses: appleboy/ssh-action@v1.0.0
