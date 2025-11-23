@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🔍 Validate SSH Key
+      - name: 🔍 Validate SSH Key Format
         run: |
           if [ -z "${{ secrets.VPS_SSH_KEY }}" ]; then
             echo "❌ VPS_SSH_KEY secret is empty or not set"
@@ -37,6 +37,10 @@ jobs:
           fi
 
           echo "${{ secrets.VPS_SSH_KEY }}" > /tmp/test_key
+          chmod 600 /tmp/test_key
+
+          echo "📋 Key format analysis:"
+          head -1 /tmp/test_key
 
           if ! grep -q "BEGIN.*PRIVATE KEY" /tmp/test_key; then
             echo "❌ SSH key doesn't contain valid BEGIN marker"
@@ -50,8 +54,37 @@ jobs:
             exit 1
           fi
 
+          # Check for passphrase encryption
+          if grep -q "ENCRYPTED" /tmp/test_key; then
+            echo "⚠️  Key appears to be passphrase-encrypted"
+            echo "❌ Passphrase-encrypted keys require the 'passphrase' parameter"
+            rm -f /tmp/test_key
+            exit 1
+          fi
+
+          # Check key format type
+          if grep -q "BEGIN RSA PRIVATE KEY" /tmp/test_key; then
+            echo "🔑 Key type: RSA (PEM format)"
+          elif grep -q "BEGIN OPENSSH PRIVATE KEY" /tmp/test_key; then
+            echo "🔑 Key type: OpenSSH format"
+          elif grep -q "BEGIN EC PRIVATE KEY" /tmp/test_key; then
+            echo "🔑 Key type: EC (Elliptic Curve)"
+          elif grep -q "BEGIN DSA PRIVATE KEY" /tmp/test_key; then
+            echo "🔑 Key type: DSA"
+          fi
+
+          # Count lines to ensure it's not truncated
+          line_count=$(wc -l < /tmp/test_key)
+          echo "📏 Key lines: $line_count"
+
+          if [ "$line_count" -lt 5 ]; then
+            echo "❌ Key appears truncated (too few lines)"
+            rm -f /tmp/test_key
+            exit 1
+          fi
+
           rm -f /tmp/test_key
-          echo "✅ SSH key format appears valid"
+          echo "✅ SSH key format validation passed"
 
       - name: 🖥️ Deploy Backend to VPS
         uses: appleboy/ssh-action@v1.0.0
