@@ -1,8 +1,13 @@
 {
   "name": "Resonance Lab Dev Environment",
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bullseye",
+  "image": "mcr.microsoft.com/devcontainers/base:bullseye",
 
   "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20",
+      "nodeGypDependencies": true,
+      "installYarnUsingApt": false
+    },
     "ghcr.io/devcontainers/features/go:1": {
       "version": "1.21"
     },
