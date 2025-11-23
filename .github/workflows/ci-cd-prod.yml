@@ -25,24 +25,6 @@ jobs:
     uses: ./.github/workflows/reusable-security-audit.yml
     secrets: inherit
 
-  deploy-vercel:
-    name: Deploy to Vercel Production
-    runs-on: ubuntu-latest
-    needs: [quality-security, build-test, security-audit]
-
-    steps:
-      - name: 📥 Checkout code
-        uses: actions/checkout@v4
-
-      - name: 🚀 Deploy to Vercel Production
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
-          working-directory: ./frontend
-
   deploy-backend:
     name: Deploy Backend to Production
     needs: [quality-security, build-test, security-audit]
@@ -57,7 +39,7 @@ jobs:
   notify:
     name: Notify Deployment
     runs-on: ubuntu-latest
-    needs: [deploy-vercel, deploy-backend]
+    needs: [deploy-backend]
     if: always()
 
     steps:
@@ -65,7 +47,7 @@ jobs:
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
-          text: 'Production deployment completed!'
+          text: 'Backend deployment completed!'
           webhook_url: ${{ secrets.SLACK_WEBHOOK }}
         continue-on-error: true
 

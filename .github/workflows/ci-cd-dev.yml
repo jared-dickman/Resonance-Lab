@@ -21,25 +21,6 @@ jobs:
     with:
       upload_coverage: false
 
-  deploy-preview:
-    name: Deploy Preview to Vercel
-    runs-on: ubuntu-latest
-    needs: [quality-security, build-test]
-    if: github.event_name == 'pull_request'
-
-    steps:
-      - name: 📥 Checkout code
-        uses: actions/checkout@v4
-
-      - name: 🚀 Deploy to Vercel Preview
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          working-directory: ./frontend
-          github-comment: true
-
   deploy-dev:
     name: Deploy to Dev Environment
     needs: [quality-security, build-test]
