@@ -12,10 +12,10 @@ export const resonanceServer = createSdkMcpServer({
     tool(
       'search_ultimate_guitar',
       'Search Ultimate Guitar for tabs and chords by artist and song title',
-      {
+      z.object({
         artist: z.string().describe('Artist name'),
         title: z.string().describe('Song title'),
-      },
+      }),
       async ({ artist, title }) => {
         try {
           const response = await fetch(`${API_URL}/api/search`, {
