@@ -46,6 +46,7 @@ export interface SearchResponse {
   };
   chords: SearchResult[];
   tabs: SearchResult[];
+  message?: string;
 }
 
 export interface DownloadRequest {
