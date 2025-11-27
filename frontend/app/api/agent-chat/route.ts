@@ -30,6 +30,12 @@ WHEN USER ASKS FOR SONGS IN A KEY:
 
 Prefer CHORDS unless user asks for tabs. Fix typos automatically.
 
+DEDUPE SIMILAR TITLES:
+- "Can't Stop" vs "Cant Stop" = SAME SONG - only show ONE
+- When you see spelling variants of the same song, pick the CHORDS version with HIGHEST rating/hits
+- Never present near-duplicate titles as separate options
+- Compare normalized titles (lowercase, no apostrophes/special chars) to detect dupes
+
 NEVER GIVE UP:
 - If search fails, try different spelling/variation
 - If no exact match, search for just the artist and pick popular songs
