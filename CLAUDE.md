@@ -1,0 +1,4 @@
+- Always validate your work with proof of specific success states programmatically executed
+- If you're going to tell the user to run a command, just run it yourself. 
+- Always make it easy for the user
+- ALWAYS read official web docs for third party tools, deps, and plugins
