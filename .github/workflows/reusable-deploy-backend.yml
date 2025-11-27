@@ -118,7 +118,7 @@ jobs:
             git pull origin ${{ inputs.branch }}
 
             echo "🏗️ Building and starting container..."
-            docker-compose up -d --build ${{ inputs.container_name }}
+            docker compose up -d --build ${{ inputs.container_name }}
 
             echo "⏳ Waiting for container to be ready..."
             sleep 5
