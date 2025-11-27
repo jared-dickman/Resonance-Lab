@@ -6,8 +6,9 @@ import { BLOCKED_TYPES } from '@/lib/agents/ultimate-guitar-search/types';
 import { logger } from '@/lib/logger';
 
 export const runtime = 'nodejs';
+export const maxDuration = 60;
 
-const API_URL = process.env.API_BASE_URL || 'http://localhost:8080';
+const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:8080';
 
 interface ChatMessage {
   role: 'user' | 'assistant';
@@ -79,18 +80,24 @@ const searchTool: Anthropic.Tool = {
 };
 
 async function executeSearch(artist: string, title: string): Promise<string> {
+  const searchUrl = `${API_BASE_URL}/api/search`;
+  logger.info('[SEARCH/1] starting search', { searchUrl, artist, title });
+
   try {
-    const response = await fetch(`${API_URL}/api/search`, {
+    const response = await fetch(searchUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ artist, title }),
     });
+    logger.info('[SEARCH/2] fetch complete', { status: response.status, ok: response.ok });
 
     if (!response.ok) {
       throw new Error(`Search failed with status ${response.status}`);
     }
 
     const data: SearchResponse = await response.json();
+    logger.info('[SEARCH/3] data parsed', { chordsCount: data.chords?.length, tabsCount: data.tabs?.length });
+
     const filterResults = (results: SearchResult[]): SearchResult[] =>
       results.filter((result) => !BLOCKED_TYPES.includes(result.type));
 
@@ -101,8 +108,10 @@ async function executeSearch(artist: string, title: string): Promise<string> {
       message: data.message,
     });
   } catch (error) {
+    const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+    logger.error('[SEARCH/ERR] search failed', { error: errorMsg, searchUrl });
     return JSON.stringify({
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: errorMsg,
       query: { artist, title },
       chords: [],
       tabs: [],
@@ -112,12 +121,16 @@ async function executeSearch(artist: string, title: string): Promise<string> {
 
 export async function POST(request: NextRequest) {
   try {
+    logger.info('[1/START] agent-chat request received', { API_BASE_URL });
+
     const { messages } = (await request.json()) as { messages: ChatMessage[] };
+    logger.info('[2/INPUT] messages parsed', { count: messages?.length });
 
     if (!messages || messages.length === 0) {
       return NextResponse.json({ error: 'Messages required' }, { status: 400 });
     }
 
+    logger.info('[3/INIT] creating Anthropic client');
     const anthropic = new Anthropic();
 
     const anthropicMessages: Anthropic.MessageParam[] = messages.map((msg) => ({
@@ -125,6 +138,7 @@ export async function POST(request: NextRequest) {
       content: msg.content,
     }));
 
+    logger.info('[4/CALL] calling Claude API');
     let response = await anthropic.messages.create({
       model: 'claude-3-5-haiku-latest',
       max_tokens: 1024,
@@ -132,21 +146,28 @@ export async function POST(request: NextRequest) {
       tools: [searchTool],
       messages: anthropicMessages,
     });
+    logger.info('[5/RESP] Claude response received', { stopReason: response.stop_reason });
 
-    // Handle tool use loop (max 5 iterations)
+    // Agentic tool use loop (max 5 iterations)
     let iterations = 0;
     while (response.stop_reason === 'tool_use' && iterations < 5) {
       iterations++;
+      logger.info(`[6/LOOP] tool use iteration ${iterations}`);
+
       const toolUseBlock = response.content.find(
         (block): block is Anthropic.ToolUseBlock => block.type === 'tool_use'
       );
 
-      if (!toolUseBlock) break;
+      if (!toolUseBlock) {
+        logger.info('[6/LOOP] no tool block found, breaking');
+        break;
+      }
 
-      logger.info('[agent-chat] Tool call:', { name: toolUseBlock.name, input: toolUseBlock.input });
+      logger.info('[7/TOOL] executing tool', { name: toolUseBlock.name, input: toolUseBlock.input });
 
       const input = toolUseBlock.input as { artist: string; title: string };
       const toolResult = await executeSearch(input.artist, input.title);
+      logger.info('[8/RESULT] tool result received', { length: toolResult.length });
 
       anthropicMessages.push({
         role: 'assistant',
@@ -178,7 +199,7 @@ export async function POST(request: NextRequest) {
     );
     const responseText = textBlock?.text || '';
 
-    logger.info('[agent-chat] Response:', { length: responseText.length });
+    logger.info('[9/FINAL] response extracted', { length: responseText.length, stopReason: response.stop_reason });
 
     // Helper to inject artist/title from query into results if missing
     const injectArtistTitle = <T extends { id: number; artist?: string; title?: string }>(
