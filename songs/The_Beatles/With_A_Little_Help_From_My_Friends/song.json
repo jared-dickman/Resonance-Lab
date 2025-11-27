@@ -1,0 +1,663 @@
+{
+  "artist": "The Beatles",
+  "title": "With A Little Help From My Friends",
+  "sections": [
+    {
+      "name": "Intro",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "From: Sgt. Pepper"
+        },
+        {
+          "chord": null,
+          "lyric": "'"
+        },
+        {
+          "chord": null,
+          "lyric": "s Lonely Hearts Club Band"
+        },
+        {
+          "chord": null,
+          "lyric": "\""
+        },
+        {
+          "chord": null,
+          "lyric": "(1967)"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Billlllll -"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "lyyyyyyyyy"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Shears"
+        }
+      ]
+    },
+    {
+      "name": "Verse 1",
+      "lines": [
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "What would you"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "think if I"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "sang out of tune,"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "stand up and"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "walk out on"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "me."
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Lend me your"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "ears and I'll"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "sing you a song,"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "ry not to"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "sing out of"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "key."
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "y with a little h"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "elp from my f"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "riends,"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "igh with a little h"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "elp from my f"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "riends,"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "try with a little help from my"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "friends. (br"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "eak)"
+        }
+      ]
+    },
+    {
+      "name": "Verse 2",
+      "lines": [
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "What do I"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "do when my l"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "ove is away."
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "worry you to"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "be a"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "lone)"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "How do I"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "feel by the"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "end of the day"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "sad because you're"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "on your"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "own)"
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "y with a little h"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "elp from my f"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "riends,"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "igh with a little h"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "elp from my f"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "riends,"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "try with a little help from my"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "friends."
+        }
+      ]
+    },
+    {
+      "name": "Bridge",
+      "lines": [
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "need any"
+        },
+        {
+          "chord": {
+            "name": "F#"
+          },
+          "lyric": "body,"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "need some"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "body to"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "love."
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "be any"
+        },
+        {
+          "chord": {
+            "name": "F#"
+          },
+          "lyric": "body"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "want some"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "body to"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "love."
+        }
+      ]
+    },
+    {
+      "name": "Verse 3",
+      "lines": [
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Would you"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "believe in a"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "love at first sight,"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "ertain that it"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "happens all the"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "time.)"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "What do you"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "see when you"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "turn out the light,"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "tell you, but I"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "know it's"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "mine.)"
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "y with a little h"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "elp from my f"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "riends,"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "igh with a little h"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "elp from my f"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "riends,"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "try with a little help from my"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "friends."
+        }
+      ]
+    },
+    {
+      "name": "Bridge 2",
+      "lines": [
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "need any"
+        },
+        {
+          "chord": {
+            "name": "F#"
+          },
+          "lyric": "body,"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "need some"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "one to"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "love,"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "be any"
+        },
+        {
+          "chord": {
+            "name": "F#"
+          },
+          "lyric": "body,"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "want some"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "body to"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "love."
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "y with a little h"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "elp from my f"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "riends,"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "ry with a little h"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "elp from my f"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "riends."
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "igh with a little help from my f"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "riends,"
+        }
+      ]
+    },
+    {
+      "name": "Coda",
+      "lines": [
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "y with a little help from my f"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "riends,"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "frieeeeeeee"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "eeeeeeeee"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "eends."
+        }
+      ]
+    }
+  ]
+}
