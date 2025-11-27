@@ -8,7 +8,8 @@ export function cn(...inputs: ClassValue[]): string {
 }
 
 export function apiBaseUrl(): string {
-  return process.env.NEXT_PUBLIC_API_BASE_URL ?? DEFAULT_API_URL;
+  // Server-side uses API_BASE_URL, client-side uses NEXT_PUBLIC_*
+  return process.env.API_BASE_URL ?? process.env.NEXT_PUBLIC_API_BASE_URL ?? DEFAULT_API_URL;
 }
 
 export { transposeChord } from '@/lib/utils/formatting/chord';
