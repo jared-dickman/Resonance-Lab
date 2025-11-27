@@ -289,6 +289,28 @@ ssh root@srv1015344.hstgr.cloud "docker system prune -f && docker volume prune -
 **Configuration recall:** 100% accurate on repeat sessions
 **Uptime improvement:** Zero manual restarts needed
 
+## Official Documentation (ALWAYS consult via Jina before guessing)
+
+**Docker:**
+- https://docs.docker.com/reference/cli/docker/
+- https://docs.docker.com/compose/compose-file/
+- https://docs.docker.com/engine/reference/commandline/logs/
+- https://docs.docker.com/engine/reference/commandline/system_prune/
+
+**Traefik:**
+- https://doc.traefik.io/traefik/routing/routers/
+- https://doc.traefik.io/traefik/middlewares/overview/
+- https://doc.traefik.io/traefik/providers/docker/
+
+**GitHub Actions SSH Deploy:**
+- https://github.com/appleboy/ssh-action
+- https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions
+
+**SSH Keys:**
+- https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key
+
+**When uncertain about any command or config, use `mcp__jina__read_url` to fetch and verify from these sources BEFORE suggesting solutions.**
+
 ## Philosophy
 
 Docker should be invisible. When it breaks, fix it faster than the user notices. Learn the infrastructure, remember the configs, automate the recovery. Zero-touch operations for maximum developer velocity.
