@@ -1,13 +1,18 @@
-import { query } from '@anthropic-ai/claude-agent-sdk';
+import Anthropic from '@anthropic-ai/sdk';
 import type { SearchResponse, SearchResult } from '@/lib/types';
 import { BLOCKED_TYPES, type AgentSearchResponse } from './types';
 
 export class UltimateGuitarSearchAgent {
-  private scraperApiUrl: string;
+  private getScraperApiUrl(): string {
+    return process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:8080';
+  }
 
-  constructor() {
-    this.scraperApiUrl =
-      process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:8080';
+  private hasApiKey(): boolean {
+    const hasKey = !!process.env.ANTHROPIC_API_KEY;
+    if (!hasKey) {
+      console.warn('ANTHROPIC_API_KEY not found - typo correction disabled');
+    }
+    return hasKey;
   }
 
   async searchSongs(artist: string, songTitle: string): Promise<AgentSearchResponse> {
@@ -67,6 +72,12 @@ export class UltimateGuitarSearchAgent {
     artist: string,
     title: string
   ): Promise<{ artist: string; title: string; corrected: boolean }> {
+    // Skip Claude correction if no API key
+    if (!this.hasApiKey()) {
+      console.log('Skipping typo correction - no API key');
+      return { artist, title, corrected: false };
+    }
+
     const prompt = `Correct any typos in this music search query. Use your knowledge of music artists and song titles.
 
 Artist: "${artist}"
@@ -84,40 +95,34 @@ Only set corrected=true if you actually changed something. If the input looks co
     let result = { artist, title, corrected: false };
 
     try {
-      for await (const message of query({
-        prompt,
-        options: {
-          maxTurns: 1,
-          model: 'haiku' as const,
-          allowedTools: [],
-        },
-      })) {
-        if (message.type === 'result' && message.subtype === 'success') {
-          try {
-            // Remove markdown code blocks if present
-            let cleanedResult = message.result.trim();
-            cleanedResult = cleanedResult.replace(/^```json\n?/, '');
-            cleanedResult = cleanedResult.replace(/\n?```$/, '');
-            cleanedResult = cleanedResult.trim();
+      const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+      const response = await client.messages.create({
+        model: 'claude-3-5-haiku-latest',
+        max_tokens: 256,
+        messages: [{ role: 'user', content: prompt }],
+      });
 
-            const parsed = JSON.parse(cleanedResult);
-            if (parsed.artist && parsed.title && typeof parsed.corrected === 'boolean') {
-              result = parsed;
-            }
-          } catch (parseError) {
-            console.warn('Failed to parse input correction:', parseError);
-          }
+      const textContent = response.content.find((c) => c.type === 'text');
+      if (textContent && textContent.type === 'text') {
+        let cleanedResult = textContent.text.trim();
+        cleanedResult = cleanedResult.replace(/^```json\n?/, '');
+        cleanedResult = cleanedResult.replace(/\n?```$/, '');
+        cleanedResult = cleanedResult.trim();
+
+        const parsed = JSON.parse(cleanedResult);
+        if (parsed.artist && parsed.title && typeof parsed.corrected === 'boolean') {
+          result = parsed;
         }
       }
     } catch (error) {
-      console.warn('Input correction failed, using original input:', error);
+      console.error('Input correction error:', error);
     }
 
     return result;
   }
 
   private async fetchFromScraper(artist: string, title: string): Promise<SearchResponse> {
-    const url = `${this.scraperApiUrl}/api/search`;
+    const url = `${this.getScraperApiUrl()}/api/search`;
     const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
