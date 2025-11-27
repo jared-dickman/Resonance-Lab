@@ -3,7 +3,8 @@ import { z } from 'zod';
 import type { SearchResponse, SearchResult } from '@/lib/types';
 import { BLOCKED_TYPES } from '@/lib/agents/ultimate-guitar-search/types';
 
-const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+// Server-side env var (not NEXT_PUBLIC_ which is client-side and baked at build time)
+const API_URL = process.env.API_BASE_URL || 'http://localhost:8080';
 
 export const resonanceServer = createSdkMcpServer({
   name: 'resonance',
