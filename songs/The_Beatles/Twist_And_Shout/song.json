@@ -1,0 +1,858 @@
+{
+  "artist": "The Beatles",
+  "title": "Twist And Shout",
+  "sections": [
+    {
+      "name": "Intro",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        }
+      ]
+    },
+    {
+      "name": "Verse 1",
+      "lines": [
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "baby, now ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "shake it up"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "baby)"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "shout ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "twist and"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "shout)"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "baby, now ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "c'mon,"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "baby)"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "out ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "work it on"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "out - ooooh)"
+        }
+      ]
+    },
+    {
+      "name": "Verse 2",
+      "lines": [
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "out ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "work it on"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "out)"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "good ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "look so"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "good)"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "goin' now ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "got me g"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "oin')"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "would ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "like I knew you"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "would - ooooh)"
+        }
+      ]
+    },
+    {
+      "name": "Verse 3",
+      "lines": [
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "baby, now ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "shake it up"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "baby)"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "shout ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "twist and"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "shout)"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "baby, now ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "c'mon,"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "baby)"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "out ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "work it on"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "out - ooooh)"
+        }
+      ]
+    },
+    {
+      "name": "Verse 4",
+      "lines": [
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "girl ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "twist little"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "girl)"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "fine ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "twist so"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "fine)"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "closer, now ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "twist a little"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "closer)"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "mine ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "let me know you're"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "mine - ooooh)"
+        }
+      ]
+    },
+    {
+      "name": "Interlude",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "Aah, aah, aah, aah"
+        },
+        {
+          "chord": {
+            "name": "A7"
+          },
+          "lyric": "Aaaah, yeah"
+        }
+      ]
+    },
+    {
+      "name": "Verse 5",
+      "lines": [
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "Baby, now ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "shake it up"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "baby)"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "shout ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "twist and"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "shout)"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "baby, now ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "c'mon,"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "baby)"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "out ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "work it on"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "out- ooooh)"
+        }
+      ]
+    },
+    {
+      "name": "Verse 6",
+      "lines": [
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "girl ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "twist little"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "girl)"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "fine ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "twist so f"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "ine)"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "closer, now ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "twist a little"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "closer)"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "mine ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "let me know you're"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "mine- ooooh)"
+        }
+      ]
+    },
+    {
+      "name": "Outro",
+      "lines": [
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "baby, now ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "shake it up"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "baby)"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "baby, now ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "shake it up"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "baby)"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "baby, now ("
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "shake it up"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "baby)"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "Aah, aah, aah,"
+        },
+        {
+          "chord": {
+            "name": "A7"
+          },
+          "lyric": "aah"
+        },
+        {
+          "chord": {
+            "name": "A5"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A5"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A#5"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "B5"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C5"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C#5"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D5"
+          },
+          "lyric": "x-5"
+        },
+        {
+          "chord": {
+            "name": "D9"
+          },
+          "lyric": "-4-5-5(5)"
+        },
+        {
+          "chord": null,
+          "lyric": "Basic patterns for rhythm guitar"
+        }
+      ]
+    },
+    {
+      "name": "Verse",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "If that’s too much 7 for your taste, just play a regular A."
+        },
+        {
+          "chord": null,
+          "lyric": "stays in first position what Lennon plays"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "1 + 2 +"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "3 + 4"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "+ 1"
+        },
+        {
+          "chord": {
+            "name": "A7"
+          },
+          "lyric": "+ 2 + 3 + 4 +"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "1 + 2 +"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "3 + 4"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "+ 1"
+        },
+        {
+          "chord": {
+            "name": "A7"
+          },
+          "lyric": "+ 2 + 3 + 4 +"
+        },
+        {
+          "chord": null,
+          "lyric": "B|3---3-----------|--2-2-2-2-2-2---| |3---3-----------|--8-8-8-8-8-8---|"
+        },
+        {
+          "chord": null,
+          "lyric": "x = string muted"
+        },
+        {
+          "chord": null,
+          "lyric": "[Interlude] Aaah-part"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "* * *"
+        },
+        {
+          "chord": null,
+          "lyric": "e|----------------|"
+        },
+        {
+          "chord": null,
+          "lyric": "* = accentuate these beats"
+        },
+        {
+          "chord": null,
+          "lyric": "[Interlude] Riff"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "1 + 2 + 3"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "+ 4 +"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "1 + 2 + 3 + 4 +"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "1 + 2 +"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "3 + 4 +"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "1 + 2 + 3 + 4 +"
+        },
+        {
+          "chord": null,
+          "lyric": "B|----------3---2-|------2---------|----------3---2-|------2---------|"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "1 + 2 + 3"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "+ 4 +"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "1 + 2 + 3 + 4 +"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "1 + 2 +"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "3 + 4 +"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "1 + 2 + 3 + 4 +"
+        },
+        {
+          "chord": null,
+          "lyric": "B|----------3---2-|------2---------|----------3---2-|------2---------|"
+        },
+        {
+          "chord": {
+            "name": "D9"
+          },
+          "lyric": "D9"
+        },
+        {
+          "chord": null,
+          "lyric": "|--5--6--7--8--9--10---X--X-------------------------------------|"
+        }
+      ]
+    }
+  ]
+}
