@@ -1,0 +1,54 @@
+{
+  "feature_api": {
+    "rules": ["tanstack-query", "tanstack-query-mutations", "nextjs", "db", "components"],
+    "triggers": ["create feature", "new api", "add endpoint", "feature implementation", "rest api", "backend", "route", "action", "mutation", "query", "data fetching", "server action"]
+  },
+  "testing_e2e": {
+    "rules": ["testing-playwright", "testing-fixtures"],
+    "triggers": ["bdd", "e2e test", "playwright", "cucumber", "end-to-end", "feature file", "gherkin", "step definition", "scenario", "user flow"]
+  },
+  "testing_unit": {
+    "rules": ["vitest", "testing-fixtures"],
+    "triggers": ["unit test", "vitest", "test util", "integration test", "mock", "stub", "test suite", "expect", "describe"]
+  },
+  "testing_component": {
+    "rules": ["testing-storybook", "testing-fixtures", "components"],
+    "triggers": ["storybook", "story", "component test", "visual test", "interaction test"]
+  },
+  "component_ui": {
+    "rules": ["components", "styling", "imports"],
+    "triggers": ["component", "ui", "react", "tsx", "jsx", "button", "form", "layout", "page", "dialog", "modal", "card", "input", "tailwind", "css"]
+  },
+  "migration_db": {
+    "rules": ["migrations", "migrations-cicd", "db"],
+    "triggers": ["migration", "schema", "drizzle", "database", "table", "column", "cicd", "ci/cd", "alter table", "add column", "drop", "sql"]
+  },
+  "refactor": {
+    "rules": ["imports", "packages"],
+    "triggers": ["refactor", "rename", "move", "reorganize", "extract", "dependency", "package", "upgrade", "update dependency", "import path", "barrel"]
+  },
+  "security": {
+    "rules": ["security", "nextjs", "environment"],
+    "triggers": ["auth", "security", "permission", "vulnerability", "sanitize", "validation", "csrf", "xss", "authentication", "authorization", "session", "token", "jwt", "rate limit"]
+  },
+  "analytics": {
+    "rules": ["analytics"],
+    "triggers": ["tracking", "event", "analytics", "metrics", "telemetry", "track user"]
+  },
+  "deployment": {
+    "rules": ["environment", "vercel-deployment", "migrations-cicd"],
+    "triggers": ["deploy", "vercel", "environment", "env var", "production", "preview", "build", "ci/cd", "environment variable", "secret", "configuration"]
+  },
+  "logging": {
+    "rules": ["logging"],
+    "triggers": ["logging", "logger", "log", "console", "debug", "trace", "error log", "log message", "log output"]
+  },
+  "code_standards": {
+    "rules": ["code-standards"],
+    "triggers": ["code standards", "code quality", "best practices", "clean code", "code convention", "coding style", "typescript", "imports", "exports"]
+  },
+  "linting": {
+    "rules": ["linting-strategy"],
+    "triggers": ["lint", "eslint", "code quality", "formatting", "prettier", "code style", "linter", "linting error"]
+  }
+}

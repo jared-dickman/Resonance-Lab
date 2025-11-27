@@ -1,0 +1,58 @@
+# Pattern: Atomic rule types and usage
+# Source: ast-grep-auditor SKILL.md lines 56-84
+
+# Pattern Rule - Primary choice for structural matching
+pattern-rule:
+  id: use-pattern-for-structure
+  language: TypeScript
+  rule:
+    pattern: |
+      const $VAR = $VALUE
+  message: Use pattern for valid, parsable code structures
+
+# Pattern Object - For ambiguous or incomplete code
+pattern-object-rule:
+  id: use-pattern-object-for-ambiguity
+  language: TypeScript
+  rule:
+    pattern:
+      context: '{"a": 123}'  # Provide surrounding context
+      selector: pair          # Select specific AST node type
+  message: Use pattern objects when pattern alone is ambiguous
+
+# Kind Rule - AST node type matching
+kind-rule:
+  id: use-kind-for-node-types
+  language: TypeScript
+  rule:
+    kind: call_expression  # ESQuery selector: call_expression > identifier
+  message: Use kind when pattern creates ambiguity or invalid syntax
+
+# Regex Rule - Text-based matching
+regex-rule:
+  id: use-regex-with-kind
+  language: TypeScript
+  rule:
+    all:
+      - kind: identifier           # ✅ ALWAYS combine with kind/pattern
+      - regex: '^use[A-Z]'        # Hook naming pattern
+  message: '⚠️ NEVER use regex alone - combine with kind for performance'
+
+# Constraints - Filter meta-variables
+constraints-rule:
+  id: use-constraints-for-filtering
+  language: TypeScript
+  rule:
+    pattern: $OBJ.$METHOD($$$ARGS)
+    constraints:
+      METHOD:                      # Only single $VAR, not $$$ARGS
+        regex: '^(get|post)$'     # Can use kind/pattern/regex within
+  message: Constraints filter captured meta-variables after initial match
+
+# ❌ WRONG: kind + pattern at same level (AND logic matches nothing)
+wrong-combination:
+  id: invalid-kind-and-pattern
+  language: TypeScript
+  rule:
+    kind: call_expression
+    pattern: foo()               # ❌ These conflict - use pattern object instead

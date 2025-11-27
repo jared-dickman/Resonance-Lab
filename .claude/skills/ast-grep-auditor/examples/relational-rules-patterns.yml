@@ -1,0 +1,66 @@
+# Pattern: Relational rules for context matching
+# Source: ast-grep-auditor SKILL.md lines 86-108
+
+# Has - Target contains child matching sub-rule
+has-rule:
+  id: target-has-child
+  language: TypeScript
+  rule:
+    pattern: function $NAME() { $$$ }
+    has:
+      pattern: console.log($$$)     # Function CONTAINS console.log
+  message: Function contains console.log call
+
+# Inside - Target within node matching sub-rule
+inside-rule:
+  id: target-inside-context
+  language: TypeScript
+  rule:
+    pattern: $VAR = $VALUE
+    inside:
+      kind: function_declaration    # Assignment INSIDE function
+      stopBy: end                   # Search to root (not just neighbor)
+  message: Assignment inside function declaration
+
+# Follows - Target appears after node
+follows-rule:
+  id: target-follows-node
+  language: TypeScript
+  rule:
+    pattern: $VAR.use()
+    follows:
+      pattern: const $VAR = $VALUE
+      stopBy: end                   # Search to first sibling
+  message: Usage follows declaration
+
+# Precedes - Target appears before node
+precedes-rule:
+  id: target-precedes-node
+  language: TypeScript
+  rule:
+    pattern: return $VALUE
+    precedes:
+      kind: if_statement
+  message: Return precedes conditional
+
+# stopBy parameter options
+stopby-examples:
+  neighbor-default:
+    stopBy: neighbor              # One level only (default)
+
+  search-to-boundary:
+    stopBy: end                   # Search to root/leaf/first/last sibling
+
+  custom-stop-condition:
+    stopBy:                       # Stop at matching node (inclusive)
+      kind: class_declaration
+
+# Field parameter - Targets structural role
+field-example:
+  id: target-field-role
+  language: TypeScript
+  rule:
+    pattern: $KEY
+    inside:
+      kind: pair
+      field: key                  # Target is key (not value) in pair

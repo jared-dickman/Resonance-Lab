@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills Showcase | AI Automation Arsenal</title>
+    <style>/* ============================================================================
+   GLOBAL STYLES & RESET
+   ============================================================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #6366f1;
+    --secondary: #8b5cf6;
+    --accent: #ec4899;
+    --dark: #0f172a;
+    --light: #f8fafc;
+    --card-bg: #1e293b;
+    --text: #e2e8f0;
+    --text-muted: #94a3b8;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ============================================================================
+   ANIMATED BACKGROUND
+   ============================================================================ */
+
+.animated-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.3;
+}
+
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    animation: float 20s infinite;
+}
+
+.blob-1 {
+    width: 400px;
+    height: 400px;
+    background: var(--primary);
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.blob-2 {
+    width: 300px;
+    height: 300px;
+    background: var(--secondary);
+    top: 50%;
+    right: 10%;
+    animation-delay: 5s;
+}
+
+.blob-3 {
+    width: 350px;
+    height: 350px;
+    background: var(--accent);
+    bottom: 10%;
+    left: 40%;
+    animation-delay: 10s;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    33% {
+        transform: translate(50px, -50px) scale(1.1);
+    }
+    66% {
+        transform: translate(-30px, 30px) scale(0.9);
+    }
+}
+
+/* ============================================================================
+   LAYOUT
+   ============================================================================ */
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    position: relative;
+}
+
+/* ============================================================================
+   HEADER
+   ============================================================================ */
+
+header {
+    text-align: center;
+    padding: 4rem 2rem;
+    margin-bottom: 3rem;
+}
+
+h1 {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+    animation: fadeInUp 0.8s ease;
+}
+
+.subtitle {
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    color: var(--text-muted);
+    animation: fadeInUp 0.8s ease 0.2s both;
+}
+
+/* ============================================================================
+   STATS
+   ============================================================================ */
+
+.stats {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    margin: 3rem 0;
+    flex-wrap: wrap;
+    animation: fadeInUp 0.8s ease 0.4s both;
+}
+
+.stat {
+    text-align: center;
+    padding: 1.5rem 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 1rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.stat:hover {
+    transform: translateY(-5px);
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+}
+
+/* ============================================================================
+   CONTROLS (Search & Filters)
+   ============================================================================ */
+
+.controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+    animation: fadeInUp 0.8s ease 0.6s both;
+}
+
+.search-box {
+    flex: 1;
+    max-width: 400px;
+    position: relative;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    color: var(--text);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 0.8rem 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.8rem;
+    color: var(--text);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover, .filter-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+/* ============================================================================
+   SKILLS GRID
+   ============================================================================ */
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+/* ============================================================================
+   SKILL CARD
+   ============================================================================ */
+
+.skill-card {
+    background: var(--card-bg);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    animation: fadeInUp 0.6s ease;
+}
+
+.skill-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.skill-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.skill-card:hover::before {
+    transform: scaleX(1);
+}
+
+.skill-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 1rem;
+}
+
+.skill-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.skill-category {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.3rem 0.8rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.skill-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 1rem 0 0.5rem 0;
+    color: var(--text);
+}
+
+.skill-description {
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+.skill-meta {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.auto-trigger, .manual-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.auto-trigger {
+    background: rgba(34, 197, 94, 0.2);
+    color: #4ade80;
+}
+
+.manual-trigger {
+    background: rgba(251, 146, 60, 0.2);
+    color: #fb923c;
+}
+
+.skill-keywords {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.keyword {
+    padding: 0.2rem 0.6rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 0.3rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* ============================================================================
+   MODAL
+   ============================================================================ */
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    border-radius: 2rem;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 3rem;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: slideUp 0.4s ease;
+}
+
+.modal-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: var(--text);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+    background: var(--accent);
+    transform: rotate(90deg);
+}
+
+/* ============================================================================
+   NO RESULTS
+   ============================================================================ */
+
+.no-results {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-muted);
+    animation: fadeInUp 0.6s ease;
+}
+
+.no-results-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+/* ============================================================================
+   FOOTER
+   ============================================================================ */
+
+footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-muted);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================================================
+   ANIMATIONS
+   ============================================================================ */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ============================================================================
+   RESPONSIVE
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .controls {
+        flex-direction: column;
+    }
+
+    .search-box {
+        max-width: 100%;
+    }
+
+    .modal-content {
+        padding: 2rem;
+    }
+}</style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header Section -->
+        <header>
+            <h1>AI Automation Arsenal</h1>
+            <p class="subtitle">26 world-class skills powering your development workflow</p>
+
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-number">26</div>
+                    <div class="stat-label">Total Skills</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">18</div>
+                    <div class="stat-label">Auto-Triggered</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">Categories</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Search and Filter Controls -->
+        <div class="controls">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Search skills by name, description, or keywords...">
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="generation">Code Gen</button>
+                <button class="filter-btn" data-category="testing">Testing</button>
+                <button class="filter-btn" data-category="quality">Quality</button>
+                <button class="filter-btn" data-category="workflow">Workflow</button>
+                <button class="filter-btn" data-category="meta">Meta Skills</button>
+                <button class="filter-btn" data-category="automation">Automation</button>
+            </div>
+        </div>
+
+        <!-- Skills Grid -->
+        <div class="skills-grid" id="skillsGrid"></div>
+
+        <!-- No Results Message -->
+        <div class="no-results" id="noResults" style="display: none;">
+            <div class="no-results-icon">🔍</div>
+            <h2>No skills found</h2>
+            <p>Try adjusting your search or filter criteria</p>
+        </div>
+    </div>
+
+    <!-- Skill Detail Modal -->
+    <div class="modal" id="skillModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Built with Claude Code | 2025</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Share this with anyone curious about AI-powered development automation</p>
+    </footer>
+
+    <script>// ============================================================================
+// TYPES
+// ============================================================================
+
+interface Skill {
+  name: string
+  description: string
+  icon: string
+  category: string
+  autoTrigger: boolean
+  keywords: string[]
+}
+
+// ============================================================================
+// DATA
+// ============================================================================
+
+const skills: Skill[] = [
+  {
+    name: 'API Generator',
+    description:
+      'Generates complete feature implementation with 18 files matching blog-posts architecture - domain, service, repository, transformers, DTOs, hooks, actions, MSW handlers',
+    icon: '🎯',
+    category: 'generation',
+    autoTrigger: true,
+    keywords: ['api', 'endpoint', 'feature', 'domain', 'service', 'rest', 'backend'],
+  },
+  {
+    name: 'BDD Implementation Generator',
+    description:
+      'Generates complete BDD test infrastructure (fixtures, locators, flows, assertions, intercepts, POMs, step definitions) following exact 7-layer codebase patterns',
+    icon: '🧪',
+    category: 'generation',
+    autoTrigger: false,
+    keywords: ['bdd', 'cucumber', 'playwright', 'testing', 'e2e'],
+  },
+  {
+    name: 'Gherkin Generator',
+    description:
+      'Expert Gherkin/Cucumber scenario generator. Analyzes existing tests, generates comprehensive scenarios (happy + loading + error), enforces @smoke tagging rules',
+    icon: '📝',
+    category: 'generation',
+    autoTrigger: false,
+    keywords: ['gherkin', 'cucumber', 'scenario', 'feature', 'bdd'],
+  },
+  {
+    name: 'Fixture Forge',
+    description:
+      'Auto-invoked when creating test fixtures. Ensures type-safe, reusable fixtures shared across Vitest, Storybook, and Playwright with programmatic traceability',
+    icon: '🏭',
+    category: 'testing',
+    autoTrigger: true,
+    keywords: ['fixture', 'test data', 'mock', 'MSW', 'type-safe'],
+  },
+  {
+    name: 'Dumb User BDD',
+    description:
+      'Generates missing E2E edge case scenarios. Identifies gaps in error handling, auth, race conditions, and network failures not covered by existing BDD tests',
+    icon: '🤔',
+    category: 'testing',
+    autoTrigger: true,
+    keywords: ['bdd', 'edge case', 'error', 'race condition', 'e2e'],
+  },
+  {
+    name: 'Dumb User Unit',
+    description:
+      'Generates missing edge-case scenarios for Vitest unit tests. Identifies gaps in error handling, null/undefined cases, boundary conditions, and type violations',
+    icon: '🧠',
+    category: 'testing',
+    autoTrigger: true,
+    keywords: ['vitest', 'unit test', 'edge case', 'null', 'boundary'],
+  },
+  {
+    name: 'Dumb User Storybook',
+    description:
+      'Generates missing visual/interaction edge cases for Storybook component tests. Identifies gaps in empty, error, loading, overflow, and permission states',
+    icon: '📚',
+    category: 'testing',
+    autoTrigger: true,
+    keywords: ['storybook', 'component', 'visual', 'interaction', 'states'],
+  },
+  {
+    name: 'BDD Example Enforcer',
+    description:
+      'Auto-validates BDD tests against canonical patterns. Triggers on BDD/Cucumber/step definition keywords. Enforces 7-layer architecture with zero tolerance',
+    icon: '✅',
+    category: 'quality',
+    autoTrigger: true,
+    keywords: ['bdd', 'validation', 'enforcement', 'patterns', 'architecture'],
+  },
+  {
+    name: 'AST-Grep Auditor',
+    description:
+      'World-class ast-grep expert. Audits rules for pattern precision, security. Auto-fixes violations. Recommends ESLint for JSX. Defense-in-depth validation',
+    icon: '🔍',
+    category: 'quality',
+    autoTrigger: true,
+    keywords: ['ast-grep', 'audit', 'security', 'validation', 'linting'],
+  },
+  {
+    name: 'Commit Maestro',
+    description:
+      'Ensures perfect commits by running all validations (TypeScript, ESLint, tests, ast-grep), splitting large commits, and using human-friendly conventional commit messages',
+    icon: '✨',
+    category: 'workflow',
+    autoTrigger: false,
+    keywords: ['commit', 'git', 'validation', 'conventional commits'],
+  },
+  {
+    name: 'PR Creator',
+    description:
+      'Auto-invoked when creating pull requests. Crafts engaging PR descriptions with executive summaries, silly ASCII art, and beautiful markdown formatting',
+    icon: '🎨',
+    category: 'workflow',
+    autoTrigger: true,
+    keywords: ['pull request', 'pr', 'description', 'ascii art'],
+  },
+  {
+    name: 'GitHub Checks Watcher',
+    description:
+      'Monitors GitHub checks after commits, celebrates successes, auto-fixes simple failures (linting, types, tests), escalates complex issues to user',
+    icon: '👀',
+    category: 'workflow',
+    autoTrigger: false,
+    keywords: ['github', 'ci', 'checks', 'monitoring', 'auto-fix'],
+  },
+  {
+    name: 'Skill Forge',
+    description:
+      'Creates Claude Code skills with validation and best practices. Reads project rules, enforces constitution (DRY, single responsibility, fail fast)',
+    icon: '⚒️',
+    category: 'meta',
+    autoTrigger: true,
+    keywords: ['skill', 'create', 'automation', 'development'],
+  },
+  {
+    name: 'Skill Prophet',
+    description:
+      'Detects repetitive patterns (2-3x) and suggests new skills. Verifies with roadmap-keeper. Triggers liberally to maximize automation opportunities',
+    icon: '🔮',
+    category: 'meta',
+    autoTrigger: true,
+    keywords: ['pattern', 'automation', 'suggestion', 'repetition'],
+  },
+  {
+    name: 'Automation Prophet',
+    description:
+      'Detects patterns (2-3x), suggests best automation type (skill/rule/slash) with context. Aggressive detection for maximum automation',
+    icon: '🤖',
+    category: 'meta',
+    autoTrigger: true,
+    keywords: ['automation', 'pattern', 'suggestion', 'workflow'],
+  },
+  {
+    name: 'Roadmap Keeper',
+    description:
+      'Maintains skills roadmap by detecting new/modified/removed skills and updating documentation automatically. Single source of truth for skill inventory',
+    icon: '🗺️',
+    category: 'meta',
+    autoTrigger: true,
+    keywords: ['roadmap', 'documentation', 'tracking', 'inventory'],
+  },
+  {
+    name: 'Context Guardian',
+    description:
+      'Agent self-invokes at 80% context capacity for graceful handoffs with knowledge dumps. Prevents information loss during context compaction',
+    icon: '🛡️',
+    category: 'meta',
+    autoTrigger: false,
+    keywords: ['context', 'handoff', 'memory', 'capacity'],
+  },
+  {
+    name: 'Skill Drift Detector',
+    description:
+      'Detects when skill examples diverge from production code patterns. Architectural alignment validation, not syntax enforcement',
+    icon: '📊',
+    category: 'meta',
+    autoTrigger: false,
+    keywords: ['drift', 'validation', 'examples', 'patterns'],
+  },
+  {
+    name: 'Rule Forge',
+    description:
+      'Creates ast-grep rules with validation and CI integration. Pattern testing, documentation, and quality checks built-in',
+    icon: '📜',
+    category: 'automation',
+    autoTrigger: false,
+    keywords: ['ast-grep', 'rule', 'linting', 'validation'],
+  },
+  {
+    name: 'Slash Forge',
+    description:
+      'Creates slash commands for workflows and prompts. Prompt expansion and terminal workflow automation',
+    icon: '⚡',
+    category: 'automation',
+    autoTrigger: false,
+    keywords: ['slash', 'command', 'prompt', 'workflow'],
+  },
+  {
+    name: 'TanStack Query Enforcer',
+    description:
+      'Ensures features have complete TanStack Query architecture (keys/options/hooks/queries). Validates gold standard implementation patterns',
+    icon: '🔄',
+    category: 'quality',
+    autoTrigger: false,
+    keywords: ['tanstack', 'query', 'react-query', 'architecture'],
+  },
+  {
+    name: 'Rules Loader',
+    description:
+      'Two-phase rule loader. Phase 1 reads summaries (~50 lines), Phase 2 reads critical full files (max 12). Returns verbatim excerpts. Deterministic',
+    icon: '📖',
+    category: 'workflow',
+    autoTrigger: true,
+    keywords: ['rules', 'documentation', 'standards', 'loading'],
+  },
+  {
+    name: 'BDD Debugger',
+    description:
+      'Self-healing BDD debugger - auto-fixes environment, intercepts, selectors, assertions. Checks infrastructure before debugging test code',
+    icon: '🔧',
+    category: 'testing',
+    autoTrigger: false,
+    keywords: ['bdd', 'debug', 'self-healing', 'auto-fix', 'playwright'],
+  },
+  {
+    name: 'BDD Fix',
+    description:
+      'Auto-triggered when BDD tests fail. Analyzes traces, diagnoses root cause using empirical MCP validation, fixes fixtures/POMs, validates with 10-run zero-flake verification',
+    icon: '🩹',
+    category: 'testing',
+    autoTrigger: false,
+    keywords: ['bdd', 'fix', 'debugging', 'playwright', 'cucumber'],
+  },
+  {
+    name: 'UI TestID Injector',
+    description:
+      'Automatically adds data-testid attributes to React components based on generated test fixtures. Maps TestIds to UI elements ensuring tests can find components',
+    icon: '💉',
+    category: 'testing',
+    autoTrigger: false,
+    keywords: ['testid', 'ui', 'components', 'testing', 'fixtures'],
+  },
+  {
+    name: 'Fixture Type Fixer',
+    description:
+      "Auto-invoked when fixture files are created/edited. Converts `: Type` to `satisfies Type` preserving literal types and compile-time safety",
+    icon: '🔨',
+    category: 'testing',
+    autoTrigger: true,
+    keywords: ['fixture', 'satisfies', 'types', 'type-safe', 'validation'],
+  },
+]
+
+// ============================================================================
+// STATE
+// ============================================================================
+
+let currentCategory = 'all'
+let searchTerm = ''
+
+// ============================================================================
+// RENDER FUNCTIONS
+// ============================================================================
+
+function renderSkillCard(skill: Skill): string {
+  const keywordsHtml = skill.keywords
+    .slice(0, 3)
+    .map((k) => `<span class="keyword">${k}</span>`)
+    .join('')
+
+  const moreKeywords =
+    skill.keywords.length > 3 ? `<span class="keyword">+${skill.keywords.length - 3} more</span>` : ''
+
+  return `
+    <div class="skill-card" onclick='openModal(${JSON.stringify(skill).replace(/'/g, "&#39;")})'>
+      <div class="skill-header">
+        <div class="skill-icon">${skill.icon}</div>
+        <div class="skill-category">${skill.category}</div>
+      </div>
+      <h3 class="skill-title">${skill.name}</h3>
+      <p class="skill-description">${skill.description}</p>
+      <div class="skill-meta">
+        <div class="${skill.autoTrigger ? 'auto-trigger' : 'manual-trigger'}">
+          ${skill.autoTrigger ? '⚡ Auto-Trigger' : '🎯 Manual'}
+        </div>
+      </div>
+      <div class="skill-keywords">
+        ${keywordsHtml}
+        ${moreKeywords}
+      </div>
+    </div>
+  `
+}
+
+function renderSkills(): void {
+  const grid = document.getElementById('skillsGrid')
+  const noResults = document.getElementById('noResults')
+
+  if (!grid || !noResults) return
+
+  const filtered = filterSkills()
+
+  if (filtered.length === 0) {
+    grid.style.display = 'none'
+    noResults.style.display = 'block'
+  } else {
+    grid.style.display = 'grid'
+    noResults.style.display = 'none'
+    grid.innerHTML = filtered.map(renderSkillCard).join('')
+  }
+}
+
+// ============================================================================
+// FILTER FUNCTIONS
+// ============================================================================
+
+function filterSkills(): Skill[] {
+  return skills.filter((skill) => {
+    const matchesCategory = currentCategory === 'all' || skill.category === currentCategory
+    const matchesSearch =
+      searchTerm === '' ||
+      skill.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      skill.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      skill.keywords.some((k) => k.toLowerCase().includes(searchTerm.toLowerCase()))
+    return matchesCategory && matchesSearch
+  })
+}
+
+// ============================================================================
+// MODAL FUNCTIONS
+// ============================================================================
+
+function openModal(skill: Skill): void {
+  const modal = document.getElementById('skillModal')
+  const content = document.getElementById('modalContent')
+
+  if (!modal || !content) return
+
+  const keywordsHtml = skill.keywords.map((k) => `<span class="keyword">${k}</span>`).join('')
+
+  content.innerHTML = `
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <div style="font-size: 4rem; margin-bottom: 1rem;">${skill.icon}</div>
+      <h2 style="font-size: 2.5rem; margin-bottom: 0.5rem;">${skill.name}</h2>
+      <div class="${skill.autoTrigger ? 'auto-trigger' : 'manual-trigger'}" style="display: inline-flex; margin-top: 1rem;">
+        ${skill.autoTrigger ? '⚡ Auto-Trigger' : '🎯 Manual Trigger'}
+      </div>
+    </div>
+
+    <div style="margin: 2rem 0;">
+      <h3 style="color: var(--primary); margin-bottom: 1rem;">Description</h3>
+      <p style="color: var(--text-muted); line-height: 1.8;">${skill.description}</p>
+    </div>
+
+    <div style="margin: 2rem 0;">
+      <h3 style="color: var(--primary); margin-bottom: 1rem;">Category</h3>
+      <span class="skill-category">${skill.category}</span>
+    </div>
+
+    <div style="margin: 2rem 0;">
+      <h3 style="color: var(--primary); margin-bottom: 1rem;">Keywords</h3>
+      <div class="skill-keywords">
+        ${keywordsHtml}
+      </div>
+    </div>
+
+    <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(99, 102, 241, 0.1); border-radius: 1rem; border-left: 4px solid var(--primary);">
+      <p style="color: var(--text-muted); font-size: 0.9rem;">
+        💡 <strong>What is a "skill"?</strong><br>
+        Skills are AI-powered automation tools that run autonomously in your development workflow.
+        ${skill.autoTrigger ? 'This skill automatically triggers based on context.' : 'This skill needs to be manually invoked when needed.'}
+      </p>
+    </div>
+  `
+
+  modal.classList.add('active')
+}
+
+function closeModal(): void {
+  const modal = document.getElementById('skillModal')
+  if (modal) {
+    modal.classList.remove('active')
+  }
+}
+
+// ============================================================================
+// EVENT LISTENERS
+// ============================================================================
+
+function initializeEventListeners(): void {
+  // Search input
+  const searchInput = document.getElementById('searchInput') as HTMLInputElement
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      searchTerm = (e.target as HTMLInputElement).value
+      renderSkills()
+    })
+  }
+
+  // Filter buttons
+  document.querySelectorAll('.filter-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach((b) => b.classList.remove('active'))
+      btn.classList.add('active')
+      currentCategory = (btn as HTMLElement).dataset.category || 'all'
+      renderSkills()
+    })
+  })
+
+  // Modal close on backdrop click
+  const modal = document.getElementById('skillModal')
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal()
+      }
+    })
+  }
+}
+
+// ============================================================================
+// INITIALIZATION
+// ============================================================================
+
+// Make functions global for onclick handlers
+;(window as any).openModal = openModal
+;(window as any).closeModal = closeModal
+
+// Initialize on DOM ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    initializeEventListeners()
+    renderSkills()
+  })
+} else {
+  initializeEventListeners()
+  renderSkills()
+}</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+# Pattern: Security rule coverage (defense-in-depth)
+# Source: ast-grep-auditor SKILL.md lines 156-174
+
+# Input Validation - Multiple layers catching same attack vector
+input-validation-layers:
+
+  # Layer 1: Request body validation
+  request-body-rule:
+    id: api-require-body-validation
+    language: TypeScript
+    rule:
+      all:
+        - pattern: const $BODY = await request.json()
+        - not:
+            has:
+              pattern: validateRequestBody($$$)
+    message: API routes must validate request bodies with validateRequestBody()
+    paths:
+      include:
+        - 'app/api/**/*.ts'       # Entry points only
+
+  # Layer 2: Query params validation
+  query-params-rule:
+    id: api-require-query-validation
+    language: TypeScript
+    rule:
+      all:
+        - pattern: searchParams.get($KEY)
+        - not:
+            has:
+              pattern: validateQueryParams($$$)
+    message: Query params must be validated with validateQueryParams()
+
+  # Layer 3: Route params validation
+  route-params-rule:
+    id: api-require-params-validation
+    language: TypeScript
+    rule:
+      all:
+        - kind: function_declaration
+        - has:
+            pattern: params.$PARAM
+        - not:
+            has:
+              pattern: validateParams($$$)
+
+# Defense-in-depth verification checklist:
+# ✅ Multiple rules catching same attack vector
+# ✅ Entry points require validation (API routes, actions)
+# ✅ Helpers/utilities allowed to violate (not entry points)
+# ✅ Path scoping: app/api/**/* for API rules, not app/lib/
+
+# Output Validation Strategy
+output-validation-rules:
+
+  # Complex data MUST have schema
+  complex-output-rule:
+    id: api-require-output-schema
+    language: TypeScript
+    rule:
+      all:
+        - pattern: return NextResponse.json($DATA)
+        - not:
+            any:
+              - pattern: return NextResponse.json({ success: $BOOL })
+              - pattern: return NextResponse.json({ error: $MSG })
+              - has:
+                  pattern: NextResponse.json($DATA, { status: $CODE })
+                  constraints:
+                    CODE:
+                      regex: '^(4|5)\d{2}$'  # 4xx, 5xx error codes exempt
+
+  # Simple responses exempt
+  simple-responses:
+    - '{ success: true }'
+    - '{ error: "..." }'
+    - 'Error codes: 4xx, 5xx'

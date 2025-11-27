@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills Showcase | AI Automation Arsenal</title>
+    <style>/* CSS will be injected here */</style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header Section -->
+        <header>
+            <h1>AI Automation Arsenal</h1>
+            <p class="subtitle">26 world-class skills powering your development workflow</p>
+
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-number">26</div>
+                    <div class="stat-label">Total Skills</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">18</div>
+                    <div class="stat-label">Auto-Triggered</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">Categories</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Search and Filter Controls -->
+        <div class="controls">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Search skills by name, description, or keywords...">
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="generation">Code Gen</button>
+                <button class="filter-btn" data-category="testing">Testing</button>
+                <button class="filter-btn" data-category="quality">Quality</button>
+                <button class="filter-btn" data-category="workflow">Workflow</button>
+                <button class="filter-btn" data-category="meta">Meta Skills</button>
+                <button class="filter-btn" data-category="automation">Automation</button>
+            </div>
+        </div>
+
+        <!-- Skills Grid -->
+        <div class="skills-grid" id="skillsGrid"></div>
+
+        <!-- No Results Message -->
+        <div class="no-results" id="noResults" style="display: none;">
+            <div class="no-results-icon">🔍</div>
+            <h2>No skills found</h2>
+            <p>Try adjusting your search or filter criteria</p>
+        </div>
+    </div>
+
+    <!-- Skill Detail Modal -->
+    <div class="modal" id="skillModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Built with Claude Code | 2025</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Share this with anyone curious about AI-powered development automation</p>
+    </footer>
+
+    <script>/* JS will be injected here */</script>
+</body>
+</html>

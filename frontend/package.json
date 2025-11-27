@@ -63,7 +63,7 @@
     "tone": "15.1.22",
     "vexflow": "5.0.0",
     "wavesurfer.js": "7.11.1",
-    "zod": "4.1.13"
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@commitlint/cli": "20.1.0",

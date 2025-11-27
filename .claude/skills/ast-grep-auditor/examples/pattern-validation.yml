@@ -1,0 +1,32 @@
+# Pattern: ast-grep rule structure with validation
+# Source: ast-grep-auditor SKILL.md (rule creation patterns)
+# Use for: Security rules, architectural enforcement, code quality
+
+id: {rule-id-kebab-case}
+language: TypeScript
+rule:
+  # Primary pattern matching
+  pattern: $OBJ.$METHOD($$$ARGS)
+
+  # Optional: Add relational rules for context
+  inside:
+    kind: function_declaration
+    stopBy: end  # Search to root, not just neighbor
+
+  # Optional: Constrain meta-variables
+  constraints:
+    METHOD:
+      regex: '^(get|post|put|delete)$'
+
+# Optional: Auto-fix transformation
+fix: $OBJ.safeMethod($$$ARGS)
+
+message: |
+  {Clear, actionable error message}
+  Use {recommendedPattern} instead.
+
+severity: error  # error | warning | hint
+
+note: |
+  {Additional context or rationale}
+  See: llm/rules/{relevant-doc}.md
