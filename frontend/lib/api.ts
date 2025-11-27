@@ -1,6 +1,5 @@
 import { apiBaseUrl } from '@/lib/utils';
 import type { DownloadRequest, SavedSong, SearchResponse, SongDetail } from '@/lib/types';
-import { UltimateGuitarSearchAgent } from '@/lib/agents/ultimate-guitar-search';
 
 async function handleResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
@@ -24,10 +23,13 @@ export async function fetchSongDetail(artistSlug: string, songSlug: string): Pro
   return handleResponse<SongDetail>(response);
 }
 
-const searchAgent = new UltimateGuitarSearchAgent();
-
 export async function searchLibrary(artist: string, title: string): Promise<SearchResponse> {
-  return searchAgent.searchSongs(artist, title);
+  const response = await fetch('/api/agent-search', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ artist, title }),
+  });
+  return handleResponse<SearchResponse>(response);
 }
 
 export async function downloadSong(payload: DownloadRequest): Promise<SongDetail> {

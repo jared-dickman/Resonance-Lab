@@ -7,7 +7,7 @@ export class UltimateGuitarSearchAgent {
 
   constructor() {
     this.scraperApiUrl =
-      process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:8080/api';
+      process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:8080';
   }
 
   async searchSongs(artist: string, songTitle: string): Promise<AgentSearchResponse> {
@@ -117,7 +117,8 @@ Only set corrected=true if you actually changed something. If the input looks co
   }
 
   private async fetchFromScraper(artist: string, title: string): Promise<SearchResponse> {
-    const response = await fetch(`${this.scraperApiUrl}/search`, {
+    const url = `${this.scraperApiUrl}/api/search`;
+    const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ artist, title }),

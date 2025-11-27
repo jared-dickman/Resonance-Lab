@@ -270,6 +270,7 @@ func (s *Service) searchByType(scraper ultimateguitar.Scraper, artist, title str
 	}
 
 	matches := make([]SearchResult, 0, len(result.Tabs))
+	expectedType := tabTypeLabel(tabType)
 	for _, tab := range result.Tabs {
 		// Skip if artist filter doesn't match
 		if artist != "" && !strings.EqualFold(string(tab.ArtistName), artist) {
@@ -277,7 +278,7 @@ func (s *Service) searchByType(scraper ultimateguitar.Scraper, artist, title str
 		}
 		// Safety check: Ensure tab type exactly matches requested type
 		// This prevents Pro/Official/Video tabs from being included in Chords results
-		if string(tab.Type) != string(tabType) {
+		if string(tab.Type) != expectedType {
 			continue
 		}
 		score := tab.Rating
