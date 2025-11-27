@@ -1,12 +1,13 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { query } from '@anthropic-ai/claude-agent-sdk';
-
-// Force Node.js runtime - Agent SDK requires full Node.js APIs
-export const runtime = 'nodejs';
-import { resonanceServer } from '@/lib/agents/tools/resonance-server';
-import type { AgentSearchResponse } from '@/lib/agents/ultimate-guitar-search/types';
+import Anthropic from '@anthropic-ai/sdk';
+import type { SearchResponse, SearchResult } from '@/lib/types';
+import { BLOCKED_TYPES } from '@/lib/agents/ultimate-guitar-search/types';
 import { logger } from '@/lib/logger';
+
+export const runtime = 'nodejs';
+
+const API_URL = process.env.API_BASE_URL || 'http://localhost:8080';
 
 interface ChatMessage {
   role: 'user' | 'assistant';
@@ -64,9 +65,49 @@ SET autoDownload: false WHEN:
 
 No results? Try variations, suggest similar songs, or ask what mood they want.`;
 
+const searchTool: Anthropic.Tool = {
+  name: 'search_ultimate_guitar',
+  description: 'Search Ultimate Guitar for tabs and chords by artist and song title',
+  input_schema: {
+    type: 'object',
+    properties: {
+      artist: { type: 'string', description: 'Artist name' },
+      title: { type: 'string', description: 'Song title' },
+    },
+    required: ['artist', 'title'],
+  },
+};
 
-function buildPromptString(messages: ChatMessage[]): string {
-  return messages.map((msg) => `${msg.role === 'user' ? 'User' : 'Assistant'}: ${msg.content}`).join('\n\n');
+async function executeSearch(artist: string, title: string): Promise<string> {
+  try {
+    const response = await fetch(`${API_URL}/api/search`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ artist, title }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Search failed with status ${response.status}`);
+    }
+
+    const data: SearchResponse = await response.json();
+    const filterResults = (results: SearchResult[]): SearchResult[] =>
+      results.filter((result) => !BLOCKED_TYPES.includes(result.type));
+
+    return JSON.stringify({
+      query: data.query,
+      chords: filterResults(data.chords),
+      tabs: filterResults(data.tabs),
+      message: data.message,
+    });
+  } catch (error) {
+    return JSON.stringify({
+      error: error instanceof Error ? error.message : 'Unknown error',
+      query: { artist, title },
+      chords: [],
+      tabs: [],
+    });
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -77,79 +118,90 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Messages required' }, { status: 400 });
     }
 
-    const results = query({
-      prompt: buildPromptString(messages),
-      options: {
-        model: 'haiku' as const,
-        maxTurns: 5,
-        mcpServers: { resonance: resonanceServer },
-        allowedTools: ['mcp__resonance__search_ultimate_guitar'],
-        systemPrompt: SYSTEM_PROMPT,
-      },
+    const anthropic = new Anthropic();
+
+    const anthropicMessages: Anthropic.MessageParam[] = messages.map((msg) => ({
+      role: msg.role,
+      content: msg.content,
+    }));
+
+    let response = await anthropic.messages.create({
+      model: 'claude-3-5-haiku-latest',
+      max_tokens: 1024,
+      system: SYSTEM_PROMPT,
+      tools: [searchTool],
+      messages: anthropicMessages,
     });
 
-    interface ResultMessage {
-      type: string;
-      subtype: string;
-      result?: string;
-      structured_output?: AgentSearchResponse;
-      errors?: string[];
+    // Handle tool use loop (max 5 iterations)
+    let iterations = 0;
+    while (response.stop_reason === 'tool_use' && iterations < 5) {
+      iterations++;
+      const toolUseBlock = response.content.find(
+        (block): block is Anthropic.ToolUseBlock => block.type === 'tool_use'
+      );
+
+      if (!toolUseBlock) break;
+
+      logger.info('[agent-chat] Tool call:', { name: toolUseBlock.name, input: toolUseBlock.input });
+
+      const input = toolUseBlock.input as { artist: string; title: string };
+      const toolResult = await executeSearch(input.artist, input.title);
+
+      anthropicMessages.push({
+        role: 'assistant',
+        content: response.content,
+      });
+      anthropicMessages.push({
+        role: 'user',
+        content: [
+          {
+            type: 'tool_result',
+            tool_use_id: toolUseBlock.id,
+            content: toolResult,
+          },
+        ],
+      });
+
+      response = await anthropic.messages.create({
+        model: 'claude-3-5-haiku-latest',
+        max_tokens: 1024,
+        system: SYSTEM_PROMPT,
+        tools: [searchTool],
+        messages: anthropicMessages,
+      });
     }
 
-    let finalResult: ResultMessage | null = null;
+    // Extract final text response
+    const textBlock = response.content.find(
+      (block): block is Anthropic.TextBlock => block.type === 'text'
+    );
+    const responseText = textBlock?.text || '';
 
-    for await (const message of results) {
-      logger.info('[agent-chat] Message:', { type: message.type, subtype: (message as ResultMessage).subtype });
-      if (message.type === 'result') {
-        finalResult = message as ResultMessage;
-        break;
-      }
-    }
+    logger.info('[agent-chat] Response:', { length: responseText.length });
 
-    logger.info('[agent-chat] Final result:', { subtype: finalResult?.subtype, hasResult: !!finalResult?.result });
+    // Helper to inject artist/title from query into results if missing
+    const injectArtistTitle = <T extends { id: number; artist?: string; title?: string }>(
+      results: T[],
+      query?: { artist: string; title: string }
+    ): T[] => {
+      if (!query) return results;
+      return results.map((r) => ({
+        ...r,
+        artist: r.artist || query.artist,
+        title: r.title || query.title,
+      }));
+    };
 
-    // Parse results from agent response
-    if (finalResult?.subtype === 'success') {
-      const responseText = finalResult.result || '';
-
-      // Helper to inject artist/title from query into results if missing
-      const injectArtistTitle = <T extends { id: number; artist?: string; title?: string }>(
-        results: T[],
-        query?: { artist: string; title: string }
-      ): T[] => {
-        if (!query) return results;
-        return results.map((r) => ({
-          ...r,
-          artist: r.artist || query.artist,
-          title: r.title || query.title,
-        }));
-      };
-
-      // Try to extract JSON with search results
-      const jsonMatch = responseText.match(/```json\s*([\s\S]*?)\s*```/);
-      if (jsonMatch?.[1]) {
-        try {
-          const parsed = JSON.parse(jsonMatch[1]) as AgentSearchResponse & {
-            autoDownload?: boolean;
-            suggestions?: Array<{ artist: string; title: string; key?: string }>;
-          };
-          return NextResponse.json({
-            message: parsed.message || 'Search complete',
-            autoDownload: parsed.autoDownload ?? false,
-            suggestions: parsed.suggestions || [],
-            results: {
-              chords: injectArtistTitle(parsed.chords || [], parsed.query),
-              tabs: injectArtistTitle(parsed.tabs || [], parsed.query),
-            },
-          });
-        } catch {
-          // Fall through to text response
-        }
-      }
-
-      // Try direct JSON parse
+    // Try to extract JSON with search results
+    const jsonMatch = responseText.match(/```json\s*([\s\S]*?)\s*```/);
+    if (jsonMatch?.[1]) {
       try {
-        const parsed = JSON.parse(responseText) as AgentSearchResponse & {
+        const parsed = JSON.parse(jsonMatch[1]) as {
+          query?: { artist: string; title: string };
+          chords?: SearchResult[];
+          tabs?: SearchResult[];
+          message?: string;
           autoDownload?: boolean;
           suggestions?: Array<{ artist: string; title: string; key?: string }>;
         };
@@ -163,18 +215,36 @@ export async function POST(request: NextRequest) {
           },
         });
       } catch {
-        // Return as conversational response
-        return NextResponse.json({
-          message: responseText,
-          results: { chords: [], tabs: [] },
-        });
+        // Fall through to text response
       }
     }
 
-    return NextResponse.json({
-      message: 'I couldn\'t complete that search. Please try again.',
-      results: { chords: [], tabs: [] },
-    });
+    // Try direct JSON parse
+    try {
+      const parsed = JSON.parse(responseText) as {
+        query?: { artist: string; title: string };
+        chords?: SearchResult[];
+        tabs?: SearchResult[];
+        message?: string;
+        autoDownload?: boolean;
+        suggestions?: Array<{ artist: string; title: string; key?: string }>;
+      };
+      return NextResponse.json({
+        message: parsed.message || 'Search complete',
+        autoDownload: parsed.autoDownload ?? false,
+        suggestions: parsed.suggestions || [],
+        results: {
+          chords: injectArtistTitle(parsed.chords || [], parsed.query),
+          tabs: injectArtistTitle(parsed.tabs || [], parsed.query),
+        },
+      });
+    } catch {
+      // Return as conversational response
+      return NextResponse.json({
+        message: responseText,
+        results: { chords: [], tabs: [] },
+      });
+    }
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : String(err);
     const errorStack = err instanceof Error ? err.stack : undefined;
@@ -185,4 +255,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
