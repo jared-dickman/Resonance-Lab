@@ -1,17 +1,8 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-
 export function cn(...inputs: ClassValue[]): string {
   return twMerge(clsx(inputs));
-}
-
-export function apiBaseUrl(): string {
-  const url = process.env.API_BASE_URL;
-  if (!url) {
-    throw new Error('API_BASE_URL environment variable is not set');
-  }
-  return url;
 }
 
 export { transposeChord } from '@/lib/utils/formatting/chord';

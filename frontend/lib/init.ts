@@ -7,7 +7,6 @@
 import { performanceMonitor } from '@/lib/monitoring/performance-monitor';
 import { healthCheck, registerDefaultHealthChecks } from '@/lib/monitoring/health-check';
 import { requestCache } from '@/lib/utils/api-resilience';
-import { apiBaseUrl } from '@/lib/utils';
 
 let initialized = false;
 
@@ -21,8 +20,8 @@ export function initializeApp(): void {
   // Start performance monitoring
   performanceMonitor.init();
 
-  // Register health checks
-  registerDefaultHealthChecks(apiBaseUrl());
+  // Register health checks - use relative URL (proxied through Next.js API routes)
+  registerDefaultHealthChecks('');
 
   // Start health monitoring (check every 2 minutes)
   healthCheck.start(120000);
