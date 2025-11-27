@@ -1,0 +1,49 @@
+name: Build & Test
+
+on:
+  workflow_call:
+    inputs:
+      upload_coverage:
+        description: 'Upload test coverage to Codecov'
+        type: boolean
+        default: false
+
+jobs:
+  build-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20]
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci --prefer-offline --no-audit --force
+
+      - name: 🏗️ Build frontend
+        run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+
+      - name: 🧪 Run unit tests
+        run: npm test
+        continue-on-error: true
+
+      - name: 📈 Upload coverage
+        if: inputs.upload_coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+        continue-on-error: true

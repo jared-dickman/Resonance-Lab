@@ -54,16 +54,16 @@ dist/
 *.log
 logs/
 
-# Environment files (keep .env.example and .env.production)
+# Environment files (never commit any .env files)
 .env
 .env.local
 .env.development
 .env.development.local
 .env.test.local
+.env.production
 .env.production.local
 .env*.local
 frontend/.env*
-!frontend/.env.production
 
 # Vercel
 .vercel

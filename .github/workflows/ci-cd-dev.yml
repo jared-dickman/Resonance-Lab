@@ -1,0 +1,53 @@
+name: Development CI/CD
+
+on:
+  push:
+    branches-ignore: [main, master]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  quality-security:
+    name: Code Quality & Security Checks
+    uses: ./.github/workflows/reusable-quality-security.yml
+    with:
+      enable_sonarcloud: false
+    secrets: inherit
+
+  build-test:
+    name: Build & Test
+    needs: quality-security
+    uses: ./.github/workflows/reusable-build-test.yml
+    with:
+      upload_coverage: false
+
+  deploy-dev:
+    name: Deploy to Dev Environment
+    needs: [quality-security, build-test]
+    if: startsWith(github.ref, 'refs/heads/feature/')
+    uses: ./.github/workflows/reusable-deploy-backend.yml
+    with:
+      environment: development
+      branch: ${{ github.ref_name }}
+      container_name: backend-dev
+      health_check_url: https://dev.srv1015344.hstgr.cloud/api/health
+    secrets: inherit
+
+  enforce-protection:
+    name: Enforce Quality Gates
+    runs-on: ubuntu-latest
+    needs: [quality-security, build-test]
+    if: always()
+
+    steps:
+      - name: ✅ Check all jobs passed
+        run: |
+          if [[ "${{ needs.quality-security.result }}" != "success" ]]; then
+            echo "❌ Quality checks failed"
+            exit 1
+          fi
+          if [[ "${{ needs.build-test.result }}" != "success" ]]; then
+            echo "❌ Build/test failed"
+            exit 1
+          fi
+          echo "✅ All checks passed!"

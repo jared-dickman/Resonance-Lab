@@ -35,7 +35,11 @@ func (s *Server) Register(mux *http.ServeMux) {
 }
 
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
-	writeJSON(w, http.StatusOK, map[string]string{"status": "ok"})
+	writeJSON(w, http.StatusOK, map[string]string{
+		"status":  "ok",
+		"version": "1.0.0",
+		"message": "Resonance Lab API is rockin'!",
+	})
 }
 
 func (s *Server) handleListSongs(w http.ResponseWriter, r *http.Request) {

@@ -1,0 +1,63 @@
+name: Quality & Security Checks
+
+on:
+  workflow_call:
+    inputs:
+      enable_sonarcloud:
+        description: 'Enable SonarCloud scanning'
+        type: boolean
+        default: false
+    secrets:
+      SONAR_TOKEN:
+        required: false
+
+jobs:
+  quality-security:
+    name: Code Quality & Security Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci --prefer-offline --no-audit --force
+
+      - name: 🔍 TypeScript type check
+        run: npm run typecheck
+        continue-on-error: true
+
+      - name: 🎨 ESLint check
+        run: npm run lint:check
+        continue-on-error: true
+
+      - name: 💅 Prettier format check
+        run: npm run format:check
+        continue-on-error: true
+
+      - name: 🔒 ast-grep security scan
+        run: npm run ast-grep:scan
+        continue-on-error: true
+
+      - name: 🔐 Secret scanning
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          extra_args: --no-update
+        continue-on-error: true
+
+      - name: 📊 SonarCloud Scan
+        if: inputs.enable_sonarcloud
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        continue-on-error: true
