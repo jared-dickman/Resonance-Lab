@@ -1,6 +1,9 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { query } from '@anthropic-ai/claude-agent-sdk';
+
+// Force Node.js runtime - Agent SDK requires full Node.js APIs
+export const runtime = 'nodejs';
 import { resonanceServer } from '@/lib/agents/tools/resonance-server';
 import type { AgentSearchResponse } from '@/lib/agents/ultimate-guitar-search/types';
 import { logger } from '@/lib/logger';
@@ -96,11 +99,14 @@ export async function POST(request: NextRequest) {
     let finalResult: ResultMessage | null = null;
 
     for await (const message of results) {
+      logger.info('[agent-chat] Message:', { type: message.type, subtype: (message as ResultMessage).subtype });
       if (message.type === 'result') {
         finalResult = message as ResultMessage;
         break;
       }
     }
+
+    logger.info('[agent-chat] Final result:', { subtype: finalResult?.subtype, hasResult: !!finalResult?.result });
 
     // Parse results from agent response
     if (finalResult?.subtype === 'success') {
@@ -170,9 +176,11 @@ export async function POST(request: NextRequest) {
       results: { chords: [], tabs: [] },
     });
   } catch (err) {
-    logger.error('[agent-chat] Error:', err);
+    const errorMessage = err instanceof Error ? err.message : String(err);
+    const errorStack = err instanceof Error ? err.stack : undefined;
+    logger.error('[agent-chat] Error:', { message: errorMessage, stack: errorStack });
     return NextResponse.json(
-      { error: 'Chat failed', message: 'Something went wrong. Please try again.' },
+      { error: 'Chat failed', message: errorMessage, stack: errorStack },
       { status: 500 }
     );
   }
