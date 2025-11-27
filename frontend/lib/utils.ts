@@ -12,6 +12,6 @@ export function apiBaseUrl(): string {
 }
 
 export { transposeChord } from '@/lib/utils/formatting/chord';
-export { capitalize, capitalizeWords } from '@/lib/utils/string/capitalize';
+export { capitalize } from '@/lib/utils/string/capitalize';
 export { pluralize, formatCount } from '@/lib/utils/array/pluralize';
-export { clickElement, findElement } from '@/lib/utils/dom/selector';
+export { clickElement } from '@/lib/utils/dom/selector';

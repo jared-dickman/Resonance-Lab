@@ -16,16 +16,6 @@ export function clampBpm(bpm: number): number {
 }
 
 /**
- * Validates if BPM is within acceptable range
- *
- * @param bpm - BPM value to validate
- * @returns true if BPM is valid
- */
-export function isValidBpm(bpm: number): boolean {
-  return bpm >= PRACTICE_MODE.MIN_BPM && bpm <= PRACTICE_MODE.MAX_BPM;
-}
-
-/**
  * Adjusts BPM by a delta and clamps result
  *
  * @param currentBpm - Current BPM value
