@@ -270,17 +270,14 @@ func (s *Service) searchByType(scraper ultimateguitar.Scraper, artist, title str
 	}
 
 	matches := make([]SearchResult, 0, len(result.Tabs))
-	expectedType := tabTypeLabel(tabType)
+	artistLower := strings.ToLower(artist)
 	for _, tab := range result.Tabs {
-		// Skip if artist filter doesn't match
-		if artist != "" && !strings.EqualFold(string(tab.ArtistName), artist) {
+		// Skip if artist filter doesn't match (fuzzy: contains check)
+		if artist != "" && !strings.Contains(strings.ToLower(string(tab.ArtistName)), artistLower) {
 			continue
 		}
-		// Safety check: Ensure tab type exactly matches requested type
-		// This prevents Pro/Official/Video tabs from being included in Chords results
-		if string(tab.Type) != expectedType {
-			continue
-		}
+		// Note: Type filtering is handled server-side via the Type[] search param
+		// Client-side filtering removed - API returns types in different format than expected
 		score := tab.Rating
 		if tab.Votes > 0 {
 			score = tab.Rating * math.Log(float64(tab.Votes))
