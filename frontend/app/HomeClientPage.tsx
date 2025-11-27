@@ -1,17 +1,15 @@
 'use client';
 
-import { type FormEvent, useState, useMemo } from 'react';
-import { Download, Trash2 } from 'lucide-react';
+import { useState, useMemo } from 'react';
+import { Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Spinner } from '@/components/ui/spinner';
-import { searchLibrary } from '@/lib/api';
+import { AgentChat } from '@/components/AgentChat';
 import Link from 'next/link';
 import { useSongs, useDownloadSong, useDeleteSong } from '@/app/features/songs/hooks';
-import { useAsyncApi } from '@/lib/hooks/useAsyncApi';
+import type { SearchResult } from '@/lib/types';
 
 interface StatusMessage {
   type: 'success' | 'error' | 'info';
@@ -21,12 +19,9 @@ interface StatusMessage {
 export default function HomePage() {
   const router = useRouter();
   const { data: songs = [] } = useSongs();
-  const searchApi = useAsyncApi(searchLibrary, 'Search failed');
   const { mutate: downloadSong, isPending: isDownloading } = useDownloadSong();
   const { mutate: deleteSongMutation, isPending: isDeleting } = useDeleteSong();
   const [status, setStatus] = useState<StatusMessage | null>(null);
-  const [searchArtist, setSearchArtist] = useState('');
-  const [searchTitle, setSearchTitle] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedKey, setSelectedKey] = useState('all');
 
@@ -45,47 +40,21 @@ export default function HomePage() {
     return ['all', ...Array.from(keys)];
   }, [songs]);
 
-  const handleSearch = async (event: FormEvent) => {
-    event.preventDefault();
-    if (!searchTitle.trim()) {
-      setStatus({ type: 'error', message: '🎸 Song title is required!' });
-      return;
-    }
-
-    setStatus({ type: 'info', message: '🔍 Searching Ultimate Guitar...' });
-    const results = await searchApi.execute(searchArtist.trim(), searchTitle.trim());
-
-    if (!results) {
-      setStatus({ type: 'error', message: searchApi.error || '❌ Search failed' });
-      return;
-    }
-
-    if (!results.chords.length && !results.tabs.length) {
-      setStatus({ type: 'info', message: '🤔 No results found. Try a different search.' });
-      return;
-    }
-
-    // Auto-download the best rated version
-    const bestChord = results.chords[0];
-    const bestTab = results.tabs[0];
-
-    setStatus({ type: 'info', message: '⬇️ Downloading best version...' });
+  const handleAgentSave = (result: SearchResult, type: 'chord' | 'tab') => {
+    setStatus({ type: 'info', message: '⬇️ Downloading...' });
     downloadSong(
       {
-        artist: bestChord?.artist || bestTab?.artist || searchArtist.trim(),
-        title: bestChord?.title || bestTab?.title || searchTitle.trim(),
-        chordId: bestChord?.id,
-        tabId: bestTab?.id,
+        artist: result.artist,
+        title: result.title,
+        chordId: type === 'chord' ? result.id : undefined,
+        tabId: type === 'tab' ? result.id : undefined,
       },
       {
         onSuccess: (data) => {
           setStatus({
             type: 'success',
-            message: `✨ "${data.summary.title}" by ${data.summary.artist} added to your library! 🎉`
+            message: `✨ "${data.summary.title}" added to your library!`
           });
-          setSearchArtist('');
-          setSearchTitle('');
-          // Navigate to the newly downloaded song
           router.push(`/songs/${data.summary.artistSlug}/${data.summary.songSlug}`);
         },
         onError: (error) => {
@@ -189,50 +158,11 @@ export default function HomePage() {
         <CardHeader>
           <CardTitle className="text-base font-semibold">Add New Song</CardTitle>
           <CardDescription className="text-xs">
-            Import chords and tabs from Ultimate Guitar
+            Chat with the agent to find and import songs
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4" onSubmit={handleSearch}>
-            <div className="space-y-2">
-              <label className="text-xs font-medium" htmlFor="artist">
-                Artist
-              </label>
-              <Input
-                id="artist"
-                placeholder="e.g. Ben E. King"
-                value={searchArtist}
-                onChange={event => setSearchArtist(event.target.value)}
-                autoComplete="off"
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-xs font-medium" htmlFor="title">
-                Song Title
-              </label>
-              <Input
-                id="title"
-                placeholder="e.g. Stand By Me"
-                value={searchTitle}
-                onChange={event => setSearchTitle(event.target.value)}
-                required
-                autoComplete="off"
-              />
-            </div>
-            <Button type="submit" className="w-full" disabled={searchApi.isLoading || isDownloading}>
-              {searchApi.isLoading || isDownloading ? (
-                <span className="flex items-center gap-2">
-                  <Spinner />
-                  {searchApi.isLoading ? 'Searching...' : 'Saving...'}
-                </span>
-              ) : (
-                <span className="flex items-center gap-2">
-                  <Download className="h-4 w-4" />
-                  Add to Library
-                </span>
-              )}
-            </Button>
-          </form>
+          <AgentChat onSave={handleAgentSave} isSaving={isDownloading} />
 
           {status && (
             <div

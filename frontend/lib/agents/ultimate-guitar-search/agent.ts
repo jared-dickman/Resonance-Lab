@@ -3,20 +3,18 @@ import { resonanceServer } from '../tools/resonance-server';
 import type { AgentSearchResponse } from './types';
 import { agentConfig } from './config';
 
-/**
- * Generate streaming input messages for the agent
- * NOTE: Must use async generator for MCP tools (per official docs)
- */
-async function* generateMessages(artist: string, title: string) {
-  yield {
-    type: 'user' as const,
-    message: {
-      role: 'user' as const,
-      content: `Search Ultimate Guitar for "${title}" by "${artist}".
+interface ResultMessage {
+  type: string;
+  subtype: string;
+  result?: string;
+  structured_output?: AgentSearchResponse;
+  errors?: string[];
+}
 
-Use the search_ultimate_guitar tool to find tabs and chords. Return the results.`,
-    },
-  };
+function buildSearchPrompt(artist: string, title: string): string {
+  return `Search Ultimate Guitar for "${title}" by "${artist}".
+
+Use the search_ultimate_guitar tool to find tabs and chords. Return the results.`;
 }
 
 /**
@@ -28,7 +26,7 @@ export async function searchSongs(
 ): Promise<AgentSearchResponse> {
   try {
     const results = query({
-      prompt: generateMessages(artist, songTitle),
+      prompt: buildSearchPrompt(artist, songTitle),
       options: {
         model: agentConfig.model,
         maxTurns: agentConfig.maxTurns,
@@ -40,13 +38,13 @@ export async function searchSongs(
       },
     });
 
-    let finalResult: SDKResultMessage | null = null;
+    let finalResult: ResultMessage | null = null;
 
     // Iterate through all messages from the agent
     for await (const message of results) {
       console.log('[agent] Message type:', message.type, 'subtype:', 'subtype' in message ? message.subtype : 'N/A');
       if (message.type === 'result') {
-        finalResult = message;
+        finalResult = message as ResultMessage;
         console.log('[agent] Final result subtype:', finalResult.subtype);
         console.log('[agent] Final result:', JSON.stringify(finalResult).substring(0, 1000));
         break;
@@ -63,7 +61,7 @@ export async function searchSongs(
       try {
         // Try to extract JSON from the result (may be wrapped in markdown)
         const jsonMatch = finalResult.result.match(/```json\s*([\s\S]*?)\s*```/);
-        const jsonStr = jsonMatch ? jsonMatch[1] : finalResult.result;
+        const jsonStr = jsonMatch?.[1] ?? finalResult.result;
         return JSON.parse(jsonStr) as AgentSearchResponse;
       } catch {
         console.error('[agent] Failed to parse result:', finalResult.result?.substring(0, 500));
@@ -78,8 +76,7 @@ export async function searchSongs(
 
     // Handle errors
     if (finalResult && finalResult.subtype !== 'success') {
-      const errors =
-        'errors' in finalResult ? finalResult.errors.join(', ') : 'Unknown error';
+      const errors = finalResult.errors?.join(', ') || 'Unknown error';
       return {
         query: { artist, title: songTitle },
         chords: [],
