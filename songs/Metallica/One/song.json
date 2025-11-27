@@ -1,0 +1,638 @@
+{
+  "artist": "Metallica",
+  "title": "One",
+  "sections": [
+    {
+      "name": "Intro",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "Metallica"
+        },
+        {
+          "chord": null,
+          "lyric": "One"
+        }
+      ]
+    },
+    {
+      "name": "Verse",
+      "lines": [
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "I can't reme"
+        },
+        {
+          "chord": {
+            "name": "Gmaj7"
+          },
+          "lyric": "mber anything"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "Can't tell if this is t"
+        },
+        {
+          "chord": {
+            "name": "Gmaj7"
+          },
+          "lyric": "rue or dream"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "Deep down inside I f"
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": "eel to scream"
+        },
+        {
+          "chord": {
+            "name": "Gmaj7"
+          },
+          "lyric": "This terrible silence stops me"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "Now that the war is"
+        },
+        {
+          "chord": {
+            "name": "Gmaj7"
+          },
+          "lyric": "through with me"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "I'm waking up, I"
+        },
+        {
+          "chord": {
+            "name": "Gmaj7"
+          },
+          "lyric": "cannot see"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "That there is not much"
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": "left of me"
+        },
+        {
+          "chord": {
+            "name": "Gmaj7"
+          },
+          "lyric": "Nothing is real but pain now"
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "G5"
+          },
+          "lyric": "old"
+        },
+        {
+          "chord": {
+            "name": "A5"
+          },
+          "lyric": "my br"
+        },
+        {
+          "chord": {
+            "name": "B5"
+          },
+          "lyric": "eath"
+        },
+        {
+          "chord": {
+            "name": "A5"
+          },
+          "lyric": "as"
+        },
+        {
+          "chord": {
+            "name": "G5"
+          },
+          "lyric": "I w"
+        },
+        {
+          "chord": {
+            "name": "F#5"
+          },
+          "lyric": "ish f"
+        },
+        {
+          "chord": {
+            "name": "B5"
+          },
+          "lyric": "or death"
+        },
+        {
+          "chord": {
+            "name": "A5"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "B5"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C#5"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "B5"
+          },
+          "lyric": "Oh p"
+        },
+        {
+          "chord": {
+            "name": "A5"
+          },
+          "lyric": "lease, God, wake me"
+        }
+      ]
+    },
+    {
+      "name": "Verse",
+      "lines": [
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "Back in the"
+        },
+        {
+          "chord": {
+            "name": "Gmaj7"
+          },
+          "lyric": "womb it's much too real"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "In pumps life that I mu"
+        },
+        {
+          "chord": {
+            "name": "Gmaj7"
+          },
+          "lyric": "st feel"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "But can't look forwa"
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": "rd to reveal"
+        },
+        {
+          "chord": {
+            "name": "Gmaj7"
+          },
+          "lyric": "Look to the time when I'll live"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "Fed through the tube"
+        },
+        {
+          "chord": {
+            "name": "Gmaj7"
+          },
+          "lyric": "that sticks in me"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "Just like a warti"
+        },
+        {
+          "chord": {
+            "name": "Gmaj7"
+          },
+          "lyric": "me novelty"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "Tied to machines that m"
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": "ake me be"
+        },
+        {
+          "chord": {
+            "name": "Gmaj7"
+          },
+          "lyric": "Cut this life off from me"
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "G5"
+          },
+          "lyric": "Hold"
+        },
+        {
+          "chord": {
+            "name": "A5"
+          },
+          "lyric": "my b"
+        },
+        {
+          "chord": {
+            "name": "B5"
+          },
+          "lyric": "reath"
+        },
+        {
+          "chord": {
+            "name": "A5"
+          },
+          "lyric": "as"
+        },
+        {
+          "chord": {
+            "name": "G5"
+          },
+          "lyric": "I"
+        },
+        {
+          "chord": {
+            "name": "F#5"
+          },
+          "lyric": "wish"
+        },
+        {
+          "chord": {
+            "name": "B5"
+          },
+          "lyric": "for deat"
+        },
+        {
+          "chord": {
+            "name": "A5"
+          },
+          "lyric": "h"
+        },
+        {
+          "chord": {
+            "name": "B5"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C#5"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "B5"
+          },
+          "lyric": "Oh p"
+        },
+        {
+          "chord": {
+            "name": "A5"
+          },
+          "lyric": "lease, God, wake me"
+        }
+      ]
+    },
+    {
+      "name": "Solo",
+      "lines": []
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "N"
+        },
+        {
+          "chord": {
+            "name": "G5"
+          },
+          "lyric": "ow"
+        },
+        {
+          "chord": {
+            "name": "A5"
+          },
+          "lyric": "the wor"
+        },
+        {
+          "chord": {
+            "name": "B5"
+          },
+          "lyric": "ld"
+        },
+        {
+          "chord": {
+            "name": "A5"
+          },
+          "lyric": "is g"
+        },
+        {
+          "chord": {
+            "name": "G5"
+          },
+          "lyric": "one,"
+        },
+        {
+          "chord": {
+            "name": "F#5"
+          },
+          "lyric": "I'm ju"
+        },
+        {
+          "chord": {
+            "name": "B5"
+          },
+          "lyric": "st one"
+        },
+        {
+          "chord": {
+            "name": "A5"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "B5"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C#5"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "B5"
+          },
+          "lyric": "Oh G"
+        },
+        {
+          "chord": {
+            "name": "A5"
+          },
+          "lyric": "od, h"
+        },
+        {
+          "chord": {
+            "name": "B5"
+          },
+          "lyric": "elp"
+        },
+        {
+          "chord": {
+            "name": "C#5"
+          },
+          "lyric": "me"
+        },
+        {
+          "chord": {
+            "name": "G5"
+          },
+          "lyric": "Hold"
+        },
+        {
+          "chord": {
+            "name": "A5"
+          },
+          "lyric": "my b"
+        },
+        {
+          "chord": {
+            "name": "B5"
+          },
+          "lyric": "reath"
+        },
+        {
+          "chord": {
+            "name": "A5"
+          },
+          "lyric": "as"
+        },
+        {
+          "chord": {
+            "name": "G5"
+          },
+          "lyric": "I"
+        },
+        {
+          "chord": {
+            "name": "F#5"
+          },
+          "lyric": "wish f"
+        },
+        {
+          "chord": {
+            "name": "B5"
+          },
+          "lyric": "or death"
+        },
+        {
+          "chord": {
+            "name": "A5"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "B5"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C#5"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "B5"
+          },
+          "lyric": "Oh pl"
+        },
+        {
+          "chord": {
+            "name": "A5"
+          },
+          "lyric": "ease, G"
+        },
+        {
+          "chord": {
+            "name": "B5"
+          },
+          "lyric": "od, h"
+        },
+        {
+          "chord": {
+            "name": "C#5"
+          },
+          "lyric": "elp"
+        },
+        {
+          "chord": {
+            "name": "G5"
+          },
+          "lyric": "me"
+        }
+      ]
+    },
+    {
+      "name": "Instrumental",
+      "lines": []
+    },
+    {
+      "name": "Interlude",
+      "lines": [
+        {
+          "chord": {
+            "name": "E5"
+          },
+          "lyric": "Darkness imprisoning me"
+        },
+        {
+          "chord": null,
+          "lyric": "All that I see"
+        },
+        {
+          "chord": {
+            "name": "F5"
+          },
+          "lyric": "ror"
+        },
+        {
+          "chord": {
+            "name": "E5"
+          },
+          "lyric": "I cannot live"
+        },
+        {
+          "chord": null,
+          "lyric": "I cannot die"
+        },
+        {
+          "chord": null,
+          "lyric": "Trapped in myself"
+        },
+        {
+          "chord": {
+            "name": "F5"
+          },
+          "lyric": "ng cell"
+        }
+      ]
+    },
+    {
+      "name": "Instrumental",
+      "lines": []
+    },
+    {
+      "name": "Interlude",
+      "lines": [
+        {
+          "chord": {
+            "name": "E5"
+          },
+          "lyric": "Landmine has taken my sight"
+        },
+        {
+          "chord": null,
+          "lyric": "Taken my speech"
+        },
+        {
+          "chord": {
+            "name": "F5"
+          },
+          "lyric": "hearing"
+        },
+        {
+          "chord": {
+            "name": "E5"
+          },
+          "lyric": "Taken my arms"
+        },
+        {
+          "chord": null,
+          "lyric": "Taken my legs"
+        },
+        {
+          "chord": null,
+          "lyric": "Taken my soul"
+        },
+        {
+          "chord": {
+            "name": "F5"
+          },
+          "lyric": "life in hell"
+        }
+      ]
+    },
+    {
+      "name": "Instrumental",
+      "lines": []
+    },
+    {
+      "name": "Solo",
+      "lines": []
+    }
+  ]
+}

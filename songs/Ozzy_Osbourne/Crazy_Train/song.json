@@ -1,0 +1,1002 @@
+{
+  "artist": "Ozzy Osbourne",
+  "title": "Crazy Train",
+  "sections": [
+    {
+      "name": "Intro",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "x2"
+        },
+        {
+          "chord": null,
+          "lyric": "riff"
+        },
+        {
+          "chord": null,
+          "lyric": "x2"
+        }
+      ]
+    },
+    {
+      "name": "Verse",
+      "lines": [
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "Cra"
+        },
+        {
+          "chord": {
+            "name": "E/A"
+          },
+          "lyric": "zy,"
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": "but t"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "hat's how it go"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "es,"
+        },
+        {
+          "chord": {
+            "name": "E/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "m"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "illions of p"
+        },
+        {
+          "chord": {
+            "name": "E/A"
+          },
+          "lyric": "eopl"
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": "e, l"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "iving as f"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "oes"
+        },
+        {
+          "chord": {
+            "name": "E/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "May"
+        },
+        {
+          "chord": {
+            "name": "E/A"
+          },
+          "lyric": "be,"
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "it's not to l"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "ate,"
+        },
+        {
+          "chord": {
+            "name": "E/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "to le"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "arn how to"
+        },
+        {
+          "chord": {
+            "name": "E/A"
+          },
+          "lyric": "love"
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": ", and forg"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "et how to"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "hate"
+        },
+        {
+          "chord": {
+            "name": "E/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "Mental wounds not h"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "ealing, l"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "ife's a bitter"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "shame"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "oing off the r"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "ails on a crazy t"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "rain"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "oing off the r"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "ails on a crazy t"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "rain"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Verse",
+      "lines": [
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "stened to preach"
+        },
+        {
+          "chord": {
+            "name": "E/A"
+          },
+          "lyric": "ers,"
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": "I've li"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "stened to f"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "ools"
+        },
+        {
+          "chord": {
+            "name": "E/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "tched all the"
+        },
+        {
+          "chord": {
+            "name": "E/A"
+          },
+          "lyric": "dropouts"
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": ", who m"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "ake their own r"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "ules"
+        },
+        {
+          "chord": {
+            "name": "E/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "erson condit"
+        },
+        {
+          "chord": {
+            "name": "E/A"
+          },
+          "lyric": "ione"
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": "d, to r"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "ule and cont"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "rol"
+        },
+        {
+          "chord": {
+            "name": "E/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "edia s"
+        },
+        {
+          "chord": {
+            "name": "E/A"
+          },
+          "lyric": "ells it,"
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": "and y"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "ou live the r"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "ole"
+        },
+        {
+          "chord": {
+            "name": "E/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "Mental wounds still sc"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "reaming, d"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "riving me ins"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "ane"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "oing off the r"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "ails on a crazy t"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "rain"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "oing off the r"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "ails on a crazy t"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "rain"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Bridge",
+      "lines": [
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "I know t"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "hat thi"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "ngs, are going w"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "rong for me"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "You gotta l"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "isten"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "to my w"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "ords Y"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "eh-h"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Solo",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "x4"
+        }
+      ]
+    },
+    {
+      "name": "Interlude",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "riff x4"
+        },
+        {
+          "chord": null,
+          "lyric": "x2"
+        }
+      ]
+    },
+    {
+      "name": "Verse",
+      "lines": [
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "irs of a c"
+        },
+        {
+          "chord": {
+            "name": "E/A"
+          },
+          "lyric": "old war,"
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": "that's w"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "hat we've be"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "come"
+        },
+        {
+          "chord": {
+            "name": "E/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "eriting tr"
+        },
+        {
+          "chord": {
+            "name": "E/A"
+          },
+          "lyric": "oubles,"
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": "I'm me"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "ntally n"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "umb"
+        },
+        {
+          "chord": {
+            "name": "E/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "razy,"
+        },
+        {
+          "chord": {
+            "name": "E/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": "I j"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "ust cannot b"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "ear"
+        },
+        {
+          "chord": {
+            "name": "E/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "ving with s"
+        },
+        {
+          "chord": {
+            "name": "E/A"
+          },
+          "lyric": "omethin"
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": "g, that ju"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "st isn't f"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "air"
+        },
+        {
+          "chord": {
+            "name": "E/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D/A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "Mental wounds not"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "healing,"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "who and what's to bl"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "ame?"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "going off the"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "rails on a crazy t"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "rain"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "going off the"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "rails on a crazy t"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "rain"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Outro",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "x2"
+        }
+      ]
+    }
+  ]
+}

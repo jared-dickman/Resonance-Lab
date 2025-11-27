@@ -1,0 +1,729 @@
+{
+  "artist": "The Beatles",
+  "title": "A Day In The Life",
+  "sections": [
+    {
+      "name": "Intro",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "A Day In The Life"
+        },
+        {
+          "chord": null,
+          "lyric": "Artists: The Beatles"
+        },
+        {
+          "chord": null,
+          "lyric": "Tabbed by: Paul Brannigan"
+        },
+        {
+          "chord": null,
+          "lyric": "Tuning: Standard"
+        },
+        {
+          "chord": null,
+          "lyric": "E-A-D-G-B-e"
+        },
+        {
+          "chord": null,
+          "lyric": "Em/G 3-0-2-0-0-0"
+        },
+        {
+          "chord": null,
+          "lyric": "B7sus4 x-2-4-2-5-2 or x-2-4-2-0-0"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        }
+      ]
+    },
+    {
+      "name": "Verse 1",
+      "lines": [
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "I read the"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "news today, oh"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "boy"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "About a"
+        },
+        {
+          "chord": {
+            "name": "C/B"
+          },
+          "lyric": "lucky man who"
+        },
+        {
+          "chord": {
+            "name": "Asus2"
+          },
+          "lyric": "made the grade"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "And though the"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "news was rather"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "sad"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Well, I just"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "had to laug"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "h"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "I saw the"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "photogra"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "ph"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Verse 2",
+      "lines": [
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "He blew his"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "mind out in a"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "car"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "He didn't"
+        },
+        {
+          "chord": {
+            "name": "C/B"
+          },
+          "lyric": "notice that the"
+        },
+        {
+          "chord": {
+            "name": "Asus2"
+          },
+          "lyric": "lights had changed"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "A crowd of"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "people stood and"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "stared"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "They'd seen his"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "face before"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "Nobody was really sure"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "he was from the House of"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Lords"
+        }
+      ]
+    },
+    {
+      "name": "Verse 3",
+      "lines": [
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "I saw a"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "film today, oh"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "boy"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "The English"
+        },
+        {
+          "chord": {
+            "name": "C/B"
+          },
+          "lyric": "Army had just"
+        },
+        {
+          "chord": {
+            "name": "Asus2"
+          },
+          "lyric": "won the war"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "A crowd of"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "people turned"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "away"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "But I just"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "had to look"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "Having"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "read the"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "book"
+        },
+        {
+          "chord": {
+            "name": "Em/F#"
+          },
+          "lyric": "rn"
+        },
+        {
+          "chord": {
+            "name": "Em/G"
+          },
+          "lyric": "you"
+        },
+        {
+          "chord": {
+            "name": "Em/A"
+          },
+          "lyric": "on"
+        },
+        {
+          "chord": {
+            "name": "Em/B"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Em/C#"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Em/D"
+          },
+          "lyric": "(o"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "rchestral glissando)"
+        }
+      ]
+    },
+    {
+      "name": "Middle 8",
+      "lines": [
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "up, fell out of bed"
+        },
+        {
+          "chord": {
+            "name": "Dsus2"
+          },
+          "lyric": "head"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "way downstairs and"
+        },
+        {
+          "chord": {
+            "name": "B7sus4"
+          },
+          "lyric": "drank a cup"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "looking up I"
+        },
+        {
+          "chord": {
+            "name": "B7sus4"
+          },
+          "lyric": "noticed I was late"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "coat and grabbed my hat"
+        },
+        {
+          "chord": {
+            "name": "Dsus2"
+          },
+          "lyric": "flat"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "way upstairs and"
+        },
+        {
+          "chord": {
+            "name": "B7sus4"
+          },
+          "lyric": "had a smoke"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Somebody spoke and I"
+        },
+        {
+          "chord": {
+            "name": "B7sus4"
+          },
+          "lyric": "went into a dream."
+        }
+      ]
+    },
+    {
+      "name": "Interlude",
+      "lines": [
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "aaaa"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "aaaa"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "aaah"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "hhhh"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "hhhh"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "hhhh"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "hhhh"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "hhh)"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Verse 4",
+      "lines": [
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "I read the"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "news today oh"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "boy"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Four thousand"
+        },
+        {
+          "chord": {
+            "name": "C/B"
+          },
+          "lyric": "holes in Blackburn,"
+        },
+        {
+          "chord": {
+            "name": "Asus2"
+          },
+          "lyric": "Lancashire"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "And though the"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "holes were rather"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "small"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "They had to"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "count them all"
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "Now they know how many holes it"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "takes to fill the Albert"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Hall"
+        },
+        {
+          "chord": {
+            "name": "Em/F#"
+          },
+          "lyric": "rn"
+        },
+        {
+          "chord": {
+            "name": "Em/G"
+          },
+          "lyric": "you"
+        },
+        {
+          "chord": {
+            "name": "Em/A"
+          },
+          "lyric": "on"
+        },
+        {
+          "chord": {
+            "name": "Em/B"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Em/C"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Em/D"
+          },
+          "lyric": "("
+        },
+        {
+          "chord": {
+            "name": "Em"
+          },
+          "lyric": "orchestral glissando)"
+        }
+      ]
+    },
+    {
+      "name": "Coda",
+      "lines": []
+    }
+  ]
+}

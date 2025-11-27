@@ -1,0 +1,990 @@
+{
+  "artist": "Red Hot Chili Peppers",
+  "title": "Californication",
+  "sections": [
+    {
+      "name": "Intro",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "| x2"
+        }
+      ]
+    },
+    {
+      "name": "Verse 1",
+      "lines": [
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Psychic spies from China"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "steal your mind's elation"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Little girls from Sweden"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "silver screen quotations"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "if you want these"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "kind of dreams"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "Californi"
+        },
+        {
+          "chord": {
+            "name": "Dm"
+          },
+          "lyric": "cation"
+        }
+      ]
+    },
+    {
+      "name": "Interlude",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        }
+      ]
+    },
+    {
+      "name": "Verse 2",
+      "lines": [
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "edge of the world"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "western civilization"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "sun may rise in the East"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "settled in a final location"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "understood that"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "Hollywood"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "Californi"
+        },
+        {
+          "chord": {
+            "name": "Dm"
+          },
+          "lyric": "cation"
+        }
+      ]
+    },
+    {
+      "name": "Interlude",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        }
+      ]
+    },
+    {
+      "name": "Pre-Chorus 1",
+      "lines": [
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Pay your surgeon very well"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "break the spell of aging"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "lebrity skin, is this your chin?"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "is that war you're waging?"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "First born unic"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "orn"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Hardcore soft p"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "orn"
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Dream of Cali"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "fornic"
+        },
+        {
+          "chord": {
+            "name": "Dm"
+          },
+          "lyric": "ation"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Dream of Cali"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "forni"
+        },
+        {
+          "chord": {
+            "name": "Dm"
+          },
+          "lyric": "cation"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Dream of Cali"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "fornic"
+        },
+        {
+          "chord": {
+            "name": "Dm"
+          },
+          "lyric": "ation"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Dream of Cali"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "forni"
+        },
+        {
+          "chord": {
+            "name": "Dm"
+          },
+          "lyric": "cation"
+        }
+      ]
+    },
+    {
+      "name": "Interlude",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        }
+      ]
+    },
+    {
+      "name": "Verse 3",
+      "lines": [
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Marry me girl, be my fairy to the world"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "very own constellation"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "teenage bride with a baby inside"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "high on information"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "buy me a star on the"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "boulevard"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "Californi"
+        },
+        {
+          "chord": {
+            "name": "Dm"
+          },
+          "lyric": "cation"
+        }
+      ]
+    },
+    {
+      "name": "Interlude",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        }
+      ]
+    },
+    {
+      "name": "Verse 4",
+      "lines": [
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Space may be the final frontier"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "made in a Hollywood basement"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Cobain can you hear the spheres"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "songs off station to station?"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Alderaan's not"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "far away"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "Californi"
+        },
+        {
+          "chord": {
+            "name": "Dm"
+          },
+          "lyric": "cation"
+        }
+      ]
+    },
+    {
+      "name": "Interlude",
+      "lines": [
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Ooooo -"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "ooooh"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Oooo -"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "ooooh"
+        }
+      ]
+    },
+    {
+      "name": "Pre-Chorus 2",
+      "lines": [
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Born and raised by those who praise"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "trol of population"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Everybody's been there and"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "on't mean on vacation"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "First born unic"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "orn"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Hardcore soft p"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "orn"
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Dream of Cali"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "fornic"
+        },
+        {
+          "chord": {
+            "name": "Dm"
+          },
+          "lyric": "ation"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Dream of Cali"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "forni"
+        },
+        {
+          "chord": {
+            "name": "Dm"
+          },
+          "lyric": "cation"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Dream of Cali"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "fornic"
+        },
+        {
+          "chord": {
+            "name": "Dm"
+          },
+          "lyric": "ation"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Dream of Cali"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "forni"
+        },
+        {
+          "chord": {
+            "name": "Dm"
+          },
+          "lyric": "cation"
+        }
+      ]
+    },
+    {
+      "name": "Solo",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        }
+      ]
+    },
+    {
+      "name": "Interlude",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        }
+      ]
+    },
+    {
+      "name": "Verse 5",
+      "lines": [
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "truction leads to a very rough road"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "also breeds creation"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "earthquakes are to a girl's guitar"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "just another good vibration"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "tidal waves couldn't"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "save the world"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "Californi"
+        },
+        {
+          "chord": {
+            "name": "Dm"
+          },
+          "lyric": "cation"
+        }
+      ]
+    },
+    {
+      "name": "Interlude",
+      "lines": [
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Ooooo -"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "ooooh"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Oooo -"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "ooooh"
+        }
+      ]
+    },
+    {
+      "name": "Pre-Chorus 3",
+      "lines": [
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Pay your surgeon very well"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "break the spell of aging"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Sicker than the rest, there is no test"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "this is what you're craving"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "First born unic"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "orn"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Hardcore soft p"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "orn"
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Dream of Cali"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "fornic"
+        },
+        {
+          "chord": {
+            "name": "Dm"
+          },
+          "lyric": "ation"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Dream of Cali"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "forni"
+        },
+        {
+          "chord": {
+            "name": "Dm"
+          },
+          "lyric": "cation"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Dream of Cali"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "fornic"
+        },
+        {
+          "chord": {
+            "name": "Dm"
+          },
+          "lyric": "ation"
+        },
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Dream of Cali"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "forni"
+        },
+        {
+          "chord": {
+            "name": "Dm"
+          },
+          "lyric": "cation"
+        }
+      ]
+    }
+  ]
+}

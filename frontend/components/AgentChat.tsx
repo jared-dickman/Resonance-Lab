@@ -366,7 +366,7 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
                           <div className="flex justify-between items-center">
                             <span className="font-medium text-xs">{result.title}</span>
                             <span className="text-xs text-muted-foreground">
-                              ⭐ {result.rating.toFixed(1)} ({result.votes})
+                              ⭐ {(result.rating ?? 0).toFixed(1)} ({result.votes ?? 0})
                             </span>
                           </div>
                           <span className="text-xs text-muted-foreground">{result.artist}</span>
@@ -388,7 +388,7 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
                           <div className="flex justify-between items-center">
                             <span className="font-medium text-xs">{result.title}</span>
                             <span className="text-xs text-muted-foreground">
-                              ⭐ {result.rating.toFixed(1)} ({result.votes})
+                              ⭐ {(result.rating ?? 0).toFixed(1)} ({result.votes ?? 0})
                             </span>
                           </div>
                           <span className="text-xs text-muted-foreground">{result.artist}</span>
