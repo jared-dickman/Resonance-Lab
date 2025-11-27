@@ -8,7 +8,7 @@ import { logger } from '@/lib/logger';
 export const runtime = 'nodejs';
 export const maxDuration = 60;
 
-const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:8080';
+const API_BASE_URL = process.env.API_BASE_URL;
 
 interface ChatMessage {
   role: 'user' | 'assistant';
