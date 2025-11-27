@@ -24,7 +24,7 @@ jobs:
   deploy-dev:
     name: Deploy to Dev Environment
     needs: [quality-security, build-test]
-    if: startsWith(github.ref, 'refs/heads/feature/')
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
     uses: ./.github/workflows/reusable-deploy-backend.yml
     with:
       environment: development
