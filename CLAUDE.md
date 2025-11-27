@@ -2,3 +2,4 @@
 - If you're going to tell the user to run a command, just run it yourself. 
 - Always make it easy for the user
 - ALWAYS read official web docs for third party tools, deps, and plugins
+- read rules/index.md at the start of every chat and load the 3-7 most important rules for the given task and complexity. ask clarification about the task if unclear

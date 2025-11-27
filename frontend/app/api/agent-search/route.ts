@@ -1,6 +1,7 @@
 import type { NextRequest} from 'next/server';
 import { NextResponse } from 'next/server';
 import { searchSongs } from '@/lib/agents/ultimate-guitar-search';
+import { logger } from '@/lib/logger';
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,7 +17,7 @@ export async function POST(request: NextRequest) {
     const result = await searchSongs(artist, title);
     return NextResponse.json(result);
   } catch (err) {
-    console.error('[agent-search] Error:', err);
+    logger.error('[agent-search] Error:', err);
     return NextResponse.json(
       { error: 'Search failed' },
       { status: 500 }

@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { query } from '@anthropic-ai/claude-agent-sdk';
 import { resonanceServer } from '@/lib/agents/tools/resonance-server';
 import type { AgentSearchResponse } from '@/lib/agents/ultimate-guitar-search/types';
+import { logger } from '@/lib/logger';
 
 interface ChatMessage {
   role: 'user' | 'assistant';
@@ -169,7 +170,7 @@ export async function POST(request: NextRequest) {
       results: { chords: [], tabs: [] },
     });
   } catch (err) {
-    console.error('[agent-chat] Error:', err);
+    logger.error('[agent-chat] Error:', err);
     return NextResponse.json(
       { error: 'Chat failed', message: 'Something went wrong. Please try again.' },
       { status: 500 }

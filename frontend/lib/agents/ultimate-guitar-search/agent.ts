@@ -2,6 +2,7 @@ import { query } from '@anthropic-ai/claude-agent-sdk';
 import { resonanceServer } from '../tools/resonance-server';
 import type { AgentSearchResponse } from './types';
 import { agentConfig } from './config';
+import { logger } from '@/lib/logger';
 
 interface ResultMessage {
   type: string;
@@ -42,11 +43,11 @@ export async function searchSongs(
 
     // Iterate through all messages from the agent
     for await (const message of results) {
-      console.log('[agent] Message type:', message.type, 'subtype:', 'subtype' in message ? message.subtype : 'N/A');
+      logger.log('[agent] Message type:', message.type, 'subtype:', 'subtype' in message ? message.subtype : 'N/A');
       if (message.type === 'result') {
         finalResult = message as ResultMessage;
-        console.log('[agent] Final result subtype:', finalResult.subtype);
-        console.log('[agent] Final result:', JSON.stringify(finalResult).substring(0, 1000));
+        logger.log('[agent] Final result subtype:', finalResult.subtype);
+        logger.log('[agent] Final result:', JSON.stringify(finalResult).substring(0, 1000));
         break;
       }
     }
@@ -64,7 +65,7 @@ export async function searchSongs(
         const jsonStr = jsonMatch?.[1] ?? finalResult.result;
         return JSON.parse(jsonStr) as AgentSearchResponse;
       } catch {
-        console.error('[agent] Failed to parse result:', finalResult.result?.substring(0, 500));
+        logger.error('[agent] Failed to parse result:', finalResult.result?.substring(0, 500));
         return {
           query: { artist, title: songTitle },
           chords: [],
@@ -93,7 +94,7 @@ export async function searchSongs(
       message: 'No response from search agent',
     };
   } catch (error) {
-    console.error('Ultimate Guitar Search Agent error:', error);
+    logger.error('Ultimate Guitar Search Agent error:', error);
     return {
       query: { artist, title: songTitle },
       chords: [],
