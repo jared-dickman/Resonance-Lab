@@ -7,7 +7,7 @@ ISSUE="$1"
 case "$ISSUE" in
   "container-stopped")
     echo "🔧 Starting stopped containers..."
-    ssh "$HOST" "cd /root && docker-compose up -d"
+    ssh "$HOST" "cd /root && docker compose up -d"
     sleep 3
     ssh "$HOST" "docker ps && docker logs resonance-backend --tail=20"
     ;;
@@ -16,12 +16,12 @@ case "$ISSUE" in
     echo "🧹 Cleaning up Docker resources..."
     ssh "$HOST" "docker system prune -f"
     echo "🔄 Restarting containers..."
-    ssh "$HOST" "docker-compose restart"
+    ssh "$HOST" "docker compose restart"
     ;;
 
   "api-unresponsive")
     echo "🔄 Restarting backend..."
-    ssh "$HOST" "docker-compose restart backend"
+    ssh "$HOST" "docker compose restart backend"
     sleep 5
     echo "🧪 Testing API..."
     ssh "$HOST" "curl -s http://localhost:8080/api/artists | head -5"
@@ -29,7 +29,7 @@ case "$ISSUE" in
 
   "permissions")
     echo "🔐 Fixing permissions..."
-    ssh "$HOST" "cd /root/Resonance-Lab && chmod -R 755 songs && docker-compose restart backend"
+    ssh "$HOST" "cd /root/Resonance-Lab && chmod -R 755 songs && docker compose restart backend"
     ;;
 
   "disk-full")
@@ -46,7 +46,7 @@ case "$ISSUE" in
     read -p "This will restart everything. Continue? (y/n) " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-      ssh "$HOST" "cd /root && docker-compose down && docker-compose up -d --build --force-recreate"
+      ssh "$HOST" "cd /root && docker compose down && docker compose up -d --build --force-recreate"
       sleep 10
       ssh "$HOST" "docker ps && docker logs resonance-backend --tail=30"
     fi

@@ -2,7 +2,7 @@
 name: docker-dude
 description: Auto-invoked for Docker/VPS issues. Self-healing container expert that diagnoses, fixes, and remembers your Hostinger VPS configuration.
 auto_trigger: true
-keywords: [docker, vps, hostinger, container, deployment, docker-compose, down, failed, not responding, srv1015344]
+keywords: [docker, vps, hostinger, container, deployment, docker compose, down, failed, not responding, srv1015344]
 ---
 
 # Docker Dude
@@ -27,7 +27,7 @@ keywords: [docker, vps, hostinger, container, deployment, docker-compose, down, 
   "host": "srv1015344.hstgr.cloud",
   "user": "root",
   "projectPath": "/root/Resonance-Lab",
-  "composeFile": "/root/docker-compose.yml",
+  "composeFile": "/root/docker compose.yml",
   "containers": {
     "backend": {
       "name": "resonance-backend",
@@ -87,19 +87,19 @@ ssh root@srv1015344.hstgr.cloud "
 **Container stopped/exited:**
 
 ```bash
-ssh root@srv1015344.hstgr.cloud "cd /root && docker-compose up -d && docker-compose logs --tail=50"
+ssh root@srv1015344.hstgr.cloud "cd /root && docker compose up -d && docker compose logs --tail=50"
 ```
 
 **High memory (> 80%):**
 
 ```bash
-ssh root@srv1015344.hstgr.cloud "docker system prune -f && docker-compose restart"
+ssh root@srv1015344.hstgr.cloud "docker system prune -f && docker compose restart"
 ```
 
 **API unresponsive but container running:**
 
 ```bash
-ssh root@srv1015344.hstgr.cloud "docker-compose restart backend && sleep 5 && curl http://localhost:8080/api/artists"
+ssh root@srv1015344.hstgr.cloud "docker compose restart backend && sleep 5 && curl http://localhost:8080/api/artists"
 ```
 
 **Traefik routing issues:**
@@ -111,7 +111,7 @@ ssh root@srv1015344.hstgr.cloud "docker logs root-traefik-1 --tail=100 | grep -i
 **Permission errors in logs:**
 
 ```bash
-ssh root@srv1015344.hstgr.cloud "cd /root/Resonance-Lab && chmod -R 755 songs && docker-compose restart backend"
+ssh root@srv1015344.hstgr.cloud "cd /root/Resonance-Lab && chmod -R 755 songs && docker compose restart backend"
 ```
 
 **Disk space critical (> 90%):**
@@ -128,7 +128,7 @@ ssh root@srv1015344.hstgr.cloud "docker system prune -af --volumes && docker ima
 
 ```bash
 # Stream logs while restarting
-ssh root@srv1015344.hstgr.cloud "docker-compose restart backend && docker logs -f resonance-backend --tail=0" &
+ssh root@srv1015344.hstgr.cloud "docker compose restart backend && docker logs -f resonance-backend --tail=0" &
 
 # Monitor until healthy
 until ssh root@srv1015344.hstgr.cloud "curl -sf http://localhost:8080/api/artists > /dev/null"; do
@@ -147,7 +147,7 @@ echo "✅ Backend healthy!"
 # Extract current config
 ssh root@srv1015344.hstgr.cloud "
   docker ps --format '{{.Names}}\t{{.Image}}\t{{.Ports}}' &&
-  cat /root/docker-compose.yml &&
+  cat /root/docker compose.yml &&
   ls -la /root/
 "
 
@@ -267,7 +267,7 @@ ssh root@srv1015344.hstgr.cloud "docker ps && docker stats --no-stream && curl -
 **Nuclear option (confirm first):**
 
 ```bash
-ssh root@srv1015344.hstgr.cloud "cd /root && docker-compose down && docker-compose up -d --build --force-recreate"
+ssh root@srv1015344.hstgr.cloud "cd /root && docker compose down && docker compose up -d --build --force-recreate"
 ```
 
 **View live logs:**

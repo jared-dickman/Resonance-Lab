@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-imports -- Example template, not real code */
 // Empty state pattern - component with no data
 // Based on: app/components/threads/ThreadList.stories.tsx
 

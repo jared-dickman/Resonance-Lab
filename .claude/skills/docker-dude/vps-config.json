@@ -3,7 +3,7 @@
   "user": "root",
   "sshKey": "~/.ssh/id_ed25519",
   "projectPath": "/root/Resonance-Lab",
-  "composeFile": "/root/docker-compose.yml",
+  "composeFile": "/root/docker compose.yml",
   "lastUpdated": "2025-10-26T04:00:00Z",
   "containers": {
     "backend": {
@@ -54,10 +54,10 @@
     "/api/songs/:artist/:song": "GET - Get specific song"
   },
   "commonIssues": {
-    "containerStopped": "docker-compose up -d",
-    "highMemory": "docker system prune -f && docker-compose restart",
-    "apiUnresponsive": "docker-compose restart backend",
-    "permissionError": "chmod -R 755 songs && docker-compose restart backend",
+    "containerStopped": "docker compose up -d",
+    "highMemory": "docker system prune -f && docker compose restart",
+    "apiUnresponsive": "docker compose restart backend",
+    "permissionError": "chmod -R 755 songs && docker compose restart backend",
     "diskFull": "docker system prune -af --volumes"
   },
   "diagnosticCommands": {

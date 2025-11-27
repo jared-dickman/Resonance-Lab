@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
+import { logger } from '@/lib/logger';
 
 interface Metadata {
   company: string;
@@ -38,7 +39,7 @@ export async function exportArtifacts(
   const metadataPath = path.join(outputDir, 'metadata.json');
   await fs.writeFile(metadataPath, JSON.stringify(metadata, null, 2));
 
-  console.log('🧹 Cleaning up temp MSW handler...');
+  logger.info('🧹 Cleaning up temp MSW handler...');
   await fs.unlink(tempHandlerPath);
 
   const indexPath = path.join(
@@ -53,10 +54,10 @@ export async function exportArtifacts(
     .join('\n');
   await fs.writeFile(indexPath, updatedIndex);
 
-  console.log(`✅ Bundle complete: ${outputDir}`);
-  console.log(`   - ${company}-demo.webm`);
-  console.log(`   - mock-data.json`);
-  console.log(`   - metadata.json`);
+  logger.info(`✅ Bundle complete: ${outputDir}`);
+  logger.info(`   - ${company}-demo.webm`);
+  logger.info(`   - mock-data.json`);
+  logger.info(`   - metadata.json`);
 
   return outputDir;
 }
