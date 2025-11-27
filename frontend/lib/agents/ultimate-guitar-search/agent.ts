@@ -1,152 +1,107 @@
-import Anthropic from '@anthropic-ai/sdk';
-import type { SearchResponse, SearchResult } from '@/lib/types';
-import { BLOCKED_TYPES, type AgentSearchResponse } from './types';
+import { query } from '@anthropic-ai/claude-agent-sdk';
+import { resonanceServer } from '../tools/resonance-server';
+import type { AgentSearchResponse } from './types';
+import { agentConfig } from './config';
 
-export class UltimateGuitarSearchAgent {
-  private getScraperApiUrl(): string {
-    return process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:8080';
-  }
+/**
+ * Generate streaming input messages for the agent
+ * NOTE: Must use async generator for MCP tools (per official docs)
+ */
+async function* generateMessages(artist: string, title: string) {
+  yield {
+    type: 'user' as const,
+    message: {
+      role: 'user' as const,
+      content: `Search Ultimate Guitar for "${title}" by "${artist}".
 
-  private hasApiKey(): boolean {
-    const hasKey = !!process.env.ANTHROPIC_API_KEY;
-    if (!hasKey) {
-      console.warn('ANTHROPIC_API_KEY not found - typo correction disabled');
-    }
-    return hasKey;
-  }
+Use the search_ultimate_guitar tool to find tabs and chords. Return the results.`,
+    },
+  };
+}
 
-  async searchSongs(artist: string, songTitle: string): Promise<AgentSearchResponse> {
-    try {
-      // Step 1: Use Claude to correct input
-      const correctedInput = await this.correctInput(artist, songTitle);
+/**
+ * Search Ultimate Guitar using Claude Agent SDK
+ */
+export async function searchSongs(
+  artist: string,
+  songTitle: string
+): Promise<AgentSearchResponse> {
+  try {
+    const results = query({
+      prompt: generateMessages(artist, songTitle),
+      options: {
+        model: agentConfig.model,
+        maxTurns: agentConfig.maxTurns,
+        mcpServers: {
+          resonance: resonanceServer,
+        },
+        allowedTools: agentConfig.allowedTools,
+        systemPrompt: agentConfig.systemPrompt,
+      },
+    });
 
-      // Step 2: Fetch results from Go scraper
-      const rawResults = await this.fetchFromScraper(
-        correctedInput.artist,
-        correctedInput.title
-      );
+    let finalResult: SDKResultMessage | null = null;
 
-      // Step 3: Filter incompatible types
-      const filteredChords = this.filterIncompatibleTypes(rawResults.chords);
-      const filteredTabs = this.filterIncompatibleTypes(rawResults.tabs);
-
-      // Step 4: Verify results (can be async/parallel)
-      const verifiedChords = await this.verifyResults(filteredChords);
-      const verifiedTabs = await this.verifyResults(filteredTabs);
-
-      // Step 5: Build response
-      const response: AgentSearchResponse = {
-        query: rawResults.query,
-        chords: verifiedChords,
-        tabs: verifiedTabs,
-      };
-
-      // Add message if no results
-      if (verifiedChords.length === 0 && verifiedTabs.length === 0) {
-        response.message = 'No valid results found for this search';
+    // Iterate through all messages from the agent
+    for await (const message of results) {
+      console.log('[agent] Message type:', message.type, 'subtype:', 'subtype' in message ? message.subtype : 'N/A');
+      if (message.type === 'result') {
+        finalResult = message;
+        console.log('[agent] Final result subtype:', finalResult.subtype);
+        console.log('[agent] Final result:', JSON.stringify(finalResult).substring(0, 1000));
+        break;
       }
+    }
 
-      // Include correction info if input was corrected
-      if (correctedInput.corrected) {
-        response.inputCorrection = {
-          artist: correctedInput.artist,
-          title: correctedInput.title,
-          corrected: true,
-          original: { artist, title: songTitle },
+    // Handle success with structured output
+    if (finalResult?.subtype === 'success' && finalResult.structured_output) {
+      return finalResult.structured_output as AgentSearchResponse;
+    }
+
+    // Handle success with text result
+    if (finalResult?.subtype === 'success' && finalResult.result) {
+      try {
+        // Try to extract JSON from the result (may be wrapped in markdown)
+        const jsonMatch = finalResult.result.match(/```json\s*([\s\S]*?)\s*```/);
+        const jsonStr = jsonMatch ? jsonMatch[1] : finalResult.result;
+        return JSON.parse(jsonStr) as AgentSearchResponse;
+      } catch {
+        console.error('[agent] Failed to parse result:', finalResult.result?.substring(0, 500));
+        return {
+          query: { artist, title: songTitle },
+          chords: [],
+          tabs: [],
+          message: 'Unable to parse search results',
         };
       }
+    }
 
-      return response;
-    } catch (error) {
-      console.error('Ultimate Guitar Search Agent error:', error);
+    // Handle errors
+    if (finalResult && finalResult.subtype !== 'success') {
+      const errors =
+        'errors' in finalResult ? finalResult.errors.join(', ') : 'Unknown error';
       return {
         query: { artist, title: songTitle },
         chords: [],
         tabs: [],
-        message: 'Search service temporarily unavailable',
+        message: `Search failed: ${errors}`,
       };
     }
-  }
 
-  private async correctInput(
-    artist: string,
-    title: string
-  ): Promise<{ artist: string; title: string; corrected: boolean }> {
-    // Skip Claude correction if no API key
-    if (!this.hasApiKey()) {
-      console.log('Skipping typo correction - no API key');
-      return { artist, title, corrected: false };
-    }
-
-    const prompt = `Correct any typos in this music search query. Use your knowledge of music artists and song titles.
-
-Artist: "${artist}"
-Song: "${title}"
-
-Return ONLY a valid JSON object in this exact format (no markdown, no code blocks):
-{
-  "artist": "corrected artist name",
-  "title": "corrected song title",
-  "corrected": true/false
-}
-
-Only set corrected=true if you actually changed something. If the input looks correct, return it unchanged with corrected=false.`;
-
-    let result = { artist, title, corrected: false };
-
-    try {
-      const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-      const response = await client.messages.create({
-        model: 'claude-3-5-haiku-latest',
-        max_tokens: 256,
-        messages: [{ role: 'user', content: prompt }],
-      });
-
-      const textContent = response.content.find((c) => c.type === 'text');
-      if (textContent && textContent.type === 'text') {
-        let cleanedResult = textContent.text.trim();
-        cleanedResult = cleanedResult.replace(/^```json\n?/, '');
-        cleanedResult = cleanedResult.replace(/\n?```$/, '');
-        cleanedResult = cleanedResult.trim();
-
-        const parsed = JSON.parse(cleanedResult);
-        if (parsed.artist && parsed.title && typeof parsed.corrected === 'boolean') {
-          result = parsed;
-        }
-      }
-    } catch (error) {
-      console.error('Input correction error:', error);
-    }
-
-    return result;
-  }
-
-  private async fetchFromScraper(artist: string, title: string): Promise<SearchResponse> {
-    const url = `${this.getScraperApiUrl()}/api/search`;
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ artist, title }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Scraper API error: ${response.statusText}`);
-    }
-
-    return response.json();
-  }
-
-  private filterIncompatibleTypes(results: SearchResult[]): SearchResult[] {
-    return results.filter((result) => {
-      const type = result.type?.toLowerCase() || '';
-      return !BLOCKED_TYPES.some((blocked) => type.includes(blocked.toLowerCase()));
-    });
-  }
-
-  private async verifyResults(results: SearchResult[]): Promise<SearchResult[]> {
-    // For MVP: Return all filtered results
-    // Future enhancement: Actually test each tab ID
-    // This would require exposing GetTabByID in Go API
-    return results;
+    // No result received
+    return {
+      query: { artist, title: songTitle },
+      chords: [],
+      tabs: [],
+      message: 'No response from search agent',
+    };
+  } catch (error) {
+    console.error('Ultimate Guitar Search Agent error:', error);
+    return {
+      query: { artist, title: songTitle },
+      chords: [],
+      tabs: [],
+      message: 'Search service temporarily unavailable',
+    };
   }
 }

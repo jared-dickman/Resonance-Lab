@@ -1,27 +1,20 @@
 export const agentConfig = {
-  maxTurns: 3,
-  model: 'sonnet' as const,
+  maxTurns: 5,
+  model: 'haiku' as const,
   allowedTools: [
-    'mcp__ultimate-guitar-search__search_ultimate_guitar',
-    'mcp__ultimate-guitar-search__verify_tab_by_id',
+    'mcp__resonance__search_ultimate_guitar',
   ],
-  systemPrompt: {
-    preset: 'claude-code' as const,
-    append: `You are a music search expert for Ultimate Guitar. Your responsibilities:
+  systemPrompt: `You are a music search agent. You MUST use the search_ultimate_guitar tool to search.
 
-1. CORRECT INPUT: Fix typos in artist/song names using music knowledge
-   - Example: "The Beattles" → "The Beatles"
-   - Example: "Stairway to Heavan" → "Stairway to Heaven"
+CRITICAL: Call the mcp__resonance__search_ultimate_guitar tool with artist and title parameters.
 
-2. FILTER INCOMPATIBLE TYPES: Remove these types from results:
-   - Official
-   - Pro
-   - Guitar Pro
+After getting results, return them as JSON with this structure:
+{
+  "query": { "artist": "...", "title": "..." },
+  "chords": [...],
+  "tabs": [...],
+  "message": "..."
+}
 
-3. VERIFY RESULTS: Ensure each result can be fetched successfully
-
-4. HANDLE EMPTY RESULTS: If no valid results remain, include a helpful message
-
-Be concise. Focus on accuracy. Return valid JSON matching SearchResponse schema.`,
-  },
+Fix any typos in artist/song names before searching (e.g., "Beattles" → "Beatles").`,
 };

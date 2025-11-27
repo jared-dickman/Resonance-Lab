@@ -1,6 +1,6 @@
 import type { NextRequest} from 'next/server';
 import { NextResponse } from 'next/server';
-import { UltimateGuitarSearchAgent } from '@/lib/agents/ultimate-guitar-search';
+import { searchSongs } from '@/lib/agents/ultimate-guitar-search';
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,8 +13,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const searchAgent = new UltimateGuitarSearchAgent();
-    const result = await searchAgent.searchSongs(artist, title);
+    const result = await searchSongs(artist, title);
     return NextResponse.json(result);
   } catch (err) {
     console.error('[agent-search] Error:', err);
