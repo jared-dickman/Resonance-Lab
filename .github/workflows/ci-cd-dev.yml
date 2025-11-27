@@ -27,7 +27,7 @@ jobs:
     uses: ./.github/workflows/reusable-deploy-backend.yml
     with:
       environment: development
-      branch: ${{ github.ref_name }}
+      branch: ${{ github.head_ref || github.ref_name }}
       container_name: backend-dev
       health_check_url: https://dev.srv1015344.hstgr.cloud/api/health
     secrets: inherit
