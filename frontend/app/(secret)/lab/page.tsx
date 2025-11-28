@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { apiRoutes } from '@/app/config/apiRoutes';
 import { env } from '@/app/config/env';
+// eslint-disable-next-line boundaries/element-types -- package.json read for version display
 import packageJson from '../../../package.json';
 
 interface LabStatus {
