@@ -4,7 +4,7 @@
  */
 
 import { Chord, Progression, Scale, Note } from 'tonal';
-import type { ChordAnalysis } from '../analyzers/ChordAnalyzer';
+import type { ChordAnalysis } from '@/lib/music-theory/intelligence/analyzers/ChordAnalyzer';
 
 export interface ChordSuggestion {
   /** Suggested chord symbol */

@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import ChordWheel from './ChordWheel';
-import ChordProgressionAnalyzer from './ChordProgressionAnalyzer';
-import ChordSuggestions from './ChordSuggestions';
+import ChordWheel from '@/components/music-theory/ChordWheel';
+import ChordProgressionAnalyzer from '@/components/music-theory/ChordProgressionAnalyzer';
+import ChordSuggestions from '@/components/music-theory/ChordSuggestions';
 import { suggestNextChords, detectKey } from '@/lib/music-theory/intelligentChordEngine';
 import { Eye, EyeOff, Sparkles } from 'lucide-react';
 

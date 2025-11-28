@@ -1,7 +1,7 @@
 import { query } from '@anthropic-ai/claude-agent-sdk';
-import { resonanceServer } from '../tools/resonance-server';
-import type { AgentSearchResponse } from './types';
-import { agentConfig } from './config';
+import { resonanceServer } from '@/lib/agents/tools/resonance-server';
+import type { AgentSearchResponse } from '@/lib/agents/ultimate-guitar-search/types';
+import { agentConfig } from '@/lib/agents/ultimate-guitar-search/config';
 import { logger } from '@/lib/logger';
 
 interface ResultMessage {

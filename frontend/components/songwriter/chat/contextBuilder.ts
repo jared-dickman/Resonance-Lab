@@ -5,13 +5,13 @@ import type {
   AgentRequest,
   UserQuery,
   AgentIntentCategory,
-} from '../types/chat';
-import type { CompleteSongState, SectionType } from '../types/song';
-import type { FocusArea, TextPosition } from '../types/ui';
+} from '@/components/songwriter/types/chat';
+import type { CompleteSongState, SectionType } from '@/components/songwriter/types/song';
+import type { FocusArea, TextPosition } from '@/components/songwriter/types/ui';
 import {
   extractCompleteSongContextSnapshot,
   createDefaultCreativeConstraints,
-} from './contextSnapshotBuilder';
+} from '@/components/songwriter/chat/contextSnapshotBuilder';
 
 export function buildComprehensiveAgentRequest(
   userQueryText: string,

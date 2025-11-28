@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
-import type { PanelLayoutState, PanelId } from '../types/ui';
-import { togglePanelState } from '../persistence/panelLayoutPersistence';
+import type { PanelLayoutState, PanelId } from '@/components/songwriter/types/ui';
+import { togglePanelState } from '@/components/songwriter/persistence/panelLayoutPersistence';
 
 export interface PanelInteractionHandlers {
   togglePanel: (panelId: PanelId) => void;

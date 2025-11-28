@@ -2,4 +2,4 @@
  * Guitar instruments
  */
 
-export { AcousticGuitar } from './AcousticGuitar';
+export { AcousticGuitar } from '@/lib/audio/instruments/guitar/AcousticGuitar';

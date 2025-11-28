@@ -21,7 +21,7 @@ import {
   CompressorPedal,
 } from '@/lib/audio/effects/pizzicato';
 import { loadLegendaryRig, LEGENDARY_RIGS } from '@/lib/audio/effects/LegendaryRigs';
-import { DistortionPedalUI } from './DistortionPedalUI';
+import { DistortionPedalUI } from '@/components/effects/DistortionPedalUI';
 import {
   DelayPedalUI,
   ReverbPedalUI,
@@ -29,8 +29,8 @@ import {
   FlangerPedalUI,
   TremoloPedalUI,
   CompressorPedalUI,
-} from './pizzicato';
-import { PedalVisualizer } from './PedalVisualizer';
+} from '@/components/effects/pizzicato';
+import { PedalVisualizer } from '@/components/effects/PedalVisualizer';
 import { cn } from '@/lib/utils';
 
 interface PedalboardUIProps {

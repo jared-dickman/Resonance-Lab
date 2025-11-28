@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * API Resilience Utilities
  * Implements retry logic, exponential backoff, and request caching
@@ -70,7 +71,7 @@ export async function withRetry<T>(
 
       // Wait before retrying
       const delay = calculateBackoff(attempt, finalConfig);
-      console.warn(`Request failed (attempt ${attempt + 1}/${finalConfig.maxRetries}). Retrying in ${delay}ms...`);
+      logger.warn(`Request failed (attempt ${attempt + 1}/${finalConfig.maxRetries}). Retrying in ${delay}ms...`);
       await new Promise(resolve => setTimeout(resolve, delay));
     }
   }
@@ -147,7 +148,7 @@ export async function cachedFetch<T>(
   // Check cache first
   const cached = requestCache.get<T>(cacheKey);
   if (cached) {
-    console.debug(`Cache hit for ${cacheKey}`);
+    logger.info(`Cache hit for ${cacheKey}`);
     return cached;
   }
 

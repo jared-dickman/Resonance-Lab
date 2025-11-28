@@ -4,8 +4,9 @@
  */
 
 import * as Tone from 'tone';
-import { Instrument } from '../base/Instrument';
-import type { InstrumentConfig, InstrumentPreset } from '../base/InstrumentConfig';
+import { Instrument } from '@/lib/audio/instruments/base/Instrument';
+import type { InstrumentConfig, InstrumentPreset } from '@/lib/audio/instruments/base/InstrumentConfig';
+import { logger } from '@/lib/logger';
 
 export class AcousticGuitar extends Instrument {
   private ready = false;
@@ -48,13 +49,13 @@ export class AcousticGuitar extends Instrument {
       release: 1,
       baseUrl: '/samples/guitar/',
       onload: () => {
-        console.log('[AcousticGuitar] High-quality samples loaded successfully!');
+        logger.info('[AcousticGuitar] High-quality samples loaded successfully!');
         this.ready = true;
       },
       onerror: (error) => {
-        console.error('[AcousticGuitar] Failed to load samples:', error);
+        logger.error('[AcousticGuitar] Failed to load samples:', error);
         // Fallback to synthesis
-        console.warn('[AcousticGuitar] Falling back to PluckSynth');
+        logger.warn('[AcousticGuitar] Falling back to PluckSynth');
         this.ready = true;
       },
     });

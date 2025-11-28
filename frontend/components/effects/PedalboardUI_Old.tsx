@@ -11,8 +11,8 @@ import { Plus, Trash2, GripVertical, Volume2, Power } from 'lucide-react';
 import type { PedalSlot } from '@/lib/audio/effects/Pedalboard';
 import { Pedalboard } from '@/lib/audio/effects/Pedalboard';
 import { DistortionPedal } from '@/lib/audio/effects/DistortionPedal';
-import { DistortionPedalUI } from './DistortionPedalUI';
-import { PedalVisualizer } from './PedalVisualizer';
+import { DistortionPedalUI } from '@/components/effects/DistortionPedalUI';
+import { PedalVisualizer } from '@/components/effects/PedalVisualizer';
 import { cn } from '@/lib/utils';
 
 interface PedalboardUIProps {

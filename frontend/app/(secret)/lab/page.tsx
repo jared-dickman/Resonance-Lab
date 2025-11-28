@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { apiRoutes } from '@/app/config/apiRoutes';
 
 interface LabStatus {
   message: string;
@@ -15,7 +16,7 @@ export default function ChordLabPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch('/api/lab')
+    fetch(apiRoutes.lab)
       .then((res) => res.json())
       .then(setLabStatus)
       .catch((err) => setError(err.message));

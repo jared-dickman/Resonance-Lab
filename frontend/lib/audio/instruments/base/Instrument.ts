@@ -4,7 +4,7 @@
  */
 
 import * as Tone from 'tone';
-import type { InstrumentConfig, InstrumentPreset, Note, ChordOptions } from './InstrumentConfig';
+import type { InstrumentConfig, InstrumentPreset, Note, ChordOptions } from '@/lib/audio/instruments/base/InstrumentConfig';
 
 type TriggerableInstrument = Tone.ToneAudioNode & {
   triggerAttackRelease(

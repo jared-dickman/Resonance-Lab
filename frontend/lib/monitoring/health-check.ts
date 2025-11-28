@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Application Health Check System
  * Monitors critical services and dependencies
@@ -39,11 +40,11 @@ class HealthCheckSystem {
     }
 
     // Run initial check
-    this.check().catch(console.error);
+    this.check().catch(logger.error);
 
     // Schedule periodic checks
     this.checkInterval = setInterval(() => {
-      this.check().catch(console.error);
+      this.check().catch(logger.error);
     }, intervalMs);
   }
 
@@ -100,7 +101,7 @@ class HealthCheckSystem {
 
     // Log in development
     if (process.env.NODE_ENV === 'development') {
-      console.log('[Health Check]', this.lastCheck);
+      logger.info('[Health Check]', this.lastCheck);
     }
 
     return this.lastCheck;

@@ -4,7 +4,7 @@
  */
 
 import * as Tone from 'tone';
-import { DistortionPedal } from './DistortionPedal';
+import { DistortionPedal } from '@/lib/audio/effects/DistortionPedal';
 
 export interface PedalSlot {
   id: string;

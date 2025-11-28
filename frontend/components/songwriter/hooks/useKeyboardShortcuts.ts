@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import type { PanelId } from '../types/ui';
+import type { PanelId } from '@/components/songwriter/types/ui';
 
 export interface KeyboardShortcutHandlers {
   onToggleNavigator?: () => void;

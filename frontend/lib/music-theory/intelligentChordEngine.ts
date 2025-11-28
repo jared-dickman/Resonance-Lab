@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * 🎸 INTELLIGENT CHORD ENGINE
  * Powered by Tonal.js for music theory intelligence
@@ -79,7 +80,7 @@ export function analyzeChord(chordSymbol: string): ChordAnalysis | null {
       aliases: chord.aliases,
     };
   } catch (error) {
-    console.error('Error analyzing chord:', error);
+    logger.error('Error analyzing chord:', error);
     return null;
   }
 }
@@ -153,7 +154,7 @@ export function detectKey(chordSymbols: string[]): KeyAnalysis | null {
       subdominantKey: Note.transpose(tonic, '4P'),
     };
   } catch (error) {
-    console.error('Error detecting key:', error);
+    logger.error('Error detecting key:', error);
     return null;
   }
 }

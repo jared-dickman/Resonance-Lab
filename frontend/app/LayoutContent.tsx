@@ -148,9 +148,9 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
         <div className="container flex flex-col md:flex-row items-start md:items-center justify-between gap-3 md:gap-4 py-3 md:py-4 max-w-7xl mx-auto px-4 md:px-6">
           <div className="flex items-center justify-between w-full md:w-auto gap-3">
             <Link href={pageRoutes.home} className="flex items-center gap-2 group transition-opacity hover:opacity-80">
-              <h1 className="text-xl md:text-2xl font-semibold tracking-tight">
-                <span className="text-foreground">Resonance</span>
-                <span className="logo-gradient">Lab</span>
+              <h1 className="text-2xl md:text-4xl font-bold tracking-tight">
+                <span className="logo-gradient">Jam</span>
+                <span className="text-foreground">ium</span>
               </h1>
             </Link>
             <div className="flex md:hidden gap-2">

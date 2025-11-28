@@ -1,5 +1,5 @@
 # Domain Name Candidates
-
+DOMAIN-CANDIDATES.md:2
 Musical AI Platform - Sapphire/Electric Blue Branding
 Mascot: Mechanical Treble Clef Elemental (chrome wings, electric arcs, cosmic energy, fallen seraph vibes)
 
@@ -9,6 +9,7 @@ Mascot: Mechanical Treble Clef Elemental (chrome wings, electric arcs, cosmic en
 
 | Domain | Brand Fit | Theme |
 |--------|-----------|-------|
+| **apexsong.com** | 🏆 Peak song. Apex predator energy. $7.48 w/ promo! | Apex / Song |
 | **melodark.com** | Melody + dark. Fallen seraph aesthetic, moody, musical. Suffix-style like Resonix | Fallen Seraph / Suffix |
 | **voltclef.com** | Peak voltaic + musical fusion. Electric clef = your mascot. Short, punchy, final-boss energy | Voltaic Metal |
 | **seraphsound.com** | Fallen seraph theme direct hit. Angelic + sound = cosmic musical AI | Archaic Majestic / Fallen Seraph |
@@ -46,6 +47,60 @@ Mascot: Mechanical Treble Clef Elemental (chrome wings, electric arcs, cosmic en
 | **zenithclef.com** | Highest point. Peak. Celestial apex | Zenith |
 | **vectorclef.com** | Directional force. Trajectory. Aimed power | Vector |
 | **quantumclef.com** | Sci-fi physics. Superposition. Infinite states | Quantum |
+
+---
+
+## Elemental -IUM Series (ALL AVAILABLE .com $7.48 w/ promo!)
+
+| Domain | Vibe | Energy |
+|--------|------|--------|
+| **singium.com** | 🔥 Singing element. Active verb energy. Easy to say | Action Elemental |
+| **jamium.com** | 🔥 Jam session element. Creative, collaborative, cool | Creative Elemental |
+| **hymium.com** | 🔥 Hymn element. Sacred, fallen seraph vibes | Dark Sacred |
+| **hummium.com** | Humming element. Primal musical instinct | Primal |
+| **aweium.com** | Awe element. Wonder, amazement, emotional | Emotional |
+| **clefium.com** | Clef as element. Pure musical metal. Your mascot in periodic table form | Elemental Core |
+| **songium.com** | Song element. Direct musical chemistry | Elemental Core |
+| **acoustium.com** | Acoustic element. Sound science vibes | Sonic Science |
+| **frequium.com** | Frequency element. Wave/vibration energy | Wave Physics |
+| **spectrumium.com** | Full spectrum element. Cosmic, all-encompassing | Cosmic |
+| **clefanium.com** | Like Titanium. Heavy metal clef. Industrial strength | Heavy Metal |
+| **tonorium.com** | Tone + auditorium. Grand, resonant | Archaic Majestic |
+
+---
+
+## Tone Series (.com taken, .io available)
+
+| Domain | Status | Notes |
+|--------|--------|-------|
+| hypertone.com | ❌ Taken | - |
+| ultratone.com | ❌ Taken | - |
+| **hypertone.io** | ✅ Available $21.98 | Transcendent frequency |
+| **ultratone.io** | ✅ Available $21.98 | Ultimate frequency |
+| **hypertone.xyz** | ✅ Available $1.28 | Budget option |
+
+---
+
+## Song Series
+
+| Domain | Status | Notes |
+|--------|--------|-------|
+| **apexsong.com** | ✅ AVAILABLE $7.48 | Peak song. Apex predator energy. BEST VALUE! |
+| **primesong.io** | ✅ Available $24.98 | Optimus Prime meets music |
+| **ultrasong.io** | ✅ Available $24.98 | Ultimate song energy |
+
+---
+
+## Wave Series (Premium/Taken .com)
+
+| Domain | Status | Notes |
+|--------|--------|-------|
+| **hyperwave.io** | ✅ Available ~$25 | Beyond dimensions. Electric arc mascot energy |
+| **novawave.io** | ✅ Available ~$25 | Stellar explosion. Cosmic rebirth |
+| **apexwave.io** | ✅ Available $24.98 | Peak wave. Apex predator |
+| ultrawave.com | ❌ Taken | - |
+| hyperwave.com | ❌ Taken | - |
+| novawave.com | ❌ Taken | - |
 
 ---
 

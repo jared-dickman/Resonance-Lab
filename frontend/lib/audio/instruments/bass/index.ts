@@ -2,4 +2,4 @@
  * Bass instruments exports
  */
 
-export { SynthBass } from './SynthBass';
+export { SynthBass } from '@/lib/audio/instruments/bass/SynthBass';

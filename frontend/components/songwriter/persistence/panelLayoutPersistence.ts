@@ -1,6 +1,6 @@
 import { withLocalStorage } from '@/lib/utils/dom/safeBrowserStorage';
 
-import type { PanelConfiguration, PanelId, PanelLayoutState } from '../types/ui';
+import type { PanelConfiguration, PanelId, PanelLayoutState } from '@/components/songwriter/types/ui';
 
 const PANEL_LAYOUT_STORAGE_KEY = 'songwriter_panel_layout_v2';
 const REQUIRED_PANELS: ReadonlyArray<PanelId> = ['navigator', 'workspace', 'assistant'];

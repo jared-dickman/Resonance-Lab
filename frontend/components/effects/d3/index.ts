@@ -4,25 +4,25 @@
  */
 
 // Original 4 visualizations
-export { AnimatedCableRouting } from './AnimatedCableRouting';
-export { SpectrumAnalyzer } from './SpectrumAnalyzer';
-export { WaveformOscilloscope } from './WaveformOscilloscope';
-export { SignalPathDiagram } from './SignalPathDiagram';
+export { AnimatedCableRouting } from '@/components/effects/d3/AnimatedCableRouting';
+export { SpectrumAnalyzer } from '@/components/effects/d3/SpectrumAnalyzer';
+export { WaveformOscilloscope } from '@/components/effects/d3/WaveformOscilloscope';
+export { SignalPathDiagram } from '@/components/effects/d3/SignalPathDiagram';
 
 // Music theory visualizations
-export { CircleOfFifths } from './CircleOfFifths';
-export { ChordAnalyzer } from './ChordAnalyzer';
-export { NotationDisplay, chordToNotation } from './NotationDisplay';
+export { CircleOfFifths } from '@/components/effects/d3/CircleOfFifths';
+export { ChordAnalyzer } from '@/components/effects/d3/ChordAnalyzer';
+export { NotationDisplay, chordToNotation } from '@/components/effects/d3/NotationDisplay';
 
 // 3D visualizations
-export { AudioReactiveParticles } from './AudioReactiveParticles';
-export { AudioReactiveShader } from './AudioReactiveShader';
+export { AudioReactiveParticles } from '@/components/effects/d3/AudioReactiveParticles';
+export { AudioReactiveShader } from '@/components/effects/d3/AudioReactiveShader';
 
 // Generative art
-export { GenerativeArtVisualizer } from './GenerativeArtVisualizer';
+export { GenerativeArtVisualizer } from '@/components/effects/d3/GenerativeArtVisualizer';
 
 // Advanced waveform editing
-export { WaveformRegionEditor } from './WaveformRegionEditor';
+export { WaveformRegionEditor } from '@/components/effects/d3/WaveformRegionEditor';
 
 // Interactive instruments
-export { InteractiveSynthVisualizer } from './InteractiveSynthVisualizer';
+export { InteractiveSynthVisualizer } from '@/components/effects/d3/InteractiveSynthVisualizer';

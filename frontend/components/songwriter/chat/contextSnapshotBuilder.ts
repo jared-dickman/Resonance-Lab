@@ -8,13 +8,13 @@ import type {
   ConversationSummary,
   TextSelectionRange,
   AgentIntentCategory,
-} from '../types/chat';
+} from '@/components/songwriter/types/chat';
 import type {
   CompleteSongState,
   SectionType,
   EditHistoryEntry,
-} from '../types/song';
-import type { TextPosition } from '../types/ui';
+} from '@/components/songwriter/types/song';
+import type { TextPosition } from '@/components/songwriter/types/ui';
 
 export function extractCompleteSongContextSnapshot(
   songState: CompleteSongState,

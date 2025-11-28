@@ -2,5 +2,5 @@
  * Drum instruments exports
  */
 
-export { DrumKit } from './DrumKit';
-export type { DrumHit } from './DrumKit';
+export { DrumKit } from '@/lib/audio/instruments/drums/DrumKit';
+export type { DrumHit } from '@/lib/audio/instruments/drums/DrumKit';

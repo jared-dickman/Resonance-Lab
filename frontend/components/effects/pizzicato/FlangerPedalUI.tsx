@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Volume2, VolumeX, Settings, Zap } from 'lucide-react';
 import { FlangerPedal } from '@/lib/audio/effects/pizzicato';
-import { Knob, Footswitch, PedalChassis } from './shared/PedalControls';
+import { Knob, Footswitch, PedalChassis } from '@/components/effects/pizzicato/shared/PedalControls';
 import { cn } from '@/lib/utils';
 
 export interface FlangerPedalUIProps {

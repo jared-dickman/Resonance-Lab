@@ -43,6 +43,7 @@ import {
   createPanelShortcutHandlers,
 } from '@/components/songwriter/hooks/useKeyboardShortcuts';
 import { cn } from '@/lib/utils';
+import { logger } from '@/lib/logger';
 
 type WorkspaceChord = { name: string; timing: number };
 
@@ -89,7 +90,7 @@ export default function SongwriterClient(): React.JSX.Element {
   const { togglePanel, focusPanel, isPanelExpanded } = usePanelInteractions(panelLayout, setPanelLayout);
 
   const handleSaveDraft = useCallback((): void => {
-    console.log('Draft saved');
+    logger.info('Draft saved');
   }, []);
 
   const keyboardHandlers = useMemo(
@@ -172,7 +173,7 @@ export default function SongwriterClient(): React.JSX.Element {
   );
 
   const handleApplyConfiguration = useCallback((): void => {
-    console.log('Apply AI configuration (mock)');
+    logger.info('Apply AI configuration (mock)');
   }, []);
 
   const showNavigator = panelVisibility.navigator;
@@ -475,7 +476,7 @@ function SongConfigurationPreview({
         throw new Error('Clipboard API unavailable');
       }
     } catch (error) {
-      console.error('Unable to copy song configuration', error);
+      logger.error('Unable to copy song configuration', error);
       setCopyStatus('error');
     }
   }, [formattedJson]);

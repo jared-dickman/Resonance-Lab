@@ -6,8 +6,9 @@
 'use client';
 
 import { useEffect, useRef, useCallback } from 'react';
+import { logger } from '@/lib/logger';
 import * as Tone from 'tone';
-import { AcousticGuitar } from '../audio/instruments';
+import { AcousticGuitar } from '@/lib/audio/instruments';
 import { Chord } from 'tonal';
 
 interface GuitarPlaybackOptions {
@@ -33,9 +34,9 @@ export function useGuitarPlayback({
   useEffect(() => {
     if (enabled && !isInitializedRef.current) {
       const initAudio = async () => {
-        console.log('[useGuitarPlayback] Initializing audio...');
+        logger.info('[useGuitarPlayback] Initializing audio...');
         await Tone.start();
-        console.log('[useGuitarPlayback] Tone.js started');
+        logger.info('[useGuitarPlayback] Tone.js started');
 
         // Create guitar with strumming preset for realistic sound
         guitarRef.current = new AcousticGuitar({
@@ -43,7 +44,7 @@ export function useGuitarPlayback({
           volume
         });
 
-        console.log('[useGuitarPlayback] AcousticGuitar created, waiting for samples...');
+        logger.info('[useGuitarPlayback] AcousticGuitar created, waiting for samples...');
 
         isInitializedRef.current = true;
       };
@@ -60,20 +61,20 @@ export function useGuitarPlayback({
 
     const guitar = guitarRef.current;
     if (!guitar) {
-      console.warn('Guitar not initialized yet');
+      logger.warn('Guitar not initialized yet');
       return;
     }
 
     // Check if guitar samples are loaded
     if (!guitar.isReady()) {
-      console.warn('Guitar samples still loading, skipping chord:', chordName);
+      logger.warn('Guitar samples still loading, skipping chord:', chordName);
       return;
     }
 
     // Parse chord to get notes
     const chord = Chord.get(chordName);
     if (chord.empty || chord.notes.length === 0) {
-      console.warn('Invalid chord:', chordName);
+      logger.warn('Invalid chord:', chordName);
       return;
     }
 

@@ -3,7 +3,7 @@ import type {
   SectionType,
   SongStructure,
   Genre,
-} from '../types/song';
+} from '@/components/songwriter/types/song';
 
 export function estimateSectionDurationSeconds(
   section: SectionLyrics,
