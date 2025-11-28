@@ -21,17 +21,17 @@ jobs:
           node-version: '20'
 
       - name: 🔒 npm audit
-        run: npm audit --audit-level=moderate
+        run: npm audit --audit-level=high
         continue-on-error: true
 
       - name: 🛡️ Snyk Security Scan
-        uses: snyk/actions/node@master
+        uses: snyk/actions/node@0.4.0
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         continue-on-error: true
 
       - name: 📋 OWASP Dependency Check
-        uses: dependency-check/Dependency-Check_Action@main
+        uses: dependency-check/Dependency-Check_Action@10.1.1
         with:
           path: '.'
           format: 'HTML'

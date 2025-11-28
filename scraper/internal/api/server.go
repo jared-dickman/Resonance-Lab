@@ -133,5 +133,13 @@ func writeJSON(w http.ResponseWriter, status int, payload any) {
 }
 
 func writeError(w http.ResponseWriter, status int, err error) {
-	writeJSON(w, status, map[string]string{"error": err.Error()})
+	// Only expose user-friendly errors to clients, not internal details
+	msg := "An error occurred"
+	if status == http.StatusNotFound {
+		msg = "Resource not found"
+	} else if status == http.StatusBadRequest {
+		// Bad request errors are typically validation, safe to expose
+		msg = err.Error()
+	}
+	writeJSON(w, status, map[string]string{"error": msg})
 }

@@ -62,17 +62,17 @@ const PedalSlotUI: React.FC<{
     if (slot.pedal instanceof DistortionPedal) {
       return <DistortionPedalUI pedal={slot.pedal} />;
     } else if (slot.pedal instanceof DelayPedal) {
-      return <DelayPedalUI pedal={slot.pedal as any} />;
+      return <DelayPedalUI pedal={slot.pedal} />;
     } else if (slot.pedal instanceof ReverbPedal) {
-      return <ReverbPedalUI pedal={slot.pedal as any} />;
+      return <ReverbPedalUI pedal={slot.pedal} />;
     } else if (slot.pedal instanceof ChorusPedal) {
-      return <ChorusPedalUI pedal={slot.pedal as any} />;
+      return <ChorusPedalUI pedal={slot.pedal} />;
     } else if (slot.pedal instanceof FlangerPedal) {
-      return <FlangerPedalUI pedal={slot.pedal as any} />;
+      return <FlangerPedalUI pedal={slot.pedal} />;
     } else if (slot.pedal instanceof TremoloPedal) {
-      return <TremoloPedalUI pedal={slot.pedal as any} />;
+      return <TremoloPedalUI pedal={slot.pedal} />;
     } else if (slot.pedal instanceof CompressorPedal) {
-      return <CompressorPedalUI pedal={slot.pedal as any} />;
+      return <CompressorPedalUI pedal={slot.pedal} />;
     }
     return null;
   };
@@ -386,7 +386,7 @@ export const PedalboardUI: React.FC<PedalboardUIProps> = ({
       {/* Visualizer */}
       {showVisualizer && (
         <div className="mb-6">
-          <PedalVisualizer audioNode={pedalboard.getOutput() as any} type="both" height={100} />
+          <PedalVisualizer audioNode={pedalboard.getOutput()} type="both" height={100} />
         </div>
       )}
 

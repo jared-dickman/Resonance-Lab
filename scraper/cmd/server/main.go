@@ -1,11 +1,14 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
 	"path/filepath"
+	"syscall"
 	"time"
 
 	"scraper/internal/api"
@@ -37,9 +40,11 @@ func main() {
 
 	rateLimiter := middleware.NewRateLimiter(100, time.Minute)
 	handler := withCORS(
-		rateLimiter.Middleware(
-			middleware.Timeout(30 * time.Second)(
-				loggingMiddleware(mux),
+		recoverMiddleware(
+			rateLimiter.Middleware(
+				middleware.Timeout(30*time.Second)(
+					loggingMiddleware(mux),
+				),
 			),
 		),
 	)
@@ -52,10 +57,25 @@ func main() {
 		IdleTimeout:  60 * time.Second,
 	}
 
-	log.Printf("Starting server on %s (songs dir: %s)", *addr, resolvedSongsDir)
-	if err := server.ListenAndServe(); err != nil {
-		log.Fatalf("HTTP server error: %v", err)
+	// Graceful shutdown
+	go func() {
+		log.Printf("Starting server on %s (songs dir: %s)", *addr, resolvedSongsDir)
+		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("HTTP server error: %v", err)
+		}
+	}()
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	log.Println("Shutting down server...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	if err := server.Shutdown(ctx); err != nil {
+		log.Printf("Server forced to shutdown: %v", err)
 	}
+	log.Println("Server stopped")
 }
 
 func getenv(key, fallback string) string {
@@ -66,9 +86,21 @@ func getenv(key, fallback string) string {
 }
 
 func withCORS(next http.Handler) http.Handler {
+	allowedOrigins := map[string]bool{
+		"https://resonance-lab.vercel.app":     true,
+		"https://www.resonance-lab.vercel.app": true,
+		"http://localhost:3000":                true,
+		"http://localhost:3001":                true,
+	}
+
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Allow all origins (consider restricting in production)
-		w.Header().Set("Access-Control-Allow-Origin", "*")
+		origin := r.Header.Get("Origin")
+		if allowedOrigins[origin] {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+		} else if origin == "" {
+			// Allow requests without Origin header (non-browser clients)
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+		}
 
 		// Allow common headers that browsers send
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Accept, Accept-Language, Content-Language, Range")
@@ -97,5 +129,20 @@ func loggingMiddleware(next http.Handler) http.Handler {
 		start := time.Now()
 		next.ServeHTTP(w, r)
 		log.Printf("%s %s %s", r.Method, r.URL.Path, time.Since(start))
+	})
+}
+
+// recoverMiddleware catches panics and returns a safe 500 response
+func recoverMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		defer func() {
+			if err := recover(); err != nil {
+				log.Printf("PANIC RECOVERED: %v", err)
+				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(http.StatusInternalServerError)
+				w.Write([]byte(`{"error":"Internal server error"}`))
+			}
+		}()
+		next.ServeHTTP(w, r)
 	})
 }

@@ -12,11 +12,18 @@ export const logger = {
    */
   info: (...args: unknown[]) => {
     if (isDevelopment) {
-      try {
-        console.log(...args)
-      } catch {
-        logger.error(...args)
-      }
+      // eslint-disable-next-line no-console
+      console.log(...args)
+    }
+  },
+
+  /**
+   * Alias for info - standard log method
+   */
+  log: (...args: unknown[]) => {
+    if (isDevelopment) {
+      // eslint-disable-next-line no-console
+      console.log(...args)
     }
   },
 
@@ -25,7 +32,7 @@ export const logger = {
    */
   warn: (...args: unknown[]) => {
     if (isDevelopment) {
-
+      // eslint-disable-next-line no-console
       console.warn(...args)
     }
   },
@@ -35,7 +42,7 @@ export const logger = {
    */
   debug: (...args: unknown[]) => {
     if (isDevelopment) {
-
+      // eslint-disable-next-line no-console
       console.debug(...args)
     }
   },
@@ -45,7 +52,7 @@ export const logger = {
    */
   error: (...args: unknown[]) => {
     if (isDevelopment) {
-
+      // eslint-disable-next-line no-console
       console.error(...args)
     } else {
       // In production, only log the error message without sensitive details
@@ -58,7 +65,7 @@ export const logger = {
         }
         return arg
       })
-
+      // eslint-disable-next-line no-console
       console.error(...sanitizedArgs)
     }
   },
