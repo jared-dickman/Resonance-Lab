@@ -53,9 +53,9 @@ export default function ChordSuggestions({
 
   if (currentChords.length === 0) {
     return (
-      <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6">
+      <div className="bg-gray-800/50 border border-sapphire-500/10 rounded-lg p-6">
         <div className="flex items-center gap-2 mb-2">
-          <Sparkles className="w-5 h-5 text-purple-400" />
+          <Sparkles className="w-5 h-5 text-sapphire-400" />
           <h3 className="text-lg font-bold text-white">AI Chord Suggestions</h3>
         </div>
         <p className="text-sm text-gray-400">
@@ -66,15 +66,15 @@ export default function ChordSuggestions({
   }
 
   return (
-    <div className="bg-gradient-to-br from-purple-900/40 to-pink-900/40 border border-purple-700/50 rounded-lg p-6">
+    <div className="bg-gradient-to-br from-sapphire-800/40 to-sapphire-500/40 border border-sapphire-500/50 rounded-lg p-6">
       <div className="flex items-center gap-2 mb-4">
-        <Sparkles className="w-5 h-5 text-purple-400" />
+        <Sparkles className="w-5 h-5 text-sapphire-400" />
         <h3 className="text-lg font-bold text-white">AI Chord Suggestions</h3>
       </div>
 
       {loading ? (
         <div className="flex items-center justify-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500" />
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sapphire-500" />
         </div>
       ) : suggestions.length === 0 ? (
         <p className="text-sm text-gray-400">
@@ -89,15 +89,15 @@ export default function ChordSuggestions({
             return (
               <div
                 key={i}
-                className="bg-gray-800/60 border border-gray-600 rounded-lg p-4 hover:bg-gray-700/60 transition-all group"
+                className="bg-gray-800/60 border border-sapphire-500/10 rounded-lg p-4 hover:bg-gray-700/60 hover:border-sapphire-500/30 transition-all duration-200 group"
               >
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center w-8 h-8 bg-purple-500/20 rounded-full text-purple-300 font-bold text-sm">
+                    <div className="flex items-center justify-center w-8 h-8 bg-sapphire-500/20 rounded-full text-sapphire-400 font-bold text-sm">
                       #{i + 1}
                     </div>
                     <div>
-                      <p className="text-xl font-bold text-white group-hover:text-purple-300 transition-colors">
+                      <p className="text-xl font-bold text-white group-hover:text-sapphire-400 transition-colors">
                         {suggestion.chord}
                       </p>
                       <p className="text-xs text-gray-400 capitalize">
@@ -110,19 +110,19 @@ export default function ChordSuggestions({
                     {onPlaySuggestion && (
                       <button
                         onClick={() => onPlaySuggestion(suggestion.chord)}
-                        className="p-2 bg-purple-500/20 hover:bg-purple-500/40 rounded-lg transition-colors"
+                        className="p-2 bg-sapphire-500/20 hover:bg-sapphire-500/40 rounded-lg transition-all duration-200"
                         title="Preview chord"
                       >
-                        <Play className="w-4 h-4 text-purple-300" />
+                        <Play className="w-4 h-4 text-sapphire-400" />
                       </button>
                     )}
                     {onChordSelect && (
                       <button
                         onClick={() => onChordSelect(suggestion.chord)}
-                        className="p-2 bg-green-500/20 hover:bg-green-500/40 rounded-lg transition-colors"
+                        className="p-2 bg-sapphire-500/20 hover:bg-sapphire-500/40 rounded-lg transition-all duration-200"
                         title="Add to progression"
                       >
-                        <ArrowRight className="w-4 h-4 text-green-300" />
+                        <ArrowRight className="w-4 h-4 text-sapphire-400" />
                       </button>
                     )}
                   </div>
@@ -133,16 +133,16 @@ export default function ChordSuggestions({
                   <div>
                     <div className="flex items-center justify-between mb-1">
                       <p className="text-xs text-gray-400">Probability</p>
-                      <p className="text-xs font-medium text-purple-300">
+                      <p className="text-xs font-medium text-sapphire-400">
                         {probabilityPercent}%
                       </p>
                     </div>
                     <div className="w-full bg-gray-700 rounded-full h-2">
                       <div
                         className={`h-2 rounded-full transition-all ${
-                          probabilityPercent >= 80 ? 'bg-green-500' :
-                          probabilityPercent >= 60 ? 'bg-yellow-500' :
-                          'bg-purple-500'
+                          probabilityPercent >= 80 ? 'bg-sapphire-600' :
+                          probabilityPercent >= 60 ? 'bg-sapphire-500' :
+                          'bg-sapphire-400'
                         }`}
                         style={{ width: `${probabilityPercent}%` }}
                       />
@@ -151,7 +151,7 @@ export default function ChordSuggestions({
 
                   {/* Reason */}
                   <div className="flex items-start gap-2">
-                    <div className="w-1 h-1 rounded-full bg-purple-400 mt-1.5" />
+                    <div className="w-1 h-1 rounded-full bg-sapphire-400 mt-1.5" />
                     <p className="text-sm text-gray-300">
                       {suggestion.reason}
                     </p>
@@ -181,7 +181,7 @@ export default function ChordSuggestions({
       )}
 
       {/* Tips */}
-      <div className="mt-6 pt-4 border-t border-purple-700/30">
+      <div className="mt-6 pt-4 border-t border-sapphire-500/30">
         <p className="text-xs text-gray-400 italic">
           💡 Suggestions are based on music theory, common progressions, and harmonic function.
           Higher probability means more natural resolution.

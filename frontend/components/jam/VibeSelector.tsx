@@ -11,16 +11,16 @@ interface VibeSelectorProps {
 }
 
 const VIBE_GRADIENTS: Record<Vibe, string> = {
-  pop: 'from-pink-500 to-purple-500',
-  rock: 'from-orange-500 to-red-600',
-  jazz: 'from-blue-500 to-indigo-600',
-  blues: 'from-cyan-500 to-blue-700',
-  folk: 'from-green-500 to-emerald-600',
-  indie: 'from-violet-500 to-purple-600',
-  soul: 'from-amber-500 to-orange-600',
-  country: 'from-yellow-600 to-amber-700',
-  funk: 'from-fuchsia-500 to-pink-600',
-  latin: 'from-rose-500 to-red-600',
+  pop: 'from-sapphire-500 to-sapphire-400',
+  rock: 'from-sapphire-600 to-sapphire-500',
+  jazz: 'from-sapphire-700 to-sapphire-400',
+  blues: 'from-sapphire-800 to-sapphire-500',
+  folk: 'from-sapphire-400 to-sapphire-300',
+  indie: 'from-sapphire-500 to-sapphire-300',
+  soul: 'from-sapphire-600 to-sapphire-400',
+  country: 'from-sapphire-700 to-sapphire-500',
+  funk: 'from-sapphire-800 to-sapphire-400',
+  latin: 'from-sapphire-600 to-sapphire-300',
 };
 
 export default function VibeSelector({ selectedVibe, onSelectVibe }: VibeSelectorProps) {
@@ -63,10 +63,10 @@ export default function VibeSelector({ selectedVibe, onSelectVibe }: VibeSelecto
                   onClick={() => onSelectVibe(vibe)}
                   className={cn(
                     'relative overflow-hidden rounded-lg p-4',
-                    'border-2 flex flex-col items-center gap-2 text-center',
+                    'border-2 flex flex-col items-center gap-2 text-center transition-all duration-200',
                     isSelected
-                      ? 'border-primary shadow-lg shadow-primary/20'
-                      : 'border-border hover:border-primary/50'
+                      ? 'border-sapphire-500 shadow-lg shadow-sapphire-500/20'
+                      : 'border-sapphire-500/10 hover:border-sapphire-500/30'
                   )}
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -110,7 +110,7 @@ export default function VibeSelector({ selectedVibe, onSelectVibe }: VibeSelecto
                   {/* Selection ring animation */}
                   {isSelected && (
                     <motion.div
-                      className="absolute inset-0 rounded-lg border-2 border-primary"
+                      className="absolute inset-0 rounded-lg border-2 border-sapphire-500"
                       layoutId="selected-vibe"
                       transition={{
                         type: 'spring',

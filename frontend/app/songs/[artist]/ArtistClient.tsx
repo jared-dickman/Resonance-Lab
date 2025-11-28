@@ -159,7 +159,7 @@ export default function ArtistClient({ artistSlug }: ArtistClientProps) {
                   artistData.keys.map(key => (
                     <span
                       key={key}
-                      className="inline-flex items-center rounded-md bg-muted px-2.5 py-0.5 text-sm font-medium"
+                      className="inline-flex items-center rounded-md bg-sapphire-500/10 px-2.5 py-0.5 text-sm font-medium text-sapphire-300 border border-sapphire-500/20"
                     >
                       {key}
                     </span>
@@ -178,7 +178,7 @@ export default function ArtistClient({ artistSlug }: ArtistClientProps) {
           <div className="space-y-2">
             <h3 className="text-sm font-medium text-muted-foreground">Songs</h3>
             {statusMessage && (
-              <div className="p-3 rounded-md bg-muted text-sm">
+              <div className="p-3 rounded-md bg-sapphire-500/10 text-sm border border-sapphire-500/20 text-sapphire-300">
                 {statusMessage}
               </div>
             )}
@@ -186,21 +186,21 @@ export default function ArtistClient({ artistSlug }: ArtistClientProps) {
               {artistData.songs.map(song => (
                 <div
                   key={`${song.artistSlug}/${song.songSlug}`}
-                  className="group rounded-md border p-4 transition hover:border-primary hover:bg-muted"
+                  className="group rounded-md border border-sapphire-500/10 p-4 transition-all duration-200 hover:border-sapphire-500/30 hover:bg-muted/50"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <Link
                       href={`/songs/${song.artistSlug}/${song.songSlug}`}
                       className="flex-1 space-y-1"
                     >
-                      <div className="font-medium hover:text-primary transition-colors">{song.title}</div>
+                      <div className="font-medium hover:text-sapphire-400 transition-colors duration-200">{song.title}</div>
                       <div className="text-sm text-muted-foreground">
                         Updated {new Date(song.updatedAt).toLocaleDateString()}
                       </div>
                     </Link>
                     <div className="flex items-center gap-2">
                       {song.key && (
-                        <span className="inline-flex items-center rounded-md bg-muted px-2.5 py-0.5 text-xs font-medium">
+                        <span className="inline-flex items-center rounded-md bg-sapphire-500/10 px-2.5 py-0.5 text-xs font-medium text-sapphire-300 border border-sapphire-500/20">
                           {song.key}
                         </span>
                       )}

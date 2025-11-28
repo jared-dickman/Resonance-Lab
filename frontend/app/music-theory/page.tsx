@@ -60,7 +60,7 @@ export default function MusicTheoryPage() {
     <div className="container mx-auto px-4 md:px-6 py-8 max-w-7xl">
       {/* Hero Section */}
       <div className="mb-8">
-        <div className="bg-gradient-to-r from-purple-900/40 to-blue-900/40 border border-purple-700/50 rounded-lg p-8">
+        <div className="bg-gradient-to-r from-sapphire-800/40 to-sapphire-500/40 border border-sapphire-500/50 rounded-lg p-8">
           <h1 className="text-4xl font-bold text-white mb-3">
             🎼 Music Theory Explorer
           </h1>
@@ -68,16 +68,16 @@ export default function MusicTheoryPage() {
             Explore music theory with AI-powered visualizations, chord analysis, and smart suggestions
           </p>
           <div className="flex flex-wrap gap-2">
-            <span className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">
+            <span className="px-3 py-1 bg-sapphire-500/20 text-sapphire-400 rounded-full text-sm">
               Circle of Fifths
             </span>
-            <span className="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm">
+            <span className="px-3 py-1 bg-sapphire-500/20 text-sapphire-300 rounded-full text-sm">
               AI Suggestions
             </span>
-            <span className="px-3 py-1 bg-green-500/20 text-green-300 rounded-full text-sm">
+            <span className="px-3 py-1 bg-sapphire-500/20 text-sapphire-400 rounded-full text-sm">
               Harmonic Analysis
             </span>
-            <span className="px-3 py-1 bg-yellow-500/20 text-yellow-300 rounded-full text-sm">
+            <span className="px-3 py-1 bg-sapphire-500/20 text-sapphire-300 rounded-full text-sm">
               Key Detection
             </span>
           </div>
@@ -85,7 +85,7 @@ export default function MusicTheoryPage() {
       </div>
 
       {/* Progression Selector */}
-      <div className="mb-8 bg-gray-800/50 border border-gray-700 rounded-lg p-6">
+      <div className="mb-8 bg-gray-800/50 border border-sapphire-500/10 rounded-lg p-6 transition-all hover:border-sapphire-500/30">
         <h2 className="text-xl font-bold text-white mb-4">Select a Chord Progression</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           {(Object.keys(progressions) as Array<keyof typeof progressions>).map((key) => {
@@ -94,10 +94,10 @@ export default function MusicTheoryPage() {
               <button
                 key={key}
                 onClick={() => setSelectedProgression(key)}
-                className={`p-4 rounded-lg border-2 transition-all text-left ${
+                className={`p-4 rounded-lg border-2 transition-all duration-200 text-left ${
                   selectedProgression === key
-                    ? 'border-purple-500 bg-purple-500/20'
-                    : 'border-gray-600 bg-gray-700/30 hover:border-gray-500'
+                    ? 'border-sapphire-500 bg-sapphire-500/20 shadow-lg shadow-sapphire-500/20'
+                    : 'border-sapphire-500/10 bg-gray-700/30 hover:border-sapphire-500/30'
                 }`}
               >
                 <h3 className="font-bold text-white mb-1">{prog.name}</h3>
@@ -127,10 +127,10 @@ export default function MusicTheoryPage() {
                   setCurrentChordIndex(i);
                   playChord(chord);
                 }}
-                className={`px-6 py-3 rounded-lg font-bold text-lg transition-all ${
+                className={`px-6 py-3 rounded-lg font-bold text-lg transition-all duration-200 ${
                   i === currentChordIndex
-                    ? 'bg-purple-500 text-white scale-110'
-                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                    ? 'bg-sapphire-500 text-white scale-110 shadow-lg shadow-sapphire-500/50'
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600 hover:border-sapphire-500/30 border border-transparent'
                 }`}
               >
                 {chord}
@@ -155,29 +155,29 @@ export default function MusicTheoryPage() {
       />
 
       {/* Educational Section */}
-      <div className="mt-8 bg-gradient-to-r from-blue-900/20 to-purple-900/20 border border-blue-700/30 rounded-lg p-6">
+      <div className="mt-8 bg-gradient-to-r from-sapphire-800/20 to-sapphire-500/20 border border-sapphire-500/30 rounded-lg p-6">
         <h2 className="text-xl font-bold text-white mb-4">💡 How to Use</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-300">
           <div>
-            <h3 className="font-bold text-blue-400 mb-2">1. Select a Progression</h3>
+            <h3 className="font-bold text-sapphire-400 mb-2">1. Select a Progression</h3>
             <p className="text-sm">
               Choose from classic progressions like I-IV-V-I, jazz's ii-V-I, or create your own custom sequence.
             </p>
           </div>
           <div>
-            <h3 className="font-bold text-purple-400 mb-2">2. Explore the Circle</h3>
+            <h3 className="font-bold text-sapphire-300 mb-2">2. Explore the Circle</h3>
             <p className="text-sm">
               Click chords on the Circle of Fifths to hear them. Current chord pulses in gold, suggestions glow green.
             </p>
           </div>
           <div>
-            <h3 className="font-bold text-green-400 mb-2">3. Analyze Harmony</h3>
+            <h3 className="font-bold text-sapphire-400 mb-2">3. Analyze Harmony</h3>
             <p className="text-sm">
               See the key, scale, and harmonic function (I, IV, V, etc.) of your progression in real-time.
             </p>
           </div>
           <div>
-            <h3 className="font-bold text-yellow-400 mb-2">4. Get AI Suggestions</h3>
+            <h3 className="font-bold text-sapphire-300 mb-2">4. Get AI Suggestions</h3>
             <p className="text-sm">
               The AI engine suggests next chords based on music theory, with probability scores and reasons.
             </p>

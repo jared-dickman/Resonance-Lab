@@ -177,11 +177,11 @@ export default function LyricsEditor({
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex items-center gap-2 p-3 rounded-lg bg-primary/10 border border-primary/30"
+            className="flex items-center gap-2 p-3 rounded-lg bg-sapphire-500/10 border border-sapphire-500/30 transition-all duration-200"
           >
-            <Sparkles className="w-4 h-4 text-primary" />
+            <Sparkles className="w-4 h-4 text-sapphire-500" />
             <span className="text-sm">
-              Selected chord: <strong className="text-primary">{selectedChord}</strong>
+              Selected chord: <strong className="text-sapphire-500">{selectedChord}</strong>
             </span>
           </motion.div>
         )}

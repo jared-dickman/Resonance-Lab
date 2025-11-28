@@ -124,7 +124,7 @@ interface FootswitchProps {
   color?: string;
 }
 
-const Footswitch: React.FC<FootswitchProps> = ({ enabled, onToggle, color = '#3b82f6' }) => {
+const Footswitch: React.FC<FootswitchProps> = ({ enabled, onToggle, color = 'var(--sapphire-500)' }) => {
   return (
     <div className="flex flex-col items-center gap-3">
       <motion.div
@@ -211,8 +211,8 @@ export const DelayPedalUI: React.FC<DelayPedalUIProps> = ({
       <motion.div
         className="relative rounded-lg shadow-2xl overflow-hidden"
         style={{
-          background: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%)',
-          border: '2px solid #3b82f6',
+          background: 'linear-gradient(135deg, var(--sapphire-900) 0%, var(--sapphire-800) 100%)',
+          border: '2px solid var(--sapphire-500)',
           padding: '2rem',
         }}
         initial={{ opacity: 0, y: 20 }}
@@ -267,13 +267,13 @@ export const DelayPedalUI: React.FC<DelayPedalUIProps> = ({
         )}
 
         <div className="grid grid-cols-3 gap-6 mb-8">
-          <Knob label="Time" value={time} onChange={setTime} min={0.005} max={2} color="#3b82f6" />
-          <Knob label="Feedback" value={feedback} onChange={setFeedback} color="#60a5fa" />
-          <Knob label="Mix" value={mix} onChange={setMix} color="#93c5fd" />
+          <Knob label="Time" value={time} onChange={setTime} min={0.005} max={2} color="var(--sapphire-500)" />
+          <Knob label="Feedback" value={feedback} onChange={setFeedback} color="var(--sapphire-400)" />
+          <Knob label="Mix" value={mix} onChange={setMix} color="var(--sapphire-300)" />
         </div>
 
         <div className="flex justify-center">
-          <Footswitch enabled={enabled} onToggle={handleToggle} color="#3b82f6" />
+          <Footswitch enabled={enabled} onToggle={handleToggle} color="var(--sapphire-500)" />
         </div>
 
         <div className="mt-6 pt-4 border-t border-blue-900">

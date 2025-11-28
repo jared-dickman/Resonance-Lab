@@ -237,7 +237,7 @@ export const PedalboardUI: React.FC<PedalboardUIProps> = ({
         <div className="flex items-center gap-3">
           <button
             onClick={() => setShowLegendaryRigs(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-sapphire-600 hover:bg-sapphire-700 text-white rounded-lg font-medium transition-colors"
           >
             <Star className="w-4 h-4" />
             Legendary Rigs
@@ -245,7 +245,7 @@ export const PedalboardUI: React.FC<PedalboardUIProps> = ({
 
           <button
             onClick={() => setShowPedalSelector(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-medium transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-sapphire-500 hover:bg-sapphire-600 text-white rounded-lg font-medium transition-colors"
           >
             <Plus className="w-4 h-4" />
             Add Pedal
@@ -291,13 +291,13 @@ export const PedalboardUI: React.FC<PedalboardUIProps> = ({
       {showLegendaryRigs && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
           <motion.div
-            className="bg-gray-900 rounded-xl p-8 max-w-4xl w-full mx-4 border border-purple-800"
+            className="bg-gray-900 rounded-xl p-8 max-w-4xl w-full mx-4 border border-sapphire-700"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
           >
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
-                <Star className="w-6 h-6 text-purple-500" />
+                <Star className="w-6 h-6 text-sapphire-400" />
                 <h2 className="text-2xl font-bold text-white">Legendary Guitarist Rigs</h2>
               </div>
               <button
@@ -313,12 +313,12 @@ export const PedalboardUI: React.FC<PedalboardUIProps> = ({
                 <button
                   key={rig.name}
                   onClick={() => handleLoadLegendaryRig(rig.name)}
-                  className="w-full p-6 bg-gradient-to-r from-gray-800 to-gray-900 hover:from-purple-900/30 hover:to-gray-900 rounded-lg border border-gray-800 hover:border-purple-700 transition-all text-left group"
+                  className="w-full p-6 bg-gradient-to-r from-gray-800 to-gray-900 hover:from-sapphire-900/30 hover:to-gray-900 rounded-lg border border-gray-800 hover:border-sapphire-600 transition-all text-left group"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="text-lg font-bold text-white mb-1">{rig.guitarist}</div>
-                      <div className="text-sm text-purple-400 mb-2">"{rig.song}"</div>
+                      <div className="text-sm text-sapphire-400 mb-2">"{rig.song}"</div>
                       <div className="text-sm text-gray-400 mb-3">{rig.description}</div>
                       <div className="flex items-center gap-2 flex-wrap">
                         {rig.pedals.map((pedal) => (
@@ -331,7 +331,7 @@ export const PedalboardUI: React.FC<PedalboardUIProps> = ({
                         ))}
                       </div>
                     </div>
-                    <div className="ml-4 text-purple-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="ml-4 text-sapphire-400 opacity-0 group-hover:opacity-100 transition-opacity">
                       →
                     </div>
                   </div>
@@ -400,14 +400,14 @@ export const PedalboardUI: React.FC<PedalboardUIProps> = ({
           <div className="flex items-center justify-center gap-3">
             <button
               onClick={() => setShowLegendaryRigs(true)}
-              className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2"
+              className="px-6 py-3 bg-sapphire-600 hover:bg-sapphire-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2"
             >
               <Star className="w-4 h-4" />
               Load Legendary Rig
             </button>
             <button
               onClick={() => setShowPedalSelector(true)}
-              className="px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-medium transition-colors"
+              className="px-6 py-3 bg-sapphire-500 hover:bg-sapphire-600 text-white rounded-lg font-medium transition-colors"
             >
               Add Your First Pedal
             </button>

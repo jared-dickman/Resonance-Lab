@@ -18,25 +18,25 @@ interface ChordProgressionBuilderProps {
 }
 
 const COMMON_CHORDS = [
-  // Major
-  { name: 'C', color: 'hsl(210, 90%, 60%)' },
-  { name: 'D', color: 'hsl(30, 90%, 60%)' },
-  { name: 'E', color: 'hsl(60, 90%, 60%)' },
-  { name: 'F', color: 'hsl(120, 70%, 50%)' },
-  { name: 'G', color: 'hsl(180, 70%, 50%)' },
-  { name: 'A', color: 'hsl(240, 70%, 60%)' },
-  { name: 'B', color: 'hsl(300, 70%, 60%)' },
-  // Minor
-  { name: 'Am', color: 'hsl(210, 60%, 50%)' },
-  { name: 'Dm', color: 'hsl(30, 60%, 50%)' },
-  { name: 'Em', color: 'hsl(60, 60%, 50%)' },
-  { name: 'Fm', color: 'hsl(120, 50%, 40%)' },
-  { name: 'Gm', color: 'hsl(180, 50%, 40%)' },
-  // Seventh
-  { name: 'Cmaj7', color: 'hsl(210, 80%, 65%)' },
-  { name: 'Dmaj7', color: 'hsl(30, 80%, 65%)' },
-  { name: 'G7', color: 'hsl(180, 80%, 55%)' },
-  { name: 'Am7', color: 'hsl(210, 60%, 55%)' },
+  // Major - Sapphire palette with subtle variations
+  { name: 'C', color: 'hsl(217, 91%, 60%)' },
+  { name: 'D', color: 'hsl(221, 83%, 53%)' },
+  { name: 'E', color: 'hsl(213, 94%, 68%)' },
+  { name: 'F', color: 'hsl(217, 91%, 60%)' },
+  { name: 'G', color: 'hsl(221, 83%, 53%)' },
+  { name: 'A', color: 'hsl(213, 94%, 68%)' },
+  { name: 'B', color: 'hsl(217, 91%, 65%)' },
+  // Minor - Deeper sapphire tones
+  { name: 'Am', color: 'hsl(221, 83%, 48%)' },
+  { name: 'Dm', color: 'hsl(217, 91%, 55%)' },
+  { name: 'Em', color: 'hsl(213, 94%, 63%)' },
+  { name: 'Fm', color: 'hsl(221, 83%, 45%)' },
+  { name: 'Gm', color: 'hsl(217, 91%, 50%)' },
+  // Seventh - Lighter sapphire accents
+  { name: 'Cmaj7', color: 'hsl(213, 94%, 73%)' },
+  { name: 'Dmaj7', color: 'hsl(217, 91%, 68%)' },
+  { name: 'G7', color: 'hsl(221, 83%, 58%)' },
+  { name: 'Am7', color: 'hsl(213, 94%, 65%)' },
 ];
 
 const SUGGESTED_PROGRESSIONS = [
@@ -201,13 +201,13 @@ export default function ChordProgressionBuilder({
                 >
                   <button
                     onClick={() => addChord(chord.name)}
-                    className="w-full aspect-square rounded-lg border-2 border-border hover:border-primary transition-colors flex items-center justify-center font-bold text-sm relative overflow-hidden group"
+                    className="w-full aspect-square rounded-lg border-2 border-border hover:border-sapphire-500 transition-all duration-200 hover:shadow-[0_0_12px_rgba(59,130,246,0.3)] flex items-center justify-center font-bold text-sm relative overflow-hidden group"
                     style={{
                       background: `linear-gradient(135deg, ${chord.color} 0%, ${chord.color}99 100%)`,
                     }}
                   >
                     <span className="relative z-10 text-white drop-shadow-lg">{chord.name}</span>
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-200" />
                   </button>
                 </motion.div>
               ))}

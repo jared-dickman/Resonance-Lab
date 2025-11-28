@@ -23,24 +23,24 @@ export default function ChordLabPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-black text-red-500 p-8 font-mono">
-        <pre>ERROR: {error}</pre>
+      <div className="min-h-screen bg-black text-[#ef4444] p-8 font-mono">
+        <pre className="transition-all duration-300">ERROR: {error}</pre>
       </div>
     );
   }
 
   if (!labStatus) {
     return (
-      <div className="min-h-screen bg-black text-green-500 p-8 font-mono">
-        <pre>Connecting to the lab...</pre>
+      <div className="min-h-screen bg-black text-sapphire-400 p-8 font-mono">
+        <pre className="transition-all duration-300 animate-pulse">Connecting to the lab...</pre>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black text-green-500 p-8 font-mono">
-      <pre className="text-xl mb-8">{labStatus.message}</pre>
-      <div className="space-y-2 text-sm">
+    <div className="min-h-screen bg-black text-sapphire-400 p-8 font-mono">
+      <pre className="text-xl mb-8 transition-all duration-200">{labStatus.message}</pre>
+      <div className="space-y-2 text-sm border border-sapphire-500/10 rounded-lg p-6 bg-[#020924]/20 hover:border-sapphire-500/30 transition-all duration-200 hover:shadow-lg hover:shadow-sapphire-500/10">
         <pre>┌────────────────────────────────────┐</pre>
         <pre>│ STATUS: {labStatus.status.padEnd(26)}│</pre>
         <pre>│ ENV:    {labStatus.environment.padEnd(26)}│</pre>
@@ -49,7 +49,7 @@ export default function ChordLabPage() {
         <pre>│ {labStatus.secret.padEnd(35)}│</pre>
         <pre>└────────────────────────────────────┘</pre>
       </div>
-      <div className="mt-12 text-gray-600 text-xs">
+      <div className="mt-12 text-sapphire-300/40 text-xs">
         <pre>// This page is not linked anywhere.</pre>
         <pre>// If you found it, you know what to do.</pre>
       </div>

@@ -206,7 +206,7 @@ export default function UltimatePedalboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 p-4 lg:p-8">
+    <div className="min-h-screen bg-black p-4 lg:p-8">
       <div className="max-w-[1800px] mx-auto">
         {/* Epic Hero Section */}
         <motion.div
@@ -214,15 +214,15 @@ export default function UltimatePedalboardPage() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-amber-500/10 via-purple-500/10 to-blue-500/10 blur-3xl" />
+          <div className="absolute inset-0 bg-gradient-to-r from-sapphire-600/10 via-sapphire-500/10 to-sapphire-400/10 blur-3xl" />
 
           <div className="relative flex flex-col items-center gap-4">
             <div className="flex items-center gap-4">
-              <Guitar className="w-16 h-16 text-amber-500" />
-              <h1 className="text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-500 via-purple-500 to-blue-500">
+              <Guitar className="w-16 h-16 text-sapphire-400" />
+              <h1 className="text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-sapphire-600 via-sapphire-500 to-sapphire-400">
                 ULTIMATE PEDALBOARD
               </h1>
-              <Zap className="w-16 h-16 text-purple-500" />
+              <Zap className="w-16 h-16 text-sapphire-500" />
             </div>
 
             <p className="text-xl text-gray-400 max-w-3xl">
@@ -234,7 +234,7 @@ export default function UltimatePedalboardPage() {
               {!audioStarted ? (
                 <button
                   onClick={startAudio}
-                  className="px-8 py-4 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-lg font-bold text-lg shadow-lg shadow-green-500/50 transition-all"
+                  className="px-8 py-4 bg-gradient-to-r from-sapphire-800 to-sapphire-500 hover:from-sapphire-700 hover:to-sapphire-400 text-white rounded-lg font-bold text-lg shadow-lg shadow-sapphire-500/50 transition-all duration-200"
                 >
                   Initialize Audio Engine
                 </button>
@@ -244,10 +244,10 @@ export default function UltimatePedalboardPage() {
                     onClick={playTestRiff}
                     disabled={isPlaying}
                     className={cn(
-                      'flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all',
+                      'flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200',
                       isPlaying
                         ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
-                        : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg shadow-blue-500/50'
+                        : 'bg-gradient-to-r from-sapphire-800 to-sapphire-500 hover:from-sapphire-700 hover:to-sapphire-400 text-white shadow-lg shadow-sapphire-500/50'
                     )}
                   >
                     <Play className="w-5 h-5" />
@@ -256,7 +256,7 @@ export default function UltimatePedalboardPage() {
 
                   <button
                     onClick={stopAudio}
-                    className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white rounded-lg font-medium shadow-lg shadow-red-500/50 transition-all"
+                    className="flex items-center gap-2 px-6 py-3 bg-gray-800 hover:bg-gray-700 border border-sapphire-500/30 hover:border-sapphire-500/50 text-white rounded-lg font-medium transition-all duration-200"
                   >
                     <Square className="w-5 h-5" />
                     Stop
@@ -264,7 +264,7 @@ export default function UltimatePedalboardPage() {
 
                   <button
                     onClick={() => setShowVisualizations(!showVisualizations)}
-                    className="flex items-center gap-2 px-6 py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-lg font-medium transition-all"
+                    className="flex items-center gap-2 px-6 py-3 bg-gray-800 hover:bg-gray-700 border border-sapphire-500/20 hover:border-sapphire-500/40 text-white rounded-lg font-medium transition-all duration-200"
                   >
                     {showVisualizations ? <Minimize2 className="w-5 h-5" /> : <Maximize2 className="w-5 h-5" />}
                     {showVisualizations ? 'Hide' : 'Show'} Visualizations
@@ -273,7 +273,7 @@ export default function UltimatePedalboardPage() {
                   {showVisualizations && (
                     <button
                       onClick={() => setVisualizationLayout(visualizationLayout === 'grid' ? 'stack' : 'grid')}
-                      className="flex items-center gap-2 px-6 py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-lg font-medium transition-all"
+                      className="flex items-center gap-2 px-6 py-3 bg-gray-800 hover:bg-gray-700 border border-sapphire-500/20 hover:border-sapphire-500/40 text-white rounded-lg font-medium transition-all duration-200"
                     >
                       <Settings className="w-5 h-5" />
                       {visualizationLayout === 'grid' ? 'Stack' : 'Grid'} Layout
@@ -309,10 +309,10 @@ export default function UltimatePedalboardPage() {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="bg-gray-950 rounded-xl p-6 border-2 border-amber-500/30 shadow-xl shadow-amber-500/10"
+                  className="bg-gray-950 rounded-xl p-6 border-2 border-sapphire-500/30 shadow-xl shadow-sapphire-500/10 transition-all duration-200 hover:border-sapphire-500/40"
                 >
                   <div className="flex items-center gap-3 mb-4">
-                    <Zap className="w-6 h-6 text-amber-500" />
+                    <Zap className="w-6 h-6 text-sapphire-400" />
                     <h3 className="text-xl font-bold text-white">
                       Live Signal Flow - Watch the Music Travel
                     </h3>
@@ -326,16 +326,16 @@ export default function UltimatePedalboardPage() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.25 }}
-                className="border-2 border-pink-500/30 shadow-xl shadow-pink-500/10 rounded-xl overflow-hidden"
+                className="border-2 border-sapphire-500/30 shadow-xl shadow-sapphire-500/10 rounded-xl overflow-hidden transition-all duration-200 hover:border-sapphire-500/40"
               >
-                <div className="flex items-center justify-between px-6 pt-5 pb-3 border-b border-pink-500/20 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-indigo-500/10">
+                <div className="flex items-center justify-between px-6 pt-5 pb-3 border-b border-sapphire-500/20 bg-gradient-to-r from-sapphire-600/10 via-sapphire-500/10 to-sapphire-400/10">
                   <div>
                     <h3 className="text-xl font-bold text-white">Audio Reactive Particles</h3>
-                    <p className="text-sm text-pink-200/80">
+                    <p className="text-sm text-sapphire-300/80">
                       Three.js particle nebula synced to your current tone
                     </p>
                   </div>
-                  <div className="text-xs font-mono text-pink-200/70 uppercase tracking-wide">
+                  <div className="text-xs font-mono text-sapphire-300/70 uppercase tracking-wide">
                     Drag to orbit • Scroll to zoom
                   </div>
                 </div>
@@ -354,12 +354,12 @@ export default function UltimatePedalboardPage() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="border-2 border-purple-500/30 shadow-xl shadow-purple-500/10 rounded-xl overflow-hidden"
+                className="border-2 border-sapphire-500/30 shadow-xl shadow-sapphire-500/10 rounded-xl overflow-hidden transition-all duration-200 hover:border-sapphire-500/40"
               >
-                <div className="flex flex-wrap items-center justify-between gap-4 px-6 pt-5 pb-3 border-b border-purple-500/20 bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-emerald-500/10">
+                <div className="flex flex-wrap items-center justify-between gap-4 px-6 pt-5 pb-3 border-b border-sapphire-500/20 bg-gradient-to-r from-sapphire-600/10 via-sapphire-500/10 to-sapphire-400/10">
                   <div>
                     <h3 className="text-xl font-bold text-white">Generative Art Flow Field</h3>
-                    <p className="text-sm text-purple-200/80">
+                    <p className="text-sm text-sapphire-300/80">
                       P5.js visuals evolving in real-time with your signal
                     </p>
                   </div>
@@ -368,10 +368,10 @@ export default function UltimatePedalboardPage() {
                       <button
                         key={style}
                         onClick={() => setArtStyle(style)}
-                        className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors ${
+                        className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 ${
                           artStyle === style
-                            ? 'bg-purple-500 text-white shadow-md shadow-purple-500/30'
-                            : 'bg-white/5 text-purple-100 hover:bg-white/10'
+                            ? 'bg-sapphire-500 text-white shadow-md shadow-sapphire-500/30'
+                            : 'bg-white/5 text-sapphire-300 hover:bg-white/10'
                         }`}
                       >
                         {style.replace('-', ' ')}
@@ -396,7 +396,7 @@ export default function UltimatePedalboardPage() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.3 }}
-                  className="border-2 border-blue-500/30 shadow-xl shadow-blue-500/10 rounded-xl overflow-hidden"
+                  className="border-2 border-sapphire-500/30 shadow-xl shadow-sapphire-500/10 rounded-xl overflow-hidden transition-all duration-200 hover:border-sapphire-500/40"
                 >
                   <SpectrumAnalyzer
                     audioNode={pedalboard.getOutput()}
@@ -412,13 +412,13 @@ export default function UltimatePedalboardPage() {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.4 }}
-                  className="border-2 border-emerald-500/30 shadow-xl shadow-emerald-500/10 rounded-xl overflow-hidden"
+                  className="border-2 border-sapphire-500/30 shadow-xl shadow-sapphire-500/10 rounded-xl overflow-hidden transition-all duration-200 hover:border-sapphire-500/40"
                 >
                   <WaveformOscilloscope
                     audioNode={pedalboard.getOutput()}
                     width={visualizationLayout === 'grid' ? 650 : 1400}
                     height={180}
-                    color="#10b981"
+                    color="var(--sapphire-400)"
                   />
                 </motion.div>
               </div>
@@ -429,7 +429,7 @@ export default function UltimatePedalboardPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
-                  className="border-2 border-purple-500/30 shadow-xl shadow-purple-500/10 rounded-xl overflow-hidden"
+                  className="border-2 border-sapphire-500/30 shadow-xl shadow-sapphire-500/10 rounded-xl overflow-hidden transition-all duration-200 hover:border-sapphire-500/40"
                 >
                   <SignalPathDiagram
                     pedals={slots.map((s) => ({
@@ -454,26 +454,26 @@ export default function UltimatePedalboardPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
-          <div className="p-6 bg-gradient-to-br from-amber-900/20 to-amber-950/20 border border-amber-500/30 rounded-xl">
-            <div className="text-4xl font-bold text-amber-500 mb-2">7</div>
+          <div className="p-6 bg-gradient-to-br from-sapphire-600/20 to-black border border-sapphire-500/30 rounded-xl transition-all duration-200 hover:border-sapphire-500/50">
+            <div className="text-4xl font-bold text-sapphire-400 mb-2">7</div>
             <div className="text-sm text-gray-400 uppercase tracking-wide">Pedal Types</div>
             <div className="text-xs text-gray-500 mt-1">Distortion + 6 Pizzicato</div>
           </div>
 
-          <div className="p-6 bg-gradient-to-br from-purple-900/20 to-purple-950/20 border border-purple-500/30 rounded-xl">
-            <div className="text-4xl font-bold text-purple-500 mb-2">30</div>
+          <div className="p-6 bg-gradient-to-br from-sapphire-500/20 to-black border border-sapphire-500/30 rounded-xl transition-all duration-200 hover:border-sapphire-500/50">
+            <div className="text-4xl font-bold text-sapphire-500 mb-2">30</div>
             <div className="text-sm text-gray-400 uppercase tracking-wide">Legendary Presets</div>
             <div className="text-xs text-gray-500 mt-1">Gilmour, The Edge, Cobain...</div>
           </div>
 
-          <div className="p-6 bg-gradient-to-br from-blue-900/20 to-blue-950/20 border border-blue-500/30 rounded-xl">
-            <div className="text-4xl font-bold text-blue-500 mb-2">5</div>
+          <div className="p-6 bg-gradient-to-br from-sapphire-400/20 to-black border border-sapphire-500/30 rounded-xl transition-all duration-200 hover:border-sapphire-500/50">
+            <div className="text-4xl font-bold text-sapphire-600 mb-2">5</div>
             <div className="text-sm text-gray-400 uppercase tracking-wide">Guitarist Rigs</div>
             <div className="text-xs text-gray-500 mt-1">One-click legendary tones</div>
           </div>
 
-          <div className="p-6 bg-gradient-to-br from-emerald-900/20 to-emerald-950/20 border border-emerald-500/30 rounded-xl">
-            <div className="text-4xl font-bold text-emerald-500 mb-2">4</div>
+          <div className="p-6 bg-gradient-to-br from-sapphire-300/20 to-black border border-sapphire-500/30 rounded-xl transition-all duration-200 hover:border-sapphire-500/50">
+            <div className="text-4xl font-bold text-sapphire-300 mb-2">4</div>
             <div className="text-sm text-gray-400 uppercase tracking-wide">D3 Visualizations</div>
             <div className="text-xs text-gray-500 mt-1">Real-time audio analysis</div>
           </div>

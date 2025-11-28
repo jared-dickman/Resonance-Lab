@@ -186,7 +186,7 @@ export const regionUtils = {
   ) => {
     const colors = {
       major: 'rgba(139, 92, 246, 0.2)',
-      minor: 'rgba(59, 130, 246, 0.2)',
+      minor: 'rgba(59, 130, 246, 0.2)', // Using sapphire-500 RGB values
       dominant: 'rgba(249, 115, 22, 0.2)',
       diminished: 'rgba(239, 68, 68, 0.2)',
     };
@@ -297,9 +297,9 @@ export const waveformPresets = {
     cursorColor: '#c4b5fd',
   },
   blue: {
-    waveColor: '#3b82f6',
-    progressColor: '#1d4ed8',
-    cursorColor: '#93c5fd',
+    waveColor: 'var(--sapphire-500)',
+    progressColor: 'var(--sapphire-700)',
+    cursorColor: 'var(--sapphire-300)',
   },
   green: {
     waveColor: '#10b981',

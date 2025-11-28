@@ -88,7 +88,7 @@ export function JamWizard({ steps, onComplete, className }: JamWizardProps) {
         </div>
         <div className="h-2 bg-muted rounded-full overflow-hidden">
           <motion.div
-            className="h-full bg-primary"
+            className="h-full bg-gradient-to-r from-sapphire-600 to-sapphire-400"
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
@@ -113,8 +113,8 @@ export function JamWizard({ steps, onComplete, className }: JamWizardProps) {
               className={cn(
                 'w-8 h-8 rounded-full border-2 flex items-center justify-center',
                 'transition-all duration-200',
-                index === currentStep && 'border-primary bg-primary text-primary-foreground scale-110',
-                index < currentStep && 'border-primary bg-primary text-primary-foreground',
+                index === currentStep && 'border-sapphire-500 bg-sapphire-500 text-white scale-110',
+                index < currentStep && 'border-sapphire-500 bg-sapphire-500 text-white',
                 index > currentStep && 'border-muted-foreground/30 bg-background'
               )}
             >
@@ -128,7 +128,7 @@ export function JamWizard({ steps, onComplete, className }: JamWizardProps) {
               <div
                 className={cn(
                   'h-0.5 w-8 ml-1',
-                  index < currentStep ? 'bg-primary' : 'bg-muted-foreground/30'
+                  index < currentStep ? 'bg-sapphire-500' : 'bg-muted-foreground/30'
                 )}
               />
             )}

@@ -239,7 +239,7 @@ function TypingIndicator(): React.JSX.Element {
 function TypingDot({ delay }: { delay: number }): React.JSX.Element {
   return (
     <motion.div
-      className="w-2 h-2 bg-primary rounded-full"
+      className="w-2 h-2 bg-sapphire-500 rounded-full"
       animate={{ scale: [1, 1.2, 1] }}
       transition={{ duration: ANIMATION_DURATION.TYPING_DOT / 1000, repeat: Infinity, delay: delay / 1000 }}
     />
@@ -262,7 +262,7 @@ function QuickPrompts({ prompts, onSelectPrompt }: QuickPromptsProps): React.JSX
         <motion.div key={idx} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Badge
             variant="outline"
-            className="cursor-pointer hover:bg-primary/10 gap-1.5"
+            className="cursor-pointer hover:bg-sapphire-500/10 hover:border-sapphire-500/30 gap-1.5 transition-all duration-200"
             onClick={() => onSelectPrompt(prompt.prompt)}
           >
             <prompt.icon className="w-3 h-3" />

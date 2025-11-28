@@ -52,24 +52,24 @@ export const ChorusPedalUI: React.FC<ChorusPedalUIProps> = ({
       <PedalChassis gradientFrom="#7c3aed" gradientTo="#5b21b6" borderColor="#a78bfa">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <Sparkles className="w-6 h-6 text-purple-300" />
+            <Sparkles className="w-6 h-6 text-sapphire-300" />
             <h2 className="text-xl font-bold text-white uppercase tracking-wider">Chorus</h2>
           </div>
           <button
             onClick={() => setShowSettings(!showSettings)}
-            className="p-2 rounded-lg bg-purple-900 hover:bg-purple-800 transition-colors"
+            className="p-2 rounded-lg bg-sapphire-800 hover:bg-sapphire-700 transition-colors"
           >
-            <Settings className="w-5 h-5 text-purple-300" />
+            <Settings className="w-5 h-5 text-sapphire-300" />
           </button>
         </div>
 
         {showSettings && (
           <motion.div
-            className="mb-6 p-4 rounded-lg bg-purple-900/50 border border-purple-800"
+            className="mb-6 p-4 rounded-lg bg-sapphire-800/50 border border-sapphire-700"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
           >
-            <label className="block text-xs font-bold text-purple-300 uppercase mb-2">
+            <label className="block text-xs font-bold text-sapphire-300 uppercase mb-2">
               Legendary Shimmer
             </label>
             <div className="grid grid-cols-2 gap-2">
@@ -80,8 +80,8 @@ export const ChorusPedalUI: React.FC<ChorusPedalUIProps> = ({
                   className={cn(
                     'px-3 py-2 rounded-lg text-xs font-medium transition-colors',
                     selectedPreset === preset.name
-                      ? 'bg-purple-600 text-white'
-                      : 'bg-purple-950 text-purple-400 hover:bg-purple-900'
+                      ? 'bg-sapphire-500 text-white'
+                      : 'bg-sapphire-900 text-sapphire-400 hover:bg-sapphire-800'
                   )}
                 >
                   {preset.name.toUpperCase()}
@@ -109,8 +109,8 @@ export const ChorusPedalUI: React.FC<ChorusPedalUIProps> = ({
           <Footswitch enabled={enabled} onToggle={() => setEnabled(!enabled)} color="#a78bfa" />
         </div>
 
-        <div className="mt-6 pt-4 border-t border-purple-900">
-          <div className="flex items-center justify-between text-xs text-purple-300">
+        <div className="mt-6 pt-4 border-t border-sapphire-800">
+          <div className="flex items-center justify-between text-xs text-sapphire-300">
             <div className="flex items-center gap-2">
               {enabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
               <span className="uppercase font-bold">{enabled ? 'Active' : 'Bypassed'}</span>

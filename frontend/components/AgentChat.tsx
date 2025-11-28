@@ -304,16 +304,16 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
             >
               <motion.div
                 animate={{
-                  scale: [1, 1.1, 1],
-                  rotate: [0, 5, -5, 0],
+                  scale: [1, 1.05, 1],
                 }}
                 transition={{
-                  duration: 2,
+                  duration: 2.5,
                   repeat: Infinity,
                   ease: 'easeInOut',
                 }}
+                className="inline-flex mb-3"
               >
-                <Bot className="h-12 w-12 mx-auto mb-3 text-primary/60" />
+                <Bot className="h-10 w-10 text-sapphire-400" />
               </motion.div>
               <motion.div
                 key={currentPlaceholder}
@@ -323,9 +323,9 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
                 transition={{ duration: 0.5 }}
                 className="flex items-center justify-center gap-2 mb-2"
               >
-                <Sparkles className="h-4 w-4 text-yellow-500" />
+                <Sparkles className="h-4 w-4 text-sapphire-400" />
                 <span className="font-medium text-foreground/80">{currentPlaceholder}</span>
-                <Zap className="h-4 w-4 text-yellow-500" />
+                <Zap className="h-4 w-4 text-sapphire-400" />
               </motion.div>
               <p className="text-xs opacity-70">Just tell me what you want to play</p>
               <p className="text-xs mt-1 opacity-50">e.g. &quot;Wonderwall&quot; or &quot;something bluesy in E&quot;</p>

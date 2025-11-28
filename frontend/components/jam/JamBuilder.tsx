@@ -310,7 +310,7 @@ export default function JamBuilder({ progression, onUpdate, onClear }: JamBuilde
                 <motion.div
                   className="ml-auto text-sm text-muted-foreground cursor-help"
                   key={loopCount}
-                  initial={{ scale: 1.5, color: '#3b82f6' }}
+                  initial={{ scale: 1.2, color: 'var(--sapphire-400)' }}
                   animate={{ scale: 1, color: 'currentColor' }}
                   transition={{ duration: 0.3 }}
                 >
@@ -503,8 +503,8 @@ export default function JamBuilder({ progression, onUpdate, onClear }: JamBuilde
                     'relative p-4 rounded-lg border-2 transition-all duration-200',
                     'hover:shadow-md cursor-pointer group',
                     currentChordIndex === index && isPlaying
-                      ? 'border-primary shadow-lg shadow-primary/20 scale-105'
-                      : 'border-border'
+                      ? 'border-sapphire-500 shadow-lg shadow-sapphire-500/20 scale-105'
+                      : 'border-sapphire-500/10'
                   )}
                   style={{
                     backgroundColor:
@@ -558,7 +558,7 @@ export default function JamBuilder({ progression, onUpdate, onClear }: JamBuilde
                       e.stopPropagation();
                       setEditingChordIndex(index);
                     }}
-                    className="absolute -top-2 -left-2 w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                    className="absolute -top-2 -left-2 w-6 h-6 rounded-full bg-sapphire-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10"
                     whileHover={{ scale: 1.2, rotate: 15 }}
                     whileTap={{ scale: 0.9 }}
                   >

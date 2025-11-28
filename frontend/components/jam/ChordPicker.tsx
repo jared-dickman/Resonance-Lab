@@ -21,16 +21,16 @@ interface ChordPickerProps {
 // Common chord types
 const CHORD_ROOTS = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const CHORD_QUALITIES = [
-  { name: '', label: 'Major', color: 'bg-blue-500/20 text-blue-400' },
-  { name: 'm', label: 'Minor', color: 'bg-purple-500/20 text-purple-400' },
-  { name: '7', label: 'Dom7', color: 'bg-orange-500/20 text-orange-400' },
-  { name: 'maj7', label: 'Maj7', color: 'bg-cyan-500/20 text-cyan-400' },
-  { name: 'm7', label: 'Min7', color: 'bg-violet-500/20 text-violet-400' },
-  { name: 'sus4', label: 'Sus4', color: 'bg-green-500/20 text-green-400' },
-  { name: 'sus2', label: 'Sus2', color: 'bg-emerald-500/20 text-emerald-400' },
-  { name: 'dim', label: 'Dim', color: 'bg-red-500/20 text-red-400' },
-  { name: 'aug', label: 'Aug', color: 'bg-yellow-500/20 text-yellow-400' },
-  { name: '5', label: 'Power', color: 'bg-gray-500/20 text-gray-400' },
+  { name: '', label: 'Major', color: 'bg-sapphire-500/20 text-sapphire-500' },
+  { name: 'm', label: 'Minor', color: 'bg-sapphire-600/20 text-sapphire-600' },
+  { name: '7', label: 'Dom7', color: 'bg-sapphire-400/20 text-sapphire-400' },
+  { name: 'maj7', label: 'Maj7', color: 'bg-sapphire-700/20 text-sapphire-700' },
+  { name: 'm7', label: 'Min7', color: 'bg-sapphire-800/20 text-sapphire-800' },
+  { name: 'sus4', label: 'Sus4', color: 'bg-sapphire-300/20 text-sapphire-300' },
+  { name: 'sus2', label: 'Sus2', color: 'bg-sapphire-400/20 text-sapphire-400' },
+  { name: 'dim', label: 'Dim', color: 'bg-sapphire-600/20 text-sapphire-600' },
+  { name: 'aug', label: 'Aug', color: 'bg-sapphire-500/20 text-sapphire-500' },
+  { name: '5', label: 'Power', color: 'bg-sapphire-700/20 text-sapphire-700' },
 ];
 
 // Get chords in a specific key
@@ -84,11 +84,11 @@ export default function ChordPicker({
           transition={{ type: 'spring', stiffness: 300, damping: 25 }}
           onClick={e => e.stopPropagation()}
         >
-          <Card className="border-primary/20 shadow-2xl">
+          <Card className="border-sapphire-500/20 shadow-2xl">
             <CardHeader className="border-b border-border/50">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <Music className="w-5 h-5 text-primary" />
+                  <Music className="w-5 h-5 text-sapphire-500" />
                   <CardTitle>Select Chord</CardTitle>
                 </div>
                 <Button variant="ghost" size="icon" onClick={onClose}>
@@ -139,8 +139,8 @@ export default function ChordPicker({
                       className={cn(
                         'p-3 rounded-lg border-2 font-semibold text-lg transition-colors',
                         currentChord.name === chord
-                          ? 'border-primary bg-primary/10 text-primary'
-                          : 'border-border hover:border-primary/50 hover:bg-muted'
+                          ? 'border-sapphire-500 bg-sapphire-500/10 text-sapphire-500'
+                          : 'border-sapphire-500/10 hover:border-sapphire-500/30 hover:bg-muted'
                       )}
                       onClick={() => handleChordSelect(chord)}
                       initial={{ opacity: 0, scale: 0.8 }}
@@ -169,8 +169,8 @@ export default function ChordPicker({
                         className={cn(
                           'p-2 rounded-md border font-medium transition-colors',
                           selectedRoot === root
-                            ? 'border-primary bg-primary/20 text-primary'
-                            : 'border-border hover:border-primary/50'
+                            ? 'border-sapphire-500 bg-sapphire-500/20 text-sapphire-500'
+                            : 'border-sapphire-500/10 hover:border-sapphire-500/30'
                         )}
                         onClick={() => setSelectedRoot(root)}
                         initial={{ opacity: 0, y: 10 }}

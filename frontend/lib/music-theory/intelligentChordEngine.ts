@@ -327,8 +327,10 @@ export function getCircleOfFifthsPosition(note: string): number {
  * Get chord color based on quality for visualization
  */
 export function getChordColor(quality: ChordAnalysis['quality']): string {
+  // Note: These return hex values for dynamic usage in canvas/SVG contexts
+  // where CSS variables may not be available
   const colors = {
-    major: '#3B82F6', // Blue
+    major: getComputedStyle(document.documentElement).getPropertyValue('--sapphire-500').trim() || '#3B82F6', // Blue
     minor: '#8B5CF6', // Purple
     dominant: '#F59E0B', // Amber
     diminished: '#EF4444', // Red
