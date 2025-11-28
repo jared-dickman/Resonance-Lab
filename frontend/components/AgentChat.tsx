@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinner';
 import { cn } from '@/lib/utils';
 import type { SearchResult } from '@/lib/types';
+import placeholders from '@/lib/data/placeholders.json';
 
 const THINKING_PUNS = [
   "Tuning up the search engines...",
@@ -205,11 +206,23 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [thinkingPun, setThinkingPun] = useState('');
   const [conversationHistory, setConversationHistory] = useState<Array<{ role: string; content: string }>>([]);
+  const [currentPlaceholder, setCurrentPlaceholder] = useState(() =>
+    placeholders[Math.floor(Math.random() * placeholders.length)]
+  );
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // Rotate placeholder every 4 seconds when idle
+  useEffect(() => {
+    if (messages.length > 0) return;
+    const interval = setInterval(() => {
+      setCurrentPlaceholder(placeholders[Math.floor(Math.random() * placeholders.length)]);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [messages.length]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -303,16 +316,19 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
                 <Bot className="h-12 w-12 mx-auto mb-3 text-primary/60" />
               </motion.div>
               <motion.div
-                animate={{ opacity: [0.5, 1, 0.5] }}
-                transition={{ duration: 2, repeat: Infinity }}
+                key={currentPlaceholder}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.5 }}
                 className="flex items-center justify-center gap-2 mb-2"
               >
                 <Sparkles className="h-4 w-4 text-yellow-500" />
-                <span className="font-medium text-foreground/80">Your Guitar Sidekick</span>
+                <span className="font-medium text-foreground/80">{currentPlaceholder}</span>
                 <Zap className="h-4 w-4 text-yellow-500" />
               </motion.div>
-              <p className="text-xs opacity-70">What are we learning today?</p>
-              <p className="text-xs mt-1 opacity-50">e.g. &quot;I wanna play Something by the Beatles&quot;</p>
+              <p className="text-xs opacity-70">Just tell me what you want to play</p>
+              <p className="text-xs mt-1 opacity-50">e.g. &quot;Wonderwall&quot; or &quot;something bluesy in E&quot;</p>
             </motion.div>
           )}
         </AnimatePresence>
