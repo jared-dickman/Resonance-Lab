@@ -39,7 +39,7 @@ jobs:
           echo "✅ SSH key valid"
 
       - name: 🖥️ Deploy Backend to VPS
-        uses: appleboy/ssh-action@v1.0.0
+        uses: appleboy/ssh-action@v1.2.4
         with:
           host: ${{ secrets.VPS_HOST }}
           username: root
