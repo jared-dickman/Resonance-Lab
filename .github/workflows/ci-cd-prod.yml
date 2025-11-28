@@ -9,6 +9,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # These 3 jobs run in PARALLEL for maximum speed
   quality-security:
     name: Code Quality & Security Checks
     uses: ./.github/workflows/reusable-quality-security.yml
@@ -17,16 +18,15 @@ jobs:
 
   build-test:
     name: Build & Test
-    needs: quality-security
     uses: ./.github/workflows/reusable-build-test.yml
 
   security-audit:
     name: Security Audit
-    needs: quality-security
     uses: ./.github/workflows/reusable-security-audit.yml
     secrets:
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
+  # Deploy only after ALL checks pass
   deploy-backend:
     name: Deploy Backend to Production
     needs: [quality-security, build-test, security-audit]

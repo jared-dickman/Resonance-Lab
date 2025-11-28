@@ -11,6 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # These 2 jobs run in PARALLEL for maximum speed
   quality-security:
     name: Code Quality & Security Checks
     uses: ./.github/workflows/reusable-quality-security.yml
@@ -19,9 +20,9 @@ jobs:
 
   build-test:
     name: Build & Test
-    needs: quality-security
     uses: ./.github/workflows/reusable-build-test.yml
 
+  # Deploy only after ALL checks pass
   deploy-dev:
     name: Deploy to Dev Environment
     needs: [quality-security, build-test]

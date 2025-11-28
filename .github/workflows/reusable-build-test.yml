@@ -12,6 +12,7 @@ jobs:
       contents: read
 
     strategy:
+      fail-fast: true
       matrix:
         node-version: [20]
 
