@@ -1,4 +1,4 @@
-/* eslint-disable no-console, import/no-cycle */
+/* eslint-disable no-console */
 /**
  * Remove certificate pinning
  * Usage: frida --enable-jit -U -f com.ultimateguitar.tabs -l ./scripts/unpin.js --no-pause
