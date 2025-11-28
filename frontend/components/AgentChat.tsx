@@ -220,7 +220,7 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
     if (messages.length > 0) return;
     const interval = setInterval(() => {
       setCurrentPlaceholder(placeholders[Math.floor(Math.random() * placeholders.length)]);
-    }, 4000);
+    }, 4200);
     return () => clearInterval(interval);
   }, [messages.length]);
 
