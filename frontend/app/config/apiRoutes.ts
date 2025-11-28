@@ -19,4 +19,7 @@ export const apiRoutes = {
 
   // Lab
   lab: '/api/lab',
+
+  // Artists
+  artists: '/api/artists',
 } as const;

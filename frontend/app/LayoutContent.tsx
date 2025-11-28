@@ -180,6 +180,11 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
                     <SheetTitle>Navigation</SheetTitle>
                   </SheetHeader>
                   <nav className="flex flex-col gap-2">
+                    <Link href={pageRoutes.artists} onClick={() => setMobileNavOpen(false)}>
+                      <Button variant="ghost" className="w-full justify-start h-11 text-base">
+                        Artists
+                      </Button>
+                    </Link>
                     <Link href={pageRoutes.songwriter} onClick={() => setMobileNavOpen(false)}>
                       <Button variant="ghost" className="w-full justify-start h-11 text-base">
                         Songwriter
@@ -216,6 +221,11 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
             </div>
           </div>
           <nav className="hidden md:flex gap-1.5">
+            <Link href={pageRoutes.artists}>
+              <Button variant="ghost" size="sm" className="font-medium h-10">
+                Artists
+              </Button>
+            </Link>
             <Link href={pageRoutes.songwriter}>
               <Button variant="ghost" size="sm" className="font-medium h-10">
                 Songwriter
