@@ -4,11 +4,12 @@ import Anthropic from '@anthropic-ai/sdk';
 import type { SearchResponse, SearchResult } from '@/lib/types';
 import { BLOCKED_TYPES } from '@/lib/agents/ultimate-guitar-search/types';
 import { logger } from '@/lib/logger';
+import { env } from '@/app/config/env';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
 
-const API_BASE_URL = process.env.API_BASE_URL;
+const API_BASE_URL = env.API_BASE_URL;
 
 interface ChatMessage {
   role: 'user' | 'assistant';

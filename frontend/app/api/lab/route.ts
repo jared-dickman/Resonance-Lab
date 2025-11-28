@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server';
-
-const API_BASE_URL = process.env.API_BASE_URL;
+import { env } from '@/app/config/env';
 
 export async function GET() {
-  const isConfigured = !!API_BASE_URL;
-  const isDev = API_BASE_URL?.includes('dev.srv');
+  const isConfigured = !!env.API_BASE_URL;
+  const isDev = env.API_BASE_URL?.includes('dev.srv');
 
   return NextResponse.json({
     message: '🎸 Welcome to the Chord Lab',

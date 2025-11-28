@@ -1,8 +1,9 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { logger } from '@/lib/logger';
+import { env } from '@/app/config/env';
 
-const API_BASE_URL = process.env.API_BASE_URL;
+const API_BASE_URL = env.API_BASE_URL;
 
 export async function GET() {
   if (!API_BASE_URL) {

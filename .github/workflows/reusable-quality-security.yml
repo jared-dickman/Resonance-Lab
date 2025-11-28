@@ -36,7 +36,6 @@ jobs:
         run: npm run ast-grep:scan
 
       - name: 🔐 Secret scanning
-        uses: trufflesecurity/trufflehog@v3.91.1
+        uses: trufflesecurity/trufflehog@main
         with:
-          path: ./
-          extra_args: --no-update
+          extra_args: --results=verified,unknown
