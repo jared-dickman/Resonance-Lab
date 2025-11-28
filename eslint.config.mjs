@@ -39,6 +39,7 @@ export default [
       'scraper/bin/**',
       'scraper/vendor/**',
       'scripts/test-ast-grep-rules.ts',
+      '.claude/skills/**/examples/**',
     ],
   },
 
