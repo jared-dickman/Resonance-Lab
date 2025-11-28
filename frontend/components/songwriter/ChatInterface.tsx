@@ -49,32 +49,17 @@ interface ChatInterfaceProps {
   currentDraft: SongDraft;
 }
 
-function createWelcomeMessage(): Message {
-  return {
-    id: '1',
-    role: 'assistant',
-    content: WELCOME_MESSAGE,
-    timestamp: new Date(),
-  };
+function createMessage(
+  role: 'user' | 'assistant',
+  content: string,
+  id = crypto.randomUUID()
+): Message {
+  return { id, role, content, timestamp: new Date() };
 }
 
-function createUserMessage(content: string): Message {
-  return {
-    id: crypto.randomUUID(),
-    role: 'user',
-    content,
-    timestamp: new Date(),
-  };
-}
-
-function createAssistantMessage(content: string): Message {
-  return {
-    id: crypto.randomUUID(),
-    role: 'assistant',
-    content,
-    timestamp: new Date(),
-  };
-}
+const createWelcomeMessage = () => createMessage('assistant', WELCOME_MESSAGE, '1');
+const createUserMessage = (content: string) => createMessage('user', content);
+const createAssistantMessage = (content: string) => createMessage('assistant', content);
 
 function generateAIResponse(userInput: string): string {
   const responseType = selectResponseType(userInput);

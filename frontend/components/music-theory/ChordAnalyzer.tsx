@@ -11,6 +11,8 @@ import {
   type KeyInfo,
 } from '@/lib/music-theory/tonal-helper';
 import { getChordPlayer } from '@/lib/audio/chordPlayer';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 /**
  * ChordAnalyzer - Interactive demo of Tonal.js capabilities
@@ -92,25 +94,18 @@ export function ChordAnalyzer() {
         </h3>
 
         <div className="flex gap-2 mb-4">
-          <input
-            type="text"
+          <Input
             value={inputChord}
             onChange={e => setInputChord(e.target.value)}
             placeholder="Enter chord (e.g., Cmaj7, Am, G7)"
-            className="flex-1 px-4 py-2 border border-sapphire-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sapphire-500"
+            className="flex-1"
           />
-          <button
-            onClick={handleAnalyze}
-            className="px-6 py-2 bg-sapphire-600 text-white rounded-lg hover:bg-sapphire-700 transition-colors"
-          >
+          <Button variant="default" onClick={handleAnalyze}>
             Analyze
-          </button>
-          <button
-            onClick={() => handlePlayChord(inputChord)}
-            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-          >
+          </Button>
+          <Button variant="secondary" onClick={() => handlePlayChord(inputChord)}>
             Play
-          </button>
+          </Button>
         </div>
 
         {chordInfo && (

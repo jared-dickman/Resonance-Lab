@@ -9,3 +9,4 @@ export { transposeChord } from '@/lib/utils/formatting/chord';
 export { capitalize } from '@/lib/utils/string/capitalize';
 export { pluralize, formatCount } from '@/lib/utils/array/pluralize';
 export { clickElement } from '@/lib/utils/dom/selector';
+export { selectRandom, selectRandomWithFallback } from '@/lib/utils/array/random';

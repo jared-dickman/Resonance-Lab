@@ -5,6 +5,7 @@
  */
 
 import type { ChatResponseType } from '@/lib/constants/chatResponses.constants';
+import { selectRandomWithFallback } from '@/lib/utils/array/random';
 
 function includesChordKeywords(message: string): boolean {
   return message.includes('chord') || message.includes('progression');
@@ -41,8 +42,7 @@ export function selectResponseType(userMessage: string): ChatResponseType {
 }
 
 export function selectRandomResponse(responses: readonly string[]): string {
-  const randomIndex = Math.floor(Math.random() * responses.length);
-  return responses[randomIndex] ?? 'I can help you with that!';
+  return selectRandomWithFallback(responses, 'I can help you with that!');
 }
 
 export function calculateTypingDelay(minMs: number, maxMs: number): number {

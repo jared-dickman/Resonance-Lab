@@ -8,6 +8,7 @@
 import React, { useState, useCallback } from 'react';
 import { motion, Reorder } from 'framer-motion';
 import { Plus, Trash2, GripVertical, Volume2, Power, Star, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import type { PedalSlot } from '@/lib/audio/effects/Pedalboard';
 import { Pedalboard } from '@/lib/audio/effects/Pedalboard';
 import { DistortionPedal } from '@/lib/audio/effects/DistortionPedal';
@@ -235,21 +236,21 @@ export const PedalboardUI: React.FC<PedalboardUIProps> = ({
         </div>
 
         <div className="flex items-center gap-3">
-          <button
+          <Button
+            variant="secondary"
             onClick={() => setShowLegendaryRigs(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-sapphire-600 hover:bg-sapphire-700 text-white rounded-lg font-medium transition-colors"
           >
             <Star className="w-4 h-4" />
             Legendary Rigs
-          </button>
+          </Button>
 
-          <button
+          <Button
+            variant="secondary"
             onClick={() => setShowPedalSelector(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-sapphire-500 hover:bg-sapphire-600 text-white rounded-lg font-medium transition-colors"
           >
             <Plus className="w-4 h-4" />
             Add Pedal
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -398,19 +399,19 @@ export const PedalboardUI: React.FC<PedalboardUIProps> = ({
         >
           <div className="text-gray-500 mb-4">No pedals in the chain</div>
           <div className="flex items-center justify-center gap-3">
-            <button
+            <Button
+              variant="secondary"
               onClick={() => setShowLegendaryRigs(true)}
-              className="px-6 py-3 bg-sapphire-600 hover:bg-sapphire-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2"
             >
               <Star className="w-4 h-4" />
               Load Legendary Rig
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="secondary"
               onClick={() => setShowPedalSelector(true)}
-              className="px-6 py-3 bg-sapphire-500 hover:bg-sapphire-600 text-white rounded-lg font-medium transition-colors"
             >
               Add Your First Pedal
-            </button>
+            </Button>
           </div>
         </motion.div>
       ) : (
