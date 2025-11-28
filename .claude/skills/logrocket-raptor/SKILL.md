@@ -13,9 +13,10 @@ Configures and optimizes LogRocket integration with error tracking, event tracki
 
 ### Analyze Current Configuration
 Read:
-- `app/components/analytics/LogRocketInit.tsx` - initialization config
-- `app/utils/error-tracker.ts` - error integration
-- `app/utils/event-tracker.client.ts` - event integration
+- `frontend/app/components/analytics/LogRocketInit.tsx` - initialization config
+- `frontend/app/utils/error-tracker.ts` - error integration
+- `frontend/app/utils/event-tracker.client.ts` - event integration
+- `frontend/app/config/env.ts` - environment variables
 
 ### Configure Privacy & Security
 
@@ -184,7 +185,8 @@ worker-src blob:
 
 ## References
 
-- `app/components/analytics/LogRocketInit.tsx` - Init configuration
-- `app/utils/error-tracker.ts` - Error integration
-- `app/utils/event-tracker.client.ts` - Event integration
-- `next.config.mjs` - CSP headers
+- `frontend/app/components/analytics/LogRocketInit.tsx` - Init configuration
+- `frontend/app/utils/error-tracker.ts` - Error integration
+- `frontend/app/utils/event-tracker.client.ts` - Event integration
+- `frontend/app/config/env.ts` - Environment variables (NEXT_PUBLIC_LOGROCKET_APP_ID)
+- `frontend/next.config.ts` - CSP headers
