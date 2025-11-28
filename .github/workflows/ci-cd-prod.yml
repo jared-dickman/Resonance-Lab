@@ -4,11 +4,16 @@ on:
   push:
     branches: [main, master]
 
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
 jobs:
   quality-security:
     name: Code Quality & Security Checks
     uses: ./.github/workflows/reusable-quality-security.yml
-    secrets: inherit
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   build-test:
     name: Build & Test
@@ -19,7 +24,8 @@ jobs:
     name: Security Audit
     needs: quality-security
     uses: ./.github/workflows/reusable-security-audit.yml
-    secrets: inherit
+    secrets:
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
   deploy-backend:
     name: Deploy Backend to Production
@@ -30,7 +36,9 @@ jobs:
       branch: master
       container_name: backend
       health_check_url: https://srv1015344.hstgr.cloud/api/health
-    secrets: inherit
+    secrets:
+      VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+      VPS_HOST: ${{ secrets.VPS_HOST }}
 
   enforce-protection:
     name: Enforce Quality Gates

@@ -6,11 +6,16 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   quality-security:
     name: Code Quality & Security Checks
     uses: ./.github/workflows/reusable-quality-security.yml
-    secrets: inherit
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   build-test:
     name: Build & Test
@@ -26,7 +31,9 @@ jobs:
       branch: ${{ github.head_ref || github.ref_name }}
       container_name: backend-dev
       health_check_url: https://dev.srv1015344.hstgr.cloud/api/health
-    secrets: inherit
+    secrets:
+      VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+      VPS_HOST: ${{ secrets.VPS_HOST }}
 
   enforce-protection:
     name: Enforce Quality Gates
