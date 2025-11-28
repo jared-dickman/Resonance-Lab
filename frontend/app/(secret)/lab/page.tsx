@@ -14,6 +14,18 @@ interface LabStatus {
   secret: string;
 }
 
+function formatBuildTime(iso?: string): string {
+  if (!iso) return 'dev';
+  const date = new Date(iso);
+  return date.toLocaleString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  });
+}
+
 export default function ChordLabPage() {
   const [labStatus, setLabStatus] = useState<LabStatus | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -45,16 +57,15 @@ export default function ChordLabPage() {
     <div className="min-h-screen bg-black text-green-500 p-8 font-mono">
       <pre className="text-xl mb-8">{labStatus.message}</pre>
       <div className="space-y-2 text-sm">
-        <pre>┌────────────────────────────────────┐</pre>
-        <pre>│ STATUS: {labStatus.status.padEnd(26)}│</pre>
-        <pre>│ ENV:    {labStatus.environment.padEnd(26)}│</pre>
-        <pre>│ {labStatus.backend.padEnd(35)}│</pre>
-        <pre>├────────────────────────────────────┤</pre>
-        <pre>│ {labStatus.secret.padEnd(35)}│</pre>
-        <pre>├────────────────────────────────────┤</pre>
-        <pre>│ VERSION: {`v${packageJson.version}`.padEnd(25)}│</pre>
-        <pre>│ BUILD:   {(env.NEXT_PUBLIC_BUILD_TIME ?? 'dev').padEnd(25)}│</pre>
-        <pre>└────────────────────────────────────┘</pre>
+        <pre>┌──────────────────────────────────┐</pre>
+        <pre>│ STATUS:  {labStatus.status.padEnd(23)}│</pre>
+        <pre>│ ENV:     {labStatus.environment.padEnd(23)}│</pre>
+        <pre>├──────────────────────────────────┤</pre>
+        <pre>│ {labStatus.secret.padEnd(33)}│</pre>
+        <pre>├──────────────────────────────────┤</pre>
+        <pre>│ VERSION: {`v${packageJson.version}`.padEnd(23)}│</pre>
+        <pre>│ BUILD:   {formatBuildTime(env.NEXT_PUBLIC_BUILD_TIME).padEnd(23)}│</pre>
+        <pre>└──────────────────────────────────┘</pre>
       </div>
       <div className="mt-12 text-gray-600 text-xs">
         <pre>// This page is not linked anywhere.</pre>
