@@ -10,16 +10,12 @@ jobs:
   quality-security:
     name: Code Quality & Security Checks
     uses: ./.github/workflows/reusable-quality-security.yml
-    with:
-      enable_sonarcloud: false
     secrets: inherit
 
   build-test:
     name: Build & Test
     needs: quality-security
     uses: ./.github/workflows/reusable-build-test.yml
-    with:
-      upload_coverage: false
 
   deploy-dev:
     name: Deploy to Dev Environment
