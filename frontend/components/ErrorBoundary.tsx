@@ -5,12 +5,14 @@ import { Component } from 'react';
 import { AlertTriangle, RefreshCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { logger } from '@/lib/logger';
+import { errorTracker } from '@/app/utils/error-tracker';
 
 interface Props {
   children: ReactNode;
   fallbackTitle?: string;
   fallbackMessage?: string;
+  /** Service identifier for error tracking context */
+  service?: string;
   onError?: (error: Error, errorInfo: ErrorInfo) => void;
 }
 
@@ -24,6 +26,7 @@ interface State {
  * Error Boundary Component
  * Catches JavaScript errors anywhere in child component tree
  * Provides graceful fallback UI and error recovery
+ * Integrated with LogRocket for session replay correlation
  */
 export class ErrorBoundary extends Component<Props, State> {
   public state: State = {
@@ -37,7 +40,11 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    logger.error('ErrorBoundary caught an error:', error, errorInfo);
+    // Send to error tracking service (LogRocket)
+    errorTracker.captureException(error, {
+      service: this.props.service || 'error-boundary',
+      componentStack: errorInfo.componentStack,
+    });
 
     this.setState({
       error,
@@ -46,8 +53,6 @@ export class ErrorBoundary extends Component<Props, State> {
 
     // Call optional error callback
     this.props.onError?.(error, errorInfo);
-
-    // TODO: Send to error tracking service (Sentry, LogRocket, etc.)
   }
 
   private handleReset = () => {
@@ -132,6 +137,7 @@ export function AsyncErrorBoundary({ children }: { children: ReactNode }) {
     <ErrorBoundary
       fallbackTitle="Loading Error"
       fallbackMessage="We encountered an issue while loading this content. This might be a temporary network issue."
+      service="async-boundary"
     >
       {children}
     </ErrorBoundary>
@@ -147,6 +153,23 @@ export function MusicComponentBoundary({ children }: { children: ReactNode }) {
     <ErrorBoundary
       fallbackTitle="Audio Component Error"
       fallbackMessage="The music component encountered an issue. Your data is safe, but this feature is temporarily unavailable."
+      service="audio-component"
+    >
+      {children}
+    </ErrorBoundary>
+  );
+}
+
+/**
+ * Specialized Error Boundary for Agent/AI Chat
+ * Handles AI-related errors with appropriate messaging
+ */
+export function AgentErrorBoundary({ children }: { children: ReactNode }) {
+  return (
+    <ErrorBoundary
+      fallbackTitle="AI Assistant Error"
+      fallbackMessage="The AI assistant encountered an issue. Please try your request again."
+      service="agent-chat"
     >
       {children}
     </ErrorBoundary>

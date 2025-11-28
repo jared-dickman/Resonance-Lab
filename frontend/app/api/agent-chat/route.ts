@@ -5,6 +5,7 @@ import type { SearchResponse, SearchResult } from '@/lib/types';
 import { BLOCKED_TYPES } from '@/lib/agents/ultimate-guitar-search/types';
 import { logger } from '@/lib/logger';
 import { env } from '@/app/config/env';
+import { serverErrorTracker } from '@/app/utils/error-tracker.server';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -115,8 +116,14 @@ async function executeSearch(artist: string, title: string): Promise<string> {
       message: data.message,
     });
   } catch (error) {
+    serverErrorTracker.captureApiError(error, {
+      service: 'agent-chat',
+      operation: 'execute-search',
+      artist,
+      title,
+      searchUrl,
+    });
     const errorMsg = error instanceof Error ? error.message : 'Unknown error';
-    logger.error('[SEARCH/ERR] search failed', { error: errorMsg, searchUrl });
     return JSON.stringify({
       error: errorMsg,
       query: { artist, title },
@@ -274,15 +281,15 @@ export async function POST(request: NextRequest) {
       });
     }
   } catch (err) {
-    const errorMessage = err instanceof Error ? err.message : String(err);
-    const errorStack = err instanceof Error ? err.stack : undefined;
-
-    // Log the full error server-side
-    logger.error('[agent-chat] Chat failed', { message: errorMessage, stack: errorStack });
+    // Capture error with full context for debugging
+    const errorDetails = serverErrorTracker.captureApiError(err, {
+      service: 'agent-chat',
+      operation: 'chat-completion',
+    });
 
     // Return safe error to client (NO stack trace)
     return NextResponse.json(
-      { error: 'Chat failed', message: errorMessage },
+      { error: 'Chat failed', message: errorDetails.message },
       { status: 500 }
     );
   }

@@ -2,6 +2,7 @@ import { createSdkMcpServer, tool } from '@anthropic-ai/claude-agent-sdk';
 import { z } from 'zod';
 import type { SearchResponse, SearchResult } from '@/lib/types';
 import { BLOCKED_TYPES } from '@/lib/agents/ultimate-guitar-search/types';
+import { serverErrorTracker } from '@/app/utils/error-tracker.server';
 
 // Server-side env var (not NEXT_PUBLIC_ which is client-side and baked at build time)
 const API_URL = process.env.API_BASE_URL;
@@ -18,6 +19,8 @@ export const resonanceServer = createSdkMcpServer({
         title: z.string().describe('Song title'),
       },
       async ({ artist, title }) => {
+        serverErrorTracker.addBreadcrumb('mcp-resonance', 'Starting UG search', { artist, title });
+
         try {
           const response = await fetch(`${API_URL}/api/search`, {
             method: 'POST',
@@ -28,6 +31,12 @@ export const resonanceServer = createSdkMcpServer({
           });
 
           if (!response.ok) {
+            await serverErrorTracker.captureNetworkError(response, {
+              service: 'mcp-resonance',
+              operation: 'search-ultimate-guitar',
+              artist,
+              title,
+            });
             throw new Error(`Search failed with status ${response.status}`);
           }
 
@@ -58,6 +67,13 @@ export const resonanceServer = createSdkMcpServer({
             ],
           };
         } catch (error) {
+          serverErrorTracker.captureApiError(error, {
+            service: 'mcp-resonance',
+            operation: 'search-ultimate-guitar',
+            artist,
+            title,
+          });
+
           const errorMessage =
             error instanceof Error ? error.message : 'Unknown error occurred';
           return {
