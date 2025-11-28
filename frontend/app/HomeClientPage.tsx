@@ -16,17 +16,14 @@ import { cn, selectRandom, selectRandomWithFallback } from '@/lib/utils';
 import { useIntervalEffect } from '@/lib/hooks/useIntervalEffect';
 import { apiRoutes } from '@/app/config/apiRoutes';
 import placeholders from '@/lib/data/placeholders.json';
-import {
-  ANIMATION_DURATION,
-  SLIDE_UP_VARIANTS,
-} from '@/lib/constants/animation.constants';
+import { ANIMATION_DURATION, SLIDE_UP_VARIANTS } from '@/lib/constants/animation.constants';
 
 const THINKING_PUNS = [
-  "Tuning up the search engines...",
-  "Shredding through the database...",
-  "Finding your jam...",
-  "Strumming through results...",
-  "Picking the best tabs...",
+  'Tuning up the search engines...',
+  'Shredding through the database...',
+  'Finding your jam...',
+  'Strumming through results...',
+  'Picking the best tabs...',
 ];
 
 interface Message {
@@ -59,10 +56,10 @@ export default function HomePage() {
   const [isChatLoading, setIsChatLoading] = useState(false);
   const [thinkingPun, setThinkingPun] = useState('');
   const [expandedArtist, setExpandedArtist] = useState<string | null>(null);
-  const [currentPlaceholder, setCurrentPlaceholder] = useState(() =>
-    selectRandom(placeholders)
-  );
-  const [conversationHistory, setConversationHistory] = useState<Array<{ role: string; content: string }>>([]);
+  const [currentPlaceholder, setCurrentPlaceholder] = useState(() => selectRandom(placeholders));
+  const [conversationHistory, setConversationHistory] = useState<
+    Array<{ role: string; content: string }>
+  >([]);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -113,7 +110,7 @@ export default function HomePage() {
         body: JSON.stringify({ messages: newHistory }),
       });
 
-      const data = await response.json() as {
+      const data = (await response.json()) as {
         message: string;
         autoDownload?: boolean;
         results?: { chords: SearchResult[]; tabs: SearchResult[] };
@@ -125,17 +122,23 @@ export default function HomePage() {
         handleAgentSave(data.results.chords[0], 'chord');
         setMessages(prev => [...prev, { role: 'assistant', content: data.message }]);
       } else {
-        setMessages(prev => [...prev, {
-          role: 'assistant',
-          content: data.message,
-          results: data.results,
-        }]);
+        setMessages(prev => [
+          ...prev,
+          {
+            role: 'assistant',
+            content: data.message,
+            results: data.results,
+          },
+        ]);
       }
     } catch {
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: 'Sorry, I encountered an error. Please try again.',
-      }]);
+      setMessages(prev => [
+        ...prev,
+        {
+          role: 'assistant',
+          content: 'Sorry, I encountered an error. Please try again.',
+        },
+      ]);
     } finally {
       setIsChatLoading(false);
     }
@@ -151,14 +154,14 @@ export default function HomePage() {
         tabId: type === 'tab' ? result.id : undefined,
       },
       {
-        onSuccess: (data) => {
+        onSuccess: data => {
           setStatus({
             type: 'success',
-            message: `✨ "${data.summary.title}" added to your library!`
+            message: `✨ "${data.summary.title}" added to your library!`,
           });
           router.push(`/songs/${data.summary.artistSlug}/${data.summary.songSlug}`);
         },
-        onError: (error) => {
+        onError: error => {
           setStatus({ type: 'error', message: `❌ ${error.message}` });
         },
       }
@@ -177,7 +180,7 @@ export default function HomePage() {
           setStatus({ type: 'success', message: `✨ ${title} deleted successfully.` });
           setTimeout(() => setStatus(null), 3000);
         },
-        onError: (error) => {
+        onError: error => {
           setStatus({ type: 'error', message: error.message || 'Failed to delete song.' });
         },
       }
@@ -185,7 +188,7 @@ export default function HomePage() {
   }
 
   function toggleArtist(artist: string) {
-    setExpandedArtist(prev => prev === artist ? null : artist);
+    setExpandedArtist(prev => (prev === artist ? null : artist));
   }
 
   return (
@@ -197,8 +200,8 @@ export default function HomePage() {
         variants={SLIDE_UP_VARIANTS}
         transition={{ duration: ANIMATION_DURATION.NORMAL }}
         className={cn(
-          "rounded-xl border border-sapphire-500/20 bg-card/30 backdrop-blur-sm",
-          "shadow-xl shadow-sapphire-500/5"
+          'rounded-xl border border-sapphire-500/20 bg-card/30 backdrop-blur-sm',
+          'shadow-xl shadow-sapphire-500/5'
         )}
       >
         <div className="p-4 border-b border-sapphire-500/10">
@@ -206,9 +209,7 @@ export default function HomePage() {
             <Bot className="h-5 w-5 text-sapphire-400" />
             Find Songs
           </h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            Tell me what you want to play
-          </p>
+          <p className="text-sm text-muted-foreground mt-1">Tell me what you want to play</p>
         </div>
 
         <div
@@ -249,66 +250,66 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: ANIMATION_DURATION.FAST }}
-              className={cn(
-                "flex",
-                message.role === 'user' ? "justify-end" : "justify-start"
-              )}
+              className={cn('flex', message.role === 'user' ? 'justify-end' : 'justify-start')}
             >
-              <div className={cn(
-                "max-w-[85%] rounded-lg px-3 py-2 text-sm",
-                message.role === 'user'
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-background/80 border border-sapphire-500/20"
-              )}>
+              <div
+                className={cn(
+                  'max-w-[85%] rounded-lg px-3 py-2 text-sm',
+                  message.role === 'user'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-background/80 border border-sapphire-500/20'
+                )}
+              >
                 <p className="whitespace-pre-wrap">{message.content}</p>
 
-                {message.results && (message.results.chords.length > 0 || message.results.tabs.length > 0) && (
-                  <div className="mt-3 space-y-2">
-                    {message.results.chords.length > 0 && (
-                      <div>
-                        <p className="text-xs font-medium mb-1 opacity-70">Chords:</p>
-                        {message.results.chords.slice(0, 3).map(result => (
-                          <button
-                            key={result.id}
-                            onClick={() => handleAgentSave(result, 'chord')}
-                            disabled={isDownloading}
-                            className="w-full text-left p-2 rounded border hover:bg-accent/50 transition-colors mb-1 disabled:opacity-50"
-                          >
-                            <div className="flex justify-between items-center">
-                              <span className="font-medium text-xs">{result.title}</span>
-                              <span className="text-xs text-muted-foreground">
-                                ⭐ {(result.rating ?? 0).toFixed(1)}
-                              </span>
-                            </div>
-                            <span className="text-xs text-muted-foreground">{result.artist}</span>
-                          </button>
-                        ))}
-                      </div>
-                    )}
+                {message.results &&
+                  (message.results.chords.length > 0 || message.results.tabs.length > 0) && (
+                    <div className="mt-3 space-y-2">
+                      {message.results.chords.length > 0 && (
+                        <div>
+                          <p className="text-xs font-medium mb-1 opacity-70">Chords:</p>
+                          {message.results.chords.slice(0, 3).map(result => (
+                            <button
+                              key={result.id}
+                              onClick={() => handleAgentSave(result, 'chord')}
+                              disabled={isDownloading}
+                              className="w-full text-left p-2 rounded border hover:bg-accent/50 transition-colors mb-1 disabled:opacity-50"
+                            >
+                              <div className="flex justify-between items-center">
+                                <span className="font-medium text-xs">{result.title}</span>
+                                <span className="text-xs text-muted-foreground">
+                                  ⭐ {(result.rating ?? 0).toFixed(1)}
+                                </span>
+                              </div>
+                              <span className="text-xs text-muted-foreground">{result.artist}</span>
+                            </button>
+                          ))}
+                        </div>
+                      )}
 
-                    {message.results.tabs.length > 0 && (
-                      <div>
-                        <p className="text-xs font-medium mb-1 opacity-70">Tabs:</p>
-                        {message.results.tabs.slice(0, 3).map(result => (
-                          <button
-                            key={result.id}
-                            onClick={() => handleAgentSave(result, 'tab')}
-                            disabled={isDownloading}
-                            className="w-full text-left p-2 rounded border hover:bg-accent/50 transition-colors mb-1 disabled:opacity-50"
-                          >
-                            <div className="flex justify-between items-center">
-                              <span className="font-medium text-xs">{result.title}</span>
-                              <span className="text-xs text-muted-foreground">
-                                ⭐ {(result.rating ?? 0).toFixed(1)}
-                              </span>
-                            </div>
-                            <span className="text-xs text-muted-foreground">{result.artist}</span>
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
+                      {message.results.tabs.length > 0 && (
+                        <div>
+                          <p className="text-xs font-medium mb-1 opacity-70">Tabs:</p>
+                          {message.results.tabs.slice(0, 3).map(result => (
+                            <button
+                              key={result.id}
+                              onClick={() => handleAgentSave(result, 'tab')}
+                              disabled={isDownloading}
+                              className="w-full text-left p-2 rounded border hover:bg-accent/50 transition-colors mb-1 disabled:opacity-50"
+                            >
+                              <div className="flex justify-between items-center">
+                                <span className="font-medium text-xs">{result.title}</span>
+                                <span className="text-xs text-muted-foreground">
+                                  ⭐ {(result.rating ?? 0).toFixed(1)}
+                                </span>
+                              </div>
+                              <span className="text-xs text-muted-foreground">{result.artist}</span>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
               </div>
             </motion.div>
           ))}
@@ -359,12 +360,14 @@ export default function HomePage() {
         </form>
 
         {status && (
-          <div className={cn(
-            'mx-4 mb-4 rounded-lg border p-3 text-sm',
-            status.type === 'success' && 'bg-green-950 border-green-800 text-green-200',
-            status.type === 'error' && 'bg-red-950 border-red-800 text-red-200',
-            status.type === 'info' && 'bg-blue-950 border-blue-800 text-blue-200'
-          )}>
+          <div
+            className={cn(
+              'mx-4 mb-4 rounded-lg border p-3 text-sm',
+              status.type === 'success' && 'bg-green-950 border-green-800 text-green-200',
+              status.type === 'error' && 'bg-red-950 border-red-800 text-red-200',
+              status.type === 'info' && 'bg-blue-950 border-blue-800 text-blue-200'
+            )}
+          >
             {status.message}
           </div>
         )}
@@ -396,7 +399,9 @@ export default function HomePage() {
             className="text-center py-12 rounded-lg border border-sapphire-500/20 bg-card/30"
           >
             <Music className="h-12 w-12 mx-auto text-sapphire-400/40 mb-3" />
-            <p className="text-muted-foreground">No songs yet. Use the agent above to find and save songs.</p>
+            <p className="text-muted-foreground">
+              No songs yet. Use the agent above to find and save songs.
+            </p>
           </motion.div>
         )}
 
@@ -409,8 +414,8 @@ export default function HomePage() {
               hidden: { opacity: 0 },
               show: {
                 opacity: 1,
-                transition: { staggerChildren: 0.05 }
-              }
+                transition: { staggerChildren: 0.05 },
+              },
             }}
           >
             {groupedSongs.map(({ artist, artistSlug, items }) => {
@@ -421,9 +426,9 @@ export default function HomePage() {
                   key={artist}
                   variants={SLIDE_UP_VARIANTS}
                   className={cn(
-                    "rounded-lg border border-sapphire-500/20 bg-card/50 backdrop-blur-sm",
-                    "transition-all duration-300",
-                    isExpanded && "border-sapphire-500/40 bg-card/70"
+                    'rounded-lg border border-sapphire-500/20 bg-card/50 backdrop-blur-sm',
+                    'transition-all duration-300',
+                    isExpanded && 'border-sapphire-500/40 bg-card/70'
                   )}
                   data-testid={HomePageTestIds.artistGroup}
                 >
@@ -471,11 +476,15 @@ export default function HomePage() {
                                   {song.title}
                                 </span>
                                 {song.key && (
-                                  <span className="text-xs text-muted-foreground">Key: {song.key}</span>
+                                  <span className="text-xs text-muted-foreground">
+                                    Key: {song.key}
+                                  </span>
                                 )}
                               </Link>
                               <button
-                                onClick={() => handleDelete(song.artistSlug, song.songSlug, song.title)}
+                                onClick={() =>
+                                  handleDelete(song.artistSlug, song.songSlug, song.title)
+                                }
                                 disabled={isDeleting}
                                 className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-destructive/10 rounded text-destructive disabled:opacity-50"
                                 title="Delete song"
@@ -485,7 +494,11 @@ export default function HomePage() {
                             </div>
                           ))}
                           <Link href={`/songs/${artistSlug}`}>
-                            <Button variant="ghost" size="sm" className="w-full mt-2 text-sapphire-400">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="w-full mt-2 text-sapphire-400"
+                            >
                               View all {artist} songs →
                             </Button>
                           </Link>

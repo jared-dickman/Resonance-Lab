@@ -16,6 +16,7 @@ export const apiRoutes = {
 
   // Agent Chat
   agentChat: '/api/agent-chat',
+  artistChat: '/api/artist-chat',
 
   // Lab
   lab: '/api/lab',
