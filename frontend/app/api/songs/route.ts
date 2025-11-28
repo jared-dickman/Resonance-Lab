@@ -68,7 +68,10 @@ export async function POST(request: NextRequest) {
         artist: body.artist,
         title: body.title,
       });
-      return NextResponse.json({ error: text || 'Failed to save song' }, { status: response.status });
+      return NextResponse.json(
+        { error: text || 'Failed to save song' },
+        { status: response.status }
+      );
     }
 
     const data = await response.json();

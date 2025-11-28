@@ -1,0 +1,513 @@
+{
+  "artist": "KISS",
+  "title": "Rock And Roll All Nite",
+  "sections": [
+    {
+      "name": "Intro",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "Tune down 1/2 step"
+        }
+      ]
+    },
+    {
+      "name": "Verse 1",
+      "lines": [
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "You show us every"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "thing you've got"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "You keep on dancin' and the"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "room gets hot"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "You drive us"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "wild, we'll drive you cr"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "az"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "y"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Verse 2",
+      "lines": [
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "You say you wanna"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "go for a spin"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "The party's just begun, we'll"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "let you in"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "You drive us"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "wild, we'll drive you cr"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "az"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "y"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Pre-chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "You keep on shoutin',"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "you keep on shoutin'"
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "I wanna rock and roll all"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "nite,"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "and party every day"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "I wanna rock and roll all"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "nite,"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "and party every day"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "I wanna rock and roll all nite, and party every day"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Verse 3",
+      "lines": [
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "You keep on sayin' you'll be"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "mine for a while"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "You're lookin' fancy and I"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "like your style"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "You drive us"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "wild, we'll drive you cr"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "az"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "y"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Verse 4",
+      "lines": [
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "You show us every"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "thing you've got"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "Baby, baby, that's"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "quite a lot"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "And you drive us"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "wild, we'll drive you cr"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "az"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "y"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Pre-chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "You keep on shoutin',"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "you keep on shoutin'"
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "I wanna rock and roll all"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "nite,"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "and party every day"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "I wanna rock and roll all"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "nite,"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "and party every day"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "I wanna rock and roll all nite, and party every day"
+        },
+        {
+          "chord": null,
+          "lyric": "N.C."
+        },
+        {
+          "chord": null,
+          "lyric": "I wanna rock and roll all nite, and party every day"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "I wanna rock and roll all"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "nite,"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "and party every day x5, fade out"
+        }
+      ]
+    }
+  ]
+}

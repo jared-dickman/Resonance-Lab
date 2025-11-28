@@ -4,3 +4,4 @@
 - ALWAYS read official web docs for third party tools, deps, and plugins
 - read rules/index.md at the start of every chat and load the 3-7 most important rules for the given task and complexity. ask clarification about the task if unclear
 - gh user jared-dickman in this project!
+- this app runs at http://localhost:3007

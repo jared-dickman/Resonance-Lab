@@ -10,10 +10,10 @@ export function LogRocketInit() {
     const appId = env.NEXT_PUBLIC_LOGROCKET_APP_ID;
 
     if (!hasInitialized.current && typeof window !== 'undefined' && appId) {
-      import('logrocket').then((LogRocket) => {
+      import('logrocket').then(LogRocket => {
         LogRocket.default.init(appId, {
           network: {
-            requestSanitizer: (request) => {
+            requestSanitizer: request => {
               if (request.headers?.Authorization) {
                 request.headers.Authorization = '[REDACTED]';
               }
@@ -22,7 +22,7 @@ export function LogRocketInit() {
               }
               return request;
             },
-            responseSanitizer: (response) => response,
+            responseSanitizer: response => response,
           },
           dom: {
             privateAttributeBlocklist: ['data-private', 'data-sensitive'],

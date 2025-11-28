@@ -104,10 +104,13 @@ async function executeSearch(artist: string, title: string): Promise<string> {
     }
 
     const data: SearchResponse = await response.json();
-    logger.info('[SEARCH/3] data parsed', { chordsCount: data.chords?.length, tabsCount: data.tabs?.length });
+    logger.info('[SEARCH/3] data parsed', {
+      chordsCount: data.chords?.length,
+      tabsCount: data.tabs?.length,
+    });
 
     const filterResults = (results: SearchResult[]): SearchResult[] =>
-      results.filter((result) => !BLOCKED_TYPES.includes(result.type));
+      results.filter(result => !BLOCKED_TYPES.includes(result.type));
 
     return JSON.stringify({
       query: data.query,
@@ -147,7 +150,7 @@ export async function POST(request: NextRequest) {
     logger.info('[3/INIT] creating Anthropic client');
     const anthropic = new Anthropic();
 
-    const anthropicMessages: Anthropic.MessageParam[] = messages.map((msg) => ({
+    const anthropicMessages: Anthropic.MessageParam[] = messages.map(msg => ({
       role: msg.role,
       content: msg.content,
     }));
@@ -177,7 +180,10 @@ export async function POST(request: NextRequest) {
         break;
       }
 
-      logger.info('[7/TOOL] executing tool', { name: toolUseBlock.name, input: toolUseBlock.input });
+      logger.info('[7/TOOL] executing tool', {
+        name: toolUseBlock.name,
+        input: toolUseBlock.input,
+      });
 
       const input = toolUseBlock.input as { artist: string; title: string };
       const toolResult = await executeSearch(input.artist, input.title);
@@ -213,7 +219,10 @@ export async function POST(request: NextRequest) {
     );
     const responseText = textBlock?.text || '';
 
-    logger.info('[9/FINAL] response extracted', { length: responseText.length, stopReason: response.stop_reason });
+    logger.info('[9/FINAL] response extracted', {
+      length: responseText.length,
+      stopReason: response.stop_reason,
+    });
 
     // Helper to inject artist/title from query into results if missing
     const injectArtistTitle = <T extends { id: number; artist?: string; title?: string }>(
@@ -221,7 +230,7 @@ export async function POST(request: NextRequest) {
       query?: { artist: string; title: string }
     ): T[] => {
       if (!query) return results;
-      return results.map((r) => ({
+      return results.map(r => ({
         ...r,
         artist: r.artist || query.artist,
         title: r.title || query.title,

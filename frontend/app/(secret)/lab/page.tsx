@@ -32,9 +32,9 @@ export default function ChordLabPage() {
 
   useEffect(() => {
     fetch(apiRoutes.lab)
-      .then((res) => res.json())
+      .then(res => res.json())
       .then(setLabStatus)
-      .catch((err) => setError(err.message));
+      .catch(err => setError(err.message));
   }, []);
 
   if (error) {
@@ -58,13 +58,13 @@ export default function ChordLabPage() {
       <pre className="text-xl mb-8">{labStatus.message}</pre>
       <div className="space-y-2 text-sm">
         <pre>┌─────────────────────────────────────┐</pre>
-        <pre>│  STATUS:  {labStatus.status.padEnd(25)} │</pre>
-        <pre>│  ENV:     {labStatus.environment.padEnd(25)} │</pre>
+        <pre>│ STATUS: {labStatus.status.padEnd(25)} │</pre>
+        <pre>│ ENV: {labStatus.environment.padEnd(25)} │</pre>
         <pre>├─────────────────────────────────────┤</pre>
-        <pre>│  {labStatus.secret.padEnd(34)} │</pre>
+        <pre>│ {labStatus.secret.padEnd(34)} │</pre>
         <pre>├─────────────────────────────────────┤</pre>
-        <pre>│  VERSION: {`v${packageJson.version}`.padEnd(25)} │</pre>
-        <pre>│  BUILD:   {formatBuildTime(env.NEXT_PUBLIC_BUILD_TIME).padEnd(25)} │</pre>
+        <pre>│ VERSION: {`v${packageJson.version}`.padEnd(25)} │</pre>
+        <pre>│ BUILD: {formatBuildTime(env.NEXT_PUBLIC_BUILD_TIME).padEnd(25)} │</pre>
         <pre>└─────────────────────────────────────┘</pre>
       </div>
       <div className="mt-12 text-gray-600 text-xs">
