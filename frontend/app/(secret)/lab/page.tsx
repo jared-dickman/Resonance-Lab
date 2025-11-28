@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { apiRoutes } from '@/app/config/apiRoutes';
+import { env } from '@/app/config/env';
 import packageJson from '../../../package.json';
 
 interface LabStatus {
@@ -11,8 +12,6 @@ interface LabStatus {
   backend: string;
   secret: string;
 }
-
-const BUILD_TIME = process.env.NEXT_PUBLIC_BUILD_TIME || 'dev';
 
 export default function ChordLabPage() {
   const [labStatus, setLabStatus] = useState<LabStatus | null>(null);
@@ -53,7 +52,7 @@ export default function ChordLabPage() {
         <pre>│ {labStatus.secret.padEnd(35)}│</pre>
         <pre>├────────────────────────────────────┤</pre>
         <pre>│ VERSION: {`v${packageJson.version}`.padEnd(25)}│</pre>
-        <pre>│ BUILD:   {BUILD_TIME.padEnd(25)}│</pre>
+        <pre>│ BUILD:   {(env.NEXT_PUBLIC_BUILD_TIME ?? 'dev').padEnd(25)}│</pre>
         <pre>└────────────────────────────────────┘</pre>
       </div>
       <div className="mt-12 text-gray-600 text-xs">
