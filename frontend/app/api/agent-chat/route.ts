@@ -275,9 +275,13 @@ export async function POST(request: NextRequest) {
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : String(err);
     const errorStack = err instanceof Error ? err.stack : undefined;
-    logger.error('[agent-chat] Error:', { message: errorMessage, stack: errorStack });
+
+    // Log the full error server-side
+    logger.error('[agent-chat] Chat failed', { message: errorMessage, stack: errorStack });
+
+    // Return safe error to client (NO stack trace)
     return NextResponse.json(
-      { error: 'Chat failed', message: errorMessage, stack: errorStack },
+      { error: 'Chat failed', message: errorMessage },
       { status: 500 }
     );
   }

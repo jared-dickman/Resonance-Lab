@@ -3,7 +3,8 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "dev": "next dev",
+    "dev": "pkill -f 'scraper/server' 2>/dev/null; pkill -f 'next dev' 2>/dev/null; lsof -ti:3007 | xargs kill -9 2>/dev/null; rm -f .next/dev/lock; (ADDR=:8080 SONGS_DIR=../songs ../scraper/server &) && (sleep 2 && open http://localhost:3007 &) && next dev -p 3007",
+    "dev:frontend": "next dev",
     "build": "echo '🔍 Build starting...' && echo \"Node: $(node -v)\" && echo \"npm: $(npm -v)\" && echo \"PWD: $PWD\" && ls -la && SKIP_ENV_VALIDATION=true next build",
     "start": "next start",
     "lint": "eslint . --ext .ts,.tsx",

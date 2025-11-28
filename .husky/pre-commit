@@ -1,2 +1,28 @@
 #!/bin/sh
+
+# Secret scanning - MUST pass before other checks
+echo "🔐 Scanning for secrets..."
+
+# Get staged files (excluding lockfiles and generated files)
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -v -E '(package-lock\.json|yarn\.lock|pnpm-lock\.yaml|\.next/|dist/|build/)')
+
+if [ -n "$STAGED_FILES" ]; then
+  # Pattern for common secrets (Anthropic, OpenAI, AWS, private keys, JWTs, etc.)
+  SECRET_PATTERNS='sk-ant-|sk-proj-|eyJ[A-Za-z0-9_-]*\.[A-Za-z0-9_-]*\.[A-Za-z0-9_-]*|AKIA[0-9A-Z]{16}|-----BEGIN (RSA |EC |DSA |OPENSSH )?PRIVATE KEY-----|AIza[0-9A-Za-z_-]{35}|ya29\.[0-9A-Za-z_-]+|xox[baprs]-[0-9a-zA-Z]{10,48}'
+
+  # Scan staged content
+  if git diff --cached | grep -qE "$SECRET_PATTERNS"; then
+    echo "❌ COMMIT BLOCKED: Potential secrets detected!"
+    echo ""
+    echo "Found patterns matching:"
+    git diff --cached | grep -nE "$SECRET_PATTERNS" | head -5
+    echo ""
+    echo "Please remove secrets before committing."
+    echo "Use environment variables or .env.local instead."
+    exit 1
+  fi
+fi
+
+echo "✅ No secrets detected"
+
 npm run ast-grep:scan && cd frontend && npm run lint:fix && npm run format && npm run type-check

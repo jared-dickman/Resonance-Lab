@@ -44,11 +44,16 @@ jobs:
 
     steps:
       - name: 💬 Notify Slack
-        uses: 8398a7/action-slack@v3
+        uses: slackapi/slack-github-action@70cd7be8e40a46e8b0eced40b0de447bdb42f68e # v1.26.0
         with:
-          status: ${{ job.status }}
-          text: 'Backend deployment completed!'
-          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+          payload: |
+            {
+              "text": "Backend deployment completed!",
+              "status": "${{ job.status }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
         continue-on-error: true
 
   enforce-protection:
