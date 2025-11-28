@@ -9,6 +9,7 @@ import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 
 import { CABLE_ROUTING, VISUALIZATION_COLORS } from '@/lib/constants/visualization.constants';
+import { cn } from '@/lib/utils';
 
 interface Cable {
   id: string;
@@ -258,7 +259,7 @@ export const AnimatedCableRouting: React.FC<AnimatedCableRoutingProps> = ({
   }, [cables]);
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={cn('relative', className)}>
       <svg
         ref={svgRef}
         width={width}

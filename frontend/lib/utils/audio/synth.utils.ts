@@ -33,10 +33,11 @@ const VISUALIZATION_CONFIG = {
 } as const;
 
 export function createSynth(): SynthResources {
+  const oscillatorType = INTERACTIVE_SYNTH.SYNTH_CONFIG.OSCILLATOR_TYPE;
   const synth = new Tone.PolySynth(Tone.Synth, {
     oscillator: {
-      type: INTERACTIVE_SYNTH.SYNTH_CONFIG.OSCILLATOR_TYPE as any,
-    },
+      type: oscillatorType,
+    } as Partial<Tone.OmniOscillatorOptions>,
     envelope: {
       attack: INTERACTIVE_SYNTH.SYNTH_CONFIG.ENVELOPE.ATTACK,
       decay: INTERACTIVE_SYNTH.SYNTH_CONFIG.ENVELOPE.DECAY,

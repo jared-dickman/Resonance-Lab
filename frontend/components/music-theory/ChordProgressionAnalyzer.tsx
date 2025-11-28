@@ -8,6 +8,7 @@ import {
   type KeyAnalysis,
 } from '@/lib/music-theory/intelligentChordEngine';
 import { Music2, TrendingUp, Info } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface ChordProgressionAnalyzerProps {
   chords: string[];
@@ -139,19 +140,18 @@ export default function ChordProgressionAnalyzer({
             return (
               <div
                 key={i}
-                className={`
-                  px-4 py-3 rounded-lg border-2 transition-all
-                  ${isCurrent
+                className={cn(
+                  'px-4 py-3 rounded-lg border-2 transition-all',
+                  isCurrent
                     ? 'bg-yellow-500/20 border-yellow-500 scale-105'
                     : 'bg-gray-700/30 border-gray-600'
-                  }
-                `}
+                )}
               >
                 <div className="flex flex-col items-center gap-1">
                   <p className="text-xs text-gray-400 font-medium">
                     {romanNumeral}
                   </p>
-                  <p className={`text-lg font-bold ${isCurrent ? 'text-yellow-300' : 'text-white'}`}>
+                  <p className={cn('text-lg font-bold', isCurrent ? 'text-yellow-300' : 'text-white')}>
                     {chord}
                   </p>
                   {analysis && (

@@ -92,9 +92,10 @@ export class Pedalboard {
     if (slot.pedal instanceof DistortionPedal) {
       slot.pedal.setEnabled(slot.enabled);
     }
-    // For Tone.Effect
+    // For Tone.Effect with wet parameter
     else if ('wet' in slot.pedal && slot.pedal.wet) {
-      (slot.pedal.wet as any).value = slot.enabled ? 1 : 0;
+      const wetParam = slot.pedal.wet as unknown as { value: number };
+      wetParam.value = slot.enabled ? 1 : 0;
     }
 
     return this;

@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Volume2, VolumeX, Settings, Sparkles } from 'lucide-react';
 import { ChorusPedal } from '@/lib/audio/effects/pizzicato';
 import { Knob, Footswitch, PedalChassis } from './shared/PedalControls';
+import { cn } from '@/lib/utils';
 
 export interface ChorusPedalUIProps {
   pedal?: ChorusPedal;
@@ -47,7 +48,7 @@ export const ChorusPedalUI: React.FC<ChorusPedalUIProps> = ({
   };
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={cn('relative', className)}>
       <PedalChassis gradientFrom="#7c3aed" gradientTo="#5b21b6" borderColor="#a78bfa">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
@@ -76,11 +77,12 @@ export const ChorusPedalUI: React.FC<ChorusPedalUIProps> = ({
                 <button
                   key={preset.name}
                   onClick={() => handlePresetLoad(preset.name)}
-                  className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                  className={cn(
+                    'px-3 py-2 rounded-lg text-xs font-medium transition-colors',
                     selectedPreset === preset.name
                       ? 'bg-purple-600 text-white'
                       : 'bg-purple-950 text-purple-400 hover:bg-purple-900'
-                  }`}
+                  )}
                 >
                   {preset.name.toUpperCase()}
                 </button>

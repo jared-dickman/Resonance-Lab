@@ -8,6 +8,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as Tone from 'tone';
 import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 interface PedalVisualizerProps {
   audioNode?: Tone.ToneAudioNode;
@@ -186,7 +187,7 @@ export const PedalVisualizer: React.FC<PedalVisualizerProps> = ({
   };
 
   return (
-    <div className={`${className}`}>
+    <div className={cn(className)}>
       {(type === 'waveform' || type === 'both') && (
         <motion.div
           className="mb-4"

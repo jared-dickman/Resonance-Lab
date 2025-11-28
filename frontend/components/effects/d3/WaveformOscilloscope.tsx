@@ -9,6 +9,7 @@ import {
   AUDIO_ANALYSIS,
   VISUALIZATION_COLORS,
 } from '@/lib/constants/visualization.constants';
+import { cn } from '@/lib/utils';
 
 interface WaveformOscilloscopeProps {
   audioNode?: Tone.OutputNode;
@@ -168,7 +169,7 @@ export const WaveformOscilloscope: React.FC<WaveformOscilloscopeProps> = ({
   }, [audioNode, width, height, color]);
 
   return (
-    <div className={`relative bg-gray-950 rounded-lg p-4 ${className}`}>
+    <div className={cn('relative bg-gray-950 rounded-lg p-4', className)}>
       <div className="text-xs font-bold text-gray-400 uppercase mb-2">Waveform</div>
       <svg ref={svgRef} width={width} height={height} />
     </div>

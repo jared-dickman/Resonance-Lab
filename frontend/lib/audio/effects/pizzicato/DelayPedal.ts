@@ -97,16 +97,14 @@ export class DelayPedal {
    * Bridge Tone.js and Pizzicato
    */
   private connectBridge(): void {
-    const audioContext = Tone.getContext().rawContext as AudioContext;
+    const toneContext = this.inputNode.context as unknown as { rawContext: AudioContext };
+    const inputGainNode = toneContext.rawContext.createGain();
+    this.inputNode.connect(inputGainNode as unknown as Tone.InputNode);
 
-    // Connect Tone.js input to Pizzicato's internal nodes
-    // Pizzicato uses Web Audio API under the hood
-    const inputGainNode = (this.inputNode as any).context.rawContext.createGain();
-    this.inputNode.connect(inputGainNode as any);
-
-    // Connect to output
-    if (this.sound && (this.sound as any).sourceNode) {
-      (this.sound as any).sourceNode.connect((this.outputNode as any).context.rawContext);
+    const soundWithNodes = this.sound as unknown as { sourceNode?: AudioNode };
+    if (soundWithNodes.sourceNode) {
+      const outputContext = this.outputNode.context as unknown as { rawContext: AudioContext };
+      soundWithNodes.sourceNode.connect(outputContext.rawContext.destination);
     }
 
     this.sound.connect(this.mediaStreamDestination);

@@ -4,6 +4,7 @@
  */
 
 import WaveSurfer from 'wavesurfer.js';
+import type { WaveSurferOptions, WaveSurferEvents } from 'wavesurfer.js';
 
 export interface WaveformOptions {
   container: HTMLElement;
@@ -141,16 +142,20 @@ export class WaveformController {
   }
 
   /**
-   * Event listeners
+   * Event listeners with type-safe event names
    */
-  on(event: string, callback: (...args: unknown[]) => void): void {
-     
-    this.wavesurfer.on(event as any, callback as any);
+  on<E extends keyof WaveSurferEvents>(
+    event: E,
+    callback: (...args: WaveSurferEvents[E]) => void
+  ): () => void {
+    return this.wavesurfer.on(event, callback);
   }
 
-  off(event: string, callback: (...args: unknown[]) => void): void {
-     
-    this.wavesurfer.un(event as any, callback as any);
+  off<E extends keyof WaveSurferEvents>(
+    event: E,
+    callback: (...args: WaveSurferEvents[E]) => void
+  ): void {
+    this.wavesurfer.un(event, callback);
   }
 
   /**

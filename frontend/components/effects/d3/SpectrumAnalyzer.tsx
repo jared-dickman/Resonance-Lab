@@ -10,6 +10,7 @@ import {
   VISUALIZATION_COLORS,
 } from '@/lib/constants/visualization.constants';
 import { normalizeDBValue } from '@/lib/utils/audio/analyzer.utils';
+import { cn } from '@/lib/utils';
 
 interface SpectrumAnalyzerProps {
   audioNode?: Tone.OutputNode;
@@ -191,7 +192,7 @@ export const SpectrumAnalyzer: React.FC<SpectrumAnalyzerProps> = ({
   const svgHeight = height + SPECTRUM_CONFIG.LABEL_OFFSET + 5;
 
   return (
-    <div className={`relative bg-gray-950 rounded-lg p-4 ${className}`}>
+    <div className={cn('relative bg-gray-950 rounded-lg p-4', className)}>
       <div className="text-xs font-bold text-gray-400 uppercase mb-2">Spectrum Analyzer</div>
       <svg ref={svgRef} width={width} height={svgHeight} />
     </div>

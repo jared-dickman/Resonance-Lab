@@ -10,6 +10,7 @@ import { motion } from 'framer-motion';
 import { Volume2, VolumeX, Settings, Zap } from 'lucide-react';
 import type { DistortionAlgorithm } from '@/lib/audio/effects/DistortionPedal';
 import { DistortionPedal } from '@/lib/audio/effects/DistortionPedal';
+import { cn } from '@/lib/utils';
 
 interface KnobProps {
   label: string;
@@ -239,7 +240,7 @@ export const DistortionPedalUI: React.FC<DistortionPedalUIProps> = ({
   };
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={cn('relative', className)}>
       {/* Pedal chassis */}
       <motion.div
         className="relative rounded-lg shadow-2xl overflow-hidden"
@@ -303,11 +304,12 @@ export const DistortionPedalUI: React.FC<DistortionPedalUIProps> = ({
                   <button
                     key={preset.name}
                     onClick={() => handlePresetLoad(preset.name)}
-                    className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                    className={cn(
+                      'px-3 py-2 rounded-lg text-xs font-medium transition-colors',
                       selectedPreset === preset.name
                         ? 'bg-amber-600 text-white'
                         : 'bg-gray-900 text-gray-400 hover:bg-gray-800'
-                    }`}
+                    )}
                   >
                     {preset.name.toUpperCase()}
                   </button>

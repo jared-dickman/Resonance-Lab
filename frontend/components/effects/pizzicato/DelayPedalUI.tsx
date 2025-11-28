@@ -9,6 +9,7 @@ import React, { useCallback, useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Volume2, VolumeX, Settings, Clock } from 'lucide-react';
 import { DelayPedal } from '@/lib/audio/effects/pizzicato';
+import { cn } from '@/lib/utils';
 
 interface KnobProps {
   label: string;
@@ -206,7 +207,7 @@ export const DelayPedalUI: React.FC<DelayPedalUIProps> = ({
   };
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={cn('relative', className)}>
       <motion.div
         className="relative rounded-lg shadow-2xl overflow-hidden"
         style={{
@@ -250,11 +251,12 @@ export const DelayPedalUI: React.FC<DelayPedalUIProps> = ({
                   <button
                     key={preset.name}
                     onClick={() => handlePresetLoad(preset.name)}
-                    className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                    className={cn(
+                      'px-3 py-2 rounded-lg text-xs font-medium transition-colors',
                       selectedPreset === preset.name
                         ? 'bg-blue-600 text-white'
                         : 'bg-blue-950 text-blue-400 hover:bg-blue-900'
-                    }`}
+                    )}
                   >
                     {preset.name.toUpperCase()}
                   </button>

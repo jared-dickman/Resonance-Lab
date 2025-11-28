@@ -34,6 +34,7 @@ import {
   GenerativeArtVisualizer,
 } from '@/components/effects/d3';
 import type { VisualizationStyle } from '@/lib/utils/visualization/generative-art.utils';
+import { cn } from '@/lib/utils';
 
 const ART_STYLES: VisualizationStyle[] = ['flow-field', 'spiral', 'mandala', 'particles'];
 
@@ -242,11 +243,12 @@ export default function UltimatePedalboardPage() {
                   <button
                     onClick={playTestRiff}
                     disabled={isPlaying}
-                    className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
+                    className={cn(
+                      'flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all',
                       isPlaying
                         ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
                         : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg shadow-blue-500/50'
-                    }`}
+                    )}
                   >
                     <Play className="w-5 h-5" />
                     Play Test Riff
@@ -388,7 +390,7 @@ export default function UltimatePedalboardPage() {
               </motion.div>
 
               {/* Audio Analysis Grid */}
-              <div className={`grid ${visualizationLayout === 'grid' ? 'lg:grid-cols-2' : 'grid-cols-1'} gap-6`}>
+              <div className={cn('grid gap-6', visualizationLayout === 'grid' ? 'lg:grid-cols-2' : 'grid-cols-1')}>
                 {/* Spectrum Analyzer */}
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}

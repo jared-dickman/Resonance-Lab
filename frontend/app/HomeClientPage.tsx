@@ -10,6 +10,7 @@ import { AgentChat } from '@/components/AgentChat';
 import Link from 'next/link';
 import { useSongs, useDownloadSong, useDeleteSong } from '@/app/features/songs/hooks';
 import type { SearchResult } from '@/lib/types';
+import { cn } from '@/lib/utils';
 
 interface StatusMessage {
   type: 'success' | 'error' | 'info';
@@ -166,13 +167,12 @@ export default function HomePage() {
 
           {status && (
             <div
-              className={`mt-4 rounded-lg border p-4 text-sm ${
-                status.type === 'success'
-                  ? 'bg-green-50 border-green-200 text-green-800 dark:bg-green-950 dark:border-green-800 dark:text-green-200'
-                  : status.type === 'error'
-                  ? 'bg-red-50 border-red-200 text-red-800 dark:bg-red-950 dark:border-red-800 dark:text-red-200'
-                  : 'bg-blue-50 border-blue-200 text-blue-800 dark:bg-blue-950 dark:border-blue-800 dark:text-blue-200'
-              }`}
+              className={cn(
+                'mt-4 rounded-lg border p-4 text-sm',
+                status.type === 'success' && 'bg-green-50 border-green-200 text-green-800 dark:bg-green-950 dark:border-green-800 dark:text-green-200',
+                status.type === 'error' && 'bg-red-50 border-red-200 text-red-800 dark:bg-red-950 dark:border-red-800 dark:text-red-200',
+                status.type === 'info' && 'bg-blue-50 border-blue-200 text-blue-800 dark:bg-blue-950 dark:border-blue-800 dark:text-blue-200'
+              )}
             >
               {status.message}
             </div>

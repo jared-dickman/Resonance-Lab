@@ -12,6 +12,7 @@ import {
   SIGNAL_PATH,
   VISUALIZATION_COLORS,
 } from '@/lib/constants/visualization.constants';
+import { cn } from '@/lib/utils';
 
 interface PedalNode {
   id: string;
@@ -433,7 +434,7 @@ export const SignalPathDiagram: React.FC<SignalPathDiagramProps> = ({
   }, [pedals, width, height]);
 
   return (
-    <div className={`relative bg-gray-950 rounded-lg p-4 ${className}`}>
+    <div className={cn('relative bg-gray-950 rounded-lg p-4', className)}>
       <div className="text-xs font-bold text-gray-400 uppercase mb-2">
         Signal Path (Drag nodes, zoom/pan)
       </div>

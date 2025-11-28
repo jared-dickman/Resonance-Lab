@@ -30,6 +30,7 @@ import {
   CompressorPedalUI,
 } from './pizzicato';
 import { PedalVisualizer } from './PedalVisualizer';
+import { cn } from '@/lib/utils';
 
 interface PedalboardUIProps {
   pedalboard?: Pedalboard;
@@ -89,11 +90,12 @@ const PedalSlotUI: React.FC<{
 
           <button
             onClick={onToggle}
-            className={`p-1.5 rounded-lg transition-colors ${
+            className={cn(
+              'p-1.5 rounded-lg transition-colors',
               slot.enabled
                 ? 'bg-green-600 hover:bg-green-700'
                 : 'bg-gray-700 hover:bg-gray-600'
-            }`}
+            )}
           >
             <Power className="w-3 h-3 text-white" />
           </button>
@@ -222,7 +224,7 @@ export const PedalboardUI: React.FC<PedalboardUIProps> = ({
   }, [pedalboard, bypassAll]);
 
   return (
-    <div className={`${className}`}>
+    <div className={cn(className)}>
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
         <div>
@@ -350,11 +352,12 @@ export const PedalboardUI: React.FC<PedalboardUIProps> = ({
           <div className="flex items-center gap-3">
             <button
               onClick={handleBypassAll}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+              className={cn(
+                'px-4 py-2 rounded-lg font-medium transition-colors',
                 bypassAll
                   ? 'bg-red-600 hover:bg-red-700 text-white'
                   : 'bg-gray-800 hover:bg-gray-700 text-gray-300'
-              }`}
+              )}
             >
               {bypassAll ? 'Bypassed' : 'Active'}
             </button>

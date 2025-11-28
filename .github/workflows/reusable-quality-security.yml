@@ -43,9 +43,8 @@ jobs:
         run: npm run format:check
         continue-on-error: true
 
-      - name: 🔒 ast-grep security scan
+      - name: 🔒 ast-grep rules enforcement
         run: npm run ast-grep:scan
-        continue-on-error: true
 
       - name: 🔐 Secret scanning
         uses: trufflesecurity/trufflehog@main

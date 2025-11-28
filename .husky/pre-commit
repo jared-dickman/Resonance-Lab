@@ -1,2 +1,2 @@
 #!/bin/sh
-cd frontend && npm run lint:fix && npm run format && npm run type-check
+npm run ast-grep:scan && cd frontend && npm run lint:fix && npm run format && npm run type-check

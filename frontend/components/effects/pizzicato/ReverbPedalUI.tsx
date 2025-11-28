@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Volume2, VolumeX, Settings, Waves } from 'lucide-react';
 import { ReverbPedal } from '@/lib/audio/effects/pizzicato';
 import { Knob, Footswitch, PedalChassis } from './shared/PedalControls';
+import { cn } from '@/lib/utils';
 
 export interface ReverbPedalUIProps {
   pedal?: ReverbPedal;
@@ -44,7 +45,7 @@ export const ReverbPedalUI: React.FC<ReverbPedalUIProps> = ({
   };
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={cn('relative', className)}>
       <PedalChassis gradientFrom="#1e293b" gradientTo="#0f172a" borderColor="#475569">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
@@ -73,11 +74,12 @@ export const ReverbPedalUI: React.FC<ReverbPedalUIProps> = ({
                 <button
                   key={preset.name}
                   onClick={() => handlePresetLoad(preset.name)}
-                  className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                  className={cn(
+                    'px-3 py-2 rounded-lg text-xs font-medium transition-colors',
                     selectedPreset === preset.name
                       ? 'bg-slate-600 text-white'
                       : 'bg-slate-950 text-slate-400 hover:bg-slate-900'
-                  }`}
+                  )}
                 >
                   {preset.name.toUpperCase()}
                 </button>

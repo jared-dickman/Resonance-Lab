@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Volume2, VolumeX, Settings, Activity } from 'lucide-react';
 import { TremoloPedal } from '@/lib/audio/effects/pizzicato';
 import { Knob, Footswitch, PedalChassis } from './shared/PedalControls';
+import { cn } from '@/lib/utils';
 
 export interface TremoloPedalUIProps {
   pedal?: TremoloPedal;
@@ -44,7 +45,7 @@ export const TremoloPedalUI: React.FC<TremoloPedalUIProps> = ({
   };
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={cn('relative', className)}>
       <PedalChassis gradientFrom="#059669" gradientTo="#047857" borderColor="#10b981">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
@@ -73,11 +74,12 @@ export const TremoloPedalUI: React.FC<TremoloPedalUIProps> = ({
                 <button
                   key={preset.name}
                   onClick={() => handlePresetLoad(preset.name)}
-                  className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                  className={cn(
+                    'px-3 py-2 rounded-lg text-xs font-medium transition-colors',
                     selectedPreset === preset.name
                       ? 'bg-emerald-600 text-white'
                       : 'bg-emerald-950 text-emerald-400 hover:bg-emerald-900'
-                  }`}
+                  )}
                 >
                   {preset.name.toUpperCase()}
                 </button>
