@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo, useRef, useEffect } from 'react';
-import { Trash2, ChevronDown, Music, Send, Sparkles, Bot } from 'lucide-react';
+import { Trash2, Music, Send, Sparkles, Bot, Disc3 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -55,7 +55,6 @@ export default function HomePage() {
   const [input, setInput] = useState('');
   const [isChatLoading, setIsChatLoading] = useState(false);
   const [thinkingPun, setThinkingPun] = useState('');
-  const [expandedArtist, setExpandedArtist] = useState<string | null>(null);
   const [currentPlaceholder, setCurrentPlaceholder] = useState(() => selectRandom(placeholders));
   const [conversationHistory, setConversationHistory] = useState<
     Array<{ role: string; content: string }>
@@ -74,22 +73,11 @@ export default function HomePage() {
     messages.length === 0
   );
 
-  // Group songs by artist
-  const groupedSongs = useMemo(() => {
-    const groups = new Map<string, typeof songs>();
-    songs.forEach(song => {
-      const existing = groups.get(song.artist) || [];
-      existing.push(song);
-      groups.set(song.artist, existing);
-    });
-    return Array.from(groups.entries())
-      .map(([artist, items]) => ({
-        artist,
-        artistSlug: items[0]?.artistSlug ?? '',
-        items: items.sort((a, b) => a.title.localeCompare(b.title)),
-      }))
-      .sort((a, b) => a.artist.localeCompare(b.artist));
-  }, [songs]);
+  // Sort songs by most recently updated
+  const sortedSongs = useMemo(
+    () => [...songs].sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()),
+    [songs]
+  );
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -185,10 +173,6 @@ export default function HomePage() {
         },
       }
     );
-  }
-
-  function toggleArtist(artist: string) {
-    setExpandedArtist(prev => (prev === artist ? null : artist));
   }
 
   return (
@@ -407,108 +391,68 @@ export default function HomePage() {
 
         {!isLoading && songs.length > 0 && (
           <motion.div
-            className="space-y-2"
+            className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3"
             initial="hidden"
             animate="show"
             variants={{
               hidden: { opacity: 0 },
               show: {
                 opacity: 1,
-                transition: { staggerChildren: 0.05 },
+                transition: { staggerChildren: 0.03 },
               },
             }}
           >
-            {groupedSongs.map(({ artist, artistSlug, items }) => {
-              const isExpanded = expandedArtist === artist;
-
-              return (
-                <motion.div
-                  key={artist}
-                  variants={SLIDE_UP_VARIANTS}
-                  className={cn(
-                    'rounded-lg border border-sapphire-500/20 bg-card/50 backdrop-blur-sm',
-                    'transition-all duration-300',
-                    isExpanded && 'border-sapphire-500/40 bg-card/70'
-                  )}
-                  data-testid={HomePageTestIds.artistGroup}
+            {sortedSongs.map(song => (
+              <motion.div
+                key={`${song.artistSlug}/${song.songSlug}`}
+                variants={SLIDE_UP_VARIANTS}
+                className={cn(
+                  'group rounded-lg border border-sapphire-500/20 bg-card/50 backdrop-blur-sm',
+                  'hover:border-sapphire-500/40 hover:bg-card/70 transition-all duration-200'
+                )}
+              >
+                <Link
+                  href={`/songs/${song.artistSlug}/${song.songSlug}`}
+                  className="block p-4"
                 >
-                  <button
-                    onClick={() => toggleArtist(artist)}
-                    className="w-full flex items-center justify-between p-4 text-left"
-                  >
-                    <div className="flex items-center gap-3">
-                      <Music className="h-5 w-5 text-sapphire-400" />
-                      <div>
-                        <h3 className="font-medium">{artist}</h3>
-                        <p className="text-sm text-muted-foreground">
-                          {items.length} {items.length === 1 ? 'song' : 'songs'}
-                        </p>
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 rounded-md bg-sapphire-500/10 text-sapphire-400">
+                      <Disc3 className="h-5 w-5" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-medium truncate group-hover:text-sapphire-400 transition-colors">
+                        {song.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground truncate">{song.artist}</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        {song.key && (
+                          <span className="text-xs px-2 py-0.5 rounded-full bg-sapphire-500/10 text-sapphire-400">
+                            {song.key}
+                          </span>
+                        )}
+                        <span className="text-xs text-muted-foreground">
+                          {new Date(song.updatedAt).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                          })}
+                        </span>
                       </div>
                     </div>
-                    <motion.div
-                      animate={{ rotate: isExpanded ? 180 : 0 }}
-                      transition={{ duration: ANIMATION_DURATION.FAST }}
+                    <button
+                      onClick={e => {
+                        e.preventDefault();
+                        handleDelete(song.artistSlug, song.songSlug, song.title);
+                      }}
+                      disabled={isDeleting}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 hover:bg-destructive/10 rounded text-destructive disabled:opacity-50"
+                      title="Delete song"
                     >
-                      <ChevronDown className="h-5 w-5 text-muted-foreground" />
-                    </motion.div>
-                  </button>
-
-                  <AnimatePresence>
-                    {isExpanded && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: ANIMATION_DURATION.FAST }}
-                        className="overflow-hidden"
-                      >
-                        <div className="px-4 pb-4 space-y-2 border-t border-sapphire-500/10 pt-3">
-                          {items.map(song => (
-                            <div
-                              key={`${song.artistSlug}/${song.songSlug}`}
-                              className="group flex items-center justify-between p-2 rounded-md hover:bg-muted/50 transition-colors"
-                            >
-                              <Link
-                                href={`/songs/${song.artistSlug}/${song.songSlug}`}
-                                className="flex-1 min-w-0"
-                              >
-                                <span className="font-medium text-sm hover:text-sapphire-400 transition-colors block truncate">
-                                  {song.title}
-                                </span>
-                                {song.key && (
-                                  <span className="text-xs text-muted-foreground">
-                                    Key: {song.key}
-                                  </span>
-                                )}
-                              </Link>
-                              <button
-                                onClick={() =>
-                                  handleDelete(song.artistSlug, song.songSlug, song.title)
-                                }
-                                disabled={isDeleting}
-                                className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-destructive/10 rounded text-destructive disabled:opacity-50"
-                                title="Delete song"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </button>
-                            </div>
-                          ))}
-                          <Link href={`/songs/${artistSlug}`}>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="w-full mt-2 text-sapphire-400"
-                            >
-                              View all {artist} songs →
-                            </Button>
-                          </Link>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-              );
-            })}
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
           </motion.div>
         )}
       </div>
