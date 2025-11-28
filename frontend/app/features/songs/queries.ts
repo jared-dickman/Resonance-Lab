@@ -7,6 +7,7 @@ import type {
   DownloadRequestInput,
   SearchRequestInput,
 } from '@/app/features/songs/dto/song-request.schema';
+import { apiRoutes } from '@/app/config/apiRoutes';
 
 async function handleResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
@@ -17,7 +18,7 @@ async function handleResponse<T>(response: Response): Promise<T> {
 }
 
 export async function fetchSongsList(): Promise<SavedSongResponse[]> {
-  const response = await fetch('/api/songs', { cache: 'no-store' });
+  const response = await fetch(apiRoutes.songs, { cache: 'no-store' });
   return handleResponse<SavedSongResponse[]>(response);
 }
 
@@ -25,12 +26,12 @@ export async function fetchSongDetail(
   artistSlug: string,
   songSlug: string
 ): Promise<SongDetailResponse> {
-  const response = await fetch(`/api/songs/${artistSlug}/${songSlug}`, { cache: 'no-store' });
+  const response = await fetch(apiRoutes.songDetail(artistSlug, songSlug), { cache: 'no-store' });
   return handleResponse<SongDetailResponse>(response);
 }
 
 export async function searchSongs(input: SearchRequestInput): Promise<SearchResponseData> {
-  const response = await fetch('/api/agent-search', {
+  const response = await fetch(apiRoutes.agentSearch, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(input),
@@ -39,7 +40,7 @@ export async function searchSongs(input: SearchRequestInput): Promise<SearchResp
 }
 
 export async function downloadSong(input: DownloadRequestInput): Promise<SongDetailResponse> {
-  const response = await fetch('/api/songs', {
+  const response = await fetch(apiRoutes.songs, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(input),
@@ -48,7 +49,7 @@ export async function downloadSong(input: DownloadRequestInput): Promise<SongDet
 }
 
 export async function deleteSong(artistSlug: string, songSlug: string): Promise<void> {
-  const response = await fetch(`/api/songs/${artistSlug}/${songSlug}`, { method: 'DELETE' });
+  const response = await fetch(apiRoutes.songDetail(artistSlug, songSlug), { method: 'DELETE' });
   if (!response.ok) {
     const message = await response.text();
     throw new Error(message || response.statusText);

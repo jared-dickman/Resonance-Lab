@@ -10,6 +10,21 @@ import { Spinner } from '@/components/ui/spinner';
 import { cn, selectRandom, selectRandomWithFallback } from '@/lib/utils';
 import type { SearchResult } from '@/lib/types';
 import placeholders from '@/lib/data/placeholders.json';
+import { apiRoutes } from '@/app/config/apiRoutes';
+
+const AgentChatTestIds = {
+  chatInput: 'agent-chat-input',
+  sendButton: 'agent-chat-send',
+  messageList: 'agent-chat-messages',
+  userMessage: 'user-message',
+  agentMessage: 'agent-message',
+  loadingIndicator: 'agent-loading',
+  searchResults: 'search-results',
+  searchResultItem: 'search-result-item',
+  downloadButton: 'download-button',
+  newChatButton: 'new-chat-button',
+  errorMessage: 'agent-error',
+} as const;
 
 const THINKING_PUNS = [
   "Tuning up the search engines...",
@@ -214,6 +229,7 @@ function SearchResultButton({ result, type, onClick, disabled }: SearchResultBut
       onClick={() => onClick(result, type)}
       disabled={disabled}
       className="w-full text-left p-2 rounded border hover:bg-accent/50 transition-colors mb-1 disabled:opacity-50"
+      data-testid={AgentChatTestIds.searchResultItem}
     >
       <div className="flex justify-between items-center">
         <span className="font-medium text-xs">{result.title}</span>
@@ -222,6 +238,7 @@ function SearchResultButton({ result, type, onClick, disabled }: SearchResultBut
         </span>
       </div>
       <span className="text-xs text-muted-foreground">{result.artist}</span>
+      <span className="sr-only" data-testid={AgentChatTestIds.downloadButton}>Download</span>
     </button>
   );
 }
@@ -261,7 +278,7 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
     try {
       const newHistory = [...conversationHistory, { role: 'user', content: userMessage }];
 
-      const response = await fetch('/api/agent-chat', {
+      const response = await fetch(apiRoutes.agentChat, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: newHistory }),
@@ -317,7 +334,10 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
 
   return (
     <div className="flex flex-col h-[400px]">
-      <div className="flex-1 overflow-y-auto overflow-x-hidden space-y-3 p-3 bg-gradient-to-b from-muted/20 to-muted/40 rounded-lg mb-3 relative">
+      <div
+        className="flex-1 overflow-y-auto overflow-x-hidden space-y-3 p-3 bg-gradient-to-b from-muted/20 to-muted/40 rounded-lg mb-3 relative"
+        data-testid={AgentChatTestIds.messageList}
+      >
         <AnimatePresence mode="wait">
           {messages.length === 0 && (
             <motion.div
@@ -368,12 +388,15 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
               message.role === 'user' ? "justify-end" : "justify-start"
             )}
           >
-            <div className={cn(
-              "max-w-[85%] rounded-lg px-3 py-2 text-sm shadow-sm",
-              message.role === 'user'
-                ? "bg-primary text-primary-foreground"
-                : "bg-background border border-border/50"
-            )}>
+            <div
+              className={cn(
+                "max-w-[85%] rounded-lg px-3 py-2 text-sm shadow-sm",
+                message.role === 'user'
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-background border border-border/50"
+              )}
+              data-testid={message.role === 'user' ? AgentChatTestIds.userMessage : AgentChatTestIds.agentMessage}
+            >
               <p className="whitespace-pre-wrap">{message.content}</p>
 
               {message.suggestions && message.suggestions.length > 0 && (
@@ -392,7 +415,7 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
               )}
 
               {message.results && (message.results.chords.length > 0 || message.results.tabs.length > 0) && (
-                <div className="mt-3 space-y-2">
+                <div className="mt-3 space-y-2" data-testid={AgentChatTestIds.searchResults}>
                   {message.results.chords.length > 0 && (
                     <div>
                       <p className="text-xs font-medium mb-1 opacity-70">Chords:</p>
@@ -436,7 +459,10 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
               exit={{ opacity: 0, y: -10 }}
               className="flex justify-start"
             >
-              <div className="bg-background border border-primary/20 rounded-lg px-4 py-3 shadow-sm">
+              <div
+                className="bg-background border border-primary/20 rounded-lg px-4 py-3 shadow-sm"
+                data-testid={AgentChatTestIds.loadingIndicator}
+              >
                 <div className="flex items-center gap-2">
                   <motion.div
                     animate={{ rotate: 360 }}
@@ -461,8 +487,14 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
           placeholder="Find a song..."
           disabled={isLoading || isSaving}
           className="flex-1"
+          data-testid={AgentChatTestIds.chatInput}
         />
-        <Button type="submit" size="icon" disabled={isLoading || isSaving || !input.trim()}>
+        <Button
+          type="submit"
+          size="icon"
+          disabled={isLoading || isSaving || !input.trim()}
+          data-testid={AgentChatTestIds.sendButton}
+        >
           {isLoading ? <Spinner className="h-4 w-4" /> : <Send className="h-4 w-4" />}
         </Button>
       </form>

@@ -12,6 +12,10 @@ export const apiRoutes = {
 
   // Search
   search: '/api/search',
+  agentSearch: '/api/agent-search',
+
+  // Agent Chat
+  agentChat: '/api/agent-chat',
 
   // Lab
   lab: '/api/lab',

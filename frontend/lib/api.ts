@@ -1,4 +1,5 @@
 import type { DownloadRequest, SavedSong, SearchResponse, SongDetail } from '@/lib/types';
+import { apiRoutes } from '@/app/config/apiRoutes';
 
 async function handleResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
@@ -9,17 +10,17 @@ async function handleResponse<T>(response: Response): Promise<T> {
 }
 
 export async function listSavedSongs(): Promise<SavedSong[]> {
-  const response = await fetch('/api/songs', { cache: 'no-store' });
+  const response = await fetch(apiRoutes.songs, { cache: 'no-store' });
   return handleResponse<SavedSong[]>(response);
 }
 
 export async function fetchSongDetail(artistSlug: string, songSlug: string): Promise<SongDetail> {
-  const response = await fetch(`/api/songs/${artistSlug}/${songSlug}`, { cache: 'no-store' });
+  const response = await fetch(apiRoutes.songDetail(artistSlug, songSlug), { cache: 'no-store' });
   return handleResponse<SongDetail>(response);
 }
 
 export async function searchLibrary(artist: string, title: string): Promise<SearchResponse> {
-  const response = await fetch('/api/agent-search', {
+  const response = await fetch(apiRoutes.agentSearch, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ artist, title }),
@@ -28,7 +29,7 @@ export async function searchLibrary(artist: string, title: string): Promise<Sear
 }
 
 export async function downloadSong(payload: DownloadRequest): Promise<SongDetail> {
-  const response = await fetch('/api/songs', {
+  const response = await fetch(apiRoutes.songs, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
