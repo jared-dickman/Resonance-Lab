@@ -20,7 +20,6 @@
   },
   "devDependencies": {
     "@ast-grep/cli": "0.40.0",
-    "prettier": "3.5.3",
     "@commitlint/cli": "20.1.0",
     "@commitlint/config-conventional": "20.0.0",
     "@typescript-eslint/eslint-plugin": "8.48.0",
@@ -41,12 +40,10 @@
     "test": "echo \"No unit tests configured yet\" && exit 0",
     "lint": "eslint . --fix",
     "lint:check": "eslint .",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
-    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "typecheck": "npm run type-check -w frontend",
     "test:ast-grep-rules": "tsx scripts/test-ast-grep-rules.ts",
     "ast-grep:scan": "ast-grep scan",
-    "check:all": "npm run lint:check && npm run format:check && npm run ast-grep:scan",
+    "check:all": "npm run lint:check && npm run ast-grep:scan",
     "prepare": "husky"
   }
 }

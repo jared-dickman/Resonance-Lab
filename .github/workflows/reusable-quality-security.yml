@@ -2,11 +2,6 @@ name: Quality & Security Checks
 
 on:
   workflow_call:
-    inputs:
-      enable_sonarcloud:
-        description: 'Enable SonarCloud scanning'
-        type: boolean
-        default: false
     secrets:
       SONAR_TOKEN:
         required: false
@@ -33,15 +28,9 @@ jobs:
 
       - name: 🔍 TypeScript type check
         run: npm run typecheck
-        continue-on-error: true
 
       - name: 🎨 ESLint check
         run: npm run lint:check
-        continue-on-error: true
-
-      - name: 💅 Prettier format check
-        run: npm run format:check
-        continue-on-error: true
 
       - name: 🔒 ast-grep rules enforcement
         run: npm run ast-grep:scan
@@ -51,12 +40,3 @@ jobs:
         with:
           path: ./
           extra_args: --no-update
-        continue-on-error: true
-
-      - name: 📊 SonarCloud Scan
-        if: inputs.enable_sonarcloud
-        uses: SonarSource/sonarqube-scan-action@v4.2.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        continue-on-error: true

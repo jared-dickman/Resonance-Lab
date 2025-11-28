@@ -2,11 +2,6 @@ name: Build & Test
 
 on:
   workflow_call:
-    inputs:
-      upload_coverage:
-        description: 'Upload test coverage to Codecov'
-        type: boolean
-        default: false
 
 jobs:
   build-test:
@@ -37,13 +32,3 @@ jobs:
 
       - name: 🧪 Run unit tests
         run: npm test
-        continue-on-error: true
-
-      - name: 📈 Upload coverage
-        if: inputs.upload_coverage
-        uses: codecov/codecov-action@v3
-        with:
-          files: ./coverage/lcov.info
-          flags: unittests
-          name: codecov-umbrella
-        continue-on-error: true
