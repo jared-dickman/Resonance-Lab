@@ -11,15 +11,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { cn, selectRandom, selectRandomWithFallback } from '@/lib/utils';
 import { useIntervalEffect } from '@/lib/hooks/useIntervalEffect';
 import { useArtists } from '@/app/features/artists/hooks';
+import artistPlaceholders from '@/lib/data/artist-placeholders.json';
 import { ANIMATION_DURATION, SLIDE_UP_VARIANTS } from '@/lib/constants/animation.constants';
-
-const DISCOVERY_PLACEHOLDERS = [
-  "Tell me about Led Zeppelin's early years",
-  'Who influenced Jimi Hendrix?',
-  "What's the story behind Pink Floyd?",
-  'Compare Beatles and Rolling Stones',
-  'Who plays similar to Eric Clapton?',
-];
 
 const THINKING_PUNS = [
   'Researching musical history...',
@@ -49,7 +42,7 @@ export default function ArtistsPage() {
   const [thinkingPun, setThinkingPun] = useState('');
   const [expandedArtist, setExpandedArtist] = useState<string | null>(null);
   const [currentPlaceholder, setCurrentPlaceholder] = useState(() =>
-    selectRandom(DISCOVERY_PLACEHOLDERS)
+    selectRandom(artistPlaceholders)
   );
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -61,7 +54,7 @@ export default function ArtistsPage() {
   }, [messages]);
 
   useIntervalEffect(
-    () => setCurrentPlaceholder(selectRandom(DISCOVERY_PLACEHOLDERS)),
+    () => setCurrentPlaceholder(selectRandom(artistPlaceholders)),
     4200,
     messages.length === 0
   );

@@ -15,18 +15,11 @@ import type { SearchResult } from '@/lib/types';
 import { cn, selectRandom, selectRandomWithFallback } from '@/lib/utils';
 import { useIntervalEffect } from '@/lib/hooks/useIntervalEffect';
 import { apiRoutes } from '@/app/config/apiRoutes';
+import placeholders from '@/lib/data/placeholders.json';
 import {
   ANIMATION_DURATION,
   SLIDE_UP_VARIANTS,
 } from '@/lib/constants/animation.constants';
-
-const SONG_PLACEHOLDERS = [
-  "Find me Wonderwall by Oasis",
-  "I want to learn Hotel California",
-  "Something bluesy in E minor",
-  "Show me Beatles songs",
-  "Any fingerpicking songs?",
-];
 
 const THINKING_PUNS = [
   "Tuning up the search engines...",
@@ -67,7 +60,7 @@ export default function HomePage() {
   const [thinkingPun, setThinkingPun] = useState('');
   const [expandedArtist, setExpandedArtist] = useState<string | null>(null);
   const [currentPlaceholder, setCurrentPlaceholder] = useState(() =>
-    selectRandom(SONG_PLACEHOLDERS)
+    selectRandom(placeholders)
   );
   const [conversationHistory, setConversationHistory] = useState<Array<{ role: string; content: string }>>([]);
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -79,7 +72,7 @@ export default function HomePage() {
   }, [messages]);
 
   useIntervalEffect(
-    () => setCurrentPlaceholder(selectRandom(SONG_PLACEHOLDERS)),
+    () => setCurrentPlaceholder(selectRandom(placeholders)),
     4200,
     messages.length === 0
   );
