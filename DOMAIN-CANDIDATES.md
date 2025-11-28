@@ -146,6 +146,54 @@ Direct search: `namecheap.com/domains/registration/results/?domain=[NAME]`
 
 ---
 
+## Studio Series (ALL .com TAKEN - but cheap alt TLDs!)
+
+**Note:** Most Studio+X .com domains are taken/premium, but .io/.xyz/.art options are dirt cheap!
+
+| Domain | .com Status | Best Alternative | Price |
+|--------|-------------|------------------|-------|
+| **studioseraph** | ✅ Available! | studioseraph.com (check!) / .io $21.98 | Fallen seraph + studio |
+| **studioflux** | ✅ Available! | studioflux.com (check!) / .io $21.98 | Flow, change, energy |
+| **studioarcane** | ✅ Available! | studioarcane.com (check!) / .io $21.98 | Mystical, secret knowledge |
+| **studioether** | ✅ Available! | studioether.com (check!) / .io ~$25 | Ethereal, cosmic |
+| **studioforge** | ✅ Available! | studioforge.com (check!) / .io ~$25 | Creation, metal-working |
+| **studiovex** | ✅ Available! | studiovex.com (check!) / .io ~$25 | Short, punchy, techy |
+| studiovolt | ❌ Premium $13,825 | studiovolt.io $21.98 | Electric energy |
+| studiopulse | ❌ Premium | studiopulse.io ~$25 | Rhythm, heartbeat |
+| studiosignal | ❌ Premium $3,477 | studiosignal.io ~$25 | Audio signal |
+| studioverge | ❌ Premium $4,199 | studioverge.io ~$25 | On the edge |
+| studioarc | ❌ Taken | studioarc.io ~$25 | Electric arc theme |
+
+---
+
+## 🔥 Studio Series: ULTRA-CHEAP Options (.xyz $1.28!)
+
+| Domain | Price w/ MATRIXTLD25 | Vibe |
+|--------|---------------------|------|
+| **studioseraph.xyz** | $1.28 | Fallen angel studio |
+| **studioflux.xyz** | ~$1.50 | Flow state |
+| **studioarcane.xyz** | $1.28 | Dark magic |
+| **studiovolt.xyz** | $1.28 | Electric |
+| **studioether.space** | $0.48 | Cosmic void |
+| **studioforge.space** | $0.48 | Metal creation |
+| **studioseraph.space** | $0.48 | Angel dust |
+
+---
+
+## Studio + .io Series (Tech-Forward ~$22-25/yr)
+
+| Domain | Theme |
+|--------|-------|
+| **studioseraph.io** | Fallen seraph + tech studio |
+| **studioflux.io** | Dynamic change, flow |
+| **studioarcane.io** | Mystical tech |
+| **studiovolt.io** | Electric studio |
+| **studioether.io** | Ethereal tech |
+| **studioforge.io** | Creation/crafting |
+| **studiovex.io** | Short & punchy |
+
+---
+
 ```
         🌑🎵 MELODARK 🎵🌑          ⚡🎵 POSTCLEF 🎵⚡
 
@@ -159,4 +207,20 @@ Direct search: `namecheap.com/domains/registration/results/?domain=[NAME]`
 
     "Where melody                "After the clef,
      meets darkness"              music evolves"
+```
+
+---
+
+```
+    ⚡🏛️ STUDIO SERIES 🏛️⚡
+
+         ___________
+        |  STUDIO   |
+        |   ____    |
+        |  |FLUX|   |    .io = $22
+        |  |____|   |    .xyz = $1.28
+        |___________|    .space = $0.48
+            ||||
+
+    "Where sound takes form"
 ```

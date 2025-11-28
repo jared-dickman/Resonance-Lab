@@ -48,8 +48,8 @@ jobs:
             set -e
             cd /root/Resonance-Lab
             git fetch origin
-            git checkout ${{ inputs.branch }}
-            git pull origin ${{ inputs.branch }}
+            git reset --hard origin/${{ inputs.branch }}
+            git clean -fd
             docker compose up -d --build ${{ inputs.container_name }}
             sleep 5
             docker ps | grep -q ${{ inputs.container_name }} || { docker logs ${{ inputs.container_name }} --tail 20; exit 1; }
