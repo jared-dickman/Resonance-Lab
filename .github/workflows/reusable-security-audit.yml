@@ -25,13 +25,13 @@ jobs:
         continue-on-error: true
 
       - name: 🛡️ Snyk Security Scan
-        uses: snyk/actions/node@9adf32b1121593767fc3c057af55b55db032dc04 # v1.0.0
+        uses: snyk/actions/node@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         continue-on-error: true
 
       - name: 📋 OWASP Dependency Check
-        uses: dependency-check/Dependency-Check_Action@75ba02d6183445fe0761d26e836bde58b1560600 # v1.1.0
+        uses: dependency-check/Dependency-Check_Action@main
         with:
           path: '.'
           format: 'HTML'

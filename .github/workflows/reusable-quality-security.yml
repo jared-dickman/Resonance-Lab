@@ -47,7 +47,7 @@ jobs:
         run: npm run ast-grep:scan
 
       - name: 🔐 Secret scanning
-        uses: trufflesecurity/trufflehog@aade3bff5594fe8808578dd4db3dfeae9bf2abdc # v3.91.1
+        uses: trufflesecurity/trufflehog@v3.91.1
         with:
           path: ./
           extra_args: --no-update
@@ -55,7 +55,7 @@ jobs:
 
       - name: 📊 SonarCloud Scan
         if: inputs.enable_sonarcloud
-        uses: SonarSource/sonarcloud-github-action@e44258b109568baa0df60ed515909fc6c72cba92 # v2.3.0
+        uses: SonarSource/sonarqube-scan-action@v4.2.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
