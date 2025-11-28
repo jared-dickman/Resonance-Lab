@@ -43,6 +43,7 @@ import {
   createPanelShortcutHandlers,
 } from '@/components/songwriter/hooks/useKeyboardShortcuts';
 import { cn } from '@/lib/utils';
+import { logger } from '@/lib/logger';
 
 type WorkspaceChord = { name: string; timing: number };
 
@@ -89,7 +90,7 @@ export default function SongwriterClient(): React.JSX.Element {
   const { togglePanel, focusPanel, isPanelExpanded } = usePanelInteractions(panelLayout, setPanelLayout);
 
   const handleSaveDraft = useCallback((): void => {
-    console.log('Draft saved');
+    logger.info('Draft saved');
   }, []);
 
   const keyboardHandlers = useMemo(
@@ -172,7 +173,7 @@ export default function SongwriterClient(): React.JSX.Element {
   );
 
   const handleApplyConfiguration = useCallback((): void => {
-    console.log('Apply AI configuration (mock)');
+    logger.info('Apply AI configuration (mock)');
   }, []);
 
   const showNavigator = panelVisibility.navigator;
@@ -292,7 +293,7 @@ function NavigatorColumn({
           <Card className="border-2 bg-background">
             <CardHeader className="pb-2">
               <div className="flex items-center gap-2">
-                <Compass className="h-4 w-4 text-primary" />
+                <Compass className="h-4 w-4 text-sapphire-500" />
                 <span className="text-sm font-semibold uppercase tracking-wide">Creative Brief</span>
               </div>
               <p className="text-xs text-muted-foreground">
@@ -315,7 +316,7 @@ function NavigatorColumn({
           <Card className="border-2 bg-background">
             <CardHeader className="pb-2">
               <div className="flex items-center gap-2">
-                <Target className="h-4 w-4 text-primary" />
+                <Target className="h-4 w-4 text-sapphire-500" />
                 <span className="text-sm font-semibold uppercase tracking-wide">Session Insights</span>
               </div>
               <p className="text-xs text-muted-foreground">
@@ -475,7 +476,7 @@ function SongConfigurationPreview({
         throw new Error('Clipboard API unavailable');
       }
     } catch (error) {
-      console.error('Unable to copy song configuration', error);
+      logger.error('Unable to copy song configuration', error);
       setCopyStatus('error');
     }
   }, [formattedJson]);
@@ -490,7 +491,7 @@ function SongConfigurationPreview({
       <CardHeader className="gap-3 border-b pb-3 flex-shrink-0">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <Braces className="h-4 w-4 text-primary" />
+            <Braces className="h-4 w-4 text-sapphire-500" />
             <span className="text-sm font-semibold uppercase tracking-wide">
               Song Configuration Preview
             </span>
@@ -654,9 +655,9 @@ function EmptyState({ message }: { message: string }): React.JSX.Element {
 
 function HorizontalResizeHandle(): React.JSX.Element {
   return (
-    <PanelResizeHandle className="group relative w-px bg-border transition-colors hover:bg-primary">
+    <PanelResizeHandle className="group relative w-px bg-border transition-colors duration-200 hover:bg-sapphire-500">
       <div className="absolute inset-y-0 -left-1 -right-1 flex items-center justify-center">
-        <div className="flex h-12 w-4 items-center justify-center rounded-sm bg-border opacity-0 transition-opacity group-hover:bg-primary group-hover:opacity-100">
+        <div className="flex h-12 w-4 items-center justify-center rounded-sm bg-border opacity-0 transition-all duration-200 group-hover:bg-sapphire-500 group-hover:opacity-100 group-hover:shadow-[0_0_8px_rgba(59,130,246,0.4)]">
           <GripVertical className="h-3 w-3 text-muted-foreground group-hover:text-primary-foreground" />
         </div>
       </div>
@@ -666,9 +667,9 @@ function HorizontalResizeHandle(): React.JSX.Element {
 
 function VerticalResizeHandle(): React.JSX.Element {
   return (
-    <PanelResizeHandle className="group relative h-px bg-border transition-colors hover:bg-primary">
+    <PanelResizeHandle className="group relative h-px bg-border transition-colors duration-200 hover:bg-sapphire-500">
       <div className="absolute inset-x-0 -top-1 -bottom-1 flex items-center justify-center">
-        <div className="flex h-4 w-12 rotate-90 items-center justify-center rounded-sm bg-border opacity-0 transition-opacity group-hover:bg-primary group-hover:opacity-100">
+        <div className="flex h-4 w-12 rotate-90 items-center justify-center rounded-sm bg-border opacity-0 transition-all duration-200 group-hover:bg-sapphire-500 group-hover:opacity-100 group-hover:shadow-[0_0_8px_rgba(59,130,246,0.4)]">
           <GripVertical className="h-3 w-3 text-muted-foreground group-hover:text-primary-foreground" />
         </div>
       </div>

@@ -3,8 +3,8 @@ import type {
   SectionType,
   ChordInstance,
   EditHistoryEntry,
-} from './song';
-import type { FocusArea, TextPosition } from './ui';
+} from '@/components/songwriter/types/song';
+import type { FocusArea, TextPosition } from '@/components/songwriter/types/ui';
 
 export type AgentIntentCategory =
   | 'rhymeHelp'

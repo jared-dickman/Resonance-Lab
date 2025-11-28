@@ -3,12 +3,12 @@
  * Beautiful, interactive pedal interfaces
  */
 
-export { DistortionPedalUI } from './DistortionPedalUI';
-export type { DistortionPedalUIProps } from './DistortionPedalUI';
+export { DistortionPedalUI } from '@/components/effects/DistortionPedalUI';
+export type { DistortionPedalUIProps } from '@/components/effects/DistortionPedalUI';
 
-export { PedalboardUI } from './PedalboardUI';
+export { PedalboardUI } from '@/components/effects/PedalboardUI';
 
-export { PedalVisualizer } from './PedalVisualizer';
+export { PedalVisualizer } from '@/components/effects/PedalVisualizer';
 
 // D3.js visualizations
 export {
@@ -16,7 +16,7 @@ export {
   SpectrumAnalyzer,
   WaveformOscilloscope,
   SignalPathDiagram,
-} from './d3';
+} from '@/components/effects/d3';
 
 // Pizzicato pedal UI components
 export {
@@ -26,7 +26,7 @@ export {
   FlangerPedalUI,
   TremoloPedalUI,
   CompressorPedalUI,
-} from './pizzicato';
+} from '@/components/effects/pizzicato';
 export type {
   DelayPedalUIProps,
   ReverbPedalUIProps,
@@ -34,4 +34,4 @@ export type {
   FlangerPedalUIProps,
   TremoloPedalUIProps,
   CompressorPedalUIProps,
-} from './pizzicato';
+} from '@/components/effects/pizzicato';

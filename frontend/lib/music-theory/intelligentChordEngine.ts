@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * 🎸 INTELLIGENT CHORD ENGINE
  * Powered by Tonal.js for music theory intelligence
@@ -79,7 +80,7 @@ export function analyzeChord(chordSymbol: string): ChordAnalysis | null {
       aliases: chord.aliases,
     };
   } catch (error) {
-    console.error('Error analyzing chord:', error);
+    logger.error('Error analyzing chord:', error);
     return null;
   }
 }
@@ -153,7 +154,7 @@ export function detectKey(chordSymbols: string[]): KeyAnalysis | null {
       subdominantKey: Note.transpose(tonic, '4P'),
     };
   } catch (error) {
-    console.error('Error detecting key:', error);
+    logger.error('Error detecting key:', error);
     return null;
   }
 }
@@ -327,8 +328,10 @@ export function getCircleOfFifthsPosition(note: string): number {
  * Get chord color based on quality for visualization
  */
 export function getChordColor(quality: ChordAnalysis['quality']): string {
+  // Note: These return hex values for dynamic usage in canvas/SVG contexts
+  // where CSS variables may not be available
   const colors = {
-    major: '#3B82F6', // Blue
+    major: getComputedStyle(document.documentElement).getPropertyValue('--sapphire-500').trim() || '#3B82F6', // Blue
     minor: '#8B5CF6', // Purple
     dominant: '#F59E0B', // Amber
     diminished: '#EF4444', // Red

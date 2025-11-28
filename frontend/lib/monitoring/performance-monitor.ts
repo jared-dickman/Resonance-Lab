@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Performance Monitoring System
  * Tracks Web Vitals and custom metrics for world-class performance
@@ -62,7 +63,7 @@ class PerformanceMonitor {
 
     // Log in development
     if (process.env.NODE_ENV === 'development') {
-      console.log(`[Performance] ${metric.name}:`, {
+      logger.info(`[Performance] ${metric.name}:`, {
         value: `${metric.value.toFixed(2)}ms`,
         rating: metric.rating,
       });
@@ -90,7 +91,7 @@ class PerformanceMonitor {
         });
         lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
       } catch (e) {
-        console.warn('LCP monitoring not supported');
+        logger.warn('LCP monitoring not supported');
       }
 
       // FID - First Input Delay
@@ -109,7 +110,7 @@ class PerformanceMonitor {
         });
         fidObserver.observe({ type: 'first-input', buffered: true });
       } catch (e) {
-        console.warn('FID monitoring not supported');
+        logger.warn('FID monitoring not supported');
       }
 
       // CLS - Cumulative Layout Shift
@@ -140,7 +141,7 @@ class PerformanceMonitor {
           }
         });
       } catch (e) {
-        console.warn('CLS monitoring not supported');
+        logger.warn('CLS monitoring not supported');
       }
     }
   }
@@ -173,7 +174,7 @@ class PerformanceMonitor {
 
         // Flag slow resources (> 1s)
         if (duration > 1000) {
-          console.warn(`Slow resource detected: ${entry.name} (${duration.toFixed(0)}ms)`);
+          logger.warn(`Slow resource detected: ${entry.name} (${duration.toFixed(0)}ms)`);
         }
       });
     });
@@ -181,7 +182,7 @@ class PerformanceMonitor {
     try {
       resourceObserver.observe({ type: 'resource', buffered: true });
     } catch (e) {
-      console.warn('Resource timing monitoring not supported');
+      logger.warn('Resource timing monitoring not supported');
     }
   }
 
@@ -201,7 +202,7 @@ class PerformanceMonitor {
         });
       }
     } catch (e) {
-      console.warn(`Failed to measure ${name}:`, e);
+      logger.warn(`Failed to measure ${name}:`, e);
     }
   }
 
@@ -212,7 +213,7 @@ class PerformanceMonitor {
     try {
       performance.mark(name);
     } catch (e) {
-      console.warn(`Failed to mark ${name}:`, e);
+      logger.warn(`Failed to mark ${name}:`, e);
     }
   }
 

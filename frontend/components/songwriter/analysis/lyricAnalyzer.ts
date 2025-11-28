@@ -2,7 +2,7 @@ import type {
   LyricLine,
   SectionLyrics,
   SyllableStress,
-} from '../types/song';
+} from '@/components/songwriter/types/song';
 
 export function extractSyllableCountFromLyricLine(text: string): number {
   const cleaned = text.trim().toLowerCase();

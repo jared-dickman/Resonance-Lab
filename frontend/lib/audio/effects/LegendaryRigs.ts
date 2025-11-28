@@ -4,15 +4,15 @@
  * Gilmour, The Edge, Frusciante, Cobain, Van Halen
  */
 
-import type { Pedalboard } from './Pedalboard';
-import { DistortionPedal } from './DistortionPedal';
+import type { Pedalboard } from '@/lib/audio/effects/Pedalboard';
+import { DistortionPedal } from '@/lib/audio/effects/DistortionPedal';
 import {
   DelayPedal,
   ReverbPedal,
   ChorusPedal,
   FlangerPedal,
   CompressorPedal,
-} from './pizzicato';
+} from '@/lib/audio/effects/pizzicato';
 
 export interface LegendaryRigConfig {
   name: string;

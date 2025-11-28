@@ -79,7 +79,7 @@ function WandIcon(): React.JSX.Element {
         repeatDelay: 4,
       }}
     >
-      <Wand2 className="w-8 h-8 text-primary" />
+      <Wand2 className="w-8 h-8 text-sapphire-500" />
     </motion.div>
   );
 }

@@ -16,9 +16,9 @@ interface ProgressionCardProps {
 }
 
 const DIFFICULTY_COLORS = {
-  beginner: 'bg-green-500/10 text-green-500 border-green-500/20',
-  intermediate: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20',
-  expert: 'bg-red-500/10 text-red-500 border-red-500/20',
+  beginner: 'bg-sapphire-400/10 text-sapphire-400 border-sapphire-400/20',
+  intermediate: 'bg-sapphire-500/10 text-sapphire-500 border-sapphire-500/20',
+  expert: 'bg-sapphire-600/10 text-sapphire-600 border-sapphire-600/20',
 };
 
 export default function ProgressionCard({
@@ -39,7 +39,7 @@ export default function ProgressionCard({
       <Card
         className={cn(
           'cursor-pointer group relative overflow-hidden',
-          isSelected && 'ring-2 ring-primary shadow-xl'
+          isSelected && 'ring-2 ring-sapphire-500 shadow-xl shadow-sapphire-500/20'
         )}
         onClick={onSelect}
       >
@@ -47,7 +47,7 @@ export default function ProgressionCard({
         <AnimatePresence>
           {isSelected && (
             <motion.div
-              className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-primary/50"
+              className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-sapphire-500 to-sapphire-400"
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               exit={{ scaleX: 0 }}

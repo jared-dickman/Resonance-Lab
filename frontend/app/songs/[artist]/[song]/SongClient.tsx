@@ -298,7 +298,7 @@ export function SongClient({ song, artistSlug, songSlug }: SongClientProps): Rea
       {/* Instrument Toggle and Display */}
       <div className="mt-6">
         {/* Instrument Toggle */}
-        <div className="flex gap-2 justify-center bg-muted/40 p-3 rounded-lg border border-border/40 max-w-md mx-auto mb-4">
+        <div className="flex gap-2 justify-center bg-[#0a1744]/30 p-3 rounded-lg border border-sapphire-500/15 max-w-md mx-auto mb-4">
           <Button
             variant={instrument === 'guitar' ? 'default' : 'outline'}
             size="sm"

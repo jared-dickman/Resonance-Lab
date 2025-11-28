@@ -12,11 +12,17 @@
   width: 100%;
   max-width: 500px;
   background: hsl(var(--card));
-  border: 1px solid hsl(var(--border));
+  border: 1px solid color-mix(in srgb, var(--sapphire-500) 10%, transparent);
   border-radius: var(--radius);
   padding: 2rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   overflow-x: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.metronomeCard:hover {
+  border-color: color-mix(in srgb, var(--sapphire-500) 30%, transparent);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--sapphire-500) 8%, transparent);
 }
 
 @media (max-width: 640px) {
@@ -45,8 +51,8 @@
 }
 
 .indicatorActive {
-  background: #ef4444;
-  box-shadow: 0 0 12px rgba(239, 68, 68, 0.6);
+  background: var(--sapphire-500);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--sapphire-500) 70%, transparent);
 }
 
 /* BPM Display */
@@ -100,8 +106,8 @@
   border-radius: 9999px;
   background: linear-gradient(
     to right,
-    #ef4444 0%,
-    #ef4444 var(--value, 50%),
+    var(--sapphire-500) 0%,
+    var(--sapphire-500) var(--value, 50%),
     hsl(var(--muted)) var(--value, 50%),
     hsl(var(--muted)) 100%
   );
@@ -116,9 +122,9 @@
   height: 20px;
   border-radius: 50%;
   background: white;
-  border: 2px solid #ef4444;
+  border: 2px solid var(--sapphire-500);
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px color-mix(in srgb, var(--sapphire-500) 30%, transparent);
   transition: transform 0.15s ease;
 }
 
@@ -131,9 +137,9 @@
   height: 20px;
   border-radius: 50%;
   background: white;
-  border: 2px solid #ef4444;
+  border: 2px solid var(--sapphire-500);
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px color-mix(in srgb, var(--sapphire-500) 30%, transparent);
   transition: transform 0.15s ease;
 }
 
@@ -151,6 +157,13 @@
   text-align: center;
   font-size: 0.875rem;
   font-weight: 500;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bpmInput:focus {
+  outline: none;
+  border-color: var(--sapphire-500);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--sapphire-500) 20%, transparent);
 }
 
 /* Presets */
@@ -184,9 +197,9 @@
 }
 
 .presetButtonActive {
-  background: #3b82f6;
+  background: var(--sapphire-500);
   color: white;
-  border-color: #3b82f6;
+  border-color: var(--sapphire-500);
 }
 
 .presetLabel {
@@ -243,9 +256,9 @@
 }
 
 .timeSignatureButtonActive {
-  background: #dc2626;
+  background: var(--sapphire-600);
   color: white;
-  border-color: #dc2626;
+  border-color: var(--sapphire-600);
 }
 
 /* Options */
@@ -294,21 +307,21 @@
   padding: 1rem;
   border: none;
   border-radius: calc(var(--radius) - 4px);
-  background: #f59e0b;
+  background: var(--sapphire-600);
   color: white;
   cursor: pointer;
   font-size: 1rem;
   font-weight: 600;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .playButton:hover {
-  background: #d97706;
+  background: var(--sapphire-700);
   transform: translateY(-1px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--sapphire-600) 30%, transparent);
 }
 
 .playButton:active {

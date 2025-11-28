@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Application Initialization
  * Bootstraps all monitoring, health checks, and resilience systems
@@ -31,7 +32,7 @@ export function initializeApp(): void {
 
   initialized = true;
 
-  console.log('[Init] Application systems initialized');
+  logger.info('[Init] Application systems initialized');
 }
 
 /**
@@ -45,5 +46,5 @@ export function cleanupApp(): void {
 
   initialized = false;
 
-  console.log('[Init] Application systems cleaned up');
+  logger.info('[Init] Application systems cleaned up');
 }

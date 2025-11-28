@@ -256,7 +256,7 @@ export const DistortionPedalUI: React.FC<DistortionPedalUIProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <Zap className="w-6 h-6 text-amber-500" />
+            <Zap className="w-6 h-6 text-sapphire-400" />
             <h2 className="text-xl font-bold text-white uppercase tracking-wider">
               Distortion
             </h2>
@@ -285,7 +285,7 @@ export const DistortionPedalUI: React.FC<DistortionPedalUIProps> = ({
               <select
                 value={algorithm}
                 onChange={(e) => setAlgorithm(e.target.value as DistortionAlgorithm)}
-                className="w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white text-sm focus:outline-none focus:border-amber-500"
+                className="w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white text-sm focus:outline-none focus:border-sapphire-400"
               >
                 <option value="tube">Tube</option>
                 <option value="fuzz">Fuzz</option>
@@ -307,7 +307,7 @@ export const DistortionPedalUI: React.FC<DistortionPedalUIProps> = ({
                     className={cn(
                       'px-3 py-2 rounded-lg text-xs font-medium transition-colors',
                       selectedPreset === preset.name
-                        ? 'bg-amber-600 text-white'
+                        ? 'bg-sapphire-500 text-white'
                         : 'bg-gray-900 text-gray-400 hover:bg-gray-800'
                     )}
                   >
@@ -324,7 +324,7 @@ export const DistortionPedalUI: React.FC<DistortionPedalUIProps> = ({
           <Knob label="Drive" value={drive} onChange={setDrive} color="#ef4444" />
           <Knob label="Tone" value={tone} onChange={setTone} color="#fbbf24" />
           <Knob label="Level" value={level} onChange={setLevel} color="#10b981" />
-          <Knob label="Mix" value={mix} onChange={setMix} color="#3b82f6" />
+          <Knob label="Mix" value={mix} onChange={setMix} color="var(--sapphire-500)" />
         </div>
 
         {/* Footswitch */}
@@ -337,7 +337,7 @@ export const DistortionPedalUI: React.FC<DistortionPedalUIProps> = ({
           <div className="flex items-center justify-between text-xs text-gray-500">
             <div className="flex items-center gap-2">
               {enabled ? (
-                <Volume2 className="w-4 h-4 text-amber-500" />
+                <Volume2 className="w-4 h-4 text-sapphire-400" />
               ) : (
                 <VolumeX className="w-4 h-4" />
               )}

@@ -129,7 +129,7 @@ export const GenerativeArtVisualizer: React.FC<GenerativeArtVisualizerProps> = (
       <div ref={containerRef} />
       <div className="absolute top-4 left-4 bg-gray-950/80 backdrop-blur px-3 py-2 rounded">
         <div className="text-xs text-gray-400">P5.js Generative Art</div>
-        <div className="text-sm font-bold text-purple-400">{style.toUpperCase()}</div>
+        <div className="text-sm font-bold text-sapphire-400">{style.toUpperCase()}</div>
       </div>
     </div>
   );

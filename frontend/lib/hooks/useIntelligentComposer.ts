@@ -7,9 +7,9 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import * as Tone from 'tone';
-import { AcousticPiano, SynthBass, DrumKit } from '../audio/instruments';
-import { ChordAnalyzer, ChordSuggester, BassLineGenerator, DrumPatternGenerator } from '../music-theory/intelligence';
-import type { ChordSuggestion } from '../music-theory/intelligence';
+import { AcousticPiano, SynthBass, DrumKit } from '@/lib/audio/instruments';
+import { ChordAnalyzer, ChordSuggester, BassLineGenerator, DrumPatternGenerator } from '@/lib/music-theory/intelligence';
+import type { ChordSuggestion } from '@/lib/music-theory/intelligence';
 
 export interface ComposerState {
   /** Current chord */

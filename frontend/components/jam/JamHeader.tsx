@@ -35,7 +35,7 @@ export function JamHeader(): React.JSX.Element {
               repeatDelay: ICON_REPEAT_DELAY,
             }}
           >
-            <Sparkles className="w-8 h-8 md:w-10 md:h-10 text-primary" />
+            <Sparkles className="w-8 h-8 md:w-10 md:h-10 text-sapphire-500" />
           </motion.div>
           <motion.h1
             className="text-2xl md:text-4xl font-bold tracking-tight"

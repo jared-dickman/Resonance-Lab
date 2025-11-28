@@ -2,5 +2,5 @@
  * Piano instruments exports
  */
 
-export { AcousticPiano } from './AcousticPiano';
-export { ElectricPiano } from './ElectricPiano';
+export { AcousticPiano } from '@/lib/audio/instruments/piano/AcousticPiano';
+export { ElectricPiano } from '@/lib/audio/instruments/piano/ElectricPiano';

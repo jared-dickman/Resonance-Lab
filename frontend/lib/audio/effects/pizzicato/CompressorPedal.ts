@@ -6,7 +6,7 @@
 
 import type { Sound } from 'pizzicato';
 import * as Tone from 'tone';
-import { loadPizzicato } from './loadPizzicato';
+import { loadPizzicato } from '@/lib/audio/effects/pizzicato/loadPizzicato';
 
 export interface CompressorPreset {
   name: string;

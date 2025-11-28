@@ -49,32 +49,17 @@ interface ChatInterfaceProps {
   currentDraft: SongDraft;
 }
 
-function createWelcomeMessage(): Message {
-  return {
-    id: '1',
-    role: 'assistant',
-    content: WELCOME_MESSAGE,
-    timestamp: new Date(),
-  };
+function createMessage(
+  role: 'user' | 'assistant',
+  content: string,
+  id = crypto.randomUUID()
+): Message {
+  return { id, role, content, timestamp: new Date() };
 }
 
-function createUserMessage(content: string): Message {
-  return {
-    id: crypto.randomUUID(),
-    role: 'user',
-    content,
-    timestamp: new Date(),
-  };
-}
-
-function createAssistantMessage(content: string): Message {
-  return {
-    id: crypto.randomUUID(),
-    role: 'assistant',
-    content,
-    timestamp: new Date(),
-  };
-}
+const createWelcomeMessage = () => createMessage('assistant', WELCOME_MESSAGE, '1');
+const createUserMessage = (content: string) => createMessage('user', content);
+const createAssistantMessage = (content: string) => createMessage('assistant', content);
 
 function generateAIResponse(userInput: string): string {
   const responseType = selectResponseType(userInput);
@@ -239,7 +224,7 @@ function TypingIndicator(): React.JSX.Element {
 function TypingDot({ delay }: { delay: number }): React.JSX.Element {
   return (
     <motion.div
-      className="w-2 h-2 bg-primary rounded-full"
+      className="w-2 h-2 bg-sapphire-500 rounded-full"
       animate={{ scale: [1, 1.2, 1] }}
       transition={{ duration: ANIMATION_DURATION.TYPING_DOT / 1000, repeat: Infinity, delay: delay / 1000 }}
     />
@@ -262,7 +247,7 @@ function QuickPrompts({ prompts, onSelectPrompt }: QuickPromptsProps): React.JSX
         <motion.div key={idx} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Badge
             variant="outline"
-            className="cursor-pointer hover:bg-primary/10 gap-1.5"
+            className="cursor-pointer hover:bg-sapphire-500/10 hover:border-sapphire-500/30 gap-1.5 transition-all duration-200"
             onClick={() => onSelectPrompt(prompt.prompt)}
           >
             <prompt.icon className="w-3 h-3" />

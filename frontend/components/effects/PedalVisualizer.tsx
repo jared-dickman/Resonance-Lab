@@ -152,7 +152,8 @@ export const PedalVisualizer: React.FC<PedalVisualizerProps> = ({
     // Draw frequency bars
     const barWidth = width / values.length;
     const gradient = ctx.createLinearGradient(0, height, 0, 0);
-    gradient.addColorStop(0, '#3b82f6');
+    const sapphire500 = getComputedStyle(document.documentElement).getPropertyValue('--sapphire-500').trim() || '#3b82f6';
+    gradient.addColorStop(0, sapphire500);
     gradient.addColorStop(0.5, '#8b5cf6');
     gradient.addColorStop(1, '#ec4899');
 

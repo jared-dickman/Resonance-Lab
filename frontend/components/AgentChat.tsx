@@ -1,12 +1,13 @@
 'use client';
 
 import { useState, useRef, useEffect, type FormEvent } from 'react';
+import { useIntervalEffect } from '@/lib/hooks/useIntervalEffect';
 import { Send, Sparkles, Zap, Bot } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinner';
-import { cn } from '@/lib/utils';
+import { cn, selectRandom, selectRandomWithFallback } from '@/lib/utils';
 import type { SearchResult } from '@/lib/types';
 import placeholders from '@/lib/data/placeholders.json';
 
@@ -200,6 +201,31 @@ interface AgentChatProps {
   isSaving: boolean;
 }
 
+interface SearchResultButtonProps {
+  result: SearchResult;
+  type: 'chord' | 'tab';
+  onClick: (result: SearchResult, type: 'chord' | 'tab') => void;
+  disabled: boolean;
+}
+
+function SearchResultButton({ result, type, onClick, disabled }: SearchResultButtonProps) {
+  return (
+    <button
+      onClick={() => onClick(result, type)}
+      disabled={disabled}
+      className="w-full text-left p-2 rounded border hover:bg-accent/50 transition-colors mb-1 disabled:opacity-50"
+    >
+      <div className="flex justify-between items-center">
+        <span className="font-medium text-xs">{result.title}</span>
+        <span className="text-xs text-muted-foreground">
+          ⭐ {(result.rating ?? 0).toFixed(1)} ({result.votes ?? 0})
+        </span>
+      </div>
+      <span className="text-xs text-muted-foreground">{result.artist}</span>
+    </button>
+  );
+}
+
 export function AgentChat({ onSave, isSaving }: AgentChatProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
@@ -207,7 +233,7 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
   const [thinkingPun, setThinkingPun] = useState('');
   const [conversationHistory, setConversationHistory] = useState<Array<{ role: string; content: string }>>([]);
   const [currentPlaceholder, setCurrentPlaceholder] = useState(() =>
-    placeholders[Math.floor(Math.random() * placeholders.length)]
+    selectRandom(placeholders)
   );
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -216,13 +242,11 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
   }, [messages]);
 
   // Rotate placeholder every 4 seconds when idle
-  useEffect(() => {
-    if (messages.length > 0) return;
-    const interval = setInterval(() => {
-      setCurrentPlaceholder(placeholders[Math.floor(Math.random() * placeholders.length)]);
-    }, 4200);
-    return () => clearInterval(interval);
-  }, [messages.length]);
+  useIntervalEffect(
+    () => setCurrentPlaceholder(selectRandom(placeholders)),
+    4200,
+    messages.length === 0
+  );
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -231,7 +255,7 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
     const userMessage = input.trim();
     setInput('');
     setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
-    setThinkingPun(THINKING_PUNS[Math.floor(Math.random() * THINKING_PUNS.length)] ?? 'Searching...');
+    setThinkingPun(selectRandomWithFallback(THINKING_PUNS, 'Searching...'));
     setIsLoading(true);
 
     try {
@@ -304,16 +328,16 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
             >
               <motion.div
                 animate={{
-                  scale: [1, 1.1, 1],
-                  rotate: [0, 5, -5, 0],
+                  scale: [1, 1.05, 1],
                 }}
                 transition={{
-                  duration: 2,
+                  duration: 2.5,
                   repeat: Infinity,
                   ease: 'easeInOut',
                 }}
+                className="inline-flex mb-3"
               >
-                <Bot className="h-12 w-12 mx-auto mb-3 text-primary/60" />
+                <Bot className="h-10 w-10 text-sapphire-400" />
               </motion.div>
               <motion.div
                 key={currentPlaceholder}
@@ -323,9 +347,9 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
                 transition={{ duration: 0.5 }}
                 className="flex items-center justify-center gap-2 mb-2"
               >
-                <Sparkles className="h-4 w-4 text-yellow-500" />
+                <Sparkles className="h-4 w-4 text-sapphire-400" />
                 <span className="font-medium text-foreground/80">{currentPlaceholder}</span>
-                <Zap className="h-4 w-4 text-yellow-500" />
+                <Zap className="h-4 w-4 text-sapphire-400" />
               </motion.div>
               <p className="text-xs opacity-70">Just tell me what you want to play</p>
               <p className="text-xs mt-1 opacity-50">e.g. &quot;Wonderwall&quot; or &quot;something bluesy in E&quot;</p>
@@ -373,20 +397,13 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
                     <div>
                       <p className="text-xs font-medium mb-1 opacity-70">Chords:</p>
                       {message.results.chords.slice(0, 3).map(result => (
-                        <button
+                        <SearchResultButton
                           key={result.id}
-                          onClick={() => handleSelectResult(result, 'chord')}
+                          result={result}
+                          type="chord"
+                          onClick={handleSelectResult}
                           disabled={isSaving}
-                          className="w-full text-left p-2 rounded border hover:bg-accent/50 transition-colors mb-1 disabled:opacity-50"
-                        >
-                          <div className="flex justify-between items-center">
-                            <span className="font-medium text-xs">{result.title}</span>
-                            <span className="text-xs text-muted-foreground">
-                              ⭐ {(result.rating ?? 0).toFixed(1)} ({result.votes ?? 0})
-                            </span>
-                          </div>
-                          <span className="text-xs text-muted-foreground">{result.artist}</span>
-                        </button>
+                        />
                       ))}
                     </div>
                   )}
@@ -395,20 +412,13 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
                     <div>
                       <p className="text-xs font-medium mb-1 opacity-70">Tabs:</p>
                       {message.results.tabs.slice(0, 3).map(result => (
-                        <button
+                        <SearchResultButton
                           key={result.id}
-                          onClick={() => handleSelectResult(result, 'tab')}
+                          result={result}
+                          type="tab"
+                          onClick={handleSelectResult}
                           disabled={isSaving}
-                          className="w-full text-left p-2 rounded border hover:bg-accent/50 transition-colors mb-1 disabled:opacity-50"
-                        >
-                          <div className="flex justify-between items-center">
-                            <span className="font-medium text-xs">{result.title}</span>
-                            <span className="text-xs text-muted-foreground">
-                              ⭐ {(result.rating ?? 0).toFixed(1)} ({result.votes ?? 0})
-                            </span>
-                          </div>
-                          <span className="text-xs text-muted-foreground">{result.artist}</span>
-                        </button>
+                        />
                       ))}
                     </div>
                   )}

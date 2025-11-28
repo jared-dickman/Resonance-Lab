@@ -220,7 +220,7 @@ export default function ChordWheel({
     const legendData = [
       { label: 'Current', color: '#FBBF24' },
       { label: 'Suggested', color: '#10B981' },
-      { label: 'Major', color: '#3B82F6' },
+      { label: 'Major', color: 'var(--sapphire-500)' },
       { label: 'Minor', color: '#8B5CF6' },
     ];
 

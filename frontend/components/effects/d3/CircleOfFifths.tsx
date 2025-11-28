@@ -103,8 +103,8 @@ function getMajorKeyColors(isSelected: boolean, isHovered: boolean): {
   }
   if (isHovered) {
     return {
-      fill: '#1e40af',
-      text: '#93c5fd',
+      fill: 'var(--sapphire-800)',
+      text: 'var(--sapphire-300)',
     };
   }
   return {

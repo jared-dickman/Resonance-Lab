@@ -10,6 +10,7 @@ import { useIntelligentComposer } from '@/lib/hooks';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
 
 export default function IntelligentComposer() {
   const [state, controls] = useIntelligentComposer();
@@ -44,7 +45,7 @@ export default function IntelligentComposer() {
     <div className="flex min-h-screen flex-col items-center justify-center gap-8 p-8">
       <div className="text-center">
         <h1 className="mb-2 text-4xl font-bold">🎸 Intelligent Composer</h1>
-        <p className="text-lg text-gray-600">
+        <p className="text-lg text-muted-foreground">
           AI-powered music composition. Type a chord, get perfect suggestions.
         </p>
       </div>
@@ -56,7 +57,7 @@ export default function IntelligentComposer() {
           <select
             value={state.key}
             onChange={(e) => controls.setKey(e.target.value)}
-            className="rounded border px-3 py-1"
+            className="rounded-md border border-input bg-background px-3 py-1.5 text-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sapphire-500/50 focus-visible:border-sapphire-500/50"
           >
             <option>C</option>
             <option>G</option>
@@ -70,7 +71,7 @@ export default function IntelligentComposer() {
           <select
             value={state.genre}
             onChange={(e) => controls.setGenre(e.target.value as typeof state.genre)}
-            className="rounded border px-3 py-1"
+            className="rounded-md border border-input bg-background px-3 py-1.5 text-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sapphire-500/50 focus-visible:border-sapphire-500/50"
           >
             <option value="pop">Pop</option>
             <option value="jazz">Jazz</option>
@@ -81,13 +82,13 @@ export default function IntelligentComposer() {
 
         {/* Chord Input */}
         <div className="mb-4 flex gap-2">
-          <input
+          <Input
             type="text"
             value={inputChord}
             onChange={(e) => setInputChord(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleAddChord()}
             placeholder="Enter a chord (e.g., Cmaj7, Am, G7)"
-            className="flex-1 rounded border px-4 py-2"
+            className="flex-1"
           />
           <Button onClick={handleAddChord}>Add Chord</Button>
         </div>
@@ -125,17 +126,17 @@ export default function IntelligentComposer() {
                 <button
                   key={i}
                   onClick={() => handleSuggestionClick(suggestion.chord)}
-                  className="w-full rounded-lg border p-4 text-left transition-colors hover:bg-purple-50"
+                  className="w-full rounded-lg border border-sapphire-500/10 p-4 text-left transition-all duration-200 hover:bg-sapphire-500/5 hover:border-sapphire-500/30 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sapphire-500/50"
                 >
                   <div className="mb-1 flex items-center justify-between">
-                    <span className="text-xl font-bold text-purple-600">
+                    <span className="text-xl font-bold text-sapphire-400">
                       {suggestion.chord}
                     </span>
                     <Badge variant="default">
                       {Math.round(suggestion.confidence * 100)}% confident
                     </Badge>
                   </div>
-                  <p className="text-sm text-gray-600">{suggestion.reasoning}</p>
+                  <p className="text-sm text-muted-foreground">{suggestion.reasoning}</p>
                   <div className="mt-2 flex gap-2">
                     <Badge variant="outline" className="text-xs">
                       {suggestion.relationship}
@@ -152,9 +153,9 @@ export default function IntelligentComposer() {
 
         {/* Quick Start Examples */}
         {state.progression.length === 0 && (
-          <div className="mt-6 rounded-lg bg-gray-50 p-4">
+          <div className="mt-6 rounded-lg bg-sapphire-500/5 border border-sapphire-500/10 p-4">
             <h4 className="mb-2 text-sm font-medium">Quick Start:</h4>
-            <p className="mb-3 text-sm text-gray-600">Try these popular progressions:</p>
+            <p className="mb-3 text-sm text-muted-foreground">Try these popular progressions:</p>
             <div className="flex flex-wrap gap-2">
               <Button
                 variant="outline"
@@ -192,7 +193,7 @@ export default function IntelligentComposer() {
       </Card>
 
       {/* Status */}
-      <div className="flex gap-4 text-sm text-gray-500">
+      <div className="flex gap-4 text-sm text-muted-foreground">
         <span>Audio: {state.isReady ? '✅ Ready' : '⏸ Click to start'}</span>
         <span>Playing: {state.isPlaying ? '🎵' : '⏸'}</span>
       </div>

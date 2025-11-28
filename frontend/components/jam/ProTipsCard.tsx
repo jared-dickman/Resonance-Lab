@@ -11,17 +11,17 @@ const PRO_TIPS = [
 
 export function ProTipsCard(): React.JSX.Element {
   return (
-    <Card className="border-primary/20 bg-primary/5">
+    <Card className="border-sapphire-500/20 bg-sapphire-500/5">
       <CardHeader>
         <CardTitle className="text-lg flex items-center gap-2">
-          <Users className="w-5 h-5" />
+          <Users className="w-5 h-5 text-sapphire-500" />
           Pro Tips for Jamming
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2 text-sm">
         {PRO_TIPS.map(tip => (
           <div key={tip} className="flex gap-2">
-            <span className="text-primary">•</span>
+            <span className="text-sapphire-500">•</span>
             <p>{tip}</p>
           </div>
         ))}

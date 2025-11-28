@@ -3,20 +3,20 @@
  * Enterprise-grade guitar pedal effects with realistic DSP
  */
 
-export { DistortionPedal } from './DistortionPedal';
+export { DistortionPedal } from '@/lib/audio/effects/DistortionPedal';
 export type {
   DistortionAlgorithm,
   DistortionPreset,
   DistortionPedalConfig,
-} from './DistortionPedal';
+} from '@/lib/audio/effects/DistortionPedal';
 
-export { Pedalboard } from './Pedalboard';
-export type { PedalSlot, PedalboardConfig } from './Pedalboard';
+export { Pedalboard } from '@/lib/audio/effects/Pedalboard';
+export type { PedalSlot, PedalboardConfig } from '@/lib/audio/effects/Pedalboard';
 
 // Legendary guitarist preset chains
-export { loadLegendaryRig, getLegendaryRigs } from './LegendaryRigs';
-export type { LegendaryRigConfig } from './LegendaryRigs';
-export { LEGENDARY_RIGS } from './LegendaryRigs';
+export { loadLegendaryRig, getLegendaryRigs } from '@/lib/audio/effects/LegendaryRigs';
+export type { LegendaryRigConfig } from '@/lib/audio/effects/LegendaryRigs';
+export { LEGENDARY_RIGS } from '@/lib/audio/effects/LegendaryRigs';
 
 // Pizzicato-based effects
 export {
@@ -26,7 +26,7 @@ export {
   FlangerPedal,
   TremoloPedal,
   CompressorPedal,
-} from './pizzicato';
+} from '@/lib/audio/effects/pizzicato';
 export type {
   DelayPreset,
   DelayPedalConfig,
@@ -40,4 +40,4 @@ export type {
   TremoloPedalConfig,
   CompressorPreset,
   CompressorPedalConfig,
-} from './pizzicato';
+} from '@/lib/audio/effects/pizzicato';

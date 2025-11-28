@@ -4,7 +4,7 @@
  */
 
 import type p5 from 'p5';
-import type { AudioData, P5Dimensions } from './generative-art.utils';
+import type { AudioData, P5Dimensions } from '@/lib/utils/visualization/generative-art.utils';
 import {
   drawFlowFieldBackground,
   drawSpiralBackground,
@@ -14,9 +14,9 @@ import {
   calculateParticleAlpha,
   calculateSpiralStrokeWeight,
   getVisualizationConfig,
-} from './generative-art.utils';
-import type { FlowFieldParticle } from './particle.utils';
-import { updateAndShowParticles } from './particle.utils';
+} from '@/lib/utils/visualization/generative-art.utils';
+import type { FlowFieldParticle } from '@/lib/utils/visualization/particle.utils';
+import { updateAndShowParticles } from '@/lib/utils/visualization/particle.utils';
 
 const config = getVisualizationConfig();
 

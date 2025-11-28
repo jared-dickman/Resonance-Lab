@@ -13,18 +13,18 @@
  */
 
 // Base classes and types
-export { Instrument } from './base/Instrument';
-export type { InstrumentConfig, InstrumentPreset, Note, ChordOptions } from './base/InstrumentConfig';
+export { Instrument } from '@/lib/audio/instruments/base/Instrument';
+export type { InstrumentConfig, InstrumentPreset, Note, ChordOptions } from '@/lib/audio/instruments/base/InstrumentConfig';
 
 // Piano instruments
-export { AcousticPiano, ElectricPiano } from './piano';
+export { AcousticPiano, ElectricPiano } from '@/lib/audio/instruments/piano';
 
 // Bass instruments
-export { SynthBass } from './bass';
+export { SynthBass } from '@/lib/audio/instruments/bass';
 
 // Drum instruments
-export { DrumKit } from './drums';
-export type { DrumHit } from './drums';
+export { DrumKit } from '@/lib/audio/instruments/drums';
+export type { DrumHit } from '@/lib/audio/instruments/drums';
 
 // Guitar instruments
-export { AcousticGuitar } from './guitar';
+export { AcousticGuitar } from '@/lib/audio/instruments/guitar';

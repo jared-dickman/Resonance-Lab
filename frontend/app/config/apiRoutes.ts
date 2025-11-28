@@ -12,4 +12,7 @@ export const apiRoutes = {
 
   // Search
   search: '/api/search',
+
+  // Lab
+  lab: '/api/lab',
 } as const;

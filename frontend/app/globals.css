@@ -1,6 +1,36 @@
 @import "tailwindcss";
 
 :root {
+  /* ═══════════════════════════════════════════════════════════════
+     RESONANCE LAB - LEGENDARY SAPPHIRE PALETTE
+     Deep navy → Electric blue → Light azure → White
+     ═══════════════════════════════════════════════════════════════ */
+
+  /* Brand Core - Sapphire Electric Blue Scale */
+  --sapphire-abyss: #000510;
+  --sapphire-deep: #020924;
+  --sapphire-dark: #0a1744;
+  --sapphire-900: #1e3a8a;
+  --sapphire-800: #1e40af;
+  --sapphire-700: #1d4ed8;
+  --sapphire-600: #2563eb;
+  --sapphire-500: #3b82f6;
+  --sapphire-400: #60a5fa;
+  --sapphire-300: #93c5fd;
+  --sapphire-200: #bfdbfe;
+  --sapphire-100: #dbeafe;
+  --sapphire-50: #eff6ff;
+
+  /* Legendary Gradient Stops */
+  --gradient-legendary: linear-gradient(135deg, #000510 0%, #1e40af 40%, #3b82f6 70%, #93c5fd 100%);
+  --gradient-electric: linear-gradient(90deg, #1e40af 0%, #2563eb 50%, #60a5fa 100%);
+  --gradient-glow: linear-gradient(180deg, #3b82f6 0%, #93c5fd 100%);
+
+  /* Circuit Accent - Supercharged Highlights */
+  --circuit-glow: #60a5fa;
+  --circuit-core: #3b82f6;
+  --circuit-pulse: #93c5fd;
+
   --background: 0 0% 100%;
   --foreground: 240 10% 3.9%;
 
@@ -33,33 +63,60 @@
 }
 
 .dark {
-  --background: 222 47% 4%;
+  /* Pure black with subtle sapphire accents */
+  --background: 0 0% 0%;
   --foreground: 210 40% 98%;
 
-  --card: 222 47% 5%;
+  --card: 220 10% 4%;
   --card-foreground: 210 40% 98%;
 
-  --popover: 222 47% 5%;
+  --popover: 220 10% 4%;
   --popover-foreground: 210 40% 98%;
 
-  --primary: 210 40% 98%;
-  --primary-foreground: 222 47% 11%;
+  --primary: 217 91% 60%;
+  --primary-foreground: 225 50% 3%;
 
-  --secondary: 217 33% 12%;
+  --secondary: 220 35% 10%;
   --secondary-foreground: 210 40% 98%;
 
-  --muted: 217 33% 12%;
+  --muted: 220 30% 12%;
   --muted-foreground: 215 20% 65%;
 
-  --accent: 217 33% 12%;
+  --accent: 220 35% 12%;
   --accent-foreground: 210 40% 98%;
 
   --destructive: 0 63% 31%;
   --destructive-foreground: 210 40% 98%;
 
-  --border: 217 33% 25%;
-  --input: 217 33% 25%;
-  --ring: 212 27% 84%;
+  --border: 220 40% 20%;
+  --input: 220 40% 20%;
+  --ring: 217 91% 60%;
+}
+
+/* Animated gradient for logo text */
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.logo-gradient {
+  background: linear-gradient(
+    90deg,
+    #7dd3fc 0%,
+    #60a5fa 25%,
+    #93c5fd 50%,
+    #60a5fa 75%,
+    #7dd3fc 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-shift 12s ease-in-out infinite;
 }
 
 * {

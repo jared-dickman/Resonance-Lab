@@ -16,11 +16,11 @@
  */
 
 // Analyzers
-export { ChordAnalyzer } from './analyzers';
-export type { ChordAnalysis, AnalysisContext } from './analyzers';
+export { ChordAnalyzer } from '@/lib/music-theory/intelligence/analyzers';
+export type { ChordAnalysis, AnalysisContext } from '@/lib/music-theory/intelligence/analyzers';
 
 // Generators
-export { ChordSuggester, BassLineGenerator, DrumPatternGenerator } from './generators';
+export { ChordSuggester, BassLineGenerator, DrumPatternGenerator } from '@/lib/music-theory/intelligence/generators';
 export type {
   ChordSuggestion,
   SuggestionContext,
@@ -28,4 +28,4 @@ export type {
   BassLineOptions,
   DrumEvent,
   DrumPatternOptions,
-} from './generators';
+} from '@/lib/music-theory/intelligence/generators';

@@ -21,7 +21,7 @@ RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux go build -o server ./cmd/server
 
 # Use a minimal image for running (smaller & more secure)
-FROM alpine:latest
+FROM alpine:3.20
 
 # Install ca-certificates (needed for HTTPS requests) and Node.js (for songify script)
 RUN apk --no-cache add ca-certificates nodejs npm

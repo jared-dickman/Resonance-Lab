@@ -5,7 +5,7 @@
 
 import type { CompleteSongState } from '@/components/songwriter/types/song';
 import type { SongDraft } from '@/components/songwriter/types/legacy';
-import { flattenSongSections } from './lyricsFormatter';
+import { flattenSongSections } from '@/lib/utils/songwriter/lyricsFormatter';
 
 export function convertStateToDraft(songState: CompleteSongState): SongDraft {
   return {

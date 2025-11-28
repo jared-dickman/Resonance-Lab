@@ -10,6 +10,7 @@ import {
   formatAndRenderVoice,
   getDefaultNotes,
 } from '@/lib/utils/notation/notation.utils';
+import { logger } from '@/lib/logger';
 
 interface NotationDisplayProps {
   notes?: Note[];
@@ -53,7 +54,7 @@ export const NotationDisplay: React.FC<NotationDisplayProps> = ({
     try {
       renderNotation(containerRef.current, notes, { width, height, clef, timeSignature });
     } catch (error) {
-      console.error('VexFlow rendering error:', error);
+      logger.error('VexFlow rendering error:', error);
     }
   }, [notes, width, height, clef, timeSignature]);
 

@@ -4,8 +4,8 @@
  */
 
 import * as Tone from 'tone';
-import { Instrument } from '../base/Instrument';
-import type { InstrumentConfig, InstrumentPreset } from '../base/InstrumentConfig';
+import { Instrument } from '@/lib/audio/instruments/base/Instrument';
+import type { InstrumentConfig, InstrumentPreset } from '@/lib/audio/instruments/base/InstrumentConfig';
 
 export class ElectricPiano extends Instrument {
   private ready = false;

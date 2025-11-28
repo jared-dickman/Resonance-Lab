@@ -2,11 +2,11 @@
  * Music generation tools
  */
 
-export { ChordSuggester } from './ChordSuggester';
-export type { ChordSuggestion, SuggestionContext } from './ChordSuggester';
+export { ChordSuggester } from '@/lib/music-theory/intelligence/generators/ChordSuggester';
+export type { ChordSuggestion, SuggestionContext } from '@/lib/music-theory/intelligence/generators/ChordSuggester';
 
-export { BassLineGenerator } from './BassLineGenerator';
-export type { BassNote, BassLineOptions } from './BassLineGenerator';
+export { BassLineGenerator } from '@/lib/music-theory/intelligence/generators/BassLineGenerator';
+export type { BassNote, BassLineOptions } from '@/lib/music-theory/intelligence/generators/BassLineGenerator';
 
-export { DrumPatternGenerator } from './DrumPatternGenerator';
-export type { DrumEvent, DrumPatternOptions } from './DrumPatternGenerator';
+export { DrumPatternGenerator } from '@/lib/music-theory/intelligence/generators/DrumPatternGenerator';
+export type { DrumEvent, DrumPatternOptions } from '@/lib/music-theory/intelligence/generators/DrumPatternGenerator';

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Data Validation Layer
  * Ensures all data entering the application is valid and type-safe
@@ -49,7 +50,7 @@ export function validateChordName(chord: string): string | null {
   const chordRegex = /^[A-G][#b]?(m|maj|min|aug|dim|sus2|sus4)?[0-9]?$/;
 
   if (!chordRegex.test(chord)) {
-    console.warn(`Invalid chord name: ${chord}`);
+    logger.warn(`Invalid chord name: ${chord}`);
     return null;
   }
 
@@ -146,7 +147,7 @@ export function validateArray<T>(
     if (validator(item)) {
       validated.push(item);
     } else {
-      console.warn('Invalid array item:', item);
+      logger.warn('Invalid array item:', item);
     }
   }
 
@@ -181,7 +182,7 @@ export function safeJsonParse<T>(json: string, fallback: T): T {
   try {
     return JSON.parse(json) as T;
   } catch (e) {
-    console.warn('JSON parse failed, using fallback:', e);
+    logger.warn('JSON parse failed, using fallback:', e);
     return fallback;
   }
 }
@@ -207,7 +208,7 @@ export class RateLimiter {
     const validTimestamps = timestamps.filter(ts => now - ts < windowMs);
 
     if (validTimestamps.length >= maxAttempts) {
-      console.warn(`Rate limit exceeded for ${key}`);
+      logger.warn(`Rate limit exceeded for ${key}`);
       return false;
     }
 

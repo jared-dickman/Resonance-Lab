@@ -3,7 +3,7 @@ import type {
   ChordProgression,
   HarmonicFunction,
   MusicalKey,
-} from '../types/song';
+} from '@/components/songwriter/types/song';
 
 export function calculateVoiceLeadingQuality(progression: ChordInstance[]): number {
   if (progression.length < 2) {
