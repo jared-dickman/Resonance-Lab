@@ -27,6 +27,7 @@ func New(svc *songmanager.Service) *Server {
 // Register attaches the API routes to the provided mux.
 func (s *Server) Register(mux *http.ServeMux) {
 	mux.HandleFunc("GET /api/health", s.handleHealth)
+	mux.HandleFunc("GET /api/artists", s.handleListArtists)
 	mux.HandleFunc("GET /api/songs", s.handleListSongs)
 	mux.HandleFunc("GET /api/songs/{artist}/{song}", s.handleGetSong)
 	mux.HandleFunc("POST /api/search", s.handleSearch)
@@ -40,6 +41,24 @@ func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
 		"version": "1.0.0",
 		"message": "Resonance Lab API is rockin'!",
 	})
+}
+
+func (s *Server) handleListArtists(w http.ResponseWriter, r *http.Request) {
+	const cacheKey = "artists:list"
+
+	if cached, ok := s.cache.Get(cacheKey); ok {
+		writeJSON(w, http.StatusOK, cached)
+		return
+	}
+
+	artists, err := s.svc.ListArtists(r.Context())
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	s.cache.Set(cacheKey, artists)
+	writeJSON(w, http.StatusOK, artists)
 }
 
 func (s *Server) handleListSongs(w http.ResponseWriter, r *http.Request) {

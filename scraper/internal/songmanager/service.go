@@ -111,6 +111,45 @@ type DownloadRequest struct {
 	TabID   int64  `json:"tabId,omitempty"`
 }
 
+// Artist summarises a unique artist in the library.
+type Artist struct {
+	Slug      string `json:"slug"`
+	Name      string `json:"name"`
+	SongCount int    `json:"songCount"`
+}
+
+// ListArtists returns all unique artists derived from saved songs.
+func (s *Service) ListArtists(ctx context.Context) ([]Artist, error) {
+	songs, err := s.ListSongs(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	artistMap := make(map[string]*Artist)
+	for _, song := range songs {
+		if existing, ok := artistMap[song.ArtistSlug]; ok {
+			existing.SongCount++
+		} else {
+			artistMap[song.ArtistSlug] = &Artist{
+				Slug:      song.ArtistSlug,
+				Name:      song.Artist,
+				SongCount: 1,
+			}
+		}
+	}
+
+	artists := make([]Artist, 0, len(artistMap))
+	for _, a := range artistMap {
+		artists = append(artists, *a)
+	}
+
+	sort.Slice(artists, func(i, j int) bool {
+		return strings.ToLower(artists[i].Name) < strings.ToLower(artists[j].Name)
+	})
+
+	return artists, nil
+}
+
 // ListSongs returns all saved songs in alphabetical order by artist then title.
 func (s *Service) ListSongs(_ context.Context) ([]SavedSong, error) {
 	artistDirs, err := os.ReadDir(s.songsDir)
