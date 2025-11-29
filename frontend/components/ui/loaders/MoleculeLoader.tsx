@@ -15,7 +15,7 @@ export function MoleculeLoader({ className, size = 'md' }: LoaderProps) {
     { x: dim / 2 + bondLength * 0.866, y: dim / 2 + bondLength * 0.5, color: SAPPHIRE[2] },
   ];
 
-  const bonds = [
+  const bonds: [number, number][] = [
     [0, 1],
     [1, 2],
     [2, 0],
@@ -33,10 +33,10 @@ export function MoleculeLoader({ className, size = 'md' }: LoaderProps) {
         {bonds.map(([a, b], i) => (
           <motion.line
             key={`bond-${i}`}
-            x1={atoms[a].x}
-            y1={atoms[a].y}
-            x2={atoms[b].x}
-            y2={atoms[b].y}
+            x1={atoms[a]!.x}
+            y1={atoms[a]!.y}
+            x2={atoms[b]!.x}
+            y2={atoms[b]!.y}
             stroke={SAPPHIRE[3]}
             strokeWidth="2"
             opacity="0.5"

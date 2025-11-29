@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { ChevronDown, Music, Disc3 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
 import { SapphireCard } from '@/components/ui/card';
+import { DramaticLoader } from '@/components/ui/loaders/DramaticLoader';
 import { cn } from '@/lib/utils';
 import { useArtists } from '@/app/features/artists/hooks';
 import { ANIMATION_DURATION, SLIDE_UP_VARIANTS } from '@/lib/constants/animation.constants';
@@ -39,10 +39,8 @@ export default function ArtistsPage() {
         </div>
 
         {isLoading && (
-          <div className="space-y-2">
-            {[...Array(5)].map((_, i) => (
-              <Skeleton key={i} className="h-14 w-full rounded-lg" />
-            ))}
+          <div className="relative min-h-[300px]">
+            <DramaticLoader isLoading={isLoading} size="lg" />
           </div>
         )}
 

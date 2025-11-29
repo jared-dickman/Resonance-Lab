@@ -26,6 +26,7 @@ export { NebulaLoader } from '@/components/ui/loaders/NebulaLoader';
 export { SupernovaLoader } from '@/components/ui/loaders/SupernovaLoader';
 export { BlackHoleLoader } from '@/components/ui/loaders/BlackHoleLoader';
 export { AuroraLoader } from '@/components/ui/loaders/AuroraLoader';
+export { StarfieldLoader } from '@/components/ui/loaders/StarfieldLoader';
 
 // Nature
 export { LeafLoader } from '@/components/ui/loaders/LeafLoader';
@@ -63,6 +64,7 @@ export { MatrixLoader } from '@/components/ui/loaders/MatrixLoader';
 export { SignalLoader } from '@/components/ui/loaders/SignalLoader';
 export { PacketLoader } from '@/components/ui/loaders/PacketLoader';
 export { BitstreamLoader } from '@/components/ui/loaders/BitstreamLoader';
+export { DefragLoader } from '@/components/ui/loaders/DefragLoader';
 
 // Chemistry
 export { MoleculeLoader } from '@/components/ui/loaders/MoleculeLoader';
@@ -117,7 +119,39 @@ export { OscilloscopeLoader } from '@/components/ui/loaders/OscilloscopeLoader';
 export { NixieLoader } from '@/components/ui/loaders/NixieLoader';
 export { TerminalLoader } from '@/components/ui/loaders/TerminalLoader';
 export { ScanlineLoader } from '@/components/ui/loaders/ScanlineLoader';
+
+// Gaming
+export { PacmanLoader } from '@/components/ui/loaders/PacmanLoader';
+export { TetrisLoader } from '@/components/ui/loaders/TetrisLoader';
+export { PongLoader } from '@/components/ui/loaders/PongLoader';
+export { JoystickLoader } from '@/components/ui/loaders/JoystickLoader';
+export { CoinLoader } from '@/components/ui/loaders/CoinLoader';
+export { HealthBarLoader } from '@/components/ui/loaders/HealthBarLoader';
+export { RespawnLoader } from '@/components/ui/loaders/RespawnLoader';
+
+// Arcade
+export { GalagaLoader } from '@/components/ui/loaders/GalagaLoader';
 export { BreakoutLoader } from '@/components/ui/loaders/BreakoutLoader';
+
+// Nostalgia
+export { HourglassLoader } from '@/components/ui/loaders/HourglassLoader';
+export { DialupLoader } from '@/components/ui/loaders/DialupLoader';
+export { FloppyLoader } from '@/components/ui/loaders/FloppyLoader';
+export { ScreensaverLoader } from '@/components/ui/loaders/ScreensaverLoader';
+
+// Cosmos
+export { RocketLoader } from '@/components/ui/loaders/RocketLoader';
+export { SatelliteLoader } from '@/components/ui/loaders/SatelliteLoader';
+export { UFOLoader } from '@/components/ui/loaders/UFOLoader';
+export { AstronautLoader } from '@/components/ui/loaders/AstronautLoader';
+
+// Sky
+export { RainbowLoader } from '@/components/ui/loaders/RainbowLoader';
+export { SunriseLoader } from '@/components/ui/loaders/SunriseLoader';
+export { MoonriseLoader } from '@/components/ui/loaders/MoonriseLoader';
+export { TwilightLoader } from '@/components/ui/loaders/TwilightLoader';
+export { CloudDriftLoader } from '@/components/ui/loaders/CloudDriftLoader';
+export { HorizonLoader } from '@/components/ui/loaders/HorizonLoader';
 
 // Utility
 export { RandomLoader, ALL_LOADERS } from '@/components/ui/loaders/RandomLoader';

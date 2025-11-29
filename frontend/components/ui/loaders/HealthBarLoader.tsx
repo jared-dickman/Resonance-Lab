@@ -5,9 +5,43 @@ import { SAPPHIRE, LOADER_SIZE, type LoaderProps } from './loader.constants';
 
 export function HealthBarLoader({ className, size = 'md' }: LoaderProps) {
   const dim = LOADER_SIZE[size];
-  const center = dim / 2;
-  const barWidth = dim * 0.7;
-  const barHeight = dim * 0.2;
+  const heartSize = dim * 0.22;
+  const spacing = dim * 0.28;
+  const startX = dim * 0.2;
+  const heartY = dim * 0.5;
+
+  // 8-bit pixel heart path
+  const createPixelHeart = (x: number, y: number) => {
+    const pixelSize = heartSize / 8;
+    return `
+      M ${x + pixelSize * 2} ${y}
+      h ${pixelSize}
+      v ${pixelSize}
+      h ${pixelSize}
+      v ${pixelSize}
+      h ${pixelSize}
+      v ${pixelSize}
+      h ${pixelSize}
+      v ${pixelSize}
+      h ${-pixelSize}
+      v ${pixelSize}
+      h ${-pixelSize}
+      v ${pixelSize}
+      h ${-pixelSize * 2}
+      v ${-pixelSize}
+      h ${-pixelSize}
+      v ${-pixelSize}
+      h ${-pixelSize}
+      v ${-pixelSize}
+      h ${pixelSize}
+      v ${-pixelSize}
+      h ${pixelSize}
+      v ${-pixelSize}
+      h ${pixelSize}
+      v ${-pixelSize}
+      z
+    `;
+  };
 
   return (
     <div
@@ -17,64 +51,68 @@ export function HealthBarLoader({ className, size = 'md' }: LoaderProps) {
       style={{ width: dim, height: dim, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
     >
       <svg width={dim} height={dim} viewBox={`0 0 ${dim} ${dim}`}>
-        {/* Heart icon */}
+        <defs>
+          <filter id={`glow-${size}`}>
+            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+
+        {/* Heart 1 */}
         <motion.path
-          d={`M ${center} ${dim * 0.28}
-              C ${center - dim * 0.08} ${dim * 0.18}, ${center - dim * 0.18} ${dim * 0.22}, ${center - dim * 0.18} ${dim * 0.3}
-              C ${center - dim * 0.18} ${dim * 0.38}, ${center} ${dim * 0.48}, ${center} ${dim * 0.48}
-              C ${center} ${dim * 0.48}, ${center + dim * 0.18} ${dim * 0.38}, ${center + dim * 0.18} ${dim * 0.3}
-              C ${center + dim * 0.18} ${dim * 0.22}, ${center + dim * 0.08} ${dim * 0.18}, ${center} ${dim * 0.28} Z`}
+          d={createPixelHeart(startX, heartY)}
           fill={SAPPHIRE[1]}
-          animate={{ scale: [1, 1.15, 1] }}
-          transition={{ duration: 0.8, repeat: Infinity, ease: 'easeInOut' }}
-          style={{ originX: `${center}px`, originY: `${dim * 0.33}px` }}
+          filter={`url(#glow-${size})`}
+          animate={{
+            opacity: [0.6, 1, 0.6],
+            scale: [0.95, 1.05, 0.95]
+          }}
+          transition={{
+            duration: 1.8,
+            repeat: Infinity,
+            ease: 'easeInOut',
+            delay: 0
+          }}
+          style={{ originX: `${startX + heartSize / 2}px`, originY: `${heartY + heartSize / 2}px` }}
         />
 
-        {/* Bar outline */}
-        <rect
-          x={(dim - barWidth) / 2}
-          y={dim * 0.58}
-          width={barWidth}
-          height={barHeight}
-          rx={dim * 0.03}
-          fill="none"
-          stroke={SAPPHIRE[0]}
-          strokeWidth={dim * 0.02}
-        />
-
-        {/* Bar background */}
-        <rect
-          x={(dim - barWidth) / 2 + dim * 0.02}
-          y={dim * 0.58 + dim * 0.02}
-          width={barWidth - dim * 0.04}
-          height={barHeight - dim * 0.04}
-          rx={dim * 0.02}
-          fill={SAPPHIRE[0]}
-          opacity={0.3}
-        />
-
-        {/* Animated fill */}
-        <motion.rect
-          x={(dim - barWidth) / 2 + dim * 0.02}
-          y={dim * 0.58 + dim * 0.02}
-          height={barHeight - dim * 0.04}
-          rx={dim * 0.02}
+        {/* Heart 2 */}
+        <motion.path
+          d={createPixelHeart(startX + spacing, heartY)}
           fill={SAPPHIRE[2]}
-          animate={{ width: [0, barWidth - dim * 0.04, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          filter={`url(#glow-${size})`}
+          animate={{
+            opacity: [0.6, 1, 0.6],
+            scale: [0.95, 1.05, 0.95]
+          }}
+          transition={{
+            duration: 1.8,
+            repeat: Infinity,
+            ease: 'easeInOut',
+            delay: 0.3
+          }}
+          style={{ originX: `${startX + spacing + heartSize / 2}px`, originY: `${heartY + heartSize / 2}px` }}
         />
 
-        {/* Shimmer effect */}
-        <motion.rect
-          x={(dim - barWidth) / 2}
-          y={dim * 0.58}
-          width={dim * 0.08}
-          height={barHeight}
-          rx={dim * 0.02}
+        {/* Heart 3 */}
+        <motion.path
+          d={createPixelHeart(startX + spacing * 2, heartY)}
           fill={SAPPHIRE[3]}
-          opacity={0.4}
-          animate={{ x: [0, barWidth - dim * 0.08] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
+          filter={`url(#glow-${size})`}
+          animate={{
+            opacity: [0.6, 1, 0.6],
+            scale: [0.95, 1.05, 0.95]
+          }}
+          transition={{
+            duration: 1.8,
+            repeat: Infinity,
+            ease: 'easeInOut',
+            delay: 0.6
+          }}
+          style={{ originX: `${startX + spacing * 2 + heartSize / 2}px`, originY: `${heartY + heartSize / 2}px` }}
         />
       </svg>
     </div>

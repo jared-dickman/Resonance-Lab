@@ -66,38 +66,112 @@ export function getChordNotes(chordName: string, octave: number = 4): string[] {
 }
 
 /**
- * Detect the key from a chord progression
+ * Detect the key from a chord progression using music theory analysis.
+ * Uses the Krumhansl-Schmuckler key-finding algorithm principles.
  */
 export function detectKey(chordProgression: string[]): KeyInfo | null {
-  // Simple heuristic: use the first chord as likely tonic
-  const firstChordName = chordProgression[0];
-  if (!firstChordName) {
-    return null;
+  if (!chordProgression.length) return null;
+
+  // Extract unique chord roots and qualities
+  const chordData = chordProgression
+    .map(name => Chord.get(name))
+    .filter(c => c.tonic);
+
+  if (!chordData.length) return null;
+
+  // All possible keys to test (major and minor)
+  const majorKeys = ['C', 'G', 'D', 'A', 'E', 'B', 'F#', 'Gb', 'Db', 'Ab', 'Eb', 'Bb', 'F'];
+  const minorKeys = majorKeys.map(k => `${k}m`);
+
+  let bestKey: { tonic: string; type: 'major' | 'minor'; score: number } = {
+    tonic: 'C',
+    type: 'major',
+    score: 0,
+  };
+
+  // Score each potential key
+  for (const keyName of [...majorKeys, ...minorKeys]) {
+    const isMinor = keyName.endsWith('m');
+    const tonic = isMinor ? keyName.slice(0, -1) : keyName;
+    const keyData = isMinor ? Key.minorKey(tonic) : Key.majorKey(tonic);
+    const diatonicChords = 'chords' in keyData ? keyData.chords : [];
+
+    let score = 0;
+
+    for (const chord of chordData) {
+      const chordRoot = chord.tonic;
+      const chordQuality = chord.quality;
+
+      // Check if chord fits the key
+      const matchingDiatonic = diatonicChords.find(dc => {
+        const diatonicChord = Chord.get(dc);
+        return diatonicChord.tonic === chordRoot;
+      });
+
+      if (matchingDiatonic) {
+        // Chord root is in key - base score
+        score += 2;
+
+        // Bonus if quality also matches (e.g., Em in key of G is worth more than E in G)
+        const matchChord = Chord.get(matchingDiatonic);
+        if (matchChord.quality === chordQuality) {
+          score += 3;
+        }
+      }
+
+      // Heavy bonus for tonic chord (I or i)
+      if (chordRoot === tonic) {
+        score += 5;
+        // Extra bonus if it's the first chord
+        if (chord === chordData[0]) {
+          score += 3;
+        }
+        // Extra bonus if quality matches (major I in major key, minor i in minor key)
+        if ((isMinor && chordQuality === 'Minor') || (!isMinor && chordQuality === 'Major')) {
+          score += 2;
+        }
+      }
+
+      // Bonus for dominant (V chord)
+      const fifthNote = Note.transpose(tonic, '5P');
+      if (chordRoot === fifthNote && chordQuality === 'Major') {
+        score += 3;
+      }
+
+      // Bonus for subdominant (IV chord)
+      const fourthNote = Note.transpose(tonic, '4P');
+      if (chordRoot === fourthNote) {
+        score += 2;
+      }
+    }
+
+    if (score > bestKey.score) {
+      bestKey = { tonic, type: isMinor ? 'minor' : 'major', score };
+    }
   }
 
-  const firstChord = Chord.get(firstChordName);
+  // Build the result
+  const keyData =
+    bestKey.type === 'major' ? Key.majorKey(bestKey.tonic) : Key.minorKey(bestKey.tonic);
 
-  if (!firstChord.tonic) {
-    return null;
-  }
-
-  // Determine if major or minor based on first chord quality
-  const isMajor = firstChord.quality === 'Major' || !firstChord.quality;
-  const keyData = isMajor ? Key.majorKey(firstChord.tonic) : Key.minorKey(firstChord.tonic);
-
-  // Type guard for key data
   const scale = 'scale' in keyData ? [...keyData.scale] : [];
   const chords = 'chords' in keyData ? [...keyData.chords] : [];
-  const relative = isMajor ? (keyData as ReturnType<typeof Key.majorKey>).minorRelative || '' : '';
+  const relative =
+    bestKey.type === 'major'
+      ? (keyData as ReturnType<typeof Key.majorKey>).minorRelative || ''
+      : '';
 
   return {
     tonic: keyData.tonic,
-    type: isMajor ? 'major' : 'minor',
+    type: bestKey.type,
     scale,
     chords,
     relatives: {
       relative,
-      parallel: isMajor ? Key.minorKey(keyData.tonic).tonic : Key.majorKey(keyData.tonic).tonic,
+      parallel:
+        bestKey.type === 'major'
+          ? Key.minorKey(bestKey.tonic).tonic
+          : Key.majorKey(bestKey.tonic).tonic,
     },
   };
 }

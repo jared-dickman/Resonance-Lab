@@ -1,0 +1,550 @@
+{
+  "artist": "Tones And I",
+  "title": "Dance Monkey",
+  "sections": [
+    {
+      "name": "Intro",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "* = hold a single strum and don"
+        },
+        {
+          "chord": null,
+          "lyric": "'"
+        },
+        {
+          "chord": null,
+          "lyric": "t follow the strumming pattern - listen to the song for a better"
+        },
+        {
+          "chord": null,
+          "lyric": "understanding."
+        }
+      ]
+    },
+    {
+      "name": "Verse 1",
+      "lines": [
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "Oh, my God, I see the way you s"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "hine"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "hand, my dear, and place them both in"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "mine"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "stopped me dead while I was passing b"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "y"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "eg to see you dance just one more"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "time"
+        }
+      ]
+    },
+    {
+      "name": "Pre-Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "see you, see you, see you every t"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "ime"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "I, I-I like your s"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "tyle"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "make me, make me, make me wanna c"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "ry"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "eg to see you dance just one more time"
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "ance for me, dance for me, dance for me, oh-oh-"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "oh"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "een anybody do the things you do bef"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "ore"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "move for me, move for me, move for me, ay-ay-"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "ay"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "ne I'll make you do it all agai"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "n"
+        }
+      ]
+    },
+    {
+      "name": "Verse 2",
+      "lines": [
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "oh, my God, I see you walking b"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "y"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "ands, my dear, and look me in my ey"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "es"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "onkey I've been dancing my whole lif"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "e"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "eg to see me dance just one more tim"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "e"
+        }
+      ]
+    },
+    {
+      "name": "Pre-Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "see you, see you, see you every"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "time"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ", I, I, I, I like your"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "style"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "make me, make me, make me wanna c"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "ry"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "eg to see you dance just one more time"
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "dance for me, dance for me, dance for me, oh-oh-"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "oh"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "een anybody do the things you do bef"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "ore"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "move for me, move for me, move for me, ay-ay-"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "ay"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "ne I'll make you do it all agai"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "n"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "dance for me, dance for me, dance for me, oh-oh-"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "oh"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "een anybody do the things you do bef"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "ore"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "move for me, move for me, move for me, ay-ay-"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "ay"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "ne I'll make you do it all agai"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "n"
+        }
+      ]
+    },
+    {
+      "name": "Bridge",
+      "lines": [
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "Ooh (all aga"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "in, all a"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "gain)"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "oh, woah-oh, oh"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "Ooh (all aga"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "in, all a"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "gain)"
+        },
+        {
+          "chord": null,
+          "lyric": "N.C."
+        },
+        {
+          "chord": null,
+          "lyric": "Ah ah, ah ah, ay"
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "dance for me, dance for me, dance for me, oh-oh-"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "oh"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "een anybody do the things you do bef"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "ore"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "move for me, move for me, move for me, ay ay"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "ay"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "ne I'll make you do it all agai"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "n"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "dance for me, dance for me, dance for me, oh-oh-"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "oh"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "een anybody do the things you do bef"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "ore"
+        },
+        {
+          "chord": {
+            "name": "F#m"
+          },
+          "lyric": "move for me, move for me, move for me, ay ay"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "ay"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "ne I'll make you do it all agai"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "n"
+        }
+      ]
+    },
+    {
+      "name": "Outro",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "N.C."
+        },
+        {
+          "chord": null,
+          "lyric": "All again"
+        }
+      ]
+    }
+  ]
+}

@@ -15,7 +15,7 @@ import {
   StructuredBlock,
   EmptyState,
   ThinkingIndicator,
-} from './BuddySubComponents';
+} from '@/components/agent/BuddySubComponents';
 import { cn, selectRandomWithFallback } from '@/lib/utils';
 import { useBuddy } from '@/lib/contexts/BuddyContext';
 import type { SearchResult } from '@/lib/types';
@@ -166,13 +166,20 @@ export function CoreAgentBuddy({ onSave, isSaving = false }: CoreAgentBuddyProps
   const isEmptyState = messages.length === 0;
   const shouldRotatePlaceholder = isEmptyState && isOpen && !isMinimized;
 
-  // Always expand when opened
+  // Always expand when opened and focus input
   useEffect(() => {
     if (isOpen) {
       setIsMinimized(false);
       setTimeout(() => inputRef.current?.focus(), BUDDY_AUTOFOCUS_DELAY_MS);
     }
   }, [isOpen]);
+
+  // Also focus when minimized state changes (restore from minimized)
+  useEffect(() => {
+    if (isOpen && !isMinimized) {
+      setTimeout(() => inputRef.current?.focus(), BUDDY_AUTOFOCUS_DELAY_MS);
+    }
+  }, [isOpen, isMinimized]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -305,7 +312,7 @@ export function CoreAgentBuddy({ onSave, isSaving = false }: CoreAgentBuddyProps
                 <div className="flex items-center gap-1 px-4 py-2">
                   {BUDDY_NAV_ROUTES.map(route => {
                     const Icon = NAV_ICONS[route.icon];
-                    const isActive = pathname === route.path || (route.path !== '/' && pathname?.startsWith(route.path));
+                    const isActive = pathname === route.path || pathname?.startsWith(route.path);
                     return (
                       <button
                         key={route.path}
@@ -498,7 +505,7 @@ export function CoreAgentBuddy({ onSave, isSaving = false }: CoreAgentBuddyProps
                     <div className="flex items-center gap-0.5 px-4 py-2 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                       {BUDDY_NAV_ROUTES.map(route => {
                         const Icon = NAV_ICONS[route.icon];
-                        const isActive = pathname === route.path || (route.path !== '/' && pathname?.startsWith(route.path));
+                        const isActive = pathname === route.path || pathname?.startsWith(route.path);
                         return (
                           <button
                             key={route.path}

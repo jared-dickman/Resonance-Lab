@@ -1,0 +1,1071 @@
+{
+  "artist": "Grateful Dead",
+  "title": "Truckin",
+  "sections": [
+    {
+      "name": "Intro",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "This is the album version, so if you are listening to a"
+        },
+        {
+          "chord": null,
+          "lyric": "live version, they tend to be a bit different."
+        },
+        {
+          "chord": null,
+          "lyric": "Please Email me if you notice any problems - meanmrmustardis@gmail.com"
+        }
+      ]
+    },
+    {
+      "name": "Opening Riff",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "B|-----------------------------------------------|"
+        }
+      ]
+    },
+    {
+      "name": "Short Riff During the Bridge",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "B|----------------------------|"
+        },
+        {
+          "chord": null,
+          "lyric": "Note: -The E7 during the verses are optional, but the bass plays a D on the upbeat of two,"
+        },
+        {
+          "chord": null,
+          "lyric": "so it fits and makes it a little more interesting. Otherwise, just continue strumming E."
+        },
+        {
+          "chord": null,
+          "lyric": "-If you are playing the riff during the bridge, it is over G D/F# A)"
+        },
+        {
+          "chord": null,
+          "lyric": "-D/F#: 200232"
+        }
+      ]
+    },
+    {
+      "name": "Opening Riff",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "(x4)"
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Truckin' got my chips cashed in."
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "Keep truckin', like the do-dah man"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "Together, more or less in line, j"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "ust keep truckin' on."
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": null,
+          "lyric": "(x2)"
+        }
+      ]
+    },
+    {
+      "name": "Verse",
+      "lines": [
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Arrows of neon and f"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": "lashing marquees out on"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Main Street."
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Chicago, New York, Det"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": "roit and it's all on"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "the same street."
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Your typical city in"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": "volved in a typical dayd"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "ream"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Hang it up an"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": "d see what tomorrow brin"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "gs."
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Dallas, got a soft machine;"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "Houston, too close to New Orleans;"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "New York's got the ways and means;"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "but just won't let you be."
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": null,
+          "lyric": "(x4)"
+        }
+      ]
+    },
+    {
+      "name": "Verse",
+      "lines": [
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Most of the cats that y"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": "ou meet on the streets speak of"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "true love,"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Most of the time they're"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": "sittin' and cryin' at ho"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "me."
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "One of these days they"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": "know they gotta get goin"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "'"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Out of the door and"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": "down on the streets all"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "alone."
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Truckin', like the do-dah man."
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "Once told me \"You've got to play your hand\""
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "Sometimes your cards ain't worth a dime,"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "if you don't lay 'em down,"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": null,
+          "lyric": "(x4)"
+        }
+      ]
+    },
+    {
+      "name": "Bridge",
+      "lines": [
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "Sometimes the light's all shinin' on me;"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D/F#"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "Other times I can bar"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "ely see"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D/F#"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "Lately it oc"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "curs to"
+        },
+        {
+          "chord": {
+            "name": "F#"
+          },
+          "lyric": "me"
+        },
+        {
+          "chord": {
+            "name": "F#sus"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "F#"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Amaj7"
+          },
+          "lyric": "long, strange trip it's"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "been."
+        },
+        {
+          "chord": null,
+          "lyric": "(x4)"
+        }
+      ]
+    },
+    {
+      "name": "Verse",
+      "lines": [
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "What in the world ever"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": "became of s"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "weet Jane?"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "She lost her sparkle, yo"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": "u know she isn't the sam"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "e"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Livin' on reds, vitami"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": "n C, and cocain"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "e,"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "All a friend can say"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": "is \"Ain't it a sha"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "me?\""
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Truckin', up to Buffalo. Been"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "thinkin', you got to mellow slow"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "Takes time, to pick a place to go, a"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "nd just keep truckin' on."
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": null,
+          "lyric": "(x4)"
+        }
+      ]
+    },
+    {
+      "name": "Verse",
+      "lines": [
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Sittin' and starin' ou"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": "t of the hotel w"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "indow."
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Got a tip they're gonna k"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": "ick the door in ag"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "ain"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "I'd like to get some sle"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": "ep before I"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "travel,"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "But if you got a warra"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": "nt, I guess"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "you're gonna co"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": "me in."
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Busted, down on Bourbon Street,"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "Set up, like a bowlin' pin."
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "Knocked down, it gets to wearin' thin."
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "They just won't let you be."
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": null,
+          "lyric": "(x4)"
+        }
+      ]
+    },
+    {
+      "name": "Verse",
+      "lines": [
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "You're sick of hangin'"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": "around and you'd like to trave"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "l;"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Get tired of travelin' and"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": "you want to settle down."
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "I guess they can't rev"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": "oke your soul for try"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "in',"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Get out of the door an"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": "d light out and look"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "all around."
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Bridge",
+      "lines": [
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "Sometimes the light's all shinin' on me;"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D/F#"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "Other times I can bar"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "ely see"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D/F#"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "Lately it oc"
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "curs to"
+        },
+        {
+          "chord": {
+            "name": "F#"
+          },
+          "lyric": "me"
+        },
+        {
+          "chord": {
+            "name": "F#sus"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "F#"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Amaj7"
+          },
+          "lyric": "ong, strange trip it's"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "been."
+        },
+        {
+          "chord": null,
+          "lyric": "(x4)"
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Truckin', I'm a goin' home."
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "Whoa whoa baby, back where I belong,"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "Back home, sit down and patch my bones,"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "and get back truckin' on"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "."
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "(re"
+        },
+        {
+          "chord": {
+            "name": "E7"
+          },
+          "lyric": "peat until fade out)"
+        },
+        {
+          "chord": null,
+          "lyric": "Woah now get back truckin"
+        },
+        {
+          "chord": null,
+          "lyric": "'"
+        },
+        {
+          "chord": null,
+          "lyric": "on......."
+        },
+        {
+          "chord": null,
+          "lyric": "************************************"
+        },
+        {
+          "chord": null,
+          "lyric": "| h Hammer-on"
+        },
+        {
+          "chord": null,
+          "lyric": "************************************"
+        }
+      ]
+    }
+  ]
+}

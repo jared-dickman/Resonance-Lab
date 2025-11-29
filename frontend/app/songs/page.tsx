@@ -1,6 +1,5 @@
-import { redirect } from 'next/navigation';
-import { pageRoutes } from '@/lib/routes';
+import { SongsLibraryPage } from './SongsLibraryPage';
 
 export default function SongsPage() {
-  redirect(pageRoutes.home);
+  return <SongsLibraryPage />;
 }

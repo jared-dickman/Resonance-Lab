@@ -1,0 +1,671 @@
+{
+  "artist": "Sabrina Carpenter",
+  "title": "Espresso",
+  "sections": [
+    {
+      "name": "Intro",
+      "lines": []
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": "he's thinkin' 'bout me every night,"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "oh"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "sweet? I guess so"
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "know"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "me, espresso"
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "oh"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "like Nintend"
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": "o"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "know"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "me, espresso"
+        }
+      ]
+    },
+    {
+      "name": "Verse 1",
+      "lines": [
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": "I can't relate"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "to"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "desperation"
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": "My give-a-fucks"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "are"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "on vaca"
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": "tion"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "boy"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "won't stop calling"
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "know I got 'em"
+        }
+      ]
+    },
+    {
+      "name": "Pre-Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": "Too bad your ex don't do it for ya"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "Walked in and"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "dream came trued it for ya"
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": "Soft skin and I perfumed it for ya"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "("
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": "Yes)"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "Yes)"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "coffee brewed it for ya ("
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": "Yes)"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "(Yes)"
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": "he's thinkin' 'bout me every night,"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "oh"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "sweet? I guess so"
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "know"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "me, espresso"
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "oh"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "like Nintend"
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": "o"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "know"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "me, espresso"
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Post-Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": null,
+          "lyric": "Is it that sweet? I guess so"
+        }
+      ]
+    },
+    {
+      "name": "Verse 2",
+      "lines": [
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": "I'm working late"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "'cause"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "I'm a singer"
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": "Oh, he looks so cute"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "wrapped '"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "round my fing"
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": "er"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "r make him"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "laugh so oft"
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": "en"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": ", come and"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "get this pollen"
+        }
+      ]
+    },
+    {
+      "name": "Pre-Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": "Too bad your ex don't do it for ya"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "Walked in and"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "dream came trued it for ya"
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": "Soft skin and I perfumed it for ya"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "("
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": "Yes)"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "Yes)"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "coffee brewed it for ya ("
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": "Yes)"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "(Yes)"
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": "he's thinkin' 'bout me every night,"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "oh"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "sweet? I guess so"
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "know"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "me, espresso"
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "oh"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "like Nintend"
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": "o"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "know"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "me, espresso"
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "oh"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "sweet? I guess so"
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "know"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "me, espresso"
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "oh"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "like Nintend"
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": "o"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "know"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "me, espresso"
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Post-Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "sweet? I guess"
+        },
+        {
+          "chord": {
+            "name": "Dm9"
+          },
+          "lyric": "so"
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": ", that's that"
+        },
+        {
+          "chord": {
+            "name": "Am9"
+          },
+          "lyric": "me, espresso"
+        }
+      ]
+    }
+  ]
+}

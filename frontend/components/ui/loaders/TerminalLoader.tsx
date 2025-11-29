@@ -92,7 +92,7 @@ export function TerminalLoader({ className, size = 'md' }: LoaderProps) {
           transition={{
             duration: 1,
             repeat: Infinity,
-            ease: 'steps(2)',
+            ease: 'linear',
           }}
         />
       </svg>

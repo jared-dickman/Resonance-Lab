@@ -45,15 +45,14 @@ export function SineLoader({ size = 'md' }: LoaderProps) {
               strokeLinejoin="round"
               opacity={0.9 - i * 0.2}
               animate={{
-                d: [
-                  generatePath(0, frequency, amplitude, verticalOffset),
-                  generatePath(Math.PI * 2, frequency, amplitude, verticalOffset),
-                ],
+                d: Array.from({ length: 5 }, (_, idx) =>
+                  generatePath((idx / 4) * Math.PI * 2, frequency, amplitude, verticalOffset)
+                ),
               }}
               transition={{
                 duration,
                 repeat: Infinity,
-                ease: [0.45, 0.05, 0.55, 0.95],
+                ease: 'linear',
                 delay,
               }}
             />

@@ -101,10 +101,9 @@ export const STRUCTURED_DATA_TYPES = {
 
 /** Navigation routes for Buddy's mini nav bar - DRY via pageRoutes */
 export const BUDDY_NAV_ROUTES = [
-  { path: pageRoutes.home, label: 'Home', icon: 'home' },
-  { path: pageRoutes.songs, label: 'Songs', icon: 'music' },
+  { path: pageRoutes.songs, label: 'Library', icon: 'music' },
   { path: pageRoutes.artists, label: 'Artists', icon: 'users' },
-  { path: pageRoutes.songwriter, label: 'Write', icon: 'pen' },
+  // { path: pageRoutes.songwriter, label: 'Write', icon: 'pen' }, // TODO: Re-enable when songwriter is stable
   { path: pageRoutes.jam, label: 'Jam', icon: 'guitar' },
   { path: pageRoutes.musicTheory, label: 'Theory', icon: 'book' },
   { path: pageRoutes.metronome, label: 'Tempo', icon: 'clock' },

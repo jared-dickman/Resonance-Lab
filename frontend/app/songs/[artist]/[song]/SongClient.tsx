@@ -6,6 +6,7 @@ import { transposeChord } from '@/lib/utils';
 import { calculateScrollSpeed } from '@/lib/utils/song/scrollSpeed';
 import type { ChordElementInfo } from '@/lib/utils/song/chordTracking';
 import { findClosestVisibleChord } from '@/lib/utils/song/chordTracking';
+import { detectKey } from '@/lib/music-theory/tonal-helper';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './SongClient.module.css';
 import { ChordDisplay } from '@/components/ChordDisplay';
@@ -27,9 +28,9 @@ interface SongClientProps {
 }
 
 const getNormalizedKey = (key?: string) => {
-  if (!key) return 'C';
+  if (!key) return null;
   const match = key.match(/^([A-G][#b]?)/);
-  return match ? match[1] : 'C';
+  return match ? match[1] : null;
 };
 
 const getKeyIndex = (key: string) => {
@@ -37,10 +38,37 @@ const getKeyIndex = (key: string) => {
   return index === -1 ? KEY_SIGNATURES.indexOf('C') : index;
 };
 
+// Extract all chords from song sections for key detection
+const extractChordsFromSong = (song: Song): string[] => {
+  const chords: string[] = [];
+  for (const section of song.sections) {
+    for (const line of section.lines) {
+      if (line.chord?.name) {
+        chords.push(line.chord.name);
+      }
+    }
+  }
+  return chords;
+};
+
 export function SongClient({ song, artistSlug, songSlug }: SongClientProps): React.JSX.Element {
   const router = useRouter();
-  const normalizedOriginalKey = getNormalizedKey(song.key);
-  const originalKeyIndex = getKeyIndex(normalizedOriginalKey ?? 'C');
+
+  // Detect key from chords if not provided or unreliable
+  const detectedKey = useMemo(() => {
+    const chords = extractChordsFromSong(song);
+    if (chords.length === 0) return null;
+    const result = detectKey(chords);
+    // Return tonic with 'm' suffix for minor keys
+    if (result) {
+      return result.type === 'minor' ? `${result.tonic}m` : result.tonic;
+    }
+    return null;
+  }, [song]);
+
+  // Use detected key, falling back to song.key, then 'C'
+  const effectiveKey = detectedKey || getNormalizedKey(song.key) || 'C';
+  const originalKeyIndex = getKeyIndex(effectiveKey.replace('m', ''));
 
   const [transpose, setTranspose] = useState(0);
   const [bpm, setBpm] = useState(120);
@@ -206,7 +234,7 @@ export function SongClient({ song, artistSlug, songSlug }: SongClientProps): Rea
         onTransposeChange={handleTransposeChange}
         currentKey={currentKey ?? 'C'}
         onKeyChange={handleKeyChange}
-        originalKey={song.key ?? 'C'}
+        originalKey={effectiveKey}
         bpm={bpm}
         onBpmChange={setBpm}
         isAutoScrollEnabled={isAutoScrollEnabled}

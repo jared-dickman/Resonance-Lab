@@ -1,5 +1,5 @@
-export { ALL_BUDDY_TOOLS } from './tools';
-export { buildSystemPrompt, type BuddyContext } from './prompts';
+export { ALL_BUDDY_TOOLS } from '@/lib/agents/buddy/tools';
+export { buildSystemPrompt, type BuddyContext } from '@/lib/agents/buddy/prompts';
 export {
   executeSearch,
   executeDownload,
@@ -7,4 +7,4 @@ export {
   executeGetArtistSongs,
   executeNavigate,
   parseNavigationResult,
-} from './executors';
+} from '@/lib/agents/buddy/executors';

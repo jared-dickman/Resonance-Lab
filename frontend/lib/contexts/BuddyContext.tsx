@@ -4,7 +4,8 @@ import { createContext, useContext, useState, useMemo, useEffect, useCallback, t
 import { usePathname } from 'next/navigation';
 
 type PageContext =
-  | 'home'
+  | 'landing'
+  | 'library'
   | 'artists'
   | 'artist'
   | 'song'
@@ -37,7 +38,8 @@ interface BuddyContextType {
 const BuddyContext = createContext<BuddyContextType | undefined>(undefined);
 
 function derivePageFromPathname(pathname: string): PageContext {
-  if (pathname === '/') return 'home';
+  if (pathname === '/') return 'landing';
+  if (pathname === '/songs') return 'library';
   if (pathname === '/artists') return 'artists';
   if (pathname.startsWith('/songs/')) {
     const parts = pathname.split('/').filter(Boolean);
@@ -49,7 +51,7 @@ function derivePageFromPathname(pathname: string): PageContext {
   if (pathname === '/metronome') return 'metronome';
   if (pathname === '/songwriter') return 'songwriter';
   if (pathname === '/pedalboard') return 'pedalboard';
-  return 'home';
+  return 'library';
 }
 
 function extractArtistFromPathname(pathname: string): string | undefined {
@@ -98,15 +100,10 @@ export function BuddyProvider({ children }: { children: ReactNode }) {
 
   const toggleBuddy = useCallback(() => setIsOpen(prev => !prev), []);
 
-  // Ctrl+A keyboard shortcut to toggle buddy
+  // Ctrl+B keyboard shortcut to toggle buddy (B for Buddy, avoids Ctrl+A Select All conflict)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
-        // Don't trigger if user is typing in an input
-        const target = e.target as HTMLElement;
-        if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
-          return;
-        }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
         e.preventDefault();
         toggleBuddy();
       }
@@ -137,7 +134,7 @@ export function useBuddy() {
   const ctx = useContext(BuddyContext);
   if (ctx === undefined) {
     return {
-      context: { page: 'home' as const },
+      context: { page: 'library' as const },
       setArtist: () => {},
       setSong: () => {},
       setChords: () => {},

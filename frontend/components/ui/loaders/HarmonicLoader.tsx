@@ -49,10 +49,9 @@ export function HarmonicLoader({ size = 'md' }: LoaderProps) {
           strokeLinecap="round"
           opacity={0.95}
           animate={{
-            d: [
-              generateHarmonic(1, 0, svgSize * 0.18, svgSize / 2),
-              generateHarmonic(1, Math.PI * 2, svgSize * 0.18, svgSize / 2),
-            ],
+            d: Array.from({ length: 10 }, (_, idx) =>
+              generateHarmonic(1, (idx / 9) * Math.PI * 2, svgSize * 0.18, svgSize / 2)
+            ),
           }}
           transition={{
             duration: 3,
@@ -79,10 +78,9 @@ export function HarmonicLoader({ size = 'md' }: LoaderProps) {
               strokeLinejoin="round"
               opacity={0.85 - i * 0.15}
               animate={{
-                d: [
-                  generateHarmonic(harmonic, 0, amplitude, yOffset),
-                  generateHarmonic(harmonic, Math.PI * 2, amplitude, yOffset),
-                ],
+                d: Array.from({ length: 10 }, (_, idx) =>
+                  generateHarmonic(harmonic, (idx / 9) * Math.PI * 2, amplitude, yOffset)
+                ),
               }}
               transition={{
                 duration: 3 / harmonic,
