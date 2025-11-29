@@ -18,7 +18,9 @@ import { BuddyErrorBoundary } from '@/components/agent/BuddyErrorBoundary';
 
 // Context to share header logo ref with CinematicIntro
 const HeaderLogoRefContext = createContext<React.RefObject<HTMLHeadingElement | null> | null>(null);
-export const useHeaderLogoRef = () => useContext(HeaderLogoRefContext);
+export function useHeaderLogoRef() {
+  return useContext(HeaderLogoRefContext);
+}
 
 function LayoutInner({ children, headerLogoRef }: { children: React.ReactNode; headerLogoRef: React.RefObject<HTMLHeadingElement | null> }) {
   const pathname = usePathname();
