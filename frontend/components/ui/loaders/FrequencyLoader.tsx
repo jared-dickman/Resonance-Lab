@@ -13,7 +13,7 @@ export function FrequencyLoader({ size = 48, barCount = 7 }: FrequencyLoaderProp
 
   return (
     <div
-      className="flex items-end justify-center gap-[2px]"
+      className="relative flex items-end justify-center gap-[2px] overflow-hidden"
       style={{ height: maxHeight, width: size }}
       role="status"
       aria-label="Loading"

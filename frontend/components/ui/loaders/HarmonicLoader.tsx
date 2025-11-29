@@ -10,7 +10,7 @@ export function HarmonicLoader({ bars = 7, size = 48 }: { bars?: number; size?: 
 
   return (
     <div
-      className="flex items-center justify-center gap-[2px]"
+      className="relative flex items-center justify-center gap-[2px] overflow-hidden"
       style={{ height: size, width: size * 1.5 }}
       role="status"
       aria-label="Loading"

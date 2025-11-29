@@ -25,7 +25,7 @@ export function SineLoader({ className, width = 120, height = 40 }: SineLoaderPr
   };
 
   return (
-    <div className={cn('flex items-center justify-center', className)} role="status" aria-label="Loading">
+    <div className={cn('relative flex items-center justify-center overflow-hidden', className)} role="status" aria-label="Loading">
       <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
         <defs>
           <linearGradient id="sineGradient" x1="0%" y1="0%" x2="100%" y2="0%">

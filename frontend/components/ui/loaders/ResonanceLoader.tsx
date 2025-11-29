@@ -22,7 +22,7 @@ export function ResonanceLoader({ className, barCount = 9, size = 'md' }: Resona
     <div
       role="status"
       aria-label="Loading"
-      className={cn('flex items-center justify-center', className)}
+      className={cn('relative flex items-center justify-center overflow-hidden', className)}
       style={{ gap }}
     >
       {Array.from({ length: barCount }).map((_, i) => {

@@ -31,7 +31,7 @@ export function OscillateLoader({ size = 120, className = '' }: OscillateLoaderP
   };
 
   return (
-    <div className={`flex items-center justify-center ${className}`} role="status" aria-label="Loading">
+    <div className={`relative flex items-center justify-center overflow-hidden ${className}`} role="status" aria-label="Loading">
       <svg width={size} height={size * 0.5} viewBox={`0 0 ${size} ${size * 0.5}`}>
         {waves.map((wave, index) => (
           <motion.path
