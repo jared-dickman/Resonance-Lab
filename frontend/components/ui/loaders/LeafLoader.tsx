@@ -7,10 +7,10 @@ import { SAPPHIRE, LOADER_SIZE, DURATION, OPACITY, type LoaderProps } from '@/co
 export function LeafLoader({ className, size = 'md' }: LoaderProps) {
   const dim = LOADER_SIZE[size];
 
-  // Natural falling motion with bezier curves and organic sway
+  // Natural falling motion with bezier curves and organic sway - endless loop with fade
   const fallVariants = (delay: number, xOffset: number) => ({
     animate: {
-      y: [0, dim * 0.9],
+      y: [0, dim * 1.1], // Fall beyond viewport for smooth loop
       x: [
         xOffset,
         xOffset + 15,
@@ -20,7 +20,7 @@ export function LeafLoader({ className, size = 'md' }: LoaderProps) {
         xOffset,
       ],
       rotate: [0, 45, -30, 20, -15, 0],
-      opacity: [0, 1, 1, 1, 0.8, 0],
+      opacity: [0, 1, 1, 1, 0.6, 0], // Smooth fade at end
     },
     transition: {
       duration: DURATION.verySlow + delay * 0.3,
@@ -123,24 +123,6 @@ export function LeafLoader({ className, size = 'md' }: LoaderProps) {
           />
         </motion.g>
 
-        {/* Optional: Ground indicator - subtle line where leaves "land" */}
-        <motion.line
-          x1="20"
-          y1="92"
-          x2="80"
-          y2="92"
-          stroke={SAPPHIRE[3]}
-          strokeWidth="1"
-          opacity={OPACITY.faint}
-          animate={{
-            opacity: [OPACITY.faint, OPACITY.subtle, OPACITY.faint],
-          }}
-          transition={{
-            duration: DURATION.slow,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-        />
       </svg>
     </div>
   );

@@ -22,11 +22,11 @@ export function VinylLoader({ size = 'md' }: LoaderProps) {
           </radialGradient>
         </defs>
 
-        {/* Record with subtle warble - all grooves move together */}
+        {/* Record with noticeable warble - all grooves move together */}
         <motion.g
           animate={{
-            rotate: [0, 0.5, -0.5, 0.8, -0.3, 0],
-            scale: [1, 1.003, 0.998, 1.002, 0.999, 1]
+            rotate: [0, 1.2, -1.0, 1.5, -0.8, 0],
+            scale: [1, 1.006, 0.995, 1.008, 0.997, 1]
           }}
           transition={{
             duration: 3,

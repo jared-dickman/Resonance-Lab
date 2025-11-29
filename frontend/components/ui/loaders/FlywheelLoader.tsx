@@ -9,8 +9,9 @@ export function FlywheelLoader({ className, size = 'md' }: LoaderProps) {
   const svgSize = dim * 0.8;
   const centerX = svgSize / 2;
   const centerY = svgSize / 2;
-  const diskRadius = svgSize * 0.4;
-  const hubRadius = svgSize * 0.08;
+  const outerRadius = svgSize * 0.42;
+  const innerRadius = svgSize * 0.12;
+  const spokeCount = 8;
 
   return (
     <div
@@ -20,54 +21,84 @@ export function FlywheelLoader({ className, size = 'md' }: LoaderProps) {
       style={{ width: dim, height: dim }}
     >
       <svg width={svgSize} height={svgSize} viewBox={`0 0 ${svgSize} ${svgSize}`}>
-        {/* Rotating disk assembly */}
+        {/* Rotating flywheel assembly */}
         <motion.g
           animate={{ rotate: 360 }}
-          transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: [0.45, 0.05, 0.55, 0.95], // Momentum curve
+          }}
           style={{ originX: `${centerX}px`, originY: `${centerY}px` }}
         >
-          {/* Main solid disk - heavy industrial wheel */}
-          <circle cx={centerX} cy={centerY} r={diskRadius} fill={SAPPHIRE[1]} opacity={0.9} />
+          {/* Heavy outer rim with thickness */}
+          <circle
+            cx={centerX}
+            cy={centerY}
+            r={outerRadius}
+            fill="none"
+            stroke={SAPPHIRE[0]}
+            strokeWidth={svgSize * 0.12}
+            opacity={0.95}
+          />
 
-          {/* Subtle weight indicators at 4 cardinal points */}
-          {[0, 90, 180, 270].map((deg) => {
-            const angle = (deg * Math.PI) / 180;
-            const weightX = centerX + Math.cos(angle) * diskRadius * 0.75;
-            const weightY = centerY + Math.sin(angle) * diskRadius * 0.75;
-
-            return (
-              <circle key={deg} cx={weightX} cy={weightY} r={svgSize * 0.03} fill={SAPPHIRE[0]} opacity={0.6} />
-            );
-          })}
-
-          {/* 6 subtle spokes */}
-          {Array.from({ length: 6 }, (_, i) => {
-            const angle = (i * 60 * Math.PI) / 180;
-            const x1 = centerX + Math.cos(angle) * hubRadius;
-            const y1 = centerY + Math.sin(angle) * hubRadius;
-            const x2 = centerX + Math.cos(angle) * diskRadius * 0.85;
-            const y2 = centerY + Math.sin(angle) * diskRadius * 0.85;
+          {/* Weight distribution markers on rim */}
+          {Array.from({ length: spokeCount }, (_, i) => {
+            const angle = (i * 360) / spokeCount;
+            const rad = (angle * Math.PI) / 180;
+            const x = centerX + Math.cos(rad) * outerRadius;
+            const y = centerY + Math.sin(rad) * outerRadius;
 
             return (
-              <line
-                key={i}
-                x1={x1}
-                y1={y1}
-                x2={x2}
-                y2={y2}
-                stroke={SAPPHIRE[3]}
-                strokeWidth={svgSize * 0.015}
-                opacity={0.4}
+              <circle
+                key={`weight-${i}`}
+                cx={x}
+                cy={y}
+                r={svgSize * 0.04}
+                fill={SAPPHIRE[3]}
+                opacity={0.7}
               />
             );
           })}
 
-          {/* Central hub */}
-          <circle cx={centerX} cy={centerY} r={hubRadius} fill={SAPPHIRE[0]} opacity={0.95} />
-        </motion.g>
+          {/* Industrial spokes - thick and solid */}
+          {Array.from({ length: spokeCount }, (_, i) => {
+            const angle = (i * 360) / spokeCount;
+            const rad = (angle * Math.PI) / 180;
+            const x1 = centerX + Math.cos(rad) * innerRadius;
+            const y1 = centerY + Math.sin(rad) * innerRadius;
+            const x2 = centerX + Math.cos(rad) * (outerRadius * 0.82);
+            const y2 = centerY + Math.sin(rad) * (outerRadius * 0.82);
 
-        {/* Static outer ring - stationary reference frame */}
-        <circle cx={centerX} cy={centerY} r={diskRadius + svgSize * 0.04} fill="none" stroke={SAPPHIRE[2]} strokeWidth={svgSize * 0.02} opacity={0.3} />
+            return (
+              <line
+                key={`spoke-${i}`}
+                x1={x1}
+                y1={y1}
+                x2={x2}
+                y2={y2}
+                stroke={SAPPHIRE[1]}
+                strokeWidth={svgSize * 0.025}
+                strokeLinecap="round"
+                opacity={0.85}
+              />
+            );
+          })}
+
+          {/* Solid center hub - heavy industrial bearing */}
+          <circle cx={centerX} cy={centerY} r={innerRadius} fill={SAPPHIRE[0]} opacity={1} />
+
+          {/* Hub detail ring */}
+          <circle
+            cx={centerX}
+            cy={centerY}
+            r={innerRadius * 0.65}
+            fill="none"
+            stroke={SAPPHIRE[2]}
+            strokeWidth={svgSize * 0.01}
+            opacity={0.6}
+          />
+        </motion.g>
       </svg>
     </div>
   );

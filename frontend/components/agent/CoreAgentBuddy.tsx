@@ -20,10 +20,7 @@ import {
   BuddyMessageList,
   BuddyInput,
 } from './BuddyPanelParts';
-import {
-  ContextChip,
-  EmptyState,
-} from './BuddySubComponents';
+import { ContextChip } from './BuddySubComponents';
 import {
   BUDDY_PLACEHOLDER_INTERVAL_MS,
   BUDDY_FIRST_LOAD_VARIANTS,
@@ -43,6 +40,9 @@ import {
   BUDDY_EDGE_PADDING,
   BUDDY_NAV_ROUTES,
   BUDDY_INPUT_PLACEHOLDER,
+  BUDDY_ICON_GLOW_ANIMATION,
+  BUDDY_ICON_GLOW_TRANSITION,
+  BUDDY_SCROLL_CONTAINER_CLASS,
 } from '@/lib/constants/buddy.constants';
 
 interface CoreAgentBuddyProps {
@@ -257,9 +257,6 @@ function MobilePanel({ context, messages, input, isLoading, isSaving, thinkingPu
         <BuddyNavBar onNavigate={onClose} />
 
         <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
-          <AnimatePresence mode="wait">
-            {isEmptyState && <EmptyState placeholder={placeholder} />}
-          </AnimatePresence>
           <BuddyMessageList
             messages={messages}
             isLoading={isLoading}
@@ -301,8 +298,8 @@ function MobileHeader({ context, onClose }: { context: { page: string; artist?: 
     <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
       <div className="flex items-center gap-2.5">
         <motion.div
-          animate={{ boxShadow: ['0 0 8px rgba(59, 130, 246, 0.5)', '0 0 16px rgba(147, 51, 234, 0.5)', '0 0 8px rgba(59, 130, 246, 0.5)'] }}
-          transition={{ duration: 2, repeat: Infinity }}
+          animate={BUDDY_ICON_GLOW_ANIMATION}
+          transition={BUDDY_ICON_GLOW_TRANSITION}
           className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500/30 to-purple-500/30 flex items-center justify-center border border-white/10"
         >
           <Bot className="h-5 w-5 text-blue-400" />
@@ -454,10 +451,7 @@ function DesktopPanel({
             >
               {!isOnboarding && <BuddyNavBar />}
 
-              <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 py-3 space-y-3 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
-                <AnimatePresence mode="wait">
-                  {isEmptyState && <EmptyState placeholder={placeholder} />}
-                </AnimatePresence>
+              <div className={BUDDY_SCROLL_CONTAINER_CLASS}>
                 <BuddyMessageList
                   messages={displayMessages}
                   isLoading={displayLoading ?? false}

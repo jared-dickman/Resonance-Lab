@@ -4,6 +4,9 @@ import { motion } from 'framer-motion';
 import { useReducedMotion } from '@/components/ui/ai/hooks/useReducedMotion';
 import { useOnboardingDemo } from '@/lib/hooks/useOnboardingDemo';
 import { CoreAgentBuddy } from '@/components/agent/CoreAgentBuddy';
+import { CinematicIntro } from '@/components/CinematicIntro';
+import { useIntro } from '@/lib/contexts/IntroContext';
+import { useHeaderLogoRef } from '@/app/LayoutContent';
 
 function NebulaBackground({ reducedMotion }: { reducedMotion: boolean }) {
   if (reducedMotion) {
@@ -58,19 +61,32 @@ function NebulaBackground({ reducedMotion }: { reducedMotion: boolean }) {
 export function LandingPage() {
   const reducedMotion = useReducedMotion();
   const onboarding = useOnboardingDemo();
+  const { introComplete, setIntroComplete } = useIntro();
+  const headerLogoRef = useHeaderLogoRef();
 
   // Only pass onboarding when demo is actively running (not after it completes)
   const showDemo = !onboarding.isComplete;
 
+  // Skip intro for reduced motion users
+  const shouldShowIntro = !introComplete && !reducedMotion;
+
   return (
-    <div className="relative min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center">
-      <NebulaBackground reducedMotion={reducedMotion} />
-      <div className="relative z-10">
-        <CoreAgentBuddy
-          isLanding
-          onboarding={showDemo ? onboarding : undefined}
+    <>
+      {shouldShowIntro && (
+        <CinematicIntro
+          onComplete={() => setIntroComplete(true)}
+          headerLogoRef={headerLogoRef ?? undefined}
         />
+      )}
+      <div className="relative min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center">
+        <NebulaBackground reducedMotion={reducedMotion} />
+        <div className="relative z-10">
+          <CoreAgentBuddy
+            isLanding
+            onboarding={showDemo ? onboarding : undefined}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 }

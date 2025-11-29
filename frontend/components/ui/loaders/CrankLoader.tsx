@@ -7,13 +7,15 @@ import { SAPPHIRE, LOADER_SIZE, DURATION, type LoaderProps } from './loader.cons
 export function CrankLoader({ className, size = 'md' }: LoaderProps) {
   const dim = LOADER_SIZE[size];
   const svgSize = dim * 0.8;
-  const centerX = svgSize / 2;
-  const centerY = svgSize / 2;
+  const cx = svgSize / 2;
+  const cy = svgSize / 2;
 
-  // Crank dimensions
-  const crankArmLength = svgSize * 0.3;
-  const handleRadius = svgSize * 0.08;
-  const shaftRadius = svgSize * 0.06;
+  // Simple mechanical crank dimensions
+  const armLength = svgSize * 0.28;
+  const handleWidth = svgSize * 0.12;
+  const handleHeight = svgSize * 0.16;
+  const gearRadius = svgSize * 0.12;
+  const shaftWidth = svgSize * 0.08;
 
   return (
     <div
@@ -23,21 +25,47 @@ export function CrankLoader({ className, size = 'md' }: LoaderProps) {
       style={{ width: dim, height: dim }}
     >
       <svg width={svgSize} height={svgSize} viewBox={`0 0 ${svgSize} ${svgSize}`}>
-        {/* Central shaft/pivot - stationary */}
+        {/* Central gear mechanism */}
         <circle
-          cx={centerX}
-          cy={centerY}
-          r={shaftRadius}
+          cx={cx}
+          cy={cy}
+          r={gearRadius}
           fill={SAPPHIRE[0]}
-        />
-        <circle
-          cx={centerX}
-          cy={centerY}
-          r={shaftRadius * 0.5}
-          fill={SAPPHIRE[1]}
+          stroke={SAPPHIRE[1]}
+          strokeWidth={2}
         />
 
-        {/* Rotating crank arm and handle */}
+        {/* Gear teeth */}
+        {[0, 60, 120, 180, 240, 300].map((angle) => {
+          const rad = (angle * Math.PI) / 180;
+          const x1 = cx + Math.cos(rad) * gearRadius;
+          const y1 = cy + Math.sin(rad) * gearRadius;
+          const x2 = cx + Math.cos(rad) * (gearRadius + svgSize * 0.04);
+          const y2 = cy + Math.sin(rad) * (gearRadius + svgSize * 0.04);
+          return (
+            <line
+              key={angle}
+              x1={x1}
+              y1={y1}
+              x2={x2}
+              y2={y2}
+              stroke={SAPPHIRE[1]}
+              strokeWidth={svgSize * 0.025}
+              strokeLinecap="round"
+            />
+          );
+        })}
+
+        {/* Central shaft */}
+        <rect
+          x={cx - shaftWidth / 2}
+          y={cy - shaftWidth / 2}
+          width={shaftWidth}
+          height={shaftWidth}
+          fill={SAPPHIRE[2]}
+        />
+
+        {/* Rotating crank arm + handle */}
         <motion.g
           animate={{ rotate: 360 }}
           transition={{
@@ -46,75 +74,42 @@ export function CrankLoader({ className, size = 'md' }: LoaderProps) {
             ease: 'linear'
           }}
           style={{
-            originX: `${centerX}px`,
-            originY: `${centerY}px`
+            originX: `${cx}px`,
+            originY: `${cy}px`
           }}
         >
-          {/* Crank arm - horizontal bar from center */}
+          {/* Crank arm */}
           <line
-            x1={centerX}
-            y1={centerY}
-            x2={centerX + crankArmLength}
-            y2={centerY}
-            stroke={SAPPHIRE[1]}
-            strokeWidth={svgSize * 0.025}
+            x1={cx}
+            y1={cy}
+            x2={cx + armLength}
+            y2={cy}
+            stroke={SAPPHIRE[2]}
+            strokeWidth={svgSize * 0.03}
             strokeLinecap="round"
           />
 
-          {/* Handle mount point */}
-          <circle
-            cx={centerX + crankArmLength}
-            cy={centerY}
-            r={svgSize * 0.03}
-            fill={SAPPHIRE[2]}
-          />
-
-          {/* Circular handle - the grip you'd hold */}
-          <circle
-            cx={centerX + crankArmLength}
-            cy={centerY}
-            r={handleRadius}
-            fill="none"
-            stroke={SAPPHIRE[3]}
-            strokeWidth={svgSize * 0.025}
+          {/* Handle grip - rounded rectangle */}
+          <rect
+            x={cx + armLength - handleWidth / 2}
+            y={cy - handleHeight / 2}
+            width={handleWidth}
+            height={handleHeight}
+            rx={handleWidth * 0.3}
+            ry={handleWidth * 0.3}
+            fill={SAPPHIRE[3]}
+            stroke={SAPPHIRE[1]}
+            strokeWidth={2}
           />
 
           {/* Handle grip detail */}
           <circle
-            cx={centerX + crankArmLength}
-            cy={centerY}
-            r={handleRadius * 0.5}
-            fill={SAPPHIRE[2]}
-            opacity={0.4}
+            cx={cx + armLength}
+            cy={cy}
+            r={svgSize * 0.025}
+            fill={SAPPHIRE[1]}
           />
         </motion.g>
-
-        {/* Optional connecting rod to show mechanical motion */}
-        <motion.line
-          animate={{
-            x1: [
-              centerX + crankArmLength * Math.cos(0),
-              centerX + crankArmLength * Math.cos(Math.PI),
-              centerX + crankArmLength * Math.cos(0),
-            ],
-            y1: [
-              centerY + crankArmLength * Math.sin(0),
-              centerY + crankArmLength * Math.sin(Math.PI),
-              centerY + crankArmLength * Math.sin(0),
-            ],
-          }}
-          x2={svgSize * 0.85}
-          y2={centerY}
-          transition={{
-            duration: DURATION.slow,
-            repeat: Infinity,
-            ease: 'linear'
-          }}
-          stroke={SAPPHIRE[1]}
-          strokeWidth={svgSize * 0.02}
-          strokeLinecap="round"
-          opacity={0.6}
-        />
       </svg>
     </div>
   );

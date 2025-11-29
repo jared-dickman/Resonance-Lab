@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PortalLoader Test</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 40px;
+      background: #0f172a;
+      display: flex;
+      gap: 40px;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      flex-wrap: wrap;
+    }
+    .container {
+      text-align: center;
+      color: white;
+    }
+    .label {
+      margin-top: 16px;
+      font-family: system-ui;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="portal-sm"></div>
+    <div class="label">Small (48px)</div>
+  </div>
+  <div class="container">
+    <div id="portal-md"></div>
+    <div class="label">Medium (64px)</div>
+  </div>
+  <div class="container">
+    <div id="portal-lg"></div>
+    <div class="label">Large (80px)</div>
+  </div>
+
+  <script>
+    // Portal ASCII Art Preview
+    const ascii = `
+    ╔═══════════════════════════════════════╗
+    ║  Portal Loader - Now You're Thinking ║
+    ║       With Portals! (づ｡◕‿‿◕｡)づ      ║
+    ╠═══════════════════════════════════════╣
+    ║                                       ║
+    ║    🔵  ←  ✨ · · · ✨  →  🟠        ║
+    ║   BLUE      PARTICLES     ORANGE      ║
+    ║  PORTAL                   PORTAL      ║
+    ║                                       ║
+    ║  Features:                            ║
+    ║  • Dual portals (blue/orange)         ║
+    ║  • Swirling vortex layers             ║
+    ║  • Particles traveling between them   ║
+    ║  • Connection energy beam             ║
+    ║  • SAPPHIRE color palette             ║
+    ║  • Mesmerizing spin animations        ║
+    ║                                       ║
+    ╚═══════════════════════════════════════╝
+    `;
+    console.log(ascii);
+  </script>
+</body>
+</html>

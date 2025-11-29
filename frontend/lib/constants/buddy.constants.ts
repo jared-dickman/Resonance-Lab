@@ -28,6 +28,20 @@ export const BUDDY_DEFAULT_PLACEHOLDER = 'What would you like to play?';
 /** Animation configs */
 const SPRING_ANIMATION = { type: 'spring' as const, stiffness: 400, damping: 30 };
 
+/** Shared pulsing glow animation for Buddy icons */
+export const BUDDY_ICON_GLOW_ANIMATION = {
+  boxShadow: [
+    '0 0 8px rgba(59, 130, 246, 0.5)',
+    '0 0 16px rgba(147, 51, 234, 0.5)',
+    '0 0 8px rgba(59, 130, 246, 0.5)',
+  ],
+};
+export const BUDDY_ICON_GLOW_TRANSITION = { duration: 2, repeat: Infinity };
+
+/** Shared scrollable container class */
+export const BUDDY_SCROLL_CONTAINER_CLASS =
+  'flex-1 overflow-y-auto overflow-x-hidden px-4 py-3 space-y-3 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent';
+
 /**
  * First load: dramatic slow entrance from top-right (Buddy button location)
  * Creates "emerging from the button" feeling - SLOW & DRAMATIC

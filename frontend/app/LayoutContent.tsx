@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef, createContext, useContext } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
@@ -12,14 +12,21 @@ import { Button } from '@/components/ui/button';
 import { pageRoutes } from '@/lib/routes';
 
 import { BuddyProvider, useBuddy } from '@/lib/contexts/BuddyContext';
+import { IntroProvider, useIntro } from '@/lib/contexts/IntroContext';
 import { CoreAgentBuddy } from '@/components/agent/CoreAgentBuddy';
 
-function LayoutInner({ children }: { children: React.ReactNode }) {
+// Context to share header logo ref with CinematicIntro
+const HeaderLogoRefContext = createContext<React.RefObject<HTMLHeadingElement | null> | null>(null);
+export const useHeaderLogoRef = () => useContext(HeaderLogoRefContext);
+
+function LayoutInner({ children, headerLogoRef }: { children: React.ReactNode; headerLogoRef: React.RefObject<HTMLHeadingElement | null> }) {
   const pathname = usePathname();
   const { isOpen, toggleBuddy } = useBuddy();
+  const { introComplete } = useIntro();
 
   const isLandingPage = pathname === '/';
   const isSongwriterPage = pathname === '/songwriter';
+  const showIntro = isLandingPage && !introComplete;
 
   useEffect(() => {
     initializeApp();
@@ -38,7 +45,10 @@ function LayoutInner({ children }: { children: React.ReactNode }) {
                 href={pageRoutes.home}
                 className="flex items-center shrink-0 transition-opacity hover:opacity-80"
               >
-                <h1 className="text-xl font-bold tracking-tight logo-gradient">
+                <h1
+                  ref={headerLogoRef}
+                  className={`text-xl font-bold tracking-tight logo-gradient transition-opacity duration-200 ${showIntro ? 'opacity-0' : 'opacity-100'}`}
+                >
                   Jamium
                 </h1>
               </Link>
@@ -85,9 +95,15 @@ function LayoutInner({ children }: { children: React.ReactNode }) {
 }
 
 export function LayoutContent({ children }: { children: React.ReactNode }) {
+  const headerLogoRef = useRef<HTMLHeadingElement | null>(null);
+
   return (
-    <BuddyProvider>
-      <LayoutInner>{children}</LayoutInner>
-    </BuddyProvider>
+    <IntroProvider>
+      <BuddyProvider>
+        <HeaderLogoRefContext.Provider value={headerLogoRef}>
+          <LayoutInner headerLogoRef={headerLogoRef}>{children}</LayoutInner>
+        </HeaderLogoRefContext.Provider>
+      </BuddyProvider>
+    </IntroProvider>
   );
 }

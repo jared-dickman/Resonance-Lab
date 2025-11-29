@@ -29,7 +29,7 @@ export function ScreensaverLoader({ className, size = 'md' }: LoaderProps) {
   const [position, setPosition] = useState({ x: dim / 2 - logoWidth / 2, y: dim / 2 - logoHeight / 2 });
   const [colorIndex, setColorIndex] = useState(0);
   const [textIndex, setTextIndex] = useState(0);
-  const velocityRef = useRef({ x: 2.5, y: 2 });
+  const velocityRef = useRef({ x: 0.6, y: 0.5 });
   const [trail, setTrail] = useState<Array<{ x: number; y: number; color: string; opacity: number }>>([]);
 
   useEffect(() => {

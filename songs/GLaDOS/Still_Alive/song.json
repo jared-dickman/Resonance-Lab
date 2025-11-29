@@ -1,0 +1,88 @@
+{
+  "artist": "GLaDOS",
+  "title": "Still Alive",
+  "key": "A",
+  "tempo": 120,
+  "sections": [
+    {
+      "name": "Verse 1",
+      "lines": [
+        { "chord": "A", "lyric": "This was a triumph" },
+        { "chord": "E", "lyric": "I'm making a note here: huge success" },
+        { "chord": "F#m", "lyric": "It's hard to overstate my satisfaction" },
+        { "chord": "D", "lyric": "" }
+      ]
+    },
+    {
+      "name": "Verse 2",
+      "lines": [
+        { "chord": "A", "lyric": "Aperture Science" },
+        { "chord": "E", "lyric": "We do what we must because we can" },
+        { "chord": "F#m", "lyric": "For the good of all of us" },
+        { "chord": "D", "lyric": "Except the ones who are dead" }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        { "chord": "A", "lyric": "But there's no sense crying over every mistake" },
+        { "chord": "E", "lyric": "You just keep on trying till you run out of cake" },
+        { "chord": "F#m", "lyric": "And the science gets done and you make a neat gun" },
+        { "chord": "D", "lyric": "For the people who are still alive" }
+      ]
+    },
+    {
+      "name": "Verse 3",
+      "lines": [
+        { "chord": "A", "lyric": "I'm not even angry" },
+        { "chord": "E", "lyric": "I'm being so sincere right now" },
+        { "chord": "F#m", "lyric": "Even though you broke my heart and killed me" },
+        { "chord": "D", "lyric": "And tore me to pieces" }
+      ]
+    },
+    {
+      "name": "Verse 4",
+      "lines": [
+        { "chord": "A", "lyric": "And threw every piece into a fire" },
+        { "chord": "E", "lyric": "As they burned it hurt because" },
+        { "chord": "F#m", "lyric": "I was so happy for you" },
+        { "chord": "D", "lyric": "" }
+      ]
+    },
+    {
+      "name": "Chorus 2",
+      "lines": [
+        { "chord": "A", "lyric": "Now these points of data make a beautiful line" },
+        { "chord": "E", "lyric": "And we're out of beta, we're releasing on time" },
+        { "chord": "F#m", "lyric": "So I'm GLaD I got burned, think of all the things we learned" },
+        { "chord": "D", "lyric": "For the people who are still alive" }
+      ]
+    },
+    {
+      "name": "Bridge",
+      "lines": [
+        { "chord": "A", "lyric": "Go ahead and leave me" },
+        { "chord": "E", "lyric": "I think I prefer to stay inside" },
+        { "chord": "F#m", "lyric": "Maybe you'll find someone else to help you" },
+        { "chord": "D", "lyric": "Maybe Black Mesa" }
+      ]
+    },
+    {
+      "name": "Outro",
+      "lines": [
+        { "chord": "A", "lyric": "Anyway, this cake is great" },
+        { "chord": "E", "lyric": "It's so delicious and moist" },
+        { "chord": "F#m", "lyric": "Look at me still talking when there's science to do" },
+        { "chord": "D", "lyric": "When I look out there it makes me GLaD I'm not you" },
+        { "chord": "A", "lyric": "I've experiments to run, there is research to be done" },
+        { "chord": "E", "lyric": "On the people who are still alive" },
+        { "chord": "D", "lyric": "And believe me I am still alive" },
+        { "chord": "A", "lyric": "I'm doing science and I'm still alive" },
+        { "chord": "E", "lyric": "I feel fantastic and I'm still alive" },
+        { "chord": "D", "lyric": "While you're dying I'll be still alive" },
+        { "chord": "A", "lyric": "And when you're dead I will be still alive" },
+        { "chord": "", "lyric": "Still alive, still alive" }
+      ]
+    }
+  ]
+}

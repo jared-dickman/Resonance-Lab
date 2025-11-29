@@ -39,28 +39,25 @@ export function PacmanLoader({ className, size = 'md' }: LoaderProps) {
           />
         ))}
 
-        {/* Pacman */}
-        <motion.g
-          animate={{ x: [0, dim * 0.1, 0] }}
-          transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
-        >
-          <motion.path
-            d={`M ${center} ${center}
-                L ${center + pacRadius} ${center - pacRadius * 0.6}
-                A ${pacRadius} ${pacRadius} 0 1 0 ${center + pacRadius} ${center + pacRadius * 0.6}
-                Z`}
-            fill={SAPPHIRE[1]}
-            animate={{
-              d: [
-                `M ${center} ${center} L ${center + pacRadius} ${center - pacRadius * 0.6} A ${pacRadius} ${pacRadius} 0 1 0 ${center + pacRadius} ${center + pacRadius * 0.6} Z`,
-                `M ${center} ${center} L ${center + pacRadius} ${center - pacRadius * 0.1} A ${pacRadius} ${pacRadius} 0 1 0 ${center + pacRadius} ${center + pacRadius * 0.1} Z`,
-                `M ${center} ${center} L ${center + pacRadius} ${center - pacRadius * 0.6} A ${pacRadius} ${pacRadius} 0 1 0 ${center + pacRadius} ${center + pacRadius * 0.6} Z`,
-              ],
-            }}
-            transition={{ duration: 0.3, repeat: Infinity, ease: 'easeInOut' }}
-          />
-          <circle cx={center} cy={center - pacRadius * 0.4} r={dim * 0.03} fill={SAPPHIRE[0]} />
-        </motion.g>
+        {/* Pacman - only mouth animates */}
+        <motion.path
+          d={`M ${center} ${center}
+              L ${center + pacRadius} ${center - pacRadius * 0.6}
+              A ${pacRadius} ${pacRadius} 0 1 0 ${center + pacRadius} ${center + pacRadius * 0.6}
+              Z`}
+          fill={SAPPHIRE[1]}
+          animate={{
+            d: [
+              `M ${center} ${center} L ${center + pacRadius} ${center - pacRadius * 0.6} A ${pacRadius} ${pacRadius} 0 1 0 ${center + pacRadius} ${center + pacRadius * 0.6} Z`,
+              `M ${center} ${center} L ${center + pacRadius} ${center - pacRadius * 0.1} A ${pacRadius} ${pacRadius} 0 1 0 ${center + pacRadius} ${center + pacRadius * 0.1} Z`,
+              `M ${center} ${center} L ${center + pacRadius} ${center - pacRadius * 0.6} A ${pacRadius} ${pacRadius} 0 1 0 ${center + pacRadius} ${center + pacRadius * 0.6} Z`,
+            ],
+          }}
+          transition={{ duration: 0.3, repeat: Infinity, ease: 'easeInOut' }}
+        />
+
+        {/* Static eye */}
+        <circle cx={center} cy={center - pacRadius * 0.4} r={dim * 0.03} fill={SAPPHIRE[0]} />
       </svg>
     </div>
   );

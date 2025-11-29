@@ -39,6 +39,36 @@ Prescribing on-brand loaders since 2077.
 **Flow** - `strokeDashoffset` animation on paths
 **Glow** - `boxShadow` or SVG `filter` with `feGaussianBlur`
 
+## Timing Principles
+
+**Slow = Majestic** - Cosmic/space loaders benefit from 4x slower animations for dramatic effect
+**Fast Eating = Satisfying** - Interactive elements (Pacman dots) should disappear quickly
+**Unified Motion = Cohesive** - Wrap related elements in single `motion.g` for synchronized movement
+
+## Static vs Animated
+
+**Anchor Points** - Keep reference elements static (tonearm, eyes, input lines)
+**Moving Elements** - Only animate the key dynamic element
+**Visual Balance** - Static elements provide stability while motion draws focus
+
+## Natural Motion
+
+**Boundary Fades** - Fade elements in/out at boundaries (sunrise rays above horizon)
+**Opacity + Position** - Tie opacity to position for natural reveal/hide
+**Physics Feel** - Use Bezier curves `[0.45, 0.05, 0.55, 0.95]` for realistic easing
+
+## Game Loaders
+
+**Match Original** - Preserve game's timing and rhythm
+**Iconic Elements** - Keep recognizable visual signatures
+**Spring Physics** - Use spring animations for satisfying impacts
+
+## Fractal/Math Loaders
+
+**Slow Zooms** - Mathematical patterns feel more contemplative with slower motion
+**Color Gradients** - Show depth and iteration levels through color
+**Clear Hierarchy** - Recursive patterns need visual distinction between levels
+
 ## Template
 
 ```tsx

@@ -1,13 +1,18 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { SAPPHIRE, LOADER_SIZE, type LoaderProps } from './loader.constants';
+import { SAPPHIRE, LOADER_SIZE, type LoaderProps } from '@/components/ui/loaders/loader.constants';
 
 export function SunriseLoader({ className, size = 'md' }: LoaderProps) {
   const dim = LOADER_SIZE[size];
   const sunRadius = dim * 0.15;
   const horizonY = dim * 0.7;
   const rayCount = 8;
+
+  // Calculate ray opacity based on sun position
+  // Y range: dim * 0.15 (top) to dim * 0.15 (bottom after full cycle)
+  // Horizon is at horizonY (dim * 0.7)
+  const sunAnimationRange = [dim * 0.15, -dim * 0.05, dim * 0.15];
 
   return (
     <div
@@ -44,17 +49,28 @@ export function SunriseLoader({ className, size = 'md' }: LoaderProps) {
 
         {/* Unified animation group - all shapes rise together */}
         <motion.g
-          animate={{ y: [dim * 0.15, -dim * 0.05, dim * 0.15] }}
+          animate={{ y: sunAnimationRange }}
           transition={{
             duration: 4,
             repeat: Infinity,
             ease: [0.45, 0.05, 0.55, 0.95], // smooth easeInOut
           }}
         >
-          {/* Radiating rays */}
-          <g
+          {/* Radiating rays - fade in as sun rises above horizon */}
+          <motion.g
             style={{
               transformOrigin: `${dim / 2}px ${horizonY}px`,
+            }}
+            animate={{
+              // Opacity tied to sun position: 0 when underwater, 1 when above horizon
+              // Maps Y position to opacity: below horizon (y > 0) = 0, above horizon (y < 0) = 1
+              opacity: [0, 0, 0.15, 0.9, 0.15, 0, 0],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: [0.45, 0.05, 0.55, 0.95],
+              times: [0, 0.2, 0.35, 0.5, 0.65, 0.8, 1], // Matches sun animation keyframes
             }}
           >
             {Array.from({ length: rayCount }).map((_, i) => {
@@ -77,7 +93,7 @@ export function SunriseLoader({ className, size = 'md' }: LoaderProps) {
                   strokeWidth={dim * 0.008}
                   strokeLinecap="round"
                   animate={{
-                    opacity: [0.2, 0.8, 0.2],
+                    opacity: [0.3, 0.9, 0.3],
                   }}
                   transition={{
                     duration: 3,
@@ -88,7 +104,7 @@ export function SunriseLoader({ className, size = 'md' }: LoaderProps) {
                 />
               );
             })}
-          </g>
+          </motion.g>
 
           {/* Sun outer glow */}
           <motion.circle

@@ -21,6 +21,9 @@ import {
   BUDDY_NAV_ROUTES,
   BUDDY_MAX_VISIBLE_RESULTS,
   BUDDY_INPUT_PLACEHOLDER,
+  BUDDY_ICON_GLOW_ANIMATION,
+  BUDDY_ICON_GLOW_TRANSITION,
+  BUDDY_SCROLL_CONTAINER_CLASS,
 } from '@/lib/constants/buddy.constants';
 
 const NAV_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -44,8 +47,8 @@ export function BuddyHeader({ context, isStatic, isOnboarding, isMinimized, onMi
       <div className="flex items-center gap-2.5">
         {!isStatic && <GripHorizontal className="h-4 w-4 text-white/20" />}
         <motion.div
-          animate={{ boxShadow: ['0 0 8px rgba(59, 130, 246, 0.5)', '0 0 16px rgba(147, 51, 234, 0.5)', '0 0 8px rgba(59, 130, 246, 0.5)'] }}
-          transition={{ duration: 2, repeat: Infinity }}
+          animate={BUDDY_ICON_GLOW_ANIMATION}
+          transition={BUDDY_ICON_GLOW_TRANSITION}
           className="h-7 w-7 rounded-lg bg-gradient-to-br from-blue-500/30 to-purple-500/30 flex items-center justify-center border border-white/10"
         >
           <Bot className="h-4 w-4 text-blue-400" />
@@ -132,7 +135,7 @@ export function BuddyMessageList({ messages, isLoading, thinkingPun, placeholder
   }, [messages]);
 
   return (
-    <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 py-3 space-y-3 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+    <div className={BUDDY_SCROLL_CONTAINER_CLASS}>
       <AnimatePresence mode="wait">
         {isEmptyState && <EmptyState placeholder={placeholder} />}
       </AnimatePresence>

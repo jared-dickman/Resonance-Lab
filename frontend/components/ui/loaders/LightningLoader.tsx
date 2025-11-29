@@ -44,11 +44,11 @@ export function LightningLoader({ className, size = 'md' }: LoaderProps) {
             opacity: [0, 1, 0.6, 0.3, 0],
           }}
           transition={{
-            duration: 1.8,
+            duration: 2.5,
             repeat: Infinity,
             ease: [0.19, 1, 0.22, 1],
             times: [0, 0.05, 0.12, 0.25, 1],
-            repeatDelay: 0.4,
+            repeatDelay: 1.8,
           }}
         />
 
@@ -65,11 +65,11 @@ export function LightningLoader({ className, size = 'md' }: LoaderProps) {
             opacity: [0, 1, 0.85, 0.4, 0],
           }}
           transition={{
-            duration: 1.8,
+            duration: 2.5,
             repeat: Infinity,
             ease: [0.19, 1, 0.22, 1],
             times: [0, 0.03, 0.08, 0.2, 1],
-            repeatDelay: 0.4,
+            repeatDelay: 1.8,
           }}
         />
 
@@ -85,11 +85,11 @@ export function LightningLoader({ className, size = 'md' }: LoaderProps) {
             opacity: [0, 0.9, 0.7, 0.35, 0],
           }}
           transition={{
-            duration: 1.8,
+            duration: 2.5,
             repeat: Infinity,
             ease: [0.19, 1, 0.22, 1],
             times: [0, 0.04, 0.1, 0.22, 1],
-            repeatDelay: 0.4,
+            repeatDelay: 1.8,
           }}
         />
 
@@ -106,11 +106,11 @@ export function LightningLoader({ className, size = 'md' }: LoaderProps) {
             opacity: [0, 0.95, 0.6, 0],
           }}
           transition={{
-            duration: 1.8,
+            duration: 2.5,
             repeat: Infinity,
             ease: [0.19, 1, 0.22, 1],
             times: [0, 0.06, 0.14, 1],
-            repeatDelay: 0.4,
+            repeatDelay: 1.8,
           }}
         />
 
@@ -127,11 +127,11 @@ export function LightningLoader({ className, size = 'md' }: LoaderProps) {
             opacity: [0, 0.9, 0.55, 0],
           }}
           transition={{
-            duration: 1.8,
+            duration: 2.5,
             repeat: Infinity,
             ease: [0.19, 1, 0.22, 1],
             times: [0, 0.07, 0.16, 1],
-            repeatDelay: 0.4,
+            repeatDelay: 1.8,
           }}
         />
 
@@ -147,11 +147,11 @@ export function LightningLoader({ className, size = 'md' }: LoaderProps) {
             opacity: [0, 1, 0.4, 0],
           }}
           transition={{
-            duration: 1.8,
+            duration: 2.5,
             repeat: Infinity,
             ease: [0.19, 1, 0.22, 1],
             times: [0, 0.04, 0.15, 1],
-            repeatDelay: 0.4,
+            repeatDelay: 1.8,
           }}
         />
 
@@ -167,11 +167,11 @@ export function LightningLoader({ className, size = 'md' }: LoaderProps) {
             opacity: [0, 1, 0.5, 0],
           }}
           transition={{
-            duration: 1.8,
+            duration: 2.5,
             repeat: Infinity,
             ease: [0.19, 1, 0.22, 1],
             times: [0, 0.05, 0.2, 1],
-            repeatDelay: 0.4,
+            repeatDelay: 1.8,
           }}
         />
 
@@ -187,11 +187,11 @@ export function LightningLoader({ className, size = 'md' }: LoaderProps) {
             opacity: [0, 0.7, 0.5, 0.3, 0],
           }}
           transition={{
-            duration: 1.8,
+            duration: 2.5,
             repeat: Infinity,
             ease: [0.19, 1, 0.22, 1],
             times: [0, 0.08, 0.25, 0.5, 1],
-            repeatDelay: 0.4,
+            repeatDelay: 1.8,
           }}
         />
       </svg>
