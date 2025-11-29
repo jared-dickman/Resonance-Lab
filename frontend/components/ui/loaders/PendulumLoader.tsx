@@ -1,72 +1,144 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
+import { SAPPHIRE, LOADER_SIZE, type LoaderProps } from './loader.constants';
 
-interface PendulumLoaderProps {
-  className?: string;
-  size?: 'sm' | 'md' | 'lg';
-}
-
-const SAPPHIRE = ['#1e40af', '#3b82f6', '#60a5fa', '#93c5fd'];
-
-export function PendulumLoader({ className, size = 'md' }: PendulumLoaderProps) {
-  const sizeConfig = {
-    sm: { width: 80, height: 50, ball: 10, stringLength: 28 },
-    md: { width: 120, height: 70, ball: 14, stringLength: 38 },
-    lg: { width: 160, height: 90, ball: 18, stringLength: 50 },
-  };
-
-  const { width, height, ball, stringLength } = sizeConfig[size];
-  const balls = 5;
-  const spacing = ball + 2;
-  const startX = (width - (balls - 1) * spacing) / 2;
+export function PendulumLoader({ size = 'md' }: LoaderProps) {
+  const dimension = LOADER_SIZE[size];
+  const dots = 5;
+  const spacing = dimension * 0.12;
+  const dotRadius = dimension * 0.08;
+  const swingDistance = dimension * 0.2;
 
   return (
     <div
       role="status"
       aria-label="Loading"
-      className={cn('relative overflow-hidden', className)}
-      style={{ width, height }}
+      className="flex items-center justify-center"
+      style={{ width: dimension, height: dimension }}
     >
-      <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 rounded-full"
-        style={{
-          width: balls * spacing + ball,
-          height: 3,
-          background: `linear-gradient(90deg, ${SAPPHIRE[0]}, ${SAPPHIRE[2]}, ${SAPPHIRE[0]})`,
-        }}
-      />
-      {Array.from({ length: balls }).map((_, i) => {
-        const isFirst = i === 0;
-        const isLast = i === balls - 1;
-        const x = startX + i * spacing;
+      <svg width={dimension} height={dimension} viewBox={`0 0 ${dimension} ${dimension}`}>
+        <rect
+          x={dimension * 0.15}
+          y={dimension * 0.18}
+          width={dimension * 0.7}
+          height={dimension * 0.03}
+          rx={dimension * 0.015}
+          fill={SAPPHIRE[2]}
+          opacity={0.6}
+        />
 
-        return (
-          <motion.div
-            key={i}
-            className="absolute"
-            style={{ left: x, top: 3, width: ball, height: stringLength + ball, transformOrigin: `${ball / 2}px 0px` }}
-            animate={isFirst ? { rotate: [-35, 0, 0, 0, -35] } : isLast ? { rotate: [0, 0, 35, 0, 0] } : { rotate: 0 }}
-            transition={{ duration: 2.4, repeat: Infinity, ease: [0.45, 0, 0.55, 1], times: [0, 0.25, 0.5, 0.75, 1] }}
-          >
-            <div
-              className="absolute left-1/2 -translate-x-1/2"
-              style={{ width: 2, height: stringLength, background: `linear-gradient(180deg, ${SAPPHIRE[1]}80, ${SAPPHIRE[2]}40)` }}
-            />
-            <div
-              className="absolute rounded-full"
-              style={{
-                width: ball,
-                height: ball,
-                top: stringLength,
-                background: `radial-gradient(circle at 30% 30%, ${SAPPHIRE[3]}, ${SAPPHIRE[i % 4]} 50%, ${SAPPHIRE[0]})`,
-                boxShadow: `0 0 ${ball / 2}px ${SAPPHIRE[2]}80`,
-              }}
-            />
-          </motion.div>
-        );
-      })}
+        {Array.from({ length: dots }).map((_, i) => {
+          const isFirstBall = i === 0;
+          const isLastBall = i === dots - 1;
+          const centerX = dimension / 2 - ((dots - 1) * spacing) / 2 + i * spacing;
+          const topY = dimension * 0.2;
+          const bottomY = dimension * 0.7;
+
+          if (isFirstBall) {
+            return (
+              <g key={i}>
+                <motion.line
+                  x1={centerX}
+                  y1={topY}
+                  x2={centerX}
+                  y2={bottomY}
+                  stroke={SAPPHIRE[1]}
+                  strokeWidth={dimension * 0.012}
+                  opacity={0.5}
+                  animate={{
+                    x1: [centerX - swingDistance, centerX, centerX, centerX - swingDistance],
+                    x2: [centerX - swingDistance, centerX, centerX, centerX - swingDistance],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: [0.5, 0, 0.5, 1],
+                    times: [0, 0.4, 0.6, 1]
+                  }}
+                />
+                <motion.circle
+                  cx={centerX}
+                  cy={bottomY}
+                  r={dotRadius}
+                  fill={SAPPHIRE[0]}
+                  animate={{
+                    cx: [centerX - swingDistance, centerX, centerX, centerX - swingDistance],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: [0.5, 0, 0.5, 1],
+                    times: [0, 0.4, 0.6, 1]
+                  }}
+                />
+              </g>
+            );
+          }
+
+          if (isLastBall) {
+            return (
+              <g key={i}>
+                <motion.line
+                  x1={centerX}
+                  y1={topY}
+                  x2={centerX}
+                  y2={bottomY}
+                  stroke={SAPPHIRE[1]}
+                  strokeWidth={dimension * 0.012}
+                  opacity={0.5}
+                  animate={{
+                    x1: [centerX, centerX, centerX + swingDistance, centerX],
+                    x2: [centerX, centerX, centerX + swingDistance, centerX],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: [0.5, 0, 0.5, 1],
+                    times: [0, 0.4, 0.6, 1]
+                  }}
+                />
+                <motion.circle
+                  cx={centerX}
+                  cy={bottomY}
+                  r={dotRadius}
+                  fill={SAPPHIRE[3]}
+                  animate={{
+                    cx: [centerX, centerX, centerX + swingDistance, centerX],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: [0.5, 0, 0.5, 1],
+                    times: [0, 0.4, 0.6, 1]
+                  }}
+                />
+              </g>
+            );
+          }
+
+          return (
+            <g key={i}>
+              <line
+                x1={centerX}
+                y1={topY}
+                x2={centerX}
+                y2={bottomY}
+                stroke={SAPPHIRE[1]}
+                strokeWidth={dimension * 0.012}
+                opacity={0.5}
+              />
+              <circle
+                cx={centerX}
+                cy={bottomY}
+                r={dotRadius}
+                fill={SAPPHIRE[i % SAPPHIRE.length]}
+                opacity={0.9}
+              />
+            </g>
+          );
+        })}
+      </svg>
     </div>
   );
 }

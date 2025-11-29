@@ -1,69 +1,126 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
+import { SAPPHIRE, LOADER_SIZE, type LoaderProps } from './loader.constants';
 
-interface PlasmaLoaderProps {
-  className?: string;
-  size?: 'sm' | 'md' | 'lg';
-}
-
-const SAPPHIRE = ['#1e40af', '#3b82f6', '#60a5fa', '#93c5fd'];
-
-export function PlasmaLoader({ className, size = 'md' }: PlasmaLoaderProps) {
-  const sizeConfig = { sm: { c: 48, core: 12, arc: 18 }, md: { c: 80, core: 20, arc: 30 }, lg: { c: 120, core: 30, arc: 45 } };
-  const { c, core, arc } = sizeConfig[size];
-  const center = c / 2;
+export function PlasmaLoader({ size = 'md' }: LoaderProps) {
+  const dimension = LOADER_SIZE[size];
+  const tendrils = 12;
+  const particles = 8;
 
   return (
-    <div role="status" aria-label="Loading" className={cn('relative overflow-hidden', className)} style={{ width: c, height: c }}>
-      <motion.div
-        className="absolute inset-0 rounded-full"
-        style={{ background: `radial-gradient(circle, ${SAPPHIRE[2]}20 0%, transparent 70%)` }}
-        animate={{ scale: [1, 1.15, 1], opacity: [0.5, 0.8, 0.5] }}
-        transition={{ duration: 2, repeat: Infinity }}
-      />
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: core, height: core, left: center - core / 2, top: center - core / 2,
-          background: `radial-gradient(circle at 30% 30%, ${SAPPHIRE[3]}, ${SAPPHIRE[2]} 30%, ${SAPPHIRE[1]} 60%, ${SAPPHIRE[0]})`,
-          boxShadow: `0 0 ${core * 0.5}px ${SAPPHIRE[2]}, 0 0 ${core}px ${SAPPHIRE[1]}80`,
-        }}
-        animate={{ scale: [1, 1.2, 0.95, 1.1, 1] }}
-        transition={{ duration: 1.5, repeat: Infinity }}
-      />
-      <svg className="absolute inset-0" width={c} height={c}>
-        <defs><filter id="plasmaGlow"><feGaussianBlur stdDeviation="2" /><feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge></filter></defs>
-        {Array.from({ length: 6 }).map((_, i) => {
-          const startAngle = (i / 6) * 360;
-          const endAngle = startAngle + 60;
-          const startRad = (startAngle * Math.PI) / 180;
-          const endRad = (endAngle * Math.PI) / 180;
-          const x1 = center + Math.cos(startRad) * (core / 2);
-          const y1 = center + Math.sin(startRad) * (core / 2);
-          const x2 = center + Math.cos(endRad) * arc;
-          const y2 = center + Math.sin(endRad) * arc;
+    <div
+      role="status"
+      aria-label="Loading"
+      className="flex items-center justify-center"
+      style={{ width: dimension, height: dimension }}
+    >
+      <svg width={dimension} height={dimension} viewBox={`0 0 ${dimension} ${dimension}`}>
+        <defs>
+          <radialGradient id="plasmaCore">
+            <stop offset="0%" stopColor={SAPPHIRE[3]} stopOpacity={1} />
+            <stop offset="50%" stopColor={SAPPHIRE[2]} stopOpacity={0.8} />
+            <stop offset="100%" stopColor={SAPPHIRE[0]} stopOpacity={0.3} />
+          </radialGradient>
+          <filter id="plasmaSoftGlow">
+            <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+
+        <motion.circle
+          cx={dimension / 2}
+          cy={dimension / 2}
+          r={dimension * 0.15}
+          fill="url(#plasmaCore)"
+          filter="url(#plasmaSoftGlow)"
+          animate={{
+            r: [dimension * 0.13, dimension * 0.18, dimension * 0.13],
+            opacity: [0.8, 1, 0.8],
+          }}
+          transition={{
+            duration: 1.5,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
+
+        {Array.from({ length: tendrils }).map((_, i) => {
+          const angle = (i * 360) / tendrils + Math.random() * 20;
+          const delay = i * 0.08;
+          const innerRadius = dimension * 0.16;
+          const midRadius = dimension * (0.25 + Math.random() * 0.05);
+          const outerRadius = dimension * (0.38 + Math.random() * 0.08);
+
+          const x1 = dimension / 2 + innerRadius * Math.cos((angle * Math.PI) / 180);
+          const y1 = dimension / 2 + innerRadius * Math.sin((angle * Math.PI) / 180);
+          const xMid = dimension / 2 + midRadius * Math.cos(((angle + Math.random() * 30 - 15) * Math.PI) / 180);
+          const yMid = dimension / 2 + midRadius * Math.sin(((angle + Math.random() * 30 - 15) * Math.PI) / 180);
+          const x2 = dimension / 2 + outerRadius * Math.cos(((angle + Math.random() * 40 - 20) * Math.PI) / 180);
+          const y2 = dimension / 2 + outerRadius * Math.sin(((angle + Math.random() * 40 - 20) * Math.PI) / 180);
+
           return (
             <motion.path
-              key={i}
-              d={`M ${x1} ${y1} Q ${(x1 + x2) / 2 + (Math.random() - 0.5) * 10} ${(y1 + y2) / 2 + (Math.random() - 0.5) * 10} ${x2} ${y2}`}
-              fill="none" stroke={SAPPHIRE[i % 4]} strokeWidth={1.5} strokeLinecap="round" filter="url(#plasmaGlow)"
-              animate={{ pathLength: [0, 1, 1, 0], opacity: [0, 1, 1, 0] }}
-              transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.15, repeatDelay: 0.3 }}
+              key={`tendril-${i}`}
+              d={`M ${x1},${y1} Q ${xMid},${yMid} ${x2},${y2}`}
+              stroke={SAPPHIRE[i % SAPPHIRE.length]}
+              strokeWidth={dimension * 0.018}
+              strokeLinecap="round"
+              fill="none"
+              filter="url(#plasmaSoftGlow)"
+              opacity={0.7}
+              animate={{
+                strokeWidth: [dimension * 0.012, dimension * 0.025, dimension * 0.012],
+                opacity: [0.2, 0.9, 0.2],
+              }}
+              transition={{
+                duration: 1.4 + Math.random() * 0.6,
+                repeat: Infinity,
+                delay,
+                ease: 'easeInOut',
+              }}
+            />
+          );
+        })}
+
+        {Array.from({ length: particles }).map((_, i) => {
+          const orbitRadius = dimension * (0.2 + Math.random() * 0.15);
+          const particleSize = dimension * (0.015 + Math.random() * 0.01);
+          const duration = 2 + Math.random() * 2;
+          const delay = i * 0.2;
+
+          return (
+            <motion.circle
+              key={`particle-${i}`}
+              r={particleSize}
+              fill={SAPPHIRE[i % SAPPHIRE.length]}
+              filter="url(#plasmaSoftGlow)"
+              animate={{
+                cx: [
+                  dimension / 2 + orbitRadius * Math.cos(0),
+                  dimension / 2 + orbitRadius * Math.cos(Math.PI),
+                  dimension / 2 + orbitRadius * Math.cos(Math.PI * 2),
+                ],
+                cy: [
+                  dimension / 2 + orbitRadius * Math.sin(0),
+                  dimension / 2 + orbitRadius * Math.sin(Math.PI),
+                  dimension / 2 + orbitRadius * Math.sin(Math.PI * 2),
+                ],
+                opacity: [0.4, 1, 0.4],
+              }}
+              transition={{
+                duration,
+                repeat: Infinity,
+                delay,
+                ease: 'linear',
+              }}
             />
           );
         })}
       </svg>
-      {[0.6, 0.85].map((r, i) => (
-        <motion.div
-          key={i}
-          className="absolute rounded-full border border-dashed"
-          style={{ width: arc * 2 * r, height: arc * 2 * r, left: center - arc * r, top: center - arc * r, borderColor: `${SAPPHIRE[i + 1]}40` }}
-          animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
-          transition={{ duration: 8 + i * 4, repeat: Infinity, ease: 'linear' }}
-        />
-      ))}
     </div>
   );
 }

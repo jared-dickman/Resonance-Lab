@@ -1,56 +1,44 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
+import { SAPPHIRE, LOADER_SIZE, type LoaderProps } from './loader.constants';
 
-interface MorphLoaderProps {
-  className?: string;
-  size?: 'sm' | 'md' | 'lg';
-}
+export function MorphLoader({ size = 'md' }: LoaderProps) {
+  const dimension = LOADER_SIZE[size];
 
-const SAPPHIRE = ['#1e40af', '#3b82f6', '#60a5fa', '#93c5fd'];
-
-export function MorphLoader({ className, size = 'md' }: MorphLoaderProps) {
-  const sizeConfig = { sm: 32, md: 48, lg: 64 };
-  const dimension = sizeConfig[size];
-
-  const blobPaths = [
-    'M45,25 C55,10 70,15 75,30 C80,45 70,60 55,65 C40,70 25,60 20,45 C15,30 25,15 45,25',
-    'M50,15 C70,20 80,35 75,55 C70,75 50,80 35,70 C20,60 15,40 25,25 C35,10 45,10 50,15',
-    'M40,20 C60,10 80,25 80,45 C80,65 60,80 40,75 C20,70 10,50 15,35 C20,20 30,15 40,20',
-  ];
+  const shape1 = `M ${dimension * 0.3} ${dimension * 0.3} L ${dimension * 0.7} ${dimension * 0.3} L ${dimension * 0.7} ${dimension * 0.7} L ${dimension * 0.3} ${dimension * 0.7} Z`;
+  const shape2 = `M ${dimension * 0.5} ${dimension * 0.2} L ${dimension * 0.75} ${dimension * 0.5} L ${dimension * 0.5} ${dimension * 0.8} L ${dimension * 0.25} ${dimension * 0.5} Z`;
+  const shape3 = `M ${dimension * 0.5} ${dimension * 0.2} L ${dimension * 0.8} ${dimension * 0.5} L ${dimension * 0.65} ${dimension * 0.8} L ${dimension * 0.35} ${dimension * 0.8} L ${dimension * 0.2} ${dimension * 0.5} Z`;
 
   return (
     <div
       role="status"
       aria-label="Loading"
-      className={cn('relative overflow-hidden', className)}
+      className="flex items-center justify-center"
       style={{ width: dimension, height: dimension }}
     >
-      <svg viewBox="0 0 100 100" width={dimension} height={dimension}>
+      <svg width={dimension} height={dimension} viewBox={`0 0 ${dimension} ${dimension}`}>
         <defs>
-          <radialGradient id="morphGrad" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor={SAPPHIRE[3]} />
-            <stop offset="50%" stopColor={SAPPHIRE[1]} />
-            <stop offset="100%" stopColor={SAPPHIRE[0]} />
-          </radialGradient>
-          <filter id="morphGlow">
-            <feGaussianBlur stdDeviation="3" />
-            <feMerge>
-              <feMergeNode />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
+          <linearGradient id="morphGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor={SAPPHIRE[1]} stopOpacity={0.8} />
+            <stop offset="100%" stopColor={SAPPHIRE[3]} stopOpacity={0.9} />
+          </linearGradient>
         </defs>
         <motion.path
+          d={shape1}
           fill="url(#morphGrad)"
-          filter="url(#morphGlow)"
-          animate={{ d: blobPaths, rotate: [0, 360] }}
-          transition={{
-            d: { duration: 4, repeat: Infinity, ease: 'easeInOut' },
-            rotate: { duration: 8, repeat: Infinity, ease: 'linear' },
+          strokeWidth={dimension * 0.02}
+          stroke={SAPPHIRE[2]}
+          animate={{
+            d: [shape1, shape2, shape3, shape1],
+            rotate: [0, 120, 240, 360],
           }}
-          style={{ transformOrigin: '50px 50px' }}
+          transition={{
+            duration: 3,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+          style={{ transformOrigin: `${dimension / 2}px ${dimension / 2}px` }}
         />
       </svg>
     </div>

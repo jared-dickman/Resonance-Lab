@@ -1,50 +1,58 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { SAPPHIRE, LOADER_SIZE, type LoaderProps } from './loader.constants';
 
-interface FrequencyLoaderProps {
-  size?: number;
-  barCount?: number;
-}
-
-export function FrequencyLoader({ size = 48, barCount = 7 }: FrequencyLoaderProps) {
-  const barWidth = size / (barCount * 2);
-  const maxHeight = size;
+export function FrequencyLoader({ size = 'md' }: LoaderProps) {
+  const dimension = LOADER_SIZE[size];
+  const bars = 9;
+  const barWidth = dimension / (bars * 1.8);
 
   return (
     <div
-      className="relative flex items-end justify-center gap-[2px] overflow-hidden"
-      style={{ height: maxHeight, width: size }}
       role="status"
       aria-label="Loading"
+      className="flex items-center justify-center"
+      style={{ width: dimension, height: dimension }}
     >
-      {Array.from({ length: barCount }).map((_, i) => {
-        const delay = i * 0.1;
-        const centerDistance = Math.abs(i - (barCount - 1) / 2);
-        const baseHeight = maxHeight * (1 - centerDistance * 0.15);
+      <svg width={dimension} height={dimension} viewBox={`0 0 ${dimension} ${dimension}`}>
+        <defs>
+          <linearGradient id="freqGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stopColor={SAPPHIRE[0]} />
+            <stop offset="100%" stopColor={SAPPHIRE[2]} />
+          </linearGradient>
+        </defs>
+        {Array.from({ length: bars }).map((_, i) => {
+          const x = (dimension / (bars + 1)) * (i + 1);
+          const maxHeight = dimension * 0.7;
+          const minHeight = dimension * 0.15;
+          const delay = i * 0.07;
 
-        return (
-          <motion.div
-            key={i}
-            className="rounded-full"
-            style={{
-              width: barWidth,
-              background: 'linear-gradient(to top, #1e40af, #3b82f6, #60a5fa, #93c5fd)',
-              boxShadow: '0 0 8px #3b82f6, 0 0 16px #1e40af40',
-            }}
-            animate={{
-              height: [baseHeight * 0.3, baseHeight, baseHeight * 0.3],
-              opacity: [0.6, 1, 0.6],
-            }}
-            transition={{
-              duration: 0.8,
-              repeat: Infinity,
-              ease: 'easeInOut',
-              delay,
-            }}
-          />
-        );
-      })}
+          return (
+            <motion.rect
+              key={i}
+              x={x - barWidth / 2}
+              y={dimension / 2 - minHeight / 2}
+              width={barWidth}
+              height={minHeight}
+              rx={barWidth / 2}
+              fill="url(#freqGrad)"
+              opacity={0.7}
+              animate={{
+                height: [minHeight, maxHeight, minHeight],
+                y: [dimension / 2 - minHeight / 2, dimension / 2 - maxHeight / 2, dimension / 2 - minHeight / 2],
+                opacity: [0.5, 1, 0.5],
+              }}
+              transition={{
+                duration: 1,
+                repeat: Infinity,
+                delay,
+                ease: 'easeInOut',
+              }}
+            />
+          );
+        })}
+      </svg>
     </div>
   );
 }

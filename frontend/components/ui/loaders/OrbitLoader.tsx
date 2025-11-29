@@ -1,73 +1,127 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
+import { SAPPHIRE, LOADER_SIZE, type LoaderProps } from './loader.constants';
 
-interface OrbitLoaderProps {
-  className?: string;
-  size?: 'sm' | 'md' | 'lg';
-}
-
-const SAPPHIRE = ['#1e40af', '#3b82f6', '#60a5fa', '#93c5fd'];
-const PARTICLE_COUNT = 8;
-
-export function OrbitLoader({ className, size = 'md' }: OrbitLoaderProps) {
-  const sizeConfig = {
-    sm: { container: 32, core: 6, particle: 4, ringRadius: 12 },
-    md: { container: 48, core: 10, particle: 6, ringRadius: 18 },
-    lg: { container: 64, core: 14, particle: 8, ringRadius: 24 },
-  };
-
-  const { container, core, particle, ringRadius } = sizeConfig[size];
-  const center = container / 2;
+export function OrbitLoader({ size = 'md' }: LoaderProps) {
+  const dimension = LOADER_SIZE[size];
+  const svgSize = dimension * 0.8;
+  const center = svgSize / 2;
+  const orbits = 3;
+  const particlesPerOrbit = [3, 5, 7];
 
   return (
     <div
       role="status"
       aria-label="Loading"
-      className={cn('relative overflow-hidden', className)}
-      style={{ width: container, height: container }}
+      className="flex items-center justify-center overflow-hidden"
+      style={{ width: dimension, height: dimension }}
     >
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: core,
-          height: core,
-          left: center - core / 2,
-          top: center - core / 2,
-          background: `radial-gradient(circle, ${SAPPHIRE[3]} 0%, ${SAPPHIRE[1]} 60%, ${SAPPHIRE[0]} 100%)`,
-          boxShadow: `0 0 ${core}px ${SAPPHIRE[2]}, 0 0 ${core * 2}px ${SAPPHIRE[1]}40`,
-        }}
-        animate={{ scale: [1, 1.3, 1], opacity: [0.8, 1, 0.8] }}
-        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-      />
+      <svg width={svgSize} height={svgSize} viewBox={`0 0 ${svgSize} ${svgSize}`}>
+        <defs>
+          <radialGradient id={`orbitCore-${size}`}>
+            <stop offset="0%" stopColor={SAPPHIRE[3]} stopOpacity={1} />
+            <stop offset="50%" stopColor={SAPPHIRE[2]} stopOpacity={0.8} />
+            <stop offset="100%" stopColor={SAPPHIRE[1]} stopOpacity={0.3} />
+          </radialGradient>
+          {particlesPerOrbit.map((_, orbitIdx) => (
+            <radialGradient key={`particle-grad-${orbitIdx}`} id={`particle-${orbitIdx}-${size}`}>
+              <stop offset="0%" stopColor={SAPPHIRE[(orbitIdx + 1) % SAPPHIRE.length]} stopOpacity={1} />
+              <stop offset="100%" stopColor={SAPPHIRE[(orbitIdx + 2) % SAPPHIRE.length]} stopOpacity={0.6} />
+            </radialGradient>
+          ))}
+        </defs>
 
-      {Array.from({ length: PARTICLE_COUNT }).map((_, i) => {
-        const angle = (i / PARTICLE_COUNT) * 360;
-        return (
-          <motion.div
-            key={i}
-            className="absolute rounded-full"
-            style={{
-              width: particle,
-              height: particle,
-              background: SAPPHIRE[i % SAPPHIRE.length],
-              boxShadow: `0 0 ${particle * 2}px ${SAPPHIRE[i % SAPPHIRE.length]}`,
-            }}
-            animate={{
-              x: [
-                center - particle / 2 + Math.cos((angle * Math.PI) / 180) * ringRadius,
-                center - particle / 2 + Math.cos(((angle + 360) * Math.PI) / 180) * ringRadius,
-              ],
-              y: [
-                center - particle / 2 + Math.sin((angle * Math.PI) / 180) * ringRadius,
-                center - particle / 2 + Math.sin(((angle + 360) * Math.PI) / 180) * ringRadius,
-              ],
-            }}
-            transition={{ duration: 2.5, repeat: Infinity, ease: 'linear' }}
-          />
-        );
-      })}
+        {/* Central core with pulse */}
+        <motion.circle
+          cx={center}
+          cy={center}
+          r={svgSize * 0.06}
+          fill={`url(#orbitCore-${size})`}
+          animate={{
+            r: [svgSize * 0.06, svgSize * 0.08, svgSize * 0.06],
+            opacity: [0.8, 1, 0.8],
+          }}
+          transition={{
+            duration: 2.5,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
+
+        {/* Orbit paths with subtle glow */}
+        {Array.from({ length: orbits }).map((_, orbitIdx) => {
+          const radius = svgSize * (0.18 + orbitIdx * 0.12);
+          const direction = orbitIdx % 2 === 0 ? 1 : -1;
+
+          return (
+            <motion.circle
+              key={`orbit-${orbitIdx}`}
+              cx={center}
+              cy={center}
+              r={radius}
+              fill="none"
+              stroke={SAPPHIRE[orbitIdx % SAPPHIRE.length]}
+              strokeWidth={svgSize * 0.008}
+              opacity={0.25}
+              strokeDasharray={`${svgSize * 0.04} ${svgSize * 0.06}`}
+              animate={{
+                rotate: direction * 360,
+              }}
+              transition={{
+                duration: 25 - orbitIdx * 3,
+                repeat: Infinity,
+                ease: 'linear',
+              }}
+              style={{
+                transformOrigin: `${center}px ${center}px`,
+              }}
+            />
+          );
+        })}
+
+        {/* Orbiting particles with smooth bezier easing */}
+        {Array.from({ length: orbits }).map((_, orbitIdx) => {
+          const radius = svgSize * (0.18 + orbitIdx * 0.12);
+          const particles = particlesPerOrbit[orbitIdx] ?? 4;
+          const duration = 2.5 + orbitIdx * 0.8;
+          const direction = orbitIdx % 2 === 0 ? 1 : -1;
+
+          return Array.from({ length: particles }).map((_, particleIdx) => {
+            const startAngle = (particleIdx * 360) / particles;
+            const dotRadius = svgSize * (0.04 - orbitIdx * 0.006);
+            const delay = (particleIdx * duration) / particles;
+
+            return (
+              <motion.circle
+                key={`${orbitIdx}-${particleIdx}`}
+                cx={center + radius * Math.cos((startAngle * Math.PI) / 180)}
+                cy={center + radius * Math.sin((startAngle * Math.PI) / 180)}
+                r={dotRadius}
+                fill={`url(#particle-${orbitIdx}-${size})`}
+                animate={{
+                  cx: [
+                    center + radius * Math.cos((startAngle * Math.PI) / 180),
+                    center + radius * Math.cos(((startAngle + direction * 360) * Math.PI) / 180),
+                  ],
+                  cy: [
+                    center + radius * Math.sin((startAngle * Math.PI) / 180),
+                    center + radius * Math.sin(((startAngle + direction * 360) * Math.PI) / 180),
+                  ],
+                  opacity: [0.7, 1, 0.7],
+                  scale: [1, 1.15, 1],
+                }}
+                transition={{
+                  duration,
+                  repeat: Infinity,
+                  ease: [0.45, 0, 0.55, 1],
+                  delay,
+                }}
+              />
+            );
+          });
+        })}
+      </svg>
     </div>
   );
 }

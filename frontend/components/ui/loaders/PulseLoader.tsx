@@ -1,46 +1,59 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { SAPPHIRE, LOADER_SIZE, type LoaderProps } from './loader.constants';
 
-const BARS = 12;
-const SAPPHIRE = ['#1e40af', '#3b82f6', '#60a5fa', '#93c5fd'];
-
-export function PulseLoader({ size = 48 }: { size?: number }) {
-  const barWidth = size / (BARS * 2);
-  const maxHeight = size;
+export function PulseLoader({ size = 'md' }: LoaderProps) {
+  const dimension = LOADER_SIZE[size];
+  const bars = 8;
 
   return (
     <div
-      className="relative flex items-center justify-center gap-[2px] overflow-hidden"
-      style={{ height: size, width: size * 1.5 }}
       role="status"
       aria-label="Loading"
+      className="flex items-center justify-center"
+      style={{ width: dimension, height: dimension }}
     >
-      {Array.from({ length: BARS }).map((_, i) => {
-        const colorIndex = Math.floor((i / BARS) * SAPPHIRE.length);
-        const delay = i * 0.08;
+      <svg width={dimension} height={dimension} viewBox={`0 0 ${dimension} ${dimension}`}>
+        <defs>
+          <linearGradient id="pulseGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor={SAPPHIRE[1]} stopOpacity={0.8} />
+            <stop offset="100%" stopColor={SAPPHIRE[3]} stopOpacity={0.9} />
+          </linearGradient>
+        </defs>
+        {Array.from({ length: bars }).map((_, i) => {
+          const angle = (i * 360) / bars;
+          const delay = i * 0.1;
+          const radius = dimension * 0.32;
+          const barLength = dimension * 0.15;
+          const x = dimension / 2 + radius * Math.cos((angle * Math.PI) / 180);
+          const y = dimension / 2 + radius * Math.sin((angle * Math.PI) / 180);
 
-        return (
-          <motion.div
-            key={i}
-            style={{
-              width: barWidth,
-              background: `linear-gradient(180deg, ${SAPPHIRE[colorIndex]} 0%, ${SAPPHIRE[Math.min(colorIndex + 1, 3)]} 100%)`,
-              borderRadius: barWidth / 2,
-            }}
-            animate={{
-              height: [maxHeight * 0.2, maxHeight * 0.9, maxHeight * 0.2],
-              opacity: [0.6, 1, 0.6],
-            }}
-            transition={{
-              duration: 1,
-              repeat: Infinity,
-              ease: 'easeInOut',
-              delay,
-            }}
-          />
-        );
-      })}
+          return (
+            <motion.line
+              key={i}
+              x1={x}
+              y1={y}
+              x2={x + (barLength * Math.cos((angle * Math.PI) / 180))}
+              y2={y + (barLength * Math.sin((angle * Math.PI) / 180))}
+              stroke="url(#pulseGrad)"
+              strokeWidth={dimension * 0.04}
+              strokeLinecap="round"
+              initial={{ opacity: 0.3 }}
+              animate={{
+                opacity: [0.3, 1, 0.3],
+                strokeWidth: [dimension * 0.03, dimension * 0.05, dimension * 0.03],
+              }}
+              transition={{
+                duration: 1.2,
+                repeat: Infinity,
+                delay,
+                ease: 'easeInOut',
+              }}
+            />
+          );
+        })}
+      </svg>
     </div>
   );
 }

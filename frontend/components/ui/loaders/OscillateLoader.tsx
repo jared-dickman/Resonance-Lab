@@ -1,75 +1,84 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { SAPPHIRE, LOADER_SIZE, type LoaderProps } from './loader.constants';
 
-const SAPPHIRE = ['#1e40af', '#3b82f6', '#60a5fa', '#93c5fd'];
+export function OscillateLoader({ size = 'md' }: LoaderProps) {
+  const dimension = LOADER_SIZE[size];
 
-interface OscillateLoaderProps {
-  size?: number;
-  className?: string;
-}
-
-export function OscillateLoader({ size = 120, className = '' }: OscillateLoaderProps) {
-  const waves = [
-    { delay: 0, amplitude: 8, color: SAPPHIRE[0] },
-    { delay: 0.15, amplitude: 6, color: SAPPHIRE[1] },
-    { delay: 0.3, amplitude: 10, color: SAPPHIRE[2] },
+  // 12-bar blues rhythm pattern: I-I-I-I-IV-IV-I-I-V-IV-I-I
+  const bluesPattern = [
+    { bar: 1, duration: 0.5, yRange: 0.3 },
+    { bar: 2, duration: 0.5, yRange: 0.3 },
+    { bar: 3, duration: 0.5, yRange: 0.3 },
+    { bar: 4, duration: 0.5, yRange: 0.3 },
+    { bar: 5, duration: 0.6, yRange: 0.35 },
+    { bar: 6, duration: 0.6, yRange: 0.35 },
+    { bar: 7, duration: 0.5, yRange: 0.3 },
+    { bar: 8, duration: 0.5, yRange: 0.3 },
+    { bar: 9, duration: 0.7, yRange: 0.4 },
+    { bar: 10, duration: 0.6, yRange: 0.35 },
+    { bar: 11, duration: 0.5, yRange: 0.3 },
+    { bar: 12, duration: 0.5, yRange: 0.3 },
   ];
 
-  const generateWavePath = (amplitude: number, yOffset: number) => {
-    const points: string[] = [];
-    const width = size;
-    const segments = 40;
-
-    for (let i = 0; i <= segments; i++) {
-      const x = (i / segments) * width;
-      const y = yOffset + Math.sin((i / segments) * Math.PI * 3) * amplitude;
-      points.push(`${i === 0 ? 'M' : 'L'} ${x} ${y}`);
-    }
-
-    return points.join(' ');
-  };
-
   return (
-    <div className={`relative flex items-center justify-center overflow-hidden ${className}`} role="status" aria-label="Loading">
-      <svg width={size} height={size * 0.5} viewBox={`0 0 ${size} ${size * 0.5}`}>
-        {waves.map((wave, index) => (
-          <motion.path
-            key={index}
-            d={generateWavePath(wave.amplitude, size * 0.25)}
-            fill="none"
-            stroke={wave.color}
-            strokeWidth={2.5}
-            strokeLinecap="round"
-            initial={{ pathLength: 0, opacity: 0.3 }}
-            animate={{
-              pathLength: [0, 1, 1, 0],
-              opacity: [0.4, 1, 1, 0.4],
-              strokeWidth: [2, 3, 3, 2],
-            }}
-            transition={{
-              duration: 2,
-              delay: wave.delay,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-          />
-        ))}
-        <motion.circle
-          cx={size / 2}
-          cy={size * 0.25}
-          r={4}
-          fill={SAPPHIRE[3]}
-          animate={{
-            x: [-(size / 2) + 10, (size / 2) - 10, -(size / 2) + 10],
-            scale: [1, 1.3, 1],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-        />
+    <div
+      role="status"
+      aria-label="Loading"
+      className="flex items-center justify-center"
+      style={{ width: dimension, height: dimension }}
+    >
+      <svg width={dimension} height={dimension} viewBox={`0 0 ${dimension} ${dimension}`}>
+        {bluesPattern.map((bar, i) => {
+          const x = dimension * 0.1 + (i * dimension * 0.8) / (bluesPattern.length - 1);
+          const delay = i * 0.15;
+          const radius = dimension * (0.04 + bar.yRange * 0.05);
+          const minY = dimension * (0.5 - bar.yRange);
+          const maxY = dimension * (0.5 + bar.yRange);
+
+          return (
+            <motion.g key={i}>
+              {/* Main oscillating circle */}
+              <motion.circle
+                cx={x}
+                cy={dimension / 2}
+                r={radius}
+                fill={SAPPHIRE[i % SAPPHIRE.length]}
+                animate={{
+                  cy: [dimension / 2, minY, dimension / 2, maxY, dimension / 2],
+                  opacity: [0.4, 1, 0.6, 1, 0.4],
+                  r: [radius, radius * 1.2, radius, radius * 1.2, radius],
+                }}
+                transition={{
+                  duration: bar.duration * 4,
+                  repeat: Infinity,
+                  delay,
+                  ease: 'easeInOut',
+                }}
+              />
+
+              {/* Trail effect */}
+              <motion.circle
+                cx={x}
+                cy={dimension / 2}
+                r={radius * 0.6}
+                fill={SAPPHIRE[(i + 2) % SAPPHIRE.length]}
+                opacity={0.3}
+                animate={{
+                  cy: [dimension / 2, minY, dimension / 2, maxY, dimension / 2],
+                  scale: [1, 0.8, 1, 0.8, 1],
+                }}
+                transition={{
+                  duration: bar.duration * 4,
+                  repeat: Infinity,
+                  delay: delay + 0.1,
+                  ease: 'easeInOut',
+                }}
+              />
+            </motion.g>
+          );
+        })}
       </svg>
     </div>
   );

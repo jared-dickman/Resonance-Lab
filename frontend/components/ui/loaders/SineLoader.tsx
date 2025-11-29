@@ -1,92 +1,64 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
+import { SAPPHIRE, LOADER_SIZE, type LoaderProps } from './loader.constants';
 
-interface SineLoaderProps {
-  className?: string;
-  width?: number;
-  height?: number;
-}
+export function SineLoader({ size = 'md' }: LoaderProps) {
+  const dimension = LOADER_SIZE[size];
+  const svgSize = dimension * 0.8;
+  const points = 100;
+  const waves = 3;
 
-export function SineLoader({ className, width = 120, height = 40 }: SineLoaderProps) {
-  const points = 60;
-  const amplitude = height * 0.35;
-  const frequency = 2;
-
-  const generatePath = (phase: number, amp: number) => {
-    let d = `M 0 ${height / 2}`;
+  const generatePath = (phase: number, frequency: number, amplitude: number, verticalOffset: number) => {
+    let path = `M 0 ${svgSize / 2 + verticalOffset}`;
     for (let i = 0; i <= points; i++) {
-      const x = (i / points) * width;
-      const y = height / 2 + Math.sin((i / points) * Math.PI * 2 * frequency + phase) * amp;
-      d += ` L ${x} ${y}`;
+      const x = (i / points) * svgSize;
+      const y = svgSize / 2 + verticalOffset + Math.sin((i / points) * Math.PI * frequency + phase) * amplitude;
+      path += ` L ${x} ${y}`;
     }
-    return d;
+    return path;
   };
 
   return (
-    <div className={cn('relative flex items-center justify-center overflow-hidden', className)} role="status" aria-label="Loading">
-      <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
-        <defs>
-          <linearGradient id="sineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <motion.stop
-              offset="0%"
-              animate={{ stopColor: ['#1e40af', '#3b82f6', '#60a5fa', '#1e40af'] }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-            />
-            <motion.stop
-              offset="50%"
-              animate={{ stopColor: ['#3b82f6', '#60a5fa', '#93c5fd', '#3b82f6'] }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-            />
-            <motion.stop
-              offset="100%"
-              animate={{ stopColor: ['#60a5fa', '#93c5fd', '#1e40af', '#60a5fa'] }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-            />
-          </linearGradient>
-        </defs>
+    <div
+      role="status"
+      aria-label="Loading"
+      className="flex items-center justify-center overflow-hidden"
+      style={{ width: dimension, height: dimension }}
+    >
+      <svg width={svgSize} height={svgSize} viewBox={`0 0 ${svgSize} ${svgSize}`}>
+        {Array.from({ length: waves }).map((_, i) => {
+          const frequency = 3 + i * 0.8;
+          const amplitude = svgSize * (0.15 - i * 0.03);
+          const verticalOffset = (i - 1) * svgSize * 0.08;
+          const delay = i * 0.15;
+          const duration = 2.5 - i * 0.2;
 
-        <motion.path
-          d={generatePath(0, amplitude)}
-          fill="none"
-          stroke="url(#sineGradient)"
-          strokeWidth={3}
-          strokeLinecap="round"
-          animate={{
-            d: [
-              generatePath(0, amplitude),
-              generatePath(Math.PI, amplitude * 0.6),
-              generatePath(Math.PI * 2, amplitude),
-            ],
-          }}
-          transition={{
-            duration: 1.5,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-        />
-
-        <motion.path
-          d={generatePath(Math.PI / 2, amplitude * 0.5)}
-          fill="none"
-          stroke="url(#sineGradient)"
-          strokeWidth={2}
-          strokeLinecap="round"
-          opacity={0.4}
-          animate={{
-            d: [
-              generatePath(Math.PI / 2, amplitude * 0.5),
-              generatePath(Math.PI * 1.5, amplitude * 0.8),
-              generatePath(Math.PI * 2.5, amplitude * 0.5),
-            ],
-          }}
-          transition={{
-            duration: 1.8,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-        />
+          return (
+            <motion.path
+              key={i}
+              d={generatePath(0, frequency, amplitude, verticalOffset)}
+              fill="none"
+              stroke={SAPPHIRE[i % SAPPHIRE.length]}
+              strokeWidth={svgSize * (0.035 - i * 0.008)}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              opacity={0.9 - i * 0.2}
+              animate={{
+                d: [
+                  generatePath(0, frequency, amplitude, verticalOffset),
+                  generatePath(Math.PI * 2, frequency, amplitude, verticalOffset),
+                ],
+              }}
+              transition={{
+                duration,
+                repeat: Infinity,
+                ease: [0.45, 0.05, 0.55, 0.95],
+                delay,
+              }}
+            />
+          );
+        })}
       </svg>
     </div>
   );

@@ -1,57 +1,79 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
+import { LOADER_SIZE, LOADER_STROKE, type LoaderProps } from './loader.constants';
 
-interface PrismLoaderProps {
-  className?: string;
-  size?: 'sm' | 'md' | 'lg';
-}
-
-const SAPPHIRE = ['#1e40af', '#3b82f6', '#60a5fa', '#93c5fd'];
-const SPECTRUM = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#8b5cf6', '#ec4899'];
-
-export function PrismLoader({ className, size = 'md' }: PrismLoaderProps) {
-  const sizeConfig = { sm: 48, md: 72, lg: 96 };
-  const dimension = sizeConfig[size];
+export function PrismLoader({ size = 'md' }: LoaderProps) {
+  const dimension = LOADER_SIZE[size];
+  const stroke = LOADER_STROKE[size];
 
   return (
     <div
       role="status"
       aria-label="Loading"
-      className={cn('relative overflow-hidden', className)}
-      style={{ width: dimension * 1.8, height: dimension }}
+      className="flex items-center justify-center"
+      style={{ width: dimension, height: dimension }}
     >
-      <svg viewBox="0 0 180 100" width={dimension * 1.8} height={dimension}>
-        <defs>
-          <linearGradient id="prismFace" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor={SAPPHIRE[3]} stopOpacity="0.9" />
-            <stop offset="50%" stopColor={SAPPHIRE[1]} stopOpacity="0.7" />
-            <stop offset="100%" stopColor={SAPPHIRE[0]} stopOpacity="0.9" />
-          </linearGradient>
-          <filter id="prismGlow">
-            <feGaussianBlur stdDeviation="2" />
-            <feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge>
-          </filter>
-        </defs>
-        <motion.line x1="0" y1="50" x2="55" y2="50" stroke="#ffffff" strokeWidth="3" animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1.5, repeat: Infinity }} />
-        <motion.polygon points="55,15 95,85 55,85" fill="url(#prismFace)" stroke={SAPPHIRE[2]} strokeWidth="1.5" filter="url(#prismGlow)" />
-        {SPECTRUM.map((color, i) => {
-          const angle = -25 + i * 8;
-          const endX = 95 + Math.cos((angle * Math.PI) / 180) * 85;
-          const endY = 50 + Math.sin((angle * Math.PI) / 180) * 85;
-          return (
-            <motion.line
-              key={color}
-              x1="85" y1="65" x2={endX} y2={endY}
-              stroke={color} strokeWidth="2.5" strokeLinecap="round"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: [0, 1, 1, 0], opacity: [0, 1, 1, 0] }}
-              transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.08, times: [0, 0.3, 0.7, 1] }}
-            />
-          );
-        })}
-        <motion.circle cx="5" cy="50" r="8" fill="white" opacity="0.8" filter="url(#prismGlow)" animate={{ r: [6, 10, 6] }} transition={{ duration: 1.5, repeat: Infinity }} />
+      <svg width={dimension} height={dimension} viewBox="0 0 100 100">
+        {/* White light beam entering from left */}
+        <motion.line
+          x1="5"
+          y1="50"
+          x2="35"
+          y2="50"
+          stroke="white"
+          strokeWidth={stroke * 1.2}
+          strokeLinecap="round"
+          initial={{ opacity: 0.4 }}
+          animate={{
+            opacity: [0.4, 1, 0.4],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
+
+        {/* Triangular prism - Dark Side of the Moon style */}
+        <polygon
+          points="35,35 65,50 35,65"
+          fill="rgba(0,0,0,0.8)"
+          stroke="rgba(255,255,255,0.3)"
+          strokeWidth={stroke * 0.5}
+        />
+
+        {/* Rainbow spectrum dispersing to the right */}
+        {[
+          { offset: -12, color: '#FF0000' }, // red
+          { offset: -8, color: '#FF7F00' },  // orange
+          { offset: -4, color: '#FFFF00' },  // yellow
+          { offset: 0, color: '#00FF00' },   // green
+          { offset: 4, color: '#0000FF' },   // blue
+          { offset: 8, color: '#4B0082' },   // indigo
+          { offset: 12, color: '#9400D3' },  // violet
+        ].map((beam, i) => (
+          <motion.line
+            key={i}
+            x1="65"
+            y1="50"
+            x2="95"
+            y2={50 + beam.offset}
+            stroke={beam.color}
+            strokeWidth={stroke}
+            strokeLinecap="round"
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: [0, 0.9, 0.9],
+            }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              delay: i * 0.1,
+              ease: 'easeOut',
+            }}
+          />
+        ))}
       </svg>
     </div>
   );
