@@ -8,6 +8,7 @@ import { pageRoutes } from '@/lib/routes';
 export const BUDDY_SIDEBAR_WIDTH = 420;
 export const BUDDY_PANEL_WIDTH = 395;
 export const BUDDY_PANEL_HEIGHT = 640;
+export const BUDDY_EDGE_PADDING = 32;
 export const BUDDY_MINIMIZED_WIDTH = 280;
 export const BUDDY_MINIMIZED_HEIGHT = 56;
 export const BUDDY_PLACEHOLDER_INTERVAL_MS = 8000;
@@ -27,30 +28,58 @@ export const BUDDY_DEFAULT_PLACEHOLDER = 'What would you like to play?';
 /** Animation configs */
 const SPRING_ANIMATION = { type: 'spring' as const, stiffness: 400, damping: 30 };
 
+/**
+ * First load: dramatic slow entrance from top-right (Buddy button location)
+ * Creates "emerging from the button" feeling - SLOW & DRAMATIC
+ * Gradient reveal sweeps left (arriving from right)
+ */
 export const BUDDY_FIRST_LOAD_VARIANTS: Variants = {
   closed: {
     opacity: 0,
-    scale: 0.85,
-    y: 40,
-    filter: 'blur(8px)',
+    scale: 0.7,
+    x: 120,
+    y: -50,
+    filter: 'blur(10px)',
+    clipPath: 'inset(0 0 0 100%)', // Hidden from right
   },
   open: {
     opacity: 1,
     scale: 1,
+    x: 0,
     y: 0,
     filter: 'blur(0px)',
+    clipPath: 'inset(0 0 0 0)', // Fully revealed
     transition: {
-      type: 'tween',
-      ease: 'easeOut',
-      duration: 1.2,
-      delay: 0.3,
+      type: 'spring',
+      stiffness: 160,
+      damping: 18,
+      delay: 0.08,
     },
   },
 };
 
+/**
+ * Regular open/close:
+ * - Opening: slow dramatic entrance, reveals from right (arriving)
+ * - Closing: fast snap home, sweeps to right (leaving)
+ */
 export const BUDDY_PANEL_VARIANTS: Variants = {
-  open: { opacity: 1, scale: 1, y: 0, transition: SPRING_ANIMATION },
-  closed: { opacity: 0, scale: 0.95, y: 20, transition: SPRING_ANIMATION },
+  open: {
+    opacity: 1,
+    scale: 1,
+    x: 0,
+    y: 0,
+    clipPath: 'inset(0 0 0 0)', // Fully visible
+    transition: { type: 'spring', stiffness: 180, damping: 20 },
+  },
+  closed: {
+    opacity: 0,
+    scale: 0.8,
+    x: 100,
+    y: -45,
+    clipPath: 'inset(0 0 0 100%)', // Swept to right (going home)
+    transition: { type: 'spring', stiffness: 450, damping: 32 },
+  },
 };
 
 export const BUDDY_GLOW_VARIANTS: Variants = {

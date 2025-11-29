@@ -40,6 +40,7 @@ import {
   BUDDY_DEFAULT_PLACEHOLDER,
   BUDDY_PANEL_WIDTH,
   BUDDY_PANEL_HEIGHT,
+  BUDDY_EDGE_PADDING,
   BUDDY_NAV_ROUTES,
   BUDDY_INPUT_PLACEHOLDER,
 } from '@/lib/constants/buddy.constants';
@@ -53,7 +54,7 @@ interface CoreAgentBuddyProps {
 
 const PANEL_WIDTH = BUDDY_PANEL_WIDTH;
 const PANEL_HEIGHT = BUDDY_PANEL_HEIGHT;
-const EDGE_PADDING = 20;
+const EDGE_PADDING = BUDDY_EDGE_PADDING;
 
 function clampPosition(x: number, y: number): { x: number; y: number } {
   if (typeof window === 'undefined') return { x, y };
@@ -209,7 +210,7 @@ export function CoreAgentBuddy({ onSave, isSaving = false, isLanding = false, on
             inputRef={inputRef}
             onInputChange={chat.setInput}
             onSubmit={handleSubmit}
-            onDrag={(delta) => setPosition(clampPosition(position.x + delta.x, position.y + delta.y))}
+            onPositionChange={setPosition}
             onDragEnd={handleDragEnd}
             onMinimize={() => setIsMinimized(!isMinimized)}
             onClose={() => setIsOpen(false)}
@@ -336,7 +337,7 @@ interface DesktopPanelProps {
   inputRef: React.RefObject<HTMLInputElement | null>;
   onInputChange: (value: string) => void;
   onSubmit: (e: FormEvent) => void;
-  onDrag: (delta: { x: number; y: number }) => void;
+  onPositionChange: (pos: { x: number; y: number }) => void;
   onDragEnd: () => void;
   onMinimize: () => void;
   onClose: () => void;
@@ -349,28 +350,73 @@ interface DesktopPanelProps {
 function DesktopPanel({
   context, isStatic, isOnboarding, isMinimized, isFirstLoad, position,
   displayMessages, displayLoading, displayInput, input, isLoading, isSaving,
-  thinkingPun, placeholder, inputRef, onInputChange, onSubmit, onDrag, onDragEnd,
+  thinkingPun, placeholder, inputRef, onInputChange, onSubmit, onPositionChange, onDragEnd,
   onMinimize, onClose, onSkip, onAnimationComplete, onSelectSuggestion, onSelectResult
 }: DesktopPanelProps) {
   const isEmptyState = displayMessages.length === 0;
 
+  // Manual drag state - no Framer Motion drag (which fights with position state)
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartRef = useRef<{ mouseX: number; mouseY: number; posX: number; posY: number } | null>(null);
+
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    if (isStatic) return;
+    // Don't drag if clicking on interactive elements (buttons, inputs, etc.)
+    const target = e.target as HTMLElement;
+    if (target.closest('button, input, a, [role="button"]')) return;
+
+    // Only drag from header area (first 56px)
+    const rect = e.currentTarget.getBoundingClientRect();
+    const relativeY = e.clientY - rect.top;
+    if (relativeY > 56) return; // Not in header
+
+    e.currentTarget.setPointerCapture(e.pointerId);
+    setIsDragging(true);
+    dragStartRef.current = {
+      mouseX: e.clientX,
+      mouseY: e.clientY,
+      posX: position.x,
+      posY: position.y,
+    };
+  }, [isStatic, position.x, position.y]);
+
+  const handlePointerMove = useCallback((e: React.PointerEvent) => {
+    if (!isDragging || !dragStartRef.current) return;
+
+    const deltaX = e.clientX - dragStartRef.current.mouseX;
+    const deltaY = e.clientY - dragStartRef.current.mouseY;
+
+    onPositionChange(clampPosition(
+      dragStartRef.current.posX + deltaX,
+      dragStartRef.current.posY + deltaY
+    ));
+  }, [isDragging, onPositionChange]);
+
+  const handlePointerUp = useCallback((e: React.PointerEvent) => {
+    if (!isDragging) return;
+    e.currentTarget.releasePointerCapture(e.pointerId);
+    setIsDragging(false);
+    dragStartRef.current = null;
+    onDragEnd();
+  }, [isDragging, onDragEnd]);
+
   return (
     <motion.div
-      drag={!isStatic}
-      dragMomentum={false}
-      dragElastic={0}
-      onDrag={isStatic ? undefined : (_, info) => onDrag(info.delta)}
-      onDragEnd={isStatic ? undefined : onDragEnd}
       variants={isFirstLoad ? BUDDY_FIRST_LOAD_VARIANTS : BUDDY_PANEL_VARIANTS}
       initial="closed"
       animate="open"
       exit="closed"
       onAnimationComplete={onAnimationComplete}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerUp}
       className={cn('fixed z-50', isStatic ? 'block' : 'hidden md:block')}
       style={{
         touchAction: 'none',
         left: isStatic ? `calc(50% - ${PANEL_WIDTH / 2}px)` : position.x,
         top: isStatic ? `calc(50% - ${PANEL_HEIGHT / 2}px)` : position.y,
+        cursor: isDragging ? 'grabbing' : undefined,
       }}
     >
       <GlowEffects isFirstLoad={isFirstLoad} />
