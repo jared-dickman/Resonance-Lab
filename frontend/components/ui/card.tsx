@@ -6,10 +6,24 @@ function Card({ className, ...props }: React.ComponentProps<'div'>) {
     <div
       data-slot="card"
       className={cn(
-        'bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6',
+        'bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 overflow-hidden',
         'shadow-sm shadow-black/5',
         'dark:shadow-lg dark:shadow-primary/5 dark:ring-1 dark:ring-white/5',
         'transition-shadow duration-300',
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+function SapphireCard({ className, ...props }: React.ComponentProps<'div'>) {
+  return (
+    <div
+      data-slot="sapphire-card"
+      className={cn(
+        'rounded-lg border border-sapphire-500/20 bg-card/50 backdrop-blur-sm overflow-hidden',
+        'hover:border-sapphire-500/40 hover:bg-card/70 transition-all duration-200',
         className
       )}
       {...props}
@@ -74,4 +88,4 @@ function CardFooter({ className, ...props }: React.ComponentProps<'div'>) {
   );
 }
 
-export { Card, CardHeader, CardFooter, CardTitle, CardAction, CardDescription, CardContent };
+export { Card, SapphireCard, CardHeader, CardFooter, CardTitle, CardAction, CardDescription, CardContent };

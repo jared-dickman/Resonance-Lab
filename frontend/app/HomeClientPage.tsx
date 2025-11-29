@@ -6,8 +6,8 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 import { Skeleton } from '@/components/ui/skeleton';
+import { SapphireCard } from '@/components/ui/card';
 import { useSongs, useDeleteSong } from '@/app/features/songs/hooks';
-import { cn } from '@/lib/utils';
 import { ANIMATION_DURATION, SLIDE_UP_VARIANTS } from '@/lib/constants/animation.constants';
 
 interface StatusMessage {
@@ -87,7 +87,7 @@ export default function HomePage() {
 
         {!isLoading && songs.length > 0 && (
           <motion.div
-            className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 overflow-hidden"
+            className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3"
             initial="hidden"
             animate="show"
             variants={{
@@ -99,14 +99,8 @@ export default function HomePage() {
             }}
           >
             {sortedSongs.map(song => (
-              <motion.div
-                key={`${song.artistSlug}/${song.songSlug}`}
-                variants={SLIDE_UP_VARIANTS}
-                className={cn(
-                  'group rounded-lg border border-sapphire-500/20 bg-card/50 backdrop-blur-sm overflow-hidden',
-                  'hover:border-sapphire-500/40 hover:bg-card/70 transition-all duration-200'
-                )}
-              >
+              <motion.div key={`${song.artistSlug}/${song.songSlug}`} variants={SLIDE_UP_VARIANTS}>
+              <SapphireCard className="group">
                 <Link
                   href={`/songs/${song.artistSlug}/${song.songSlug}`}
                   className="block p-4"
@@ -147,6 +141,7 @@ export default function HomePage() {
                     </button>
                   </div>
                 </Link>
+              </SapphireCard>
               </motion.div>
             ))}
           </motion.div>

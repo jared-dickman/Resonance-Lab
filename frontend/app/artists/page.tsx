@@ -6,6 +6,7 @@ import { ChevronDown, Music, Disc3 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { SapphireCard } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { useArtists } from '@/app/features/artists/hooks';
 import { ANIMATION_DURATION, SLIDE_UP_VARIANTS } from '@/lib/constants/animation.constants';
@@ -75,14 +76,9 @@ export default function ArtistsPage() {
               const isExpanded = expandedArtist === artist.slug;
 
               return (
-                <motion.div
-                  key={artist.slug}
-                  variants={SLIDE_UP_VARIANTS}
-                  className={cn(
-                    'rounded-lg border border-sapphire-500/20 bg-card/50 backdrop-blur-sm',
-                    'transition-all duration-300',
-                    isExpanded && 'border-sapphire-500/40 bg-card/70'
-                  )}
+                <motion.div key={artist.slug} variants={SLIDE_UP_VARIANTS}>
+                <SapphireCard
+                  className={cn(isExpanded && 'border-sapphire-500/40 bg-card/70')}
                   data-testid={ArtistsPageTestIds.artistItem}
                 >
                   <button
@@ -132,6 +128,7 @@ export default function ArtistsPage() {
                       </motion.div>
                     )}
                   </AnimatePresence>
+                </SapphireCard>
                 </motion.div>
               );
             })}
