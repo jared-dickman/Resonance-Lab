@@ -5,10 +5,54 @@ import { SAPPHIRE, LOADER_SIZE, type LoaderProps } from './loader.constants';
 
 export function MorphLoader({ size = 'md' }: LoaderProps) {
   const dimension = LOADER_SIZE[size];
+  const cx = dimension / 2;
+  const cy = dimension / 2;
+  const r = dimension * 0.3;
 
-  const shape1 = `M ${dimension * 0.3} ${dimension * 0.3} L ${dimension * 0.7} ${dimension * 0.3} L ${dimension * 0.7} ${dimension * 0.7} L ${dimension * 0.3} ${dimension * 0.7} Z`;
-  const shape2 = `M ${dimension * 0.5} ${dimension * 0.2} L ${dimension * 0.75} ${dimension * 0.5} L ${dimension * 0.5} ${dimension * 0.8} L ${dimension * 0.25} ${dimension * 0.5} Z`;
-  const shape3 = `M ${dimension * 0.5} ${dimension * 0.2} L ${dimension * 0.8} ${dimension * 0.5} L ${dimension * 0.65} ${dimension * 0.8} L ${dimension * 0.35} ${dimension * 0.8} L ${dimension * 0.2} ${dimension * 0.5} Z`;
+  // All shapes use 6 points for smooth interpolation
+  // Circle (approximated with 6 points)
+  const circle = `
+    M ${cx + r} ${cy}
+    L ${cx + r * 0.5} ${cy + r * 0.866}
+    L ${cx - r * 0.5} ${cy + r * 0.866}
+    L ${cx - r} ${cy}
+    L ${cx - r * 0.5} ${cy - r * 0.866}
+    L ${cx + r * 0.5} ${cy - r * 0.866}
+    Z
+  `;
+
+  // Square (with 6 points for smooth morph)
+  const square = `
+    M ${cx + r * 0.8} ${cy - r * 0.8}
+    L ${cx + r * 0.8} ${cy + r * 0.8}
+    L ${cx} ${cy + r * 0.8}
+    L ${cx - r * 0.8} ${cy + r * 0.8}
+    L ${cx - r * 0.8} ${cy - r * 0.8}
+    L ${cx} ${cy - r * 0.8}
+    Z
+  `;
+
+  // Triangle (with 6 points - 3 vertices + 3 midpoints)
+  const triangle = `
+    M ${cx} ${cy - r}
+    L ${cx + r * 0.433} ${cy - r * 0.25}
+    L ${cx + r * 0.866} ${cy + r * 0.5}
+    L ${cx} ${cy + r}
+    L ${cx - r * 0.866} ${cy + r * 0.5}
+    L ${cx - r * 0.433} ${cy - r * 0.25}
+    Z
+  `;
+
+  // Hexagon (6 points - perfect match)
+  const hexagon = `
+    M ${cx + r} ${cy}
+    L ${cx + r * 0.5} ${cy + r * 0.866}
+    L ${cx - r * 0.5} ${cy + r * 0.866}
+    L ${cx - r} ${cy}
+    L ${cx - r * 0.5} ${cy - r * 0.866}
+    L ${cx + r * 0.5} ${cy - r * 0.866}
+    Z
+  `;
 
   return (
     <div
@@ -25,20 +69,18 @@ export function MorphLoader({ size = 'md' }: LoaderProps) {
           </linearGradient>
         </defs>
         <motion.path
-          d={shape1}
           fill="url(#morphGrad)"
           strokeWidth={dimension * 0.02}
           stroke={SAPPHIRE[2]}
           animate={{
-            d: [shape1, shape2, shape3, shape1],
-            rotate: [0, 120, 240, 360],
+            d: [circle, square, triangle, hexagon, circle],
           }}
           transition={{
-            duration: 3,
+            duration: 8,
             repeat: Infinity,
             ease: 'easeInOut',
+            times: [0, 0.25, 0.5, 0.75, 1],
           }}
-          style={{ transformOrigin: `${dimension / 2}px ${dimension / 2}px` }}
         />
       </svg>
     </div>

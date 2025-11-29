@@ -33,7 +33,7 @@ export function PrismLoader({ size = 'md' }: LoaderProps) {
         <motion.line
           x1="8"
           y1="50"
-          x2="38"
+          x2="32"
           y2="50"
           stroke="white"
           strokeWidth={stroke * 1.5}
@@ -50,9 +50,9 @@ export function PrismLoader({ size = 'md' }: LoaderProps) {
           }}
         />
 
-        {/* Equilateral triangular prism outline - SAPPHIRE color */}
+        {/* Equilateral triangular prism - FLAT BOTTOM like Dark Side of the Moon */}
         <motion.polygon
-          points="38,35 62,50 38,65"
+          points="32,65 68,65 50,30"
           fill="none"
           stroke={SAPPHIRE[2]}
           strokeWidth={stroke * 0.8}
@@ -68,18 +68,19 @@ export function PrismLoader({ size = 'md' }: LoaderProps) {
           }}
         />
 
-        {/* Rainbow spectrum dispersing from prism - fanning out */}
+        {/* Rainbow spectrum dispersing from prism - fanning out from right edge */}
         {spectrum.map((color, i) => {
           const totalBeams = spectrum.length;
-          const angle = ((i - (totalBeams - 1) / 2) * 3.5); // Spread angle
+          const angle = ((i - (totalBeams - 1) / 2) * 4); // Spread angle
+          const startY = 65 - ((65 - 30) / 2); // Mid-point of right edge (y=47.5)
 
           return (
             <motion.line
               key={i}
-              x1="62"
-              y1="50"
+              x1="68"
+              y1={startY}
               x2="92"
-              y2={50 + angle}
+              y2={startY + angle}
               stroke={color}
               strokeWidth={stroke * 1.2}
               strokeLinecap="round"
@@ -98,10 +99,10 @@ export function PrismLoader({ size = 'md' }: LoaderProps) {
           );
         })}
 
-        {/* Subtle glow effect on the prism point where light disperses */}
+        {/* Subtle glow effect on the prism edge where light disperses */}
         <motion.circle
-          cx="62"
-          cy="50"
+          cx="68"
+          cy="47.5"
           r={stroke * 0.8}
           fill="white"
           initial={{ opacity: 0.2 }}

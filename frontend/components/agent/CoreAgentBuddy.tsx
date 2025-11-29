@@ -19,6 +19,7 @@ import {
 import { cn, selectRandomWithFallback } from '@/lib/utils';
 import { useBuddy } from '@/lib/contexts/BuddyContext';
 import type { SearchResult } from '@/lib/types';
+import type { OnboardingState } from '@/lib/hooks/useOnboardingDemo';
 import placeholders from '@/lib/data/placeholders.json';
 import {
   BUDDY_PLACEHOLDER_INTERVAL_MS,
@@ -81,6 +82,8 @@ interface Message {
 interface CoreAgentBuddyProps {
   onSave?: (result: SearchResult, type: 'chord' | 'tab') => void;
   isSaving?: boolean;
+  /** When provided, renders in static onboarding demo mode */
+  onboarding?: OnboardingState;
 }
 
 const PANEL_WIDTH = BUDDY_PANEL_WIDTH;
@@ -120,10 +123,11 @@ function loadSavedPosition(): { x: number; y: number } {
   return getCenteredPosition();
 }
 
-export function CoreAgentBuddy({ onSave, isSaving = false }: CoreAgentBuddyProps) {
+export function CoreAgentBuddy({ onSave, isSaving = false, onboarding }: CoreAgentBuddyProps) {
   const router = useRouter();
   const pathname = usePathname();
   const { context, isOpen, setIsOpen } = useBuddy();
+  const isOnboarding = !!onboarding;
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -163,8 +167,13 @@ export function CoreAgentBuddy({ onSave, isSaving = false }: CoreAgentBuddyProps
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const isEmptyState = messages.length === 0;
-  const shouldRotatePlaceholder = isEmptyState && isOpen && !isMinimized;
+  // Derived state - use onboarding values when in demo mode
+  const displayMessages = isOnboarding ? (onboarding.messages as Message[]) : messages;
+  const displayLoading = isOnboarding ? onboarding.isLoading : isLoading;
+  const displayInput = isOnboarding ? onboarding.typingText : input;
+
+  const isEmptyState = displayMessages.length === 0;
+  const shouldRotatePlaceholder = isEmptyState && isOpen && !isMinimized && !isOnboarding;
 
   // Always expand when opened and focus input
   useEffect(() => {
@@ -183,7 +192,7 @@ export function CoreAgentBuddy({ onSave, isSaving = false }: CoreAgentBuddyProps
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [displayMessages]);
 
   useIntervalEffect(
     () => setCurrentPlaceholder(selectRandomWithFallback(placeholders, BUDDY_DEFAULT_PLACEHOLDER)),
@@ -263,11 +272,15 @@ export function CoreAgentBuddy({ onSave, isSaving = false }: CoreAgentBuddyProps
     }, 0);
   };
 
+  // In onboarding mode, show immediately without isReady/isOpen checks
+  const shouldShow = isOnboarding || (isReady && isOpen);
+
   return (
     <AnimatePresence>
-      {isReady && isOpen && (
+      {shouldShow && (
         <>
-          {/* Mobile: Full-screen sheet */}
+          {/* Mobile: Full-screen sheet (hidden during onboarding) */}
+          {!isOnboarding && (
           <motion.div
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
@@ -386,21 +399,22 @@ export function CoreAgentBuddy({ onSave, isSaving = false }: CoreAgentBuddyProps
               </form>
             </div>
           </motion.div>
+          )}
 
-          {/* Desktop: Draggable floating panel */}
+          {/* Desktop: Draggable floating panel (static in onboarding mode) */}
           <motion.div
-            drag
+            drag={!isOnboarding}
             dragMomentum={false}
             dragElastic={0}
-            onDrag={(_, info) => setPosition(clampPosition(position.x + info.delta.x, position.y + info.delta.y))}
-            onDragEnd={handleDragEnd}
+            onDrag={isOnboarding ? undefined : (_, info) => setPosition(clampPosition(position.x + info.delta.x, position.y + info.delta.y))}
+            onDragEnd={isOnboarding ? undefined : handleDragEnd}
             variants={isFirstLoad ? BUDDY_FIRST_LOAD_VARIANTS : BUDDY_PANEL_VARIANTS}
             initial="closed"
             animate="open"
             exit="closed"
             onAnimationComplete={handleAnimationComplete}
-            className="fixed z-50 hidden md:block"
-            style={{ touchAction: 'none', left: position.x, top: position.y }}
+            className={cn('fixed z-50', isOnboarding ? 'block' : 'hidden md:block')}
+            style={{ touchAction: 'none', left: isOnboarding ? '50%' : position.x, top: isOnboarding ? '50%' : position.y, transform: isOnboarding ? 'translate(-50%, -50%)' : undefined }}
           >
           {/* Ambient floating glow - subtle, always present */}
           <motion.div
@@ -438,10 +452,10 @@ export function CoreAgentBuddy({ onSave, isSaving = false }: CoreAgentBuddyProps
             {/* Glowing border effect */}
             <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-blue-500/20 opacity-50 blur-sm -z-10" />
 
-            {/* Header - draggable */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 cursor-grab active:cursor-grabbing select-none">
+            {/* Header - draggable (static in onboarding) */}
+            <div className={cn('flex items-center justify-between px-4 py-3 border-b border-white/5 select-none', !isOnboarding && 'cursor-grab active:cursor-grabbing')}>
               <div className="flex items-center gap-2.5">
-                <GripHorizontal className="h-4 w-4 text-white/20" />
+                {!isOnboarding && <GripHorizontal className="h-4 w-4 text-white/20" />}
                 <motion.div
                   animate={{
                     boxShadow: [
@@ -462,30 +476,41 @@ export function CoreAgentBuddy({ onSave, isSaving = false }: CoreAgentBuddyProps
                   )}
                 </div>
               </div>
-              <div className="flex items-center gap-1">
+              {isOnboarding ? (
                 <Button
                   variant="ghost"
-                  size="icon"
-                  className="h-6 w-6 text-white/40 hover:text-white/80 hover:bg-white/10"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsMinimized(!isMinimized);
-                  }}
+                  size="sm"
+                  className="h-6 px-2 text-xs text-white/40 hover:text-white/80 hover:bg-white/10"
+                  onClick={onboarding.skip}
                 >
-                  {isMinimized ? <Maximize2 className="h-3 w-3" /> : <Minimize2 className="h-3 w-3" />}
+                  Skip
                 </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-6 w-6 text-white/40 hover:text-white/80 hover:bg-white/10"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsOpen(false);
-                  }}
-                >
-                  <X className="h-3 w-3" />
-                </Button>
-              </div>
+              ) : (
+                <div className="flex items-center gap-1">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6 text-white/40 hover:text-white/80 hover:bg-white/10"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsMinimized(!isMinimized);
+                    }}
+                  >
+                    {isMinimized ? <Maximize2 className="h-3 w-3" /> : <Minimize2 className="h-3 w-3" />}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6 text-white/40 hover:text-white/80 hover:bg-white/10"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsOpen(false);
+                    }}
+                  >
+                    <X className="h-3 w-3" />
+                  </Button>
+                </div>
+              )}
             </div>
 
             {/* Content - hidden when minimized */}
