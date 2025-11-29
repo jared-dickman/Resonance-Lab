@@ -42,6 +42,11 @@ export const BUDDY_ICON_GLOW_TRANSITION = { duration: 2, repeat: Infinity };
 export const BUDDY_SCROLL_CONTAINER_CLASS =
   'flex-1 overflow-y-auto overflow-x-hidden px-4 py-3 space-y-3 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent';
 
+/** Gradient classes - DRY brand colors */
+export const BUDDY_GRADIENT_ICON_BOX = 'rounded-lg bg-gradient-to-br from-blue-500/30 to-purple-500/30 flex items-center justify-center border border-white/10';
+export const BUDDY_GRADIENT_USER_MSG = 'bg-gradient-to-r from-blue-500/80 to-purple-500/80 text-white';
+export const BUDDY_GRADIENT_SEND_BTN = 'bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 border-0';
+
 /**
  * First load: dramatic slow entrance from top-right (Buddy button location)
  * Creates "emerging from the button" feeling - SLOW & DRAMATIC

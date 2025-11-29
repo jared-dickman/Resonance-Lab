@@ -16,7 +16,7 @@ import {
   StructuredBlock,
   EmptyState,
   ThinkingIndicator,
-} from './BuddySubComponents';
+} from '@/components/agent/BuddySubComponents';
 import {
   BUDDY_NAV_ROUTES,
   BUDDY_MAX_VISIBLE_RESULTS,
@@ -24,6 +24,9 @@ import {
   BUDDY_ICON_GLOW_ANIMATION,
   BUDDY_ICON_GLOW_TRANSITION,
   BUDDY_SCROLL_CONTAINER_CLASS,
+  BUDDY_GRADIENT_ICON_BOX,
+  BUDDY_GRADIENT_USER_MSG,
+  BUDDY_GRADIENT_SEND_BTN,
 } from '@/lib/constants/buddy.constants';
 
 const NAV_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -49,7 +52,7 @@ export function BuddyHeader({ context, isStatic, isOnboarding, isMinimized, onMi
         <motion.div
           animate={BUDDY_ICON_GLOW_ANIMATION}
           transition={BUDDY_ICON_GLOW_TRANSITION}
-          className="h-7 w-7 rounded-lg bg-gradient-to-br from-blue-500/30 to-purple-500/30 flex items-center justify-center border border-white/10"
+          className={cn('h-7 w-7', BUDDY_GRADIENT_ICON_BOX)}
         >
           <Bot className="h-4 w-4 text-blue-400" />
         </motion.div>
@@ -151,7 +154,7 @@ export function BuddyMessageList({ messages, isLoading, thinkingPun, placeholder
           <div className={cn(
             'max-w-[85%] rounded-xl px-3 py-2 text-xs',
             message.role === 'user'
-              ? 'bg-gradient-to-r from-blue-500/80 to-purple-500/80 text-white'
+              ? BUDDY_GRADIENT_USER_MSG
               : 'bg-white/5 border border-white/10 text-white/80'
           )}>
             <p className="whitespace-pre-wrap leading-relaxed">{message.content}</p>
@@ -240,7 +243,7 @@ export function BuddyInput({ input, isLoading, isSaving, isOnboarding, typingTex
           <Button
             type="submit"
             size="icon"
-            className="h-9 w-9 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 border-0 rounded-lg"
+            className={cn('h-9 w-9 rounded-lg', BUDDY_GRADIENT_SEND_BTN)}
             disabled={isLoading || isSaving || !input.trim()}
           >
             {isLoading ? <Spinner className="h-4 w-4" /> : <Send className="h-4 w-4" />}

@@ -19,8 +19,8 @@ import {
   BuddyNavBar,
   BuddyMessageList,
   BuddyInput,
-} from './BuddyPanelParts';
-import { ContextChip } from './BuddySubComponents';
+} from '@/components/agent/BuddyPanelParts';
+import { ContextChip } from '@/components/agent/BuddySubComponents';
 import {
   BUDDY_PLACEHOLDER_INTERVAL_MS,
   BUDDY_FIRST_LOAD_VARIANTS,
@@ -43,6 +43,7 @@ import {
   BUDDY_ICON_GLOW_ANIMATION,
   BUDDY_ICON_GLOW_TRANSITION,
   BUDDY_SCROLL_CONTAINER_CLASS,
+  BUDDY_GRADIENT_ICON_BOX,
 } from '@/lib/constants/buddy.constants';
 
 interface CoreAgentBuddyProps {
@@ -300,7 +301,7 @@ function MobileHeader({ context, onClose }: { context: { page: string; artist?: 
         <motion.div
           animate={BUDDY_ICON_GLOW_ANIMATION}
           transition={BUDDY_ICON_GLOW_TRANSITION}
-          className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500/30 to-purple-500/30 flex items-center justify-center border border-white/10"
+          className={cn('h-8 w-8', BUDDY_GRADIENT_ICON_BOX)}
         >
           <Bot className="h-5 w-5 text-blue-400" />
         </motion.div>
