@@ -62,10 +62,10 @@ export function HeartbeatLoader({ className, size = 'md' }: LoaderProps) {
           cy="32"
           r="4"
           fill={SAPPHIRE[0]}
-          initial={{ scale: 0 }}
+          initial={{ scale: 0.8, opacity: 0.3 }}
           animate={{
-            scale: [0, 1.2, 0],
-            opacity: [0, 1, 0],
+            scale: [0.8, 1.2, 0.8],
+            opacity: [0.3, 1, 0.3],
           }}
           transition={{
             duration: 2.5,

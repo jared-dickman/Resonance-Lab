@@ -67,9 +67,11 @@ export const BUDDY_MINIMIZED_VARIANTS: Variants = {
   minimized: { width: BUDDY_MINIMIZED_WIDTH, height: BUDDY_MINIMIZED_HEIGHT, transition: SPRING_ANIMATION },
 };
 
-/** Position persistence */
+/** State persistence */
 export const BUDDY_POSITION_STORAGE_KEY = 'buddy-position';
-export const BUDDY_POSITION_DEBOUNCE_MS = 300;
+export const BUDDY_VISIBLE_STORAGE_KEY = 'buddy-visible';
+export const BUDDY_MINIMIZED_STORAGE_KEY = 'buddy-minimized';
+export const BUDDY_STATE_DEBOUNCE_MS = 1000;
 // Centered: will be calculated on mount if no saved position
 export const BUDDY_DEFAULT_POSITION = { x: -1, y: -1 };
 

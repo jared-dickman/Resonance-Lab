@@ -1,7 +1,8 @@
 'use client';
 
-import { createContext, useContext, useState, useMemo, useEffect, useCallback, type ReactNode } from 'react';
+import { createContext, useContext, useState, useMemo, useEffect, useCallback, useRef, type ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
+import { BUDDY_VISIBLE_STORAGE_KEY, BUDDY_STATE_DEBOUNCE_MS } from '@/lib/constants/buddy.constants';
 
 type PageContext =
   | 'landing'
@@ -76,13 +77,41 @@ function extractSongFromPathname(pathname: string): string | undefined {
   return undefined;
 }
 
+function loadSavedVisibility(): boolean {
+  if (typeof window === 'undefined') return true;
+  try {
+    const saved = localStorage.getItem(BUDDY_VISIBLE_STORAGE_KEY);
+    return saved !== 'false'; // Default to true if not set
+  } catch {
+    return true;
+  }
+}
+
 export function BuddyProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const [manualArtist, setManualArtist] = useState<string>();
   const [manualSong, setManualSong] = useState<string>();
   const [chords, setChords] = useState<string[]>();
   const [key, setKey] = useState<string>();
-  const [isOpen, setIsOpen] = useState(true); // Open by default
+  const [isOpen, setIsOpenInternal] = useState(true);
+  const saveTimeoutRef = useRef<NodeJS.Timeout>(undefined);
+  const isInitializedRef = useRef(false);
+
+  // Load from localStorage on mount
+  useEffect(() => {
+    setIsOpenInternal(loadSavedVisibility());
+    isInitializedRef.current = true;
+  }, []);
+
+  // Debounced setter that persists to localStorage
+  const setIsOpen = useCallback((open: boolean) => {
+    setIsOpenInternal(open);
+    if (!isInitializedRef.current) return;
+    if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+    saveTimeoutRef.current = setTimeout(() => {
+      localStorage.setItem(BUDDY_VISIBLE_STORAGE_KEY, String(open));
+    }, BUDDY_STATE_DEBOUNCE_MS);
+  }, []);
 
   const context = useMemo<BuddyContextState>(() => {
     const page = derivePageFromPathname(pathname);
@@ -98,7 +127,7 @@ export function BuddyProvider({ children }: { children: ReactNode }) {
     };
   }, [pathname, manualArtist, manualSong, chords, key]);
 
-  const toggleBuddy = useCallback(() => setIsOpen(prev => !prev), []);
+  const toggleBuddy = useCallback(() => setIsOpen(!isOpen), [isOpen, setIsOpen]);
 
   // Ctrl+B keyboard shortcut to toggle buddy (B for Buddy, avoids Ctrl+A Select All conflict)
   useEffect(() => {

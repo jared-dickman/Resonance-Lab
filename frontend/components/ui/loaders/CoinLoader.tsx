@@ -40,13 +40,79 @@ export function CoinLoader({ className, size = 'md' }: LoaderProps) {
           fill={`url(#coin-gold-${size})`}
         />
 
-        {/* Multiple animated star sparkles that twinkle and move */}
+        {/* Arcade coin rim/ridge */}
+        <circle
+          cx={center}
+          cy={center}
+          r={coinRadius}
+          fill="none"
+          stroke={SAPPHIRE[0]}
+          strokeWidth={dim * 0.015}
+          opacity={0.4}
+        />
+
+        {/* Center pixel-art star symbol - arcade coin style */}
+        <motion.g
+          animate={{
+            rotate: [0, 360],
+            scale: [1, 1.15, 1],
+          }}
+          transition={{
+            rotate: { duration: 4, repeat: Infinity, ease: 'linear' },
+            scale: { duration: 1.2, repeat: Infinity, ease: 'easeInOut' },
+          }}
+          style={{
+            originX: `${center}px`,
+            originY: `${center}px`,
+          }}
+        >
+          {/* Five-pointed star - bold video game token style */}
+          <path
+            d={`
+              M ${center} ${center - coinRadius * 0.55}
+              L ${center + coinRadius * 0.14} ${center - coinRadius * 0.18}
+              L ${center + coinRadius * 0.52} ${center - coinRadius * 0.18}
+              L ${center + coinRadius * 0.22} ${center + coinRadius * 0.08}
+              L ${center + coinRadius * 0.34} ${center + coinRadius * 0.52}
+              L ${center} ${center + coinRadius * 0.28}
+              L ${center - coinRadius * 0.34} ${center + coinRadius * 0.52}
+              L ${center - coinRadius * 0.22} ${center + coinRadius * 0.08}
+              L ${center - coinRadius * 0.52} ${center - coinRadius * 0.18}
+              L ${center - coinRadius * 0.14} ${center - coinRadius * 0.18}
+              Z
+            `}
+            fill={SAPPHIRE[0]}
+            stroke="#ffffff"
+            strokeWidth={dim * 0.012}
+            strokeLinejoin="miter"
+          />
+          {/* Inner highlight for arcade depth */}
+          <path
+            d={`
+              M ${center} ${center - coinRadius * 0.38}
+              L ${center + coinRadius * 0.1} ${center - coinRadius * 0.12}
+              L ${center + coinRadius * 0.35} ${center - coinRadius * 0.12}
+              L ${center + coinRadius * 0.15} ${center + coinRadius * 0.05}
+              L ${center + coinRadius * 0.23} ${center + coinRadius * 0.35}
+              L ${center} ${center + coinRadius * 0.18}
+              L ${center - coinRadius * 0.23} ${center + coinRadius * 0.35}
+              L ${center - coinRadius * 0.15} ${center + coinRadius * 0.05}
+              L ${center - coinRadius * 0.35} ${center - coinRadius * 0.12}
+              L ${center - coinRadius * 0.1} ${center - coinRadius * 0.12}
+              Z
+            `}
+            fill={SAPPHIRE[3]}
+            opacity={0.6}
+          />
+        </motion.g>
+
+        {/* Subtle sparkles that twinkle around the coin */}
         {sparkles.map((sparkle, i) => (
           <motion.g
             key={`sparkle-${i}`}
             animate={{
-              opacity: [0, 1, 1, 0],
-              scale: [0.5, 1.2, 1, 0.5],
+              opacity: [0, 0.6, 0.6, 0],
+              scale: [0.5, 1, 1, 0.5],
             }}
             transition={{
               duration: sparkle.duration,
@@ -62,33 +128,14 @@ export function CoinLoader({ className, size = 'md' }: LoaderProps) {
             {/* Four-pointed star sparkle */}
             <path
               d={`
-                M ${center + coinRadius * sparkle.x} ${center - coinRadius * sparkle.y - dim * 0.05}
-                L ${center + coinRadius * sparkle.x + dim * 0.015} ${center - coinRadius * sparkle.y}
-                L ${center + coinRadius * sparkle.x} ${center - coinRadius * sparkle.y + dim * 0.05}
-                L ${center + coinRadius * sparkle.x - dim * 0.015} ${center - coinRadius * sparkle.y}
+                M ${center + coinRadius * sparkle.x} ${center - coinRadius * sparkle.y - dim * 0.04}
+                L ${center + coinRadius * sparkle.x + dim * 0.012} ${center - coinRadius * sparkle.y}
+                L ${center + coinRadius * sparkle.x} ${center - coinRadius * sparkle.y + dim * 0.04}
+                L ${center + coinRadius * sparkle.x - dim * 0.012} ${center - coinRadius * sparkle.y}
                 Z
               `}
               fill="#ffffff"
-            />
-            {/* Horizontal beam */}
-            <path
-              d={`
-                M ${center + coinRadius * sparkle.x - dim * 0.04} ${center - coinRadius * sparkle.y}
-                L ${center + coinRadius * sparkle.x + dim * 0.04} ${center - coinRadius * sparkle.y}
-              `}
-              stroke="#ffffff"
-              strokeWidth={dim * 0.01}
-              opacity={0.8}
-            />
-            {/* Vertical beam */}
-            <path
-              d={`
-                M ${center + coinRadius * sparkle.x} ${center - coinRadius * sparkle.y - dim * 0.04}
-                L ${center + coinRadius * sparkle.x} ${center - coinRadius * sparkle.y + dim * 0.04}
-              `}
-              stroke="#ffffff"
-              strokeWidth={dim * 0.01}
-              opacity={0.8}
+              opacity={0.7}
             />
           </motion.g>
         ))}

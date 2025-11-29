@@ -66,3 +66,43 @@ export function getSquareSize(size: LoaderSize) {
 export function getRectSize(size: LoaderSize) {
   return LOADER_RECT[size];
 }
+
+/**
+ * Standard animation durations (seconds)
+ * Use these to maintain consistent timing across loaders
+ */
+export const DURATION = {
+  fast: 0.8,
+  normal: 1.2,
+  medium: 1.5,
+  slow: 2,
+  verySlow: 3,
+} as const;
+
+/**
+ * Common opacity values
+ */
+export const OPACITY = {
+  faint: 0.3,
+  subtle: 0.5,
+  medium: 0.7,
+  strong: 0.9,
+} as const;
+
+/**
+ * Common Framer Motion transition presets
+ */
+export const TRANSITION = {
+  smooth: { ease: 'easeInOut', repeat: Infinity },
+  linear: { ease: 'linear', repeat: Infinity },
+  spring: { type: 'spring', stiffness: 100, damping: 10 },
+  bounce: { ease: [0.45, 0.05, 0.55, 0.95], repeat: Infinity },
+} as const;
+
+/**
+ * SVG accessibility defaults - use spread operator in SVG elements
+ */
+export const SVG_A11Y = {
+  role: 'status' as const,
+  'aria-label': 'Loading',
+};

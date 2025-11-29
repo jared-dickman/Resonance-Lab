@@ -44,7 +44,7 @@ import {
   TerminalLoader, ScanlineLoader,
   // Gaming
   PacmanLoader, TetrisLoader, PongLoader, CoinLoader,
-  HealthBarLoader, RespawnLoader,
+  HealthBarLoader,
   // Arcade
   GalagaLoader, BreakoutLoader,
   // Nostalgia
@@ -245,7 +245,6 @@ export default function LabPage() {
         <LoaderCard name="PONG"><PongLoader size="md" /></LoaderCard>
         <LoaderCard name="COIN"><CoinLoader size="md" /></LoaderCard>
         <LoaderCard name="HEALTH BAR"><HealthBarLoader size="md" /></LoaderCard>
-        <LoaderCard name="RESPAWN"><RespawnLoader size="md" /></LoaderCard>
       </CategorySection>
 
       {/* Arcade */}

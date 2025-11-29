@@ -17,6 +17,7 @@ function LayoutInner({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { isOpen, toggleBuddy } = useBuddy();
 
+  const isLandingPage = pathname === '/';
   const isSongwriterPage = pathname === '/songwriter';
 
   useEffect(() => {
@@ -42,20 +43,22 @@ function LayoutInner({ children }: { children: React.ReactNode }) {
               </Link>
               <Breadcrumbs />
             </div>
-            {/* Buddy toggle - always visible, star of the show */}
-            <Button
-              variant={isOpen ? "default" : "ghost"}
-              size="sm"
-              className={`font-medium h-8 gap-2 shrink-0 ${
-                isOpen
-                  ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-              onClick={toggleBuddy}
-            >
-              <Bot className="h-4 w-4" />
-              <span className="hidden sm:inline">Buddy</span>
-            </Button>
+            {/* Buddy toggle - hidden on landing page where onboarding takes over */}
+            {!isLandingPage && (
+              <Button
+                variant={isOpen ? "default" : "ghost"}
+                size="sm"
+                className={`font-medium h-8 gap-2 shrink-0 ${
+                  isOpen
+                    ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+                onClick={toggleBuddy}
+              >
+                <Bot className="h-4 w-4" />
+                <span className="hidden sm:inline">Buddy</span>
+              </Button>
+            )}
           </div>
         </header>
         <main className={isSongwriterPage ? "w-full flex-1" : "w-full px-2 pt-2 flex-1"}>
@@ -63,8 +66,8 @@ function LayoutInner({ children }: { children: React.ReactNode }) {
         </main>
       </div>
 
-      {/* Core Agent Buddy - the primary navigation interface */}
-      <CoreAgentBuddy />
+      {/* Core Agent Buddy - hidden on landing page where onboarding owns it */}
+      {!isLandingPage && <CoreAgentBuddy />}
     </div>
   );
 }

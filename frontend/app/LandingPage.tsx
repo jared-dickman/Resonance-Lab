@@ -59,11 +59,17 @@ export function LandingPage() {
   const reducedMotion = useReducedMotion();
   const onboarding = useOnboardingDemo();
 
+  // Only pass onboarding when demo is actively running (not after it completes)
+  const showDemo = !onboarding.isComplete;
+
   return (
     <div className="relative min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center">
       <NebulaBackground reducedMotion={reducedMotion} />
       <div className="relative z-10">
-        <CoreAgentBuddy onboarding={onboarding} />
+        <CoreAgentBuddy
+          isLanding
+          onboarding={showDemo ? onboarding : undefined}
+        />
       </div>
     </div>
   );

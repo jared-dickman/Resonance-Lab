@@ -63,7 +63,7 @@ export function TurbineLoader({ className, size = 'md' }: LoaderProps) {
         <motion.g
           animate={{ rotate: -360 }}
           transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-          style={{ originX: `${centerX}px`, originY: `${centerY}px` }}
+          style={{ transformOrigin: '50% 50%' }}
         >
           {bladeAngles.map((angle, i) => (
             <g key={angle}>{createBlade(angle, (i % 3) + 1)}</g>

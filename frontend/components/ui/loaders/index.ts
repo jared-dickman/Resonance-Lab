@@ -126,11 +126,15 @@ export { TetrisLoader } from '@/components/ui/loaders/TetrisLoader';
 export { PongLoader } from '@/components/ui/loaders/PongLoader';
 export { CoinLoader } from '@/components/ui/loaders/CoinLoader';
 export { HealthBarLoader } from '@/components/ui/loaders/HealthBarLoader';
-export { RespawnLoader } from '@/components/ui/loaders/RespawnLoader';
+export { PowerUpLoader } from '@/components/ui/loaders/PowerUpLoader';
 
 // Arcade
 export { GalagaLoader } from '@/components/ui/loaders/GalagaLoader';
 export { BreakoutLoader } from '@/components/ui/loaders/BreakoutLoader';
+
+// Mathematical
+export { GraphLoader } from '@/components/ui/loaders/GraphLoader';
+export { PolarLoader } from '@/components/ui/loaders/PolarLoader';
 
 // Nostalgia
 export { HourglassLoader } from '@/components/ui/loaders/HourglassLoader';
@@ -155,3 +159,4 @@ export { HorizonLoader } from '@/components/ui/loaders/HorizonLoader';
 // Utility
 export { RandomLoader, ALL_LOADERS } from '@/components/ui/loaders/RandomLoader';
 export { DramaticLoader, PageLoader, FullPageLoader } from '@/components/ui/loaders/DramaticLoader';
+export { LoaderWrapper } from '@/components/ui/loaders/LoaderWrapper';

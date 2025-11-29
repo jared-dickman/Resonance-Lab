@@ -42,50 +42,54 @@ export function SunriseLoader({ className, size = 'md' }: LoaderProps) {
         {/* Sky background */}
         <rect width={dim} height={dim} fill={`url(#sunrise-sky-${size})`} />
 
-        {/* Radiating rays */}
-        <motion.g
-          animate={{ rotate: 360 }}
-          transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-          style={{ originX: `${dim / 2}px`, originY: `${horizonY}px` }}
-        >
-          {Array.from({ length: rayCount }).map((_, i) => {
-            const angle = (i / rayCount) * Math.PI;
-            const startRadius = dim * 0.18;
-            const endRadius = dim * 0.4;
-            const startX = dim / 2 + Math.cos(angle - Math.PI / 2) * startRadius;
-            const startY = horizonY + Math.sin(angle - Math.PI / 2) * startRadius;
-            const endX = dim / 2 + Math.cos(angle - Math.PI / 2) * endRadius;
-            const endY = horizonY + Math.sin(angle - Math.PI / 2) * endRadius;
-
-            return (
-              <motion.line
-                key={i}
-                x1={startX}
-                y1={startY}
-                x2={endX}
-                y2={endY}
-                stroke={SAPPHIRE[3]}
-                strokeWidth={dim * 0.008}
-                strokeLinecap="round"
-                animate={{
-                  opacity: [0.2, 0.8, 0.2],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
-                  delay: i * 0.2,
-                }}
-              />
-            );
-          })}
-        </motion.g>
-
-        {/* Rising sun */}
+        {/* Unified animation group - all shapes rise together */}
         <motion.g
           animate={{ y: [dim * 0.15, -dim * 0.05, dim * 0.15] }}
-          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            ease: [0.45, 0.05, 0.55, 0.95], // smooth easeInOut
+          }}
         >
+          {/* Radiating rays */}
+          <g
+            style={{
+              transformOrigin: `${dim / 2}px ${horizonY}px`,
+            }}
+          >
+            {Array.from({ length: rayCount }).map((_, i) => {
+              const angle = (i / rayCount) * Math.PI;
+              const startRadius = dim * 0.18;
+              const endRadius = dim * 0.4;
+              const startX = dim / 2 + Math.cos(angle - Math.PI / 2) * startRadius;
+              const startY = horizonY + Math.sin(angle - Math.PI / 2) * startRadius;
+              const endX = dim / 2 + Math.cos(angle - Math.PI / 2) * endRadius;
+              const endY = horizonY + Math.sin(angle - Math.PI / 2) * endRadius;
+
+              return (
+                <motion.line
+                  key={i}
+                  x1={startX}
+                  y1={startY}
+                  x2={endX}
+                  y2={endY}
+                  stroke={SAPPHIRE[3]}
+                  strokeWidth={dim * 0.008}
+                  strokeLinecap="round"
+                  animate={{
+                    opacity: [0.2, 0.8, 0.2],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                    delay: i * 0.2,
+                  }}
+                />
+              );
+            })}
+          </g>
+
           {/* Sun outer glow */}
           <motion.circle
             cx={dim / 2}
@@ -98,7 +102,7 @@ export function SunriseLoader({ className, size = 'md' }: LoaderProps) {
               opacity: [0.2, 0.4, 0.2],
             }}
             transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-            style={{ originX: `${dim / 2}px`, originY: `${horizonY}px` }}
+            style={{ transformOrigin: `${dim / 2}px ${horizonY}px` }}
           />
 
           {/* Sun glow */}
@@ -112,7 +116,7 @@ export function SunriseLoader({ className, size = 'md' }: LoaderProps) {
               scale: [1, 1.15, 1],
             }}
             transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-            style={{ originX: `${dim / 2}px`, originY: `${horizonY}px` }}
+            style={{ transformOrigin: `${dim / 2}px ${horizonY}px` }}
           />
 
           {/* Sun core */}

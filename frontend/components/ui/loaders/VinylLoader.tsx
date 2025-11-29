@@ -21,22 +21,22 @@ export function VinylLoader({ size = 'md' }: LoaderProps) {
             <stop offset="80%" stopColor={SAPPHIRE[0]} stopOpacity={0.9} />
           </radialGradient>
         </defs>
+
+        {/* Record with subtle warble - all grooves move together */}
         <motion.g
           animate={{
-            rotate: 360,
-            scale: [1, 1.015, 0.985, 1.01, 1]
+            rotate: [0, 0.5, -0.5, 0.8, -0.3, 0],
+            scale: [1, 1.003, 0.998, 1.002, 0.999, 1]
           }}
           transition={{
-            rotate: { duration: 2.5, repeat: Infinity, ease: 'linear' },
-            scale: {
-              duration: 2.5,
-              repeat: Infinity,
-              ease: [0.45, 0.05, 0.55, 0.95],
-              times: [0, 0.25, 0.5, 0.75, 1]
-            }
+            duration: 3,
+            repeat: Infinity,
+            ease: [0.45, 0.05, 0.55, 0.95],
+            times: [0, 0.2, 0.4, 0.6, 0.8, 1]
           }}
           style={{ transformOrigin: `${dimension / 2}px ${dimension / 2}px` }}
         >
+          {/* Main record surface */}
           <circle
             cx={dimension / 2}
             cy={dimension / 2}
@@ -45,6 +45,8 @@ export function VinylLoader({ size = 'md' }: LoaderProps) {
             stroke={SAPPHIRE[1]}
             strokeWidth={dimension * 0.015}
           />
+
+          {/* Grooves - all warble together */}
           {Array.from({ length: 6 }).map((_, i) => (
             <circle
               key={i}
@@ -57,22 +59,25 @@ export function VinylLoader({ size = 'md' }: LoaderProps) {
               opacity={0.3}
             />
           ))}
+
+          {/* Center label */}
           <circle cx={dimension / 2} cy={dimension / 2} r={dimension * 0.08} fill={SAPPHIRE[2]} opacity={0.8} />
+
+          {/* Spindle hole */}
           <circle cx={dimension / 2} cy={dimension / 2} r={dimension * 0.03} fill="#0f172a" />
         </motion.g>
 
-        <motion.g
-          animate={{
-            rotate: [0, -20, -18, -22, -20, 0, 0, 0]
-          }}
-          transition={{
-            duration: 5,
-            repeat: Infinity,
-            ease: [0.65, 0, 0.35, 1],
-            times: [0, 0.15, 0.2, 0.25, 0.3, 0.5, 0.8, 1]
-          }}
-          style={{ transformOrigin: `${dimension * 0.75}px ${dimension * 0.2}px` }}
-        >
+        {/* Tonearm - completely static */}
+        <g>
+          {/* Tonearm pivot point */}
+          <circle
+            cx={dimension * 0.75}
+            cy={dimension * 0.2}
+            r={dimension * 0.03}
+            fill={SAPPHIRE[1]}
+          />
+
+          {/* Tonearm */}
           <line
             x1={dimension * 0.75}
             y1={dimension * 0.2}
@@ -82,28 +87,15 @@ export function VinylLoader({ size = 'md' }: LoaderProps) {
             strokeWidth={dimension * 0.02}
             strokeLinecap="round"
           />
+
+          {/* Needle */}
           <circle
-            cx={dimension * 0.75}
-            cy={dimension * 0.2}
-            r={dimension * 0.03}
-            fill={SAPPHIRE[1]}
-          />
-          <motion.circle
             cx={dimension * 0.72}
             cy={dimension * 0.48}
             r={dimension * 0.025}
             fill={SAPPHIRE[3]}
-            animate={{
-              opacity: [0.6, 1, 0.8, 1, 0.6, 0.6]
-            }}
-            transition={{
-              duration: 5,
-              repeat: Infinity,
-              ease: 'easeInOut',
-              times: [0, 0.15, 0.2, 0.25, 0.3, 1]
-            }}
           />
-        </motion.g>
+        </g>
       </svg>
     </div>
   );

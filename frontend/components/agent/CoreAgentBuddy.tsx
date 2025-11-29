@@ -1,88 +1,53 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback, type FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
-import { useIntervalEffect } from '@/lib/hooks/useIntervalEffect';
-import { Send, Bot, X, Minimize2, Maximize2, GripHorizontal, Home, Music, Users, PenLine, Guitar, BookOpen, Clock, Piano, SlidersHorizontal } from 'lucide-react';
-import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Bot, X, Send } from 'lucide-react';
+import { useIntervalEffect } from '@/lib/hooks/useIntervalEffect';
+import { useBuddyChat } from '@/lib/hooks/useBuddyChat';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinner';
-import {
-  ContextChip,
-  SearchResultButton,
-  StructuredBlock,
-  EmptyState,
-  ThinkingIndicator,
-} from '@/components/agent/BuddySubComponents';
 import { cn, selectRandomWithFallback } from '@/lib/utils';
 import { useBuddy } from '@/lib/contexts/BuddyContext';
 import type { SearchResult } from '@/lib/types';
+import type { BuddyMessage } from '@/lib/types/buddy.types';
 import type { OnboardingState } from '@/lib/hooks/useOnboardingDemo';
 import placeholders from '@/lib/data/placeholders.json';
 import {
+  BuddyHeader,
+  BuddyNavBar,
+  BuddyMessageList,
+  BuddyInput,
+} from './BuddyPanelParts';
+import {
+  ContextChip,
+  EmptyState,
+} from './BuddySubComponents';
+import {
   BUDDY_PLACEHOLDER_INTERVAL_MS,
-  BUDDY_MAX_VISIBLE_RESULTS,
-  BUDDY_API_ENDPOINT,
-  BUDDY_ERROR_MESSAGE,
-  BUDDY_DEFAULT_THINKING,
-  BUDDY_INPUT_PLACEHOLDER,
-  BUDDY_DEFAULT_PLACEHOLDER,
-  BUDDY_THINKING_PUNS,
   BUDDY_FIRST_LOAD_VARIANTS,
   BUDDY_PANEL_VARIANTS,
   BUDDY_GLOW_VARIANTS,
   BUDDY_MINIMIZED_VARIANTS,
-  BUDDY_FIRST_LOAD_DELAY_MS,
   BUDDY_POSITION_STORAGE_KEY,
+  BUDDY_MINIMIZED_STORAGE_KEY,
+  BUDDY_STATE_DEBOUNCE_MS,
   BUDDY_DEFAULT_POSITION,
   BUDDY_AUTOFOCUS_DELAY_MS,
   BUDDY_ENTRANCE_DELAY_MS,
-  BUDDY_NAV_ROUTES,
+  BUDDY_FIRST_LOAD_DELAY_MS,
+  BUDDY_DEFAULT_PLACEHOLDER,
   BUDDY_PANEL_WIDTH,
   BUDDY_PANEL_HEIGHT,
+  BUDDY_NAV_ROUTES,
+  BUDDY_INPUT_PLACEHOLDER,
 } from '@/lib/constants/buddy.constants';
-
-/** Icon map for nav routes - keeps component DRY */
-const NAV_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
-  home: Home,
-  music: Music,
-  users: Users,
-  pen: PenLine,
-  guitar: Guitar,
-  book: BookOpen,
-  clock: Clock,
-  piano: Piano,
-  sliders: SlidersHorizontal,
-};
-
-interface Suggestion {
-  artist: string;
-  title: string;
-}
-
-interface StructuredData {
-  type: string;
-  [key: string]: unknown;
-}
-
-interface Message {
-  role: 'user' | 'assistant';
-  content: string;
-  autoDownload?: boolean;
-  suggestions?: Suggestion[];
-  structured?: StructuredData;
-  results?: {
-    chords: SearchResult[];
-    tabs: SearchResult[];
-  };
-}
 
 interface CoreAgentBuddyProps {
   onSave?: (result: SearchResult, type: 'chord' | 'tab') => void;
   isSaving?: boolean;
-  /** When provided, renders in static onboarding demo mode */
+  isLanding?: boolean;
   onboarding?: OnboardingState;
 }
 
@@ -90,7 +55,6 @@ const PANEL_WIDTH = BUDDY_PANEL_WIDTH;
 const PANEL_HEIGHT = BUDDY_PANEL_HEIGHT;
 const EDGE_PADDING = 20;
 
-/** Clamp position within viewport bounds */
 function clampPosition(x: number, y: number): { x: number; y: number } {
   if (typeof window === 'undefined') return { x, y };
   return {
@@ -99,7 +63,6 @@ function clampPosition(x: number, y: number): { x: number; y: number } {
   };
 }
 
-/** Get centered position within viewport */
 function getCenteredPosition(): { x: number; y: number } {
   if (typeof window === 'undefined') return { x: 100, y: 100 };
   return clampPosition(
@@ -108,7 +71,6 @@ function getCenteredPosition(): { x: number; y: number } {
   );
 }
 
-/** Load saved position from localStorage */
 function loadSavedPosition(): { x: number; y: number } {
   if (typeof window === 'undefined') return getCenteredPosition();
   try {
@@ -117,82 +79,80 @@ function loadSavedPosition(): { x: number; y: number } {
       const parsed = JSON.parse(saved) as { x: number; y: number };
       return clampPosition(parsed.x, parsed.y);
     }
-  } catch {
-    // Invalid JSON
-  }
+  } catch { /* Invalid JSON */ }
   return getCenteredPosition();
 }
 
-export function CoreAgentBuddy({ onSave, isSaving = false, onboarding }: CoreAgentBuddyProps) {
-  const router = useRouter();
-  const pathname = usePathname();
+function loadSavedMinimized(): boolean {
+  if (typeof window === 'undefined') return false;
+  try {
+    return localStorage.getItem(BUDDY_MINIMIZED_STORAGE_KEY) === 'true';
+  } catch {
+    return false;
+  }
+}
+
+export function CoreAgentBuddy({ onSave, isSaving = false, isLanding = false, onboarding }: CoreAgentBuddyProps) {
   const { context, isOpen, setIsOpen } = useBuddy();
   const isOnboarding = !!onboarding;
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [thinkingPun, setThinkingPun] = useState('');
-  const [isMinimized, setIsMinimized] = useState(false);
+  const isStatic = isLanding || isOnboarding;
+
+  const chat = useBuddyChat({ context, onSave });
+  const inputRef = useRef<HTMLInputElement>(null);
+  const minimizedSaveTimeoutRef = useRef<NodeJS.Timeout>(undefined);
+
+  const [isMinimized, setIsMinimizedInternal] = useState(false);
   const [isFirstLoad, setIsFirstLoad] = useState(true);
   const [isReady, setIsReady] = useState(false);
   const [position, setPosition] = useState(BUDDY_DEFAULT_POSITION);
-  const [conversationHistory, setConversationHistory] = useState<
-    Array<{ role: string; content: string }>
-  >([]);
+  const [currentPlaceholder, setCurrentPlaceholder] = useState(() =>
+    selectRandomWithFallback(placeholders, BUDDY_DEFAULT_PLACEHOLDER)
+  );
 
-  // Delay entrance by 1s
+  // Debounced minimized state setter
+  const setIsMinimized = useCallback((minimized: boolean) => {
+    setIsMinimizedInternal(minimized);
+    if (minimizedSaveTimeoutRef.current) clearTimeout(minimizedSaveTimeoutRef.current);
+    minimizedSaveTimeoutRef.current = setTimeout(() => {
+      localStorage.setItem(BUDDY_MINIMIZED_STORAGE_KEY, String(minimized));
+    }, BUDDY_STATE_DEBOUNCE_MS);
+  }, []);
+
+  const displayMessages = isOnboarding ? (onboarding?.messages as BuddyMessage[]) : chat.messages;
+  const displayLoading = isOnboarding ? onboarding?.isLoading : chat.isLoading;
+  const displayInput = isOnboarding ? onboarding?.typingText : chat.input;
+  const isEmptyState = displayMessages.length === 0;
+  const shouldRotatePlaceholder = isEmptyState && isOpen && !isMinimized && !isStatic;
+
   useEffect(() => {
     const timer = setTimeout(() => setIsReady(true), BUDDY_ENTRANCE_DELAY_MS);
     return () => clearTimeout(timer);
   }, []);
 
-  // Load saved position on mount
   useEffect(() => {
     setPosition(loadSavedPosition());
+    setIsMinimizedInternal(loadSavedMinimized());
   }, []);
 
+  const positionSaveTimeoutRef = useRef<NodeJS.Timeout>(undefined);
   const handleDragEnd = useCallback(() => {
-    localStorage.setItem(BUDDY_POSITION_STORAGE_KEY, JSON.stringify(position));
+    if (positionSaveTimeoutRef.current) clearTimeout(positionSaveTimeoutRef.current);
+    positionSaveTimeoutRef.current = setTimeout(() => {
+      localStorage.setItem(BUDDY_POSITION_STORAGE_KEY, JSON.stringify(position));
+    }, BUDDY_STATE_DEBOUNCE_MS);
   }, [position]);
 
-  // Track first load completion
   const handleAnimationComplete = useCallback(() => {
     if (isFirstLoad) {
       setTimeout(() => setIsFirstLoad(false), BUDDY_FIRST_LOAD_DELAY_MS);
     }
   }, [isFirstLoad]);
-  const [currentPlaceholder, setCurrentPlaceholder] = useState(() =>
-    selectRandomWithFallback(placeholders, BUDDY_DEFAULT_PLACEHOLDER)
-  );
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
 
-  // Derived state - use onboarding values when in demo mode
-  const displayMessages = isOnboarding ? (onboarding.messages as Message[]) : messages;
-  const displayLoading = isOnboarding ? onboarding.isLoading : isLoading;
-  const displayInput = isOnboarding ? onboarding.typingText : input;
-
-  const isEmptyState = displayMessages.length === 0;
-  const shouldRotatePlaceholder = isEmptyState && isOpen && !isMinimized && !isOnboarding;
-
-  // Always expand when opened and focus input
-  useEffect(() => {
-    if (isOpen) {
-      setIsMinimized(false);
-      setTimeout(() => inputRef.current?.focus(), BUDDY_AUTOFOCUS_DELAY_MS);
-    }
-  }, [isOpen]);
-
-  // Also focus when minimized state changes (restore from minimized)
   useEffect(() => {
     if (isOpen && !isMinimized) {
       setTimeout(() => inputRef.current?.focus(), BUDDY_AUTOFOCUS_DELAY_MS);
     }
   }, [isOpen, isMinimized]);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [displayMessages]);
 
   useIntervalEffect(
     () => setCurrentPlaceholder(selectRandomWithFallback(placeholders, BUDDY_DEFAULT_PLACEHOLDER)),
@@ -200,484 +160,305 @@ export function CoreAgentBuddy({ onSave, isSaving = false, onboarding }: CoreAge
     shouldRotatePlaceholder
   );
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || isLoading) return;
-
-    const userMessage = input.trim();
-    setInput('');
-    setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
-    setThinkingPun(selectRandomWithFallback(BUDDY_THINKING_PUNS, BUDDY_DEFAULT_THINKING));
-    setIsLoading(true);
-
-    try {
-      const newHistory = [...conversationHistory, { role: 'user', content: userMessage }];
-
-      const response = await fetch(BUDDY_API_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: newHistory, context }),
-      });
-
-      const data = (await response.json()) as {
-        message: string;
-        autoDownload?: boolean;
-        suggestions?: Suggestion[];
-        structured?: StructuredData;
-        results?: { chords: SearchResult[]; tabs: SearchResult[] };
-        navigateTo?: string;
-      };
-
-      setConversationHistory([...newHistory, { role: 'assistant', content: data.message }]);
-
-      // Handle navigation if agent requested it
-      if (data.navigateTo) {
-        router.push(data.navigateTo);
-      }
-
-      const firstChord = data.results?.chords?.[0];
-      const shouldAutoDownload = data.autoDownload && firstChord && onSave;
-      if (shouldAutoDownload) {
-        onSave(firstChord, 'chord');
-        setMessages(prev => [...prev, { role: 'assistant', content: data.message }]);
-      } else {
-        setMessages(prev => [
-          ...prev,
-          {
-            role: 'assistant',
-            content: data.message,
-            suggestions: data.suggestions,
-            structured: data.structured,
-            results: data.results,
-          },
-        ]);
-      }
-    } catch {
-      setMessages(prev => [...prev, { role: 'assistant', content: BUDDY_ERROR_MESSAGE }]);
-    } finally {
-      setIsLoading(false);
-    }
+    chat.sendMessage(chat.input);
   };
 
-  const handleSelectResult = (result: SearchResult, type: 'chord' | 'tab') => {
-    onSave?.(result, type);
-  };
-
-  const handleSelectSuggestion = (suggestion: Suggestion) => {
-    const query = `${suggestion.title} by ${suggestion.artist}`;
-    setInput(query);
-    setTimeout(() => {
-      const form = document.querySelector('[data-buddy-form]');
-      (form as HTMLFormElement)?.requestSubmit();
-    }, 0);
-  };
-
-  // In onboarding mode, show immediately without isReady/isOpen checks
-  const shouldShow = isOnboarding || (isReady && isOpen);
+  const shouldShow = isStatic || (isReady && isOpen);
 
   return (
     <AnimatePresence>
       {shouldShow && (
         <>
-          {/* Mobile: Full-screen sheet (hidden during onboarding) */}
-          {!isOnboarding && (
-          <motion.div
-            initial={{ y: '100%' }}
-            animate={{ y: 0 }}
-            exit={{ y: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed inset-0 z-50 md:hidden bg-slate-950"
-          >
-            <div className="flex flex-col h-full">
-              {/* Mobile Header */}
-              <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
-                <div className="flex items-center gap-2.5">
-                  <motion.div
-                    animate={{
-                      boxShadow: [
-                        '0 0 8px rgba(59, 130, 246, 0.5)',
-                        '0 0 16px rgba(147, 51, 234, 0.5)',
-                        '0 0 8px rgba(59, 130, 246, 0.5)',
-                      ]
-                    }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500/30 to-purple-500/30 flex items-center justify-center border border-white/10"
-                  >
-                    <Bot className="h-5 w-5 text-blue-400" />
-                  </motion.div>
-                  <div>
-                    <span className="font-semibold text-white">Buddy</span>
-                    <ContextChip page={context.page} artist={context.artist} song={context.song} />
-                  </div>
-                </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 text-white/60 hover:text-white hover:bg-white/10"
-                  onClick={() => setIsOpen(false)}
-                >
-                  <X className="h-5 w-5" />
-                </Button>
-              </div>
-
-              {/* Mobile Nav */}
-              <nav className="border-b border-white/5 bg-white/[0.02] overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
-                <div className="flex items-center gap-1 px-4 py-2">
-                  {BUDDY_NAV_ROUTES.map(route => {
-                    const Icon = NAV_ICONS[route.icon];
-                    const isActive = pathname === route.path || pathname?.startsWith(route.path);
-                    return (
-                      <button
-                        key={route.path}
-                        onClick={() => { router.push(route.path); setIsOpen(false); }}
-                        className={cn(
-                          'flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-all whitespace-nowrap shrink-0',
-                          isActive ? 'bg-white/10 text-white' : 'text-white/50 hover:text-white/80'
-                        )}
-                      >
-                        {Icon && <Icon className="h-4 w-4" />}
-                        <span>{route.label}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </nav>
-
-              {/* Mobile Messages */}
-              <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
-                <AnimatePresence mode="wait">
-                  {isEmptyState && <EmptyState placeholder={currentPlaceholder} />}
-                </AnimatePresence>
-
-                {messages.map((message, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className={cn('flex', message.role === 'user' ? 'justify-end' : 'justify-start')}
-                  >
-                    <div
-                      className={cn(
-                        'max-w-[85%] rounded-2xl px-4 py-3 text-sm',
-                        message.role === 'user'
-                          ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
-                          : 'bg-white/5 border border-white/10 text-white/80'
-                      )}
-                    >
-                      <p className="whitespace-pre-wrap">{message.content}</p>
-                      {message.structured && <StructuredBlock data={message.structured} />}
-                    </div>
-                  </motion.div>
-                ))}
-
-                <AnimatePresence>
-                  {isLoading && <ThinkingIndicator pun={thinkingPun} />}
-                </AnimatePresence>
-                <div ref={messagesEndRef} />
-              </div>
-
-              {/* Mobile Input */}
-              <form onSubmit={handleSubmit} className="px-4 py-4 border-t border-white/10 bg-slate-900/50">
-                <div className="flex gap-2">
-                  <Input
-                    ref={inputRef}
-                    value={input}
-                    onChange={e => setInput(e.target.value)}
-                    placeholder={BUDDY_INPUT_PLACEHOLDER}
-                    disabled={isLoading || isSaving}
-                    className="flex-1 h-12 bg-white/5 border-white/10 text-white placeholder:text-white/30 rounded-xl text-base"
-                  />
-                  <Button
-                    type="submit"
-                    size="icon"
-                    className="h-12 w-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl"
-                    disabled={isLoading || isSaving || !input.trim()}
-                  >
-                    {isLoading ? <Spinner className="h-5 w-5" /> : <Send className="h-5 w-5" />}
-                  </Button>
-                </div>
-              </form>
-            </div>
-          </motion.div>
-          )}
-
-          {/* Desktop: Draggable floating panel (static in onboarding mode) */}
-          <motion.div
-            drag={!isOnboarding}
-            dragMomentum={false}
-            dragElastic={0}
-            onDrag={isOnboarding ? undefined : (_, info) => setPosition(clampPosition(position.x + info.delta.x, position.y + info.delta.y))}
-            onDragEnd={isOnboarding ? undefined : handleDragEnd}
-            variants={isFirstLoad ? BUDDY_FIRST_LOAD_VARIANTS : BUDDY_PANEL_VARIANTS}
-            initial="closed"
-            animate="open"
-            exit="closed"
-            onAnimationComplete={handleAnimationComplete}
-            className={cn('fixed z-50', isOnboarding ? 'block' : 'hidden md:block')}
-            style={{ touchAction: 'none', left: isOnboarding ? '50%' : position.x, top: isOnboarding ? '50%' : position.y, transform: isOnboarding ? 'translate(-50%, -50%)' : undefined }}
-          >
-          {/* Ambient floating glow - subtle, always present */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.5, ease: 'easeOut' }}
-            className="absolute -inset-4 rounded-3xl bg-gradient-to-b from-blue-500/8 via-transparent to-purple-500/8 blur-xl -z-20"
-          />
-          {/* First load entrance glow - fades out */}
-          {isFirstLoad && (
-            <motion.div
-              variants={BUDDY_GLOW_VARIANTS}
-              initial="hidden"
-              animate="visible"
-              className="absolute -inset-6 rounded-3xl bg-gradient-to-br from-blue-400/15 via-indigo-500/10 to-purple-400/15 blur-2xl -z-20"
+          {/* Mobile: Full-screen sheet */}
+          {!isStatic && (
+            <MobilePanel
+              context={context}
+              messages={chat.messages}
+              input={chat.input}
+              isLoading={chat.isLoading}
+              isSaving={isSaving}
+              thinkingPun={chat.thinkingPun}
+              placeholder={currentPlaceholder}
+              inputRef={inputRef}
+              onInputChange={chat.setInput}
+              onSubmit={handleSubmit}
+              onClose={() => setIsOpen(false)}
+              onSelectSuggestion={chat.selectSuggestion}
+              onSelectResult={chat.selectResult}
             />
           )}
-          {/* Bottom shadow for floating effect */}
-          <div className="absolute -bottom-3 left-4 right-4 h-6 bg-black/20 blur-xl rounded-full -z-30" />
 
-          <motion.div
-            variants={BUDDY_MINIMIZED_VARIANTS}
-            animate={isMinimized ? 'minimized' : 'open'}
-            className={cn(
-              'rounded-2xl overflow-hidden',
-              'bg-gradient-to-b from-slate-900/95 to-slate-950/95',
-              'backdrop-blur-xl',
-              'border border-white/10',
-              'shadow-2xl shadow-black/50',
-              isMinimized ? 'cursor-pointer' : '',
-              isFirstLoad && 'ring-2 ring-blue-500/50 ring-offset-2 ring-offset-transparent'
-            )}
-            onClick={isMinimized ? () => setIsMinimized(false) : undefined}
-          >
-            {/* Glowing border effect */}
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-blue-500/20 opacity-50 blur-sm -z-10" />
-
-            {/* Header - draggable (static in onboarding) */}
-            <div className={cn('flex items-center justify-between px-4 py-3 border-b border-white/5 select-none', !isOnboarding && 'cursor-grab active:cursor-grabbing')}>
-              <div className="flex items-center gap-2.5">
-                {!isOnboarding && <GripHorizontal className="h-4 w-4 text-white/20" />}
-                <motion.div
-                  animate={{
-                    boxShadow: [
-                      '0 0 8px rgba(59, 130, 246, 0.5)',
-                      '0 0 16px rgba(147, 51, 234, 0.5)',
-                      '0 0 8px rgba(59, 130, 246, 0.5)',
-                    ]
-                  }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="h-7 w-7 rounded-lg bg-gradient-to-br from-blue-500/30 to-purple-500/30 flex items-center justify-center border border-white/10"
-                >
-                  <Bot className="h-4 w-4 text-blue-400" />
-                </motion.div>
-                <div className="flex flex-col">
-                  <span className="font-semibold text-sm text-white/90">Buddy</span>
-                  {!isMinimized && (
-                    <ContextChip page={context.page} artist={context.artist} song={context.song} />
-                  )}
-                </div>
-              </div>
-              {isOnboarding ? (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-6 px-2 text-xs text-white/40 hover:text-white/80 hover:bg-white/10"
-                  onClick={onboarding.skip}
-                >
-                  Skip
-                </Button>
-              ) : (
-                <div className="flex items-center gap-1">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-6 w-6 text-white/40 hover:text-white/80 hover:bg-white/10"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setIsMinimized(!isMinimized);
-                    }}
-                  >
-                    {isMinimized ? <Maximize2 className="h-3 w-3" /> : <Minimize2 className="h-3 w-3" />}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-6 w-6 text-white/40 hover:text-white/80 hover:bg-white/10"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setIsOpen(false);
-                    }}
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
-                </div>
-              )}
-            </div>
-
-            {/* Content - hidden when minimized */}
-            <AnimatePresence>
-              {!isMinimized && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 560 }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="flex flex-col"
-                >
-                  {/* Mini Nav Bar - hidden during onboarding */}
-                  {!isOnboarding && (
-                  <nav className="relative border-b border-white/5 bg-white/[0.02]">
-                    {/* Scroll fade indicators */}
-                    <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-slate-900/95 to-transparent z-10 pointer-events-none" />
-                    <div className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-slate-900/95 to-transparent z-10 pointer-events-none" />
-                    <div className="flex items-center gap-0.5 px-4 py-2 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                      {BUDDY_NAV_ROUTES.map(route => {
-                        const Icon = NAV_ICONS[route.icon];
-                        const isActive = pathname === route.path || pathname?.startsWith(route.path);
-                        return (
-                          <button
-                            key={route.path}
-                            onClick={() => router.push(route.path)}
-                            className={cn(
-                              'flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[10px] font-medium transition-all whitespace-nowrap shrink-0',
-                              isActive
-                                ? 'bg-white/10 text-white shadow-sm'
-                                : 'text-white/50 hover:text-white/80 hover:bg-white/5'
-                            )}
-                          >
-                            {Icon && <Icon className="h-3.5 w-3.5" />}
-                            <span>{route.label}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </nav>
-                  )}
-
-                  {/* Messages */}
-                  <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 py-3 space-y-3 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
-                    <AnimatePresence mode="wait">
-                      {isEmptyState && <EmptyState placeholder={currentPlaceholder} />}
-                    </AnimatePresence>
-
-                    {displayMessages.map((message, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.15 }}
-                        className={cn('flex', message.role === 'user' ? 'justify-end' : 'justify-start')}
-                      >
-                        <div
-                          className={cn(
-                            'max-w-[85%] rounded-xl px-3 py-2 text-xs',
-                            message.role === 'user'
-                              ? 'bg-gradient-to-r from-blue-500/80 to-purple-500/80 text-white'
-                              : 'bg-white/5 border border-white/10 text-white/80'
-                          )}
-                        >
-                          <p className="whitespace-pre-wrap leading-relaxed">{message.content}</p>
-
-                          {message.structured && <StructuredBlock data={message.structured} />}
-
-                          {message.suggestions && message.suggestions.length > 0 && (
-                            <div className="mt-2 flex flex-wrap gap-1">
-                              {message.suggestions.map((suggestion, idx) => (
-                                <button
-                                  key={`${suggestion.artist}-${suggestion.title}-${idx}`}
-                                  onClick={() => handleSelectSuggestion(suggestion)}
-                                  disabled={isLoading || isSaving}
-                                  className="px-2 py-0.5 rounded-md bg-white/10 border border-white/10 hover:border-white/20 hover:bg-white/15 transition-all text-[10px] font-medium text-white/70 disabled:opacity-50"
-                                >
-                                  {suggestion.title}
-                                </button>
-                              ))}
-                            </div>
-                          )}
-
-                          {message.results &&
-                            (message.results.chords.length > 0 || message.results.tabs.length > 0) && (
-                              <div className="mt-2 space-y-2">
-                                {message.results.chords.length > 0 && (
-                                  <div>
-                                    <div className="text-[9px] uppercase tracking-widest text-white/40 mb-1">
-                                      Chords
-                                    </div>
-                                    {message.results.chords.slice(0, BUDDY_MAX_VISIBLE_RESULTS).map(result => (
-                                      <SearchResultButton
-                                        key={result.id}
-                                        result={result}
-                                        type="chord"
-                                        onClick={handleSelectResult}
-                                        disabled={isSaving}
-                                      />
-                                    ))}
-                                  </div>
-                                )}
-                                {message.results.tabs.length > 0 && (
-                                  <div>
-                                    <div className="text-[9px] uppercase tracking-widest text-white/40 mb-1">
-                                      Tabs
-                                    </div>
-                                    {message.results.tabs.slice(0, BUDDY_MAX_VISIBLE_RESULTS).map(result => (
-                                      <SearchResultButton
-                                        key={result.id}
-                                        result={result}
-                                        type="tab"
-                                        onClick={handleSelectResult}
-                                        disabled={isSaving}
-                                      />
-                                    ))}
-                                  </div>
-                                )}
-                              </div>
-                            )}
-                        </div>
-                      </motion.div>
-                    ))}
-
-                    <AnimatePresence>
-                      {displayLoading && <ThinkingIndicator pun={isOnboarding ? 'Finding your jam...' : thinkingPun} />}
-                    </AnimatePresence>
-
-                    <div ref={messagesEndRef} />
-                  </div>
-
-                  {/* Input - typewriter display during onboarding */}
-                  <form onSubmit={handleSubmit} data-buddy-form className="px-4 py-3 border-t border-white/5">
-                    <div className="flex gap-2">
-                      {isOnboarding ? (
-                        <div className="flex-1 h-9 bg-white/5 border border-white/10 rounded-lg px-3 flex items-center text-xs text-white/80">
-                          {displayInput}
-                          {displayInput && <span className="ml-0.5 w-0.5 h-4 bg-blue-400 animate-pulse" />}
-                        </div>
-                      ) : (
-                        <Input
-                          ref={inputRef}
-                          value={input}
-                          onChange={e => setInput(e.target.value)}
-                          placeholder={BUDDY_INPUT_PLACEHOLDER}
-                          disabled={isLoading || isSaving}
-                          className="flex-1 h-9 bg-white/5 border-white/10 focus:border-blue-500/50 text-xs text-white placeholder:text-white/30 rounded-lg"
-                        />
-                      )}
-                      {!isOnboarding && (
-                        <Button
-                          type="submit"
-                          size="icon"
-                          className="h-9 w-9 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 border-0 rounded-lg"
-                          disabled={isLoading || isSaving || !input.trim()}
-                        >
-                          {isLoading ? <Spinner className="h-4 w-4" /> : <Send className="h-4 w-4" />}
-                        </Button>
-                      )}
-                    </div>
-                  </form>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        </motion.div>
+          {/* Desktop: Draggable floating panel */}
+          <DesktopPanel
+            context={context}
+            isStatic={isStatic}
+            isOnboarding={isOnboarding}
+            isMinimized={isMinimized}
+            isFirstLoad={isFirstLoad}
+            position={position}
+            displayMessages={displayMessages}
+            displayLoading={displayLoading}
+            displayInput={displayInput}
+            input={chat.input}
+            isLoading={chat.isLoading}
+            isSaving={isSaving}
+            thinkingPun={chat.thinkingPun}
+            placeholder={currentPlaceholder}
+            inputRef={inputRef}
+            onInputChange={chat.setInput}
+            onSubmit={handleSubmit}
+            onDrag={(delta) => setPosition(clampPosition(position.x + delta.x, position.y + delta.y))}
+            onDragEnd={handleDragEnd}
+            onMinimize={() => setIsMinimized(!isMinimized)}
+            onClose={() => setIsOpen(false)}
+            onSkip={onboarding?.skip}
+            onAnimationComplete={handleAnimationComplete}
+            onSelectSuggestion={chat.selectSuggestion}
+            onSelectResult={chat.selectResult}
+          />
         </>
       )}
     </AnimatePresence>
+  );
+}
+
+interface MobilePanelProps {
+  context: { page: string; artist?: string; song?: string };
+  messages: BuddyMessage[];
+  input: string;
+  isLoading: boolean;
+  isSaving: boolean;
+  thinkingPun: string;
+  placeholder: string;
+  inputRef: React.RefObject<HTMLInputElement | null>;
+  onInputChange: (value: string) => void;
+  onSubmit: (e: FormEvent) => void;
+  onClose: () => void;
+  onSelectSuggestion: (suggestion: { artist: string; title: string }) => void;
+  onSelectResult: (result: SearchResult, type: 'chord' | 'tab') => void;
+}
+
+function MobilePanel({ context, messages, input, isLoading, isSaving, thinkingPun, placeholder, inputRef, onInputChange, onSubmit, onClose, onSelectSuggestion, onSelectResult }: MobilePanelProps) {
+  const isEmptyState = messages.length === 0;
+
+  return (
+    <motion.div
+      initial={{ y: '100%' }}
+      animate={{ y: 0 }}
+      exit={{ y: '100%' }}
+      transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+      className="fixed inset-0 z-50 md:hidden bg-slate-950"
+    >
+      <div className="flex flex-col h-full">
+        <MobileHeader context={context} onClose={onClose} />
+        <BuddyNavBar onNavigate={onClose} />
+
+        <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
+          <AnimatePresence mode="wait">
+            {isEmptyState && <EmptyState placeholder={placeholder} />}
+          </AnimatePresence>
+          <BuddyMessageList
+            messages={messages}
+            isLoading={isLoading}
+            thinkingPun={thinkingPun}
+            placeholder={placeholder}
+            isSaving={isSaving}
+            onSelectSuggestion={onSelectSuggestion}
+            onSelectResult={onSelectResult}
+          />
+        </div>
+
+        <form onSubmit={onSubmit} className="px-4 py-4 border-t border-white/10 bg-slate-900/50">
+          <div className="flex gap-2">
+            <Input
+              ref={inputRef}
+              value={input}
+              onChange={e => onInputChange(e.target.value)}
+              placeholder={BUDDY_INPUT_PLACEHOLDER}
+              disabled={isLoading || isSaving}
+              className="flex-1 h-12 bg-white/5 border-white/10 text-white placeholder:text-white/30 rounded-xl text-base"
+            />
+            <Button
+              type="submit"
+              size="icon"
+              className="h-12 w-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl"
+              disabled={isLoading || isSaving || !input.trim()}
+            >
+              {isLoading ? <Spinner className="h-5 w-5" /> : <Send className="h-5 w-5" />}
+            </Button>
+          </div>
+        </form>
+      </div>
+    </motion.div>
+  );
+}
+
+function MobileHeader({ context, onClose }: { context: { page: string; artist?: string; song?: string }; onClose: () => void }) {
+  return (
+    <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
+      <div className="flex items-center gap-2.5">
+        <motion.div
+          animate={{ boxShadow: ['0 0 8px rgba(59, 130, 246, 0.5)', '0 0 16px rgba(147, 51, 234, 0.5)', '0 0 8px rgba(59, 130, 246, 0.5)'] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500/30 to-purple-500/30 flex items-center justify-center border border-white/10"
+        >
+          <Bot className="h-5 w-5 text-blue-400" />
+        </motion.div>
+        <div>
+          <span className="font-semibold text-white">Buddy</span>
+          <ContextChip page={context.page} artist={context.artist} song={context.song} />
+        </div>
+      </div>
+      <Button variant="ghost" size="icon" className="h-8 w-8 text-white/60 hover:text-white hover:bg-white/10" onClick={onClose}>
+        <X className="h-5 w-5" />
+      </Button>
+    </div>
+  );
+}
+
+interface DesktopPanelProps {
+  context: { page: string; artist?: string; song?: string };
+  isStatic: boolean;
+  isOnboarding: boolean;
+  isMinimized: boolean;
+  isFirstLoad: boolean;
+  position: { x: number; y: number };
+  displayMessages: BuddyMessage[];
+  displayLoading?: boolean;
+  displayInput?: string;
+  input: string;
+  isLoading: boolean;
+  isSaving: boolean;
+  thinkingPun: string;
+  placeholder: string;
+  inputRef: React.RefObject<HTMLInputElement | null>;
+  onInputChange: (value: string) => void;
+  onSubmit: (e: FormEvent) => void;
+  onDrag: (delta: { x: number; y: number }) => void;
+  onDragEnd: () => void;
+  onMinimize: () => void;
+  onClose: () => void;
+  onSkip?: () => void;
+  onAnimationComplete: () => void;
+  onSelectSuggestion: (suggestion: { artist: string; title: string }) => void;
+  onSelectResult: (result: SearchResult, type: 'chord' | 'tab') => void;
+}
+
+function DesktopPanel({
+  context, isStatic, isOnboarding, isMinimized, isFirstLoad, position,
+  displayMessages, displayLoading, displayInput, input, isLoading, isSaving,
+  thinkingPun, placeholder, inputRef, onInputChange, onSubmit, onDrag, onDragEnd,
+  onMinimize, onClose, onSkip, onAnimationComplete, onSelectSuggestion, onSelectResult
+}: DesktopPanelProps) {
+  const isEmptyState = displayMessages.length === 0;
+
+  return (
+    <motion.div
+      drag={!isStatic}
+      dragMomentum={false}
+      dragElastic={0}
+      onDrag={isStatic ? undefined : (_, info) => onDrag(info.delta)}
+      onDragEnd={isStatic ? undefined : onDragEnd}
+      variants={isFirstLoad ? BUDDY_FIRST_LOAD_VARIANTS : BUDDY_PANEL_VARIANTS}
+      initial="closed"
+      animate="open"
+      exit="closed"
+      onAnimationComplete={onAnimationComplete}
+      className={cn('fixed z-50', isStatic ? 'block' : 'hidden md:block')}
+      style={{
+        touchAction: 'none',
+        left: isStatic ? `calc(50% - ${PANEL_WIDTH / 2}px)` : position.x,
+        top: isStatic ? `calc(50% - ${PANEL_HEIGHT / 2}px)` : position.y,
+      }}
+    >
+      <GlowEffects isFirstLoad={isFirstLoad} />
+
+      <motion.div
+        variants={BUDDY_MINIMIZED_VARIANTS}
+        animate={isMinimized ? 'minimized' : 'open'}
+        className={cn(
+          'rounded-2xl overflow-hidden bg-gradient-to-b from-slate-900/95 to-slate-950/95',
+          'backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/50',
+          isMinimized && 'cursor-pointer',
+          isFirstLoad && 'ring-2 ring-blue-500/50 ring-offset-2 ring-offset-transparent'
+        )}
+        onClick={isMinimized ? () => onMinimize() : undefined}
+      >
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-blue-500/20 opacity-50 blur-sm -z-10" />
+
+        <BuddyHeader
+          context={context}
+          isStatic={isStatic}
+          isOnboarding={isOnboarding}
+          isMinimized={isMinimized}
+          onMinimize={onMinimize}
+          onClose={onClose}
+          onSkip={onSkip}
+        />
+
+        <AnimatePresence>
+          {!isMinimized && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 560 }}
+              exit={{ opacity: 0, height: 0 }}
+              className="flex flex-col"
+            >
+              {!isOnboarding && <BuddyNavBar />}
+
+              <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 py-3 space-y-3 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+                <AnimatePresence mode="wait">
+                  {isEmptyState && <EmptyState placeholder={placeholder} />}
+                </AnimatePresence>
+                <BuddyMessageList
+                  messages={displayMessages}
+                  isLoading={displayLoading ?? false}
+                  thinkingPun={isOnboarding ? 'Finding your jam...' : thinkingPun}
+                  placeholder={placeholder}
+                  isSaving={isSaving}
+                  onSelectSuggestion={onSelectSuggestion}
+                  onSelectResult={onSelectResult}
+                />
+              </div>
+
+              <BuddyInput
+                input={input}
+                isLoading={isLoading}
+                isSaving={isSaving}
+                isOnboarding={isOnboarding}
+                typingText={displayInput}
+                inputRef={inputRef}
+                onInputChange={onInputChange}
+                onSubmit={onSubmit}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function GlowEffects({ isFirstLoad }: { isFirstLoad: boolean }) {
+  return (
+    <>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.5, ease: 'easeOut' }}
+        className="absolute -inset-4 rounded-3xl bg-gradient-to-b from-blue-500/8 via-transparent to-purple-500/8 blur-xl -z-20"
+      />
+      {isFirstLoad && (
+        <motion.div
+          variants={BUDDY_GLOW_VARIANTS}
+          initial="hidden"
+          animate="visible"
+          className="absolute -inset-6 rounded-3xl bg-gradient-to-br from-blue-400/15 via-indigo-500/10 to-purple-400/15 blur-2xl -z-20"
+        />
+      )}
+      <div className="absolute -bottom-3 left-4 right-4 h-6 bg-black/20 blur-xl rounded-full -z-30" />
+    </>
   );
 }

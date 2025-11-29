@@ -25,6 +25,10 @@ export interface OnboardingState {
   reset: () => void;
 }
 
+// Dev-only override: NEXT_PUBLIC_FORCE_ONBOARDING=true ignores localStorage (never in production)
+const IS_DEV = process.env.NODE_ENV === 'development';
+const FORCE_ONBOARDING = IS_DEV && process.env.NEXT_PUBLIC_FORCE_ONBOARDING === 'true';
+
 export function useOnboardingDemo(): OnboardingState {
   const [messages, setMessages] = useState<Message[]>([]);
   const [typingText, setTypingText] = useState('');
@@ -66,10 +70,10 @@ export function useOnboardingDemo(): OnboardingState {
     timerRef.current = setTimeout(() => setPhase('typing'), ONBOARDING_TIMING.INITIAL_DELAY_MS);
   }, [clearTimer]);
 
-  // Check localStorage on mount
+  // Check localStorage on mount (FORCE_ONBOARDING env var overrides for dev)
   useEffect(() => {
     const seen = localStorage.getItem(ONBOARDING_STORAGE_KEY) === 'true';
-    if (seen) {
+    if (seen && !FORCE_ONBOARDING) {
       setHasSeenBefore(true);
       setPhase('complete');
     } else {

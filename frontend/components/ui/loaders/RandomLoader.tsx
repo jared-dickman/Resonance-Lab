@@ -40,6 +40,7 @@ import { TurbineLoader } from '@/components/ui/loaders/TurbineLoader';
 import { PulleyLoader } from '@/components/ui/loaders/PulleyLoader';
 import { CrankLoader } from '@/components/ui/loaders/CrankLoader';
 import { FlywheelLoader } from '@/components/ui/loaders/FlywheelLoader';
+import { PolarLoader } from '@/components/ui/loaders/PolarLoader';
 
 interface RandomLoaderProps {
   size?: 'sm' | 'md' | 'lg';
@@ -82,6 +83,7 @@ const STANDARD_LOADERS: FC<RandomLoaderProps>[] = [
   PulleyLoader,
   CrankLoader,
   FlywheelLoader,
+  PolarLoader,
 ];
 
 // Loaders with number-based size (will use default)

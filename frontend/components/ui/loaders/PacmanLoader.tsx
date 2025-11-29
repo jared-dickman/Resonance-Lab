@@ -24,12 +24,17 @@ export function PacmanLoader({ className, size = 'md' }: LoaderProps) {
             cy={center}
             r={dim * 0.04}
             fill={SAPPHIRE[2]}
-            animate={{ opacity: [1, 1, 0], x: [-dim * 0.1, -dim * 0.2, -dim * 0.3] }}
+            animate={{
+              opacity: [1, 1, 1, 0, 0],
+              x: [-dim * 0.1, -dim * 0.15, -dim * 0.2, -dim * 0.25, -dim * 0.3],
+              scale: [1, 1, 1, 0.3, 0]
+            }}
             transition={{
               duration: 0.8,
               repeat: Infinity,
-              delay: i * 0.2,
+              delay: i * 0.15,
               ease: 'linear',
+              times: [0, 0.5, 0.65, 0.75, 1],
             }}
           />
         ))}

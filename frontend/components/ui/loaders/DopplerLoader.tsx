@@ -23,9 +23,10 @@ export function DopplerLoader({ className, size = 'md' }: LoaderProps) {
           fill={SAPPHIRE[3]}
           animate={{
             cx: [20, 80, 20],
+            opacity: [0.3, 1, 1, 1, 0.3],
           }}
           transition={{
-            duration: 4,
+            duration: 2.5,
             repeat: Infinity,
             ease: 'easeInOut',
           }}

@@ -55,9 +55,9 @@ export function FloppyLoader({ className, size = 'md' }: LoaderProps) {
           opacity="0.8"
         />
 
-        {/* Label lines with write animation */}
+        {/* Label lines - static */}
         {[0, 1, 2].map((i) => (
-          <motion.line
+          <line
             key={i}
             x1="25"
             y1={22 + i * 6}
@@ -66,27 +66,19 @@ export function FloppyLoader({ className, size = 'md' }: LoaderProps) {
             stroke={SAPPHIRE[0]}
             strokeWidth="1.5"
             strokeLinecap="round"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: [0, 1, 1, 0] }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              ease: 'easeInOut',
-              delay: i * 0.3,
-            }}
+            opacity="0.8"
           />
         ))}
 
-        {/* Metal shutter slider */}
+        {/* Metal shutter slider - subtle movement */}
         <motion.g
           animate={{
-            x: [0, -8, -8, 0],
+            y: [0, -2, 0],
           }}
           transition={{
-            duration: 2.4,
+            duration: 3,
             repeat: Infinity,
             ease: 'easeInOut',
-            times: [0, 0.3, 0.7, 1],
           }}
         >
           <rect
@@ -114,34 +106,15 @@ export function FloppyLoader({ className, size = 'md' }: LoaderProps) {
           ))}
         </motion.g>
 
-        {/* Disk opening (exposed when slider moves) */}
-        <motion.ellipse
+        {/* Disk opening (static) */}
+        <ellipse
           cx="45"
           cy="62"
           rx="10"
           ry="10"
           fill={SAPPHIRE[3]}
-          opacity="0"
-          animate={{
-            opacity: [0, 0, 0.8, 0.8, 0],
-          }}
-          transition={{
-            duration: 2.4,
-            repeat: Infinity,
-            ease: 'easeInOut',
-            times: [0, 0.3, 0.5, 0.7, 1],
-          }}
-        >
-          {/* Spinning disk inside */}
-          <animateTransform
-            attributeName="transform"
-            type="rotate"
-            from="0 45 62"
-            to="360 45 62"
-            dur="0.8s"
-            repeatCount="indefinite"
-          />
-        </motion.ellipse>
+          opacity="0.4"
+        />
 
         {/* Write protect notch */}
         <rect x="82" y="68" width="3" height="8" fill={SAPPHIRE[0]} rx="0.5" />
@@ -149,18 +122,17 @@ export function FloppyLoader({ className, size = 'md' }: LoaderProps) {
         {/* Bottom notch */}
         <rect x="15" y="84" width="12" height="6" fill={SAPPHIRE[0]} />
 
-        {/* Read/write activity indicator */}
+        {/* Read/write activity indicator - gentle blink */}
         <motion.circle
           cx="88"
           cy="20"
           r="3"
           fill={SAPPHIRE[3]}
           animate={{
-            opacity: [0.2, 1, 0.2],
-            scale: [0.8, 1.2, 0.8],
+            opacity: [0.3, 0.8, 0.3],
           }}
           transition={{
-            duration: 0.6,
+            duration: 2.5,
             repeat: Infinity,
             ease: 'easeInOut',
           }}

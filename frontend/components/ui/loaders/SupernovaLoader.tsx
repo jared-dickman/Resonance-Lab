@@ -43,10 +43,10 @@ export function SupernovaLoader({ className, size = 'md' }: LoaderProps) {
               opacity: [0.9, 0],
             }}
             transition={{
-              duration: 2,
+              duration: 8,
               repeat: Infinity,
-              delay: i * 0.5,
-              ease: [0.22, 1, 0.36, 1],
+              delay: i * 2,
+              ease: [0.16, 1, 0.3, 1],
             }}
           />
         ))}
@@ -67,10 +67,10 @@ export function SupernovaLoader({ className, size = 'md' }: LoaderProps) {
               strokeWidth: [dim * 0.03, dim * 0.01, dim * 0.03],
             }}
             transition={{
-              duration: 1.8,
+              duration: 7.2,
               repeat: Infinity,
-              ease: 'easeInOut',
-              delay: i * 0.08,
+              ease: [0.25, 0.1, 0.25, 1],
+              delay: i * 0.32,
             }}
           />
         ))}
@@ -93,10 +93,10 @@ export function SupernovaLoader({ className, size = 'md' }: LoaderProps) {
                 scale: [1, 0.3],
               }}
               transition={{
-                duration: 1.5,
+                duration: 6,
                 repeat: Infinity,
-                ease: [0.22, 1, 0.36, 1],
-                delay: i * 0.06,
+                ease: [0.16, 1, 0.3, 1],
+                delay: i * 0.24,
               }}
             />
           );
@@ -112,7 +112,7 @@ export function SupernovaLoader({ className, size = 'md' }: LoaderProps) {
             scale: [1, 1.6, 1],
             opacity: [0.6, 0.9, 0.6],
           }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 6, repeat: Infinity, ease: [0.37, 0, 0.63, 1] }}
           style={{ originX: `${center}px`, originY: `${center}px` }}
         />
 
@@ -125,7 +125,7 @@ export function SupernovaLoader({ className, size = 'md' }: LoaderProps) {
           animate={{
             scale: [1, 1.2, 1],
           }}
-          transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 4.8, repeat: Infinity, ease: [0.45, 0, 0.55, 1] }}
           style={{ originX: `${center}px`, originY: `${center}px` }}
         />
 
@@ -138,7 +138,7 @@ export function SupernovaLoader({ className, size = 'md' }: LoaderProps) {
           animate={{
             opacity: [0.8, 1, 0.8],
           }}
-          transition={{ duration: 0.8, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 3.2, repeat: Infinity, ease: [0.45, 0, 0.55, 1] }}
         />
       </svg>
     </div>
