@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useReducedMotion } from '@/components/ui/ai/hooks/useReducedMotion';
 import { useOnboardingDemo } from '@/lib/hooks/useOnboardingDemo';
 import { CoreAgentBuddy } from '@/components/agent/CoreAgentBuddy';
+import { BuddyErrorBoundary } from '@/components/agent/BuddyErrorBoundary';
 import { CinematicIntro } from '@/components/CinematicIntro';
 import { useIntro } from '@/lib/contexts/IntroContext';
 import { useHeaderLogoRef } from '@/app/LayoutContent';
@@ -81,10 +82,12 @@ export function LandingPage() {
       <div className="relative min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center">
         <NebulaBackground reducedMotion={reducedMotion} />
         <div className="relative z-10">
-          <CoreAgentBuddy
-            isLanding
-            onboarding={showDemo ? onboarding : undefined}
-          />
+          <BuddyErrorBoundary>
+            <CoreAgentBuddy
+              isLanding
+              onboarding={showDemo ? onboarding : undefined}
+            />
+          </BuddyErrorBoundary>
         </div>
       </div>
     </>

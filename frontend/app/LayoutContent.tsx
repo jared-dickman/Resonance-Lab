@@ -14,6 +14,7 @@ import { pageRoutes } from '@/lib/routes';
 import { BuddyProvider, useBuddy } from '@/lib/contexts/BuddyContext';
 import { IntroProvider, useIntro } from '@/lib/contexts/IntroContext';
 import { CoreAgentBuddy } from '@/components/agent/CoreAgentBuddy';
+import { BuddyErrorBoundary } from '@/components/agent/BuddyErrorBoundary';
 
 // Context to share header logo ref with CinematicIntro
 const HeaderLogoRefContext = createContext<React.RefObject<HTMLHeadingElement | null> | null>(null);
@@ -89,7 +90,11 @@ function LayoutInner({ children, headerLogoRef }: { children: React.ReactNode; h
       </div>
 
       {/* Core Agent Buddy - hidden on landing page where onboarding owns it */}
-      {!isLandingPage && <CoreAgentBuddy />}
+      {!isLandingPage && (
+        <BuddyErrorBoundary>
+          <CoreAgentBuddy />
+        </BuddyErrorBoundary>
+      )}
     </div>
   );
 }
