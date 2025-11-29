@@ -8,15 +8,8 @@ import { Renderer, Stave, StaveNote, Voice, Formatter, Accidental } from 'vexflo
 /**
  * Initialize VexFlow renderer
  */
-export function createRenderer(
-  container: HTMLElement | string,
-  width: number,
-  height: number
-) {
-  const renderer = new Renderer(
-    container as HTMLDivElement | string,
-    Renderer.Backends.SVG
-  );
+export function createRenderer(container: HTMLElement | string, width: number, height: number) {
+  const renderer = new Renderer(container as HTMLDivElement | string, Renderer.Backends.SVG);
   renderer.resize(width, height);
   const context = renderer.getContext();
 
@@ -52,11 +45,8 @@ export function parseChordToNotes(chordSymbol: string, octave = 4): string[] {
 /**
  * Create notes from chord symbols
  */
-export function createNotesFromChords(
-  chordSymbols: string[],
-  duration: string = 'w'
-): StaveNote[] {
-  return chordSymbols.map((chord) => {
+export function createNotesFromChords(chordSymbols: string[], duration: string = 'w'): StaveNote[] {
+  return chordSymbols.map(chord => {
     const keys = parseChordToNotes(chord);
 
     const note = new StaveNote({
@@ -230,11 +220,7 @@ export class NotationRenderer {
     const notes = createNotesFromChords(chords);
 
     // Highlight current note
-    if (
-      this.options.highlightCurrent &&
-      currentIndex !== undefined &&
-      notes[currentIndex]
-    ) {
+    if (this.options.highlightCurrent && currentIndex !== undefined && notes[currentIndex]) {
       notes[currentIndex]?.setStyle({
         fillStyle: '#8b5cf6',
         strokeStyle: '#8b5cf6',

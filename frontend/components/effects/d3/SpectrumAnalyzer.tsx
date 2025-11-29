@@ -49,9 +49,7 @@ function createSpectrumAnalyzer(
   return analyzer;
 }
 
-function createSpectrumGradient(
-  svg: d3.Selection<SVGSVGElement, unknown, null, undefined>
-): void {
+function createSpectrumGradient(svg: d3.Selection<SVGSVGElement, unknown, null, undefined>): void {
   const defs = svg.append('defs');
   const gradient = defs
     .append('linearGradient')
@@ -121,7 +119,7 @@ function createFrequencyLabels(
     .attr('fill', VISUALIZATION_COLORS.UI.TEXT_MUTED)
     .attr('font-size', SPECTRUM_CONFIG.LABEL_FONT_SIZE)
     .attr('font-family', 'monospace')
-    .text((frequency) => `${frequency}Hz`);
+    .text(frequency => `${frequency}Hz`);
 }
 
 function updateBarsWithFrequencyData(
@@ -135,11 +133,11 @@ function updateBarsWithFrequencyData(
     .transition()
     .duration(SPECTRUM_CONFIG.TRANSITION_DURATION)
     .ease(d3.easeLinear)
-    .attr('y', (dbValue) => {
+    .attr('y', dbValue => {
       const normalized = normalizeDBValue(dbValue);
       return height - normalized * height;
     })
-    .attr('height', (dbValue) => {
+    .attr('height', dbValue => {
       const normalized = normalizeDBValue(dbValue);
       return normalized * height;
     });

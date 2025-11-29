@@ -84,7 +84,12 @@ export class FlowFieldParticle {
   }
 }
 
-export function createParticles(p: p5, count: number, width: number, height: number): FlowFieldParticle[] {
+export function createParticles(
+  p: p5,
+  count: number,
+  width: number,
+  height: number
+): FlowFieldParticle[] {
   const particles: FlowFieldParticle[] = [];
   for (let i = 0; i < count; i++) {
     particles.push(new FlowFieldParticle(p, width, height));

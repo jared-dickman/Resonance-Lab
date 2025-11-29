@@ -118,11 +118,14 @@ export default function JamAssistantClient(): React.JSX.Element {
           </TabsList>
 
           <TabsContent value="discover" className="space-y-6">
-            <JamWizard steps={wizardSteps} onComplete={() => {
-              if (selectedProgression) {
-                handleBuildFromProgression(selectedProgression);
-              }
-            }} />
+            <JamWizard
+              steps={wizardSteps}
+              onComplete={() => {
+                if (selectedProgression) {
+                  handleBuildFromProgression(selectedProgression);
+                }
+              }}
+            />
           </TabsContent>
 
           <TabsContent value="build" className="space-y-6">

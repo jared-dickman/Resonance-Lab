@@ -5,14 +5,8 @@ import type {
   Genre,
 } from '@/components/songwriter/types/song';
 
-export function estimateSectionDurationSeconds(
-  section: SectionLyrics,
-  tempo: number
-): number {
-  const totalSyllables = section.lines.reduce(
-    (sum, line) => sum + line.syllableCount,
-    0
-  );
+export function estimateSectionDurationSeconds(section: SectionLyrics, tempo: number): number {
+  const totalSyllables = section.lines.reduce((sum, line) => sum + line.syllableCount, 0);
 
   const beatsPerSecond = tempo / 60;
 
@@ -61,10 +55,7 @@ export function validateStructureCompleteness(structure: SongStructure): number 
   return completeness;
 }
 
-export function suggestNextSection(
-  currentStructure: SongStructure,
-  genre: Genre
-): SectionType {
+export function suggestNextSection(currentStructure: SongStructure, genre: Genre): SectionType {
   const sections = currentStructure.sections;
 
   if (sections.length === 0) {
@@ -117,12 +108,7 @@ export function suggestNextSection(
 }
 
 function shouldStartWithIntro(genre: Genre): boolean {
-  const introGenres: Genre[] = [
-    'rock',
-    'indie',
-    'electronic',
-    'metal',
-  ];
+  const introGenres: Genre[] = ['rock', 'indie', 'electronic', 'metal'];
 
   return introGenres.includes(genre);
 }

@@ -5,7 +5,10 @@
 
 import * as Tone from 'tone';
 import { Instrument } from '@/lib/audio/instruments/base/Instrument';
-import type { InstrumentConfig, InstrumentPreset } from '@/lib/audio/instruments/base/InstrumentConfig';
+import type {
+  InstrumentConfig,
+  InstrumentPreset,
+} from '@/lib/audio/instruments/base/InstrumentConfig';
 
 export interface DrumHit {
   /** Drum type */
@@ -29,7 +32,13 @@ export class DrumKit extends Instrument {
       pitchDecay: 0.05,
       octaves: 10,
       oscillator: { type: 'sine' },
-      envelope: { attack: 0.001, decay: 0.4, sustain: 0.01, release: 1.4, attackCurve: 'exponential' },
+      envelope: {
+        attack: 0.001,
+        decay: 0.4,
+        sustain: 0.01,
+        release: 1.4,
+        attackCurve: 'exponential',
+      },
     });
     this.snare = new Tone.NoiseSynth({
       noise: { type: 'white' },
@@ -90,7 +99,7 @@ export class DrumKit extends Instrument {
    * Play multiple drum hits
    */
   playPattern(hits: DrumHit[]): void {
-    hits.forEach((hit) => {
+    hits.forEach(hit => {
       this.hit(hit.drum, hit.time, hit.velocity);
     });
   }
@@ -119,7 +128,7 @@ export class DrumKit extends Instrument {
   }
 
   loadPreset(presetName: string): void {
-    const preset = this.getPresets().find((p) => p.name === presetName);
+    const preset = this.getPresets().find(p => p.name === presetName);
     if (!preset) {
       throw new Error(`Preset "${presetName}" not found`);
     }

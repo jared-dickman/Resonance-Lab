@@ -4,7 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Volume2, VolumeX, Settings, Sparkles } from 'lucide-react';
 import { ChorusPedal } from '@/lib/audio/effects/pizzicato';
-import { Knob, Footswitch, PedalChassis } from '@/components/effects/pizzicato/shared/PedalControls';
+import {
+  Knob,
+  Footswitch,
+  PedalChassis,
+} from '@/components/effects/pizzicato/shared/PedalControls';
 import { cn } from '@/lib/utils';
 
 export interface ChorusPedalUIProps {
@@ -37,7 +41,7 @@ export const ChorusPedalUI: React.FC<ChorusPedalUIProps> = ({
   }, [rate, depth, mix, enabled, pedal, onStateChange]);
 
   const handlePresetLoad = (presetName: string) => {
-    const preset = presets.find((p) => p.name === presetName);
+    const preset = presets.find(p => p.name === presetName);
     if (!preset) return;
 
     setSelectedPreset(presetName);
@@ -73,7 +77,7 @@ export const ChorusPedalUI: React.FC<ChorusPedalUIProps> = ({
               Legendary Shimmer
             </label>
             <div className="grid grid-cols-2 gap-2">
-              {presets.map((preset) => (
+              {presets.map(preset => (
                 <button
                   key={preset.name}
                   onClick={() => handlePresetLoad(preset.name)}
@@ -99,7 +103,7 @@ export const ChorusPedalUI: React.FC<ChorusPedalUIProps> = ({
             min={0.1}
             max={10}
             color="#a78bfa"
-            displayFormat={(v) => `${v.toFixed(1)}Hz`}
+            displayFormat={v => `${v.toFixed(1)}Hz`}
           />
           <Knob label="Depth" value={depth} onChange={setDepth} color="#c4b5fd" />
           <Knob label="Mix" value={mix} onChange={setMix} color="#ddd6fe" />

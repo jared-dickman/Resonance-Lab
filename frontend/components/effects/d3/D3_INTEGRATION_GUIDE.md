@@ -5,12 +5,14 @@
 **Eight** stunning visualizations that transform your pedalboard into the ultimate music experience:
 
 ### Core Audio Visualizations
+
 1. **AnimatedCableRouting** - Flowing signal particles along bezier curves
 2. **SpectrumAnalyzer** - Real-time frequency spectrum with gradient bars
 3. **WaveformOscilloscope** - Classic oscilloscope waveform display
 4. **SignalPathDiagram** - Interactive force-directed graph
 
 ### Music Theory & Analysis
+
 5. **CircleOfFifths** - Interactive music theory visualization (D3 + Tonal.js)
 6. **ChordAnalyzer** - Real-time chord detection and history (Tonal.js + FFT)
 7. **NotationDisplay** - Sheet music rendering (VexFlow)
@@ -21,6 +23,7 @@
 ## 📦 USAGE EXAMPLES
 
 ### 1. ANIMATED CABLE ROUTING
+
 **The most visually stunning feature - cables with flowing signal particles!**
 
 ```tsx
@@ -49,14 +52,11 @@ const cables = [
 ];
 
 // Render
-<AnimatedCableRouting
-  cables={cables}
-  width={800}
-  height={400}
-/>
+<AnimatedCableRouting cables={cables} width={800} height={400} />;
 ```
 
 **Features:**
+
 - ✅ Bezier curved cables with realistic arching
 - ✅ Animated signal flow particles (3-5 per cable)
 - ✅ Color-coded by signal strength (blue → purple → red)
@@ -67,6 +67,7 @@ const cables = [
 ---
 
 ### 2. SPECTRUM ANALYZER
+
 **Studio-grade frequency visualization!**
 
 ```tsx
@@ -82,10 +83,11 @@ pedalboard.toDestination();
   height={200}
   barCount={64}
   smoothing={0.8}
-/>
+/>;
 ```
 
 **Features:**
+
 - ✅ Real-time FFT analysis (64 frequency bars)
 - ✅ Gradient coloring (blue → purple → red)
 - ✅ Frequency labels (20Hz - 20kHz)
@@ -96,6 +98,7 @@ pedalboard.toDestination();
 ---
 
 ### 3. WAVEFORM OSCILLOSCOPE
+
 **Classic oscilloscope display with glow effect!**
 
 ```tsx
@@ -109,10 +112,11 @@ delay.toDestination();
   width={600}
   height={150}
   color="#10b981" // Emerald green
-/>
+/>;
 ```
 
 **Features:**
+
 - ✅ 1024-sample waveform resolution
 - ✅ Smooth curve rendering (d3.curveBasis)
 - ✅ Grid lines with center reference
@@ -123,6 +127,7 @@ delay.toDestination();
 ---
 
 ### 4. SIGNAL PATH DIAGRAM
+
 **Interactive force-directed graph - drag nodes, zoom/pan!**
 
 ```tsx
@@ -135,14 +140,11 @@ const pedals = [
   { id: 'reverb', name: 'Reverb', type: 'reverb', enabled: false },
 ];
 
-<SignalPathDiagram
-  pedals={pedals}
-  width={800}
-  height={400}
-/>
+<SignalPathDiagram pedals={pedals} width={800} height={400} />;
 ```
 
 **Features:**
+
 - ✅ Force-directed layout (auto-arranges nodes)
 - ✅ Draggable nodes (physics-based simulation)
 - ✅ Zoom/pan support (0.5x - 3x)
@@ -232,7 +234,7 @@ export default function LegendaryPedalboardPage() {
                 id: s.id,
                 name: s.name,
                 type: 'effect',
-                enabled: s.enabled
+                enabled: s.enabled,
               }))}
               width={1000}
               height={400}
@@ -250,28 +252,32 @@ export default function LegendaryPedalboardPage() {
 ## 🎨 CUSTOMIZATION OPTIONS
 
 ### AnimatedCableRouting
+
 ```typescript
 interface Cable {
   id: string;
-  fromX: number;        // Start X position
-  fromY: number;        // Start Y position
-  toX: number;          // End X position
-  toY: number;          // End Y position
-  active: boolean;      // Show particles?
+  fromX: number; // Start X position
+  fromY: number; // Start Y position
+  toX: number; // End X position
+  toY: number; // End Y position
+  active: boolean; // Show particles?
   signalStrength: number; // 0-1 (affects color & glow)
 }
 ```
 
 ### SpectrumAnalyzer
+
 - `barCount`: Number of frequency bars (default: 64)
 - `smoothing`: FFT smoothing 0-1 (default: 0.8)
 - `width/height`: Canvas dimensions
 
 ### WaveformOscilloscope
+
 - `color`: Line color (any CSS color)
 - `width/height`: Canvas dimensions
 
 ### SignalPathDiagram
+
 - Fully interactive - drag nodes, zoom, pan
 - Auto-layout via force simulation
 - No configuration needed!
@@ -281,6 +287,7 @@ interface Cable {
 ## 🚀 PERFORMANCE
 
 All visualizations use:
+
 - ✅ `requestAnimationFrame` for smooth 60fps
 - ✅ D3 transitions for GPU-accelerated animations
 - ✅ Efficient Tone.js analyzers (no audio glitches)
@@ -292,12 +299,12 @@ All visualizations use:
 
 ## 🎯 WHERE TO USE EACH VISUALIZATION
 
-| Visualization | Best For | Use Case |
-|---------------|----------|----------|
-| **AnimatedCableRouting** | Signal flow overview | Show connection between pedals with flowing particles |
-| **SpectrumAnalyzer** | Frequency analysis | Visualize EQ, see what frequencies are boosted |
-| **WaveformOscilloscope** | Time-domain analysis | See distortion clipping, tremolo pulsing |
-| **SignalPathDiagram** | Interactive exploration | Let users rearrange pedals visually |
+| Visualization            | Best For                | Use Case                                              |
+| ------------------------ | ----------------------- | ----------------------------------------------------- |
+| **AnimatedCableRouting** | Signal flow overview    | Show connection between pedals with flowing particles |
+| **SpectrumAnalyzer**     | Frequency analysis      | Visualize EQ, see what frequencies are boosted        |
+| **WaveformOscilloscope** | Time-domain analysis    | See distortion clipping, tremolo pulsing              |
+| **SignalPathDiagram**    | Interactive exploration | Let users rearrange pedals visually                   |
 
 ---
 
@@ -305,7 +312,7 @@ All visualizations use:
 
 When you combine all four visualizations, you get:
 
-1. **AnimatedCableRouting** - "Holy sh*t, the signal is FLOWING through the cables!"
+1. **AnimatedCableRouting** - "Holy sh\*t, the signal is FLOWING through the cables!"
 2. **SpectrumAnalyzer** - "I can SEE the delay repeats in the frequency domain!"
 3. **WaveformOscilloscope** - "Look at the tremolo pulses - it's mesmerizing!"
 4. **SignalPathDiagram** - "I can drag the pedals around and it updates in real-time!"
@@ -317,18 +324,24 @@ When you combine all four visualizations, you get:
 ## 💡 ADVANCED TIPS
 
 ### Sync Cable Colors with Pedal Types
+
 ```typescript
 const getCableColor = (pedalType: string) => {
   switch (pedalType) {
-    case 'delay': return '#3b82f6'; // Blue
-    case 'reverb': return '#8b5cf6'; // Purple
-    case 'distortion': return '#ef4444'; // Red
-    default: return '#10b981'; // Green
+    case 'delay':
+      return '#3b82f6'; // Blue
+    case 'reverb':
+      return '#8b5cf6'; // Purple
+    case 'distortion':
+      return '#ef4444'; // Red
+    default:
+      return '#10b981'; // Green
   }
 };
 ```
 
 ### Responsive Sizing
+
 ```tsx
 const [width, setWidth] = useState(window.innerWidth - 100);
 
@@ -338,10 +351,11 @@ useEffect(() => {
   return () => window.removeEventListener('resize', handleResize);
 }, []);
 
-<SpectrumAnalyzer width={width} />
+<SpectrumAnalyzer width={width} />;
 ```
 
 ### Multiple Analyzers
+
 ```tsx
 // Analyze BEFORE and AFTER an effect
 <WaveformOscilloscope audioNode={delay.getInput()} color="#6b7280" />
@@ -353,6 +367,7 @@ useEffect(() => {
 ## 🎵 NEW MUSIC THEORY VISUALIZATIONS
 
 ### 5. CIRCLE OF FIFTHS
+
 **Interactive music theory wheel - click to select keys!**
 
 ```tsx
@@ -360,15 +375,11 @@ import { CircleOfFifths } from '@/components/effects/d3';
 
 const [selectedKey, setSelectedKey] = useState('C');
 
-<CircleOfFifths
-  width={600}
-  height={600}
-  selectedKey={selectedKey}
-  onKeySelect={setSelectedKey}
-/>
+<CircleOfFifths width={600} height={600} selectedKey={selectedKey} onKeySelect={setSelectedKey} />;
 ```
 
 **Features:**
+
 - ✅ All 12 major keys (outer ring)
 - ✅ All 12 minor keys (inner ring)
 - ✅ Click to select key
@@ -380,19 +391,17 @@ const [selectedKey, setSelectedKey] = useState('C');
 ---
 
 ### 6. CHORD ANALYZER
+
 **Real-time chord detection with history graph!**
 
 ```tsx
 import { ChordAnalyzer } from '@/components/effects/d3';
 
-<ChordAnalyzer
-  audioNode={pedalboard.getOutput()}
-  width={600}
-  height={300}
-/>
+<ChordAnalyzer audioNode={pedalboard.getOutput()} width={600} height={300} />;
 ```
 
 **Features:**
+
 - ✅ Real-time FFT-based chord detection
 - ✅ Uses Tonal.js for music theory analysis
 - ✅ Bar chart showing chord confidence over time
@@ -401,6 +410,7 @@ import { ChordAnalyzer } from '@/components/effects/d3';
 - ✅ Automatic peak detection from frequency spectrum
 
 **How it works:**
+
 1. FFT analyzes frequency spectrum
 2. Finds peaks in spectrum (dominant frequencies)
 3. Converts frequencies to musical notes
@@ -410,6 +420,7 @@ import { ChordAnalyzer } from '@/components/effects/d3';
 ---
 
 ### 7. NOTATION DISPLAY
+
 **Render sheet music with VexFlow!**
 
 ```tsx
@@ -423,20 +434,15 @@ const melody = [
   { keys: ['d/4'], duration: 'q' },
 ];
 
-<NotationDisplay
-  notes={melody}
-  width={800}
-  height={200}
-  clef="treble"
-  timeSignature="4/4"
-/>
+<NotationDisplay notes={melody} width={800} height={200} clef="treble" timeSignature="4/4" />;
 
 // Or display a chord
 const chordNotes = chordToNotation('Em');
-<NotationDisplay notes={chordNotes} />
+<NotationDisplay notes={chordNotes} />;
 ```
 
 **Features:**
+
 - ✅ VexFlow-powered notation rendering
 - ✅ Treble or bass clef
 - ✅ Custom time signatures
@@ -447,6 +453,7 @@ const chordNotes = chordToNotation('Em');
 ---
 
 ### 8. AUDIO REACTIVE PARTICLES
+
 **3D particle system that pulses with your audio!**
 
 ```tsx
@@ -457,10 +464,11 @@ import { AudioReactiveParticles } from '@/components/effects/d3';
   width={800}
   height={600}
   particleCount={1000}
-/>
+/>;
 ```
 
 **Features:**
+
 - ✅ 1000 particles in 3D space (Three.js)
 - ✅ Sphere distribution pattern
 - ✅ Real-time waveform analysis
@@ -471,6 +479,7 @@ import { AudioReactiveParticles } from '@/components/effects/d3';
 - ✅ Additive blending for glow effect
 
 **Controls:**
+
 - **Drag** - Rotate view
 - **Scroll** - Zoom in/out
 - **Right-drag** - Pan camera
@@ -540,11 +549,7 @@ export default function UltimateVisualizationPage() {
         />
 
         {/* Chord Analyzer */}
-        <ChordAnalyzer
-          audioNode={pedalboard.getOutput()}
-          width={650}
-          height={300}
-        />
+        <ChordAnalyzer audioNode={pedalboard.getOutput()} width={650} height={300} />
 
         {/* Circle of Fifths */}
         <div className="bg-gray-950 rounded-lg p-6 border border-gray-800">
@@ -559,9 +564,7 @@ export default function UltimateVisualizationPage() {
 
         {/* Notation Display */}
         <NotationDisplay
-          notes={[
-            { keys: ['c/4', 'e/4', 'g/4'], duration: 'w' },
-          ]}
+          notes={[{ keys: ['c/4', 'e/4', 'g/4'], duration: 'w' }]}
           width={650}
           height={200}
           clef="treble"
@@ -586,11 +589,7 @@ export default function UltimateVisualizationPage() {
       {/* Cable Routing - Full Width */}
       <div className="bg-gray-950 rounded-lg p-6 border border-gray-800">
         <h3 className="text-lg font-bold text-white mb-4">Cable Routing</h3>
-        <AnimatedCableRouting
-          cables={cables}
-          width={1400}
-          height={300}
-        />
+        <AnimatedCableRouting cables={cables} width={1400} height={300} />
       </div>
     </div>
   );
@@ -601,34 +600,37 @@ export default function UltimateVisualizationPage() {
 
 ## 📊 LIBRARY BREAKDOWN
 
-| Visualization | Library | Purpose |
-|---------------|---------|---------|
-| AnimatedCableRouting | D3.js | SVG animation, bezier curves |
-| SpectrumAnalyzer | D3.js + Tone.js | FFT analysis, bar chart |
-| WaveformOscilloscope | D3.js + Tone.js | Waveform display |
-| SignalPathDiagram | D3.js | Force-directed graph |
-| CircleOfFifths | D3.js + Tonal.js | Music theory wheel |
-| ChordAnalyzer | D3.js + Tonal.js + Tone.js | Chord detection |
-| NotationDisplay | VexFlow | Sheet music rendering |
-| AudioReactiveParticles | Three.js + React Three Fiber | 3D particle system |
+| Visualization          | Library                      | Purpose                      |
+| ---------------------- | ---------------------------- | ---------------------------- |
+| AnimatedCableRouting   | D3.js                        | SVG animation, bezier curves |
+| SpectrumAnalyzer       | D3.js + Tone.js              | FFT analysis, bar chart      |
+| WaveformOscilloscope   | D3.js + Tone.js              | Waveform display             |
+| SignalPathDiagram      | D3.js                        | Force-directed graph         |
+| CircleOfFifths         | D3.js + Tonal.js             | Music theory wheel           |
+| ChordAnalyzer          | D3.js + Tonal.js + Tone.js   | Chord detection              |
+| NotationDisplay        | VexFlow                      | Sheet music rendering        |
+| AudioReactiveParticles | Three.js + React Three Fiber | 3D particle system           |
 
 ---
 
 ## 🎯 USE CASES
 
 ### For Guitarists
+
 - **CircleOfFifths** - Learn music theory, find relative minors
 - **ChordAnalyzer** - See what chords you're playing in real-time
 - **NotationDisplay** - Read sheet music for songs
 - **SpectrumAnalyzer** - Dial in your tone (see EQ curves)
 
 ### For Producers
+
 - **WaveformOscilloscope** - Check for clipping, see distortion shape
 - **SpectrumAnalyzer** - Mix decisions (frequency balance)
 - **SignalPathDiagram** - Visualize complex effect chains
 - **AudioReactiveParticles** - Live performance visuals
 
 ### For Educators
+
 - **CircleOfFifths** - Teach chord progressions
 - **ChordAnalyzer** - Show chord changes in real-time
 - **NotationDisplay** - Display exercises and examples

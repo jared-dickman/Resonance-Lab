@@ -125,11 +125,7 @@ export function splitFrequencyBands(fftData: Float32Array): {
  * @param maxDb - Maximum dB value (default: 0)
  * @returns Normalized value (0-1)
  */
-export function normalizeDBValue(
-  dbValue: number,
-  minDb: number = -100,
-  maxDb: number = 0
-): number {
+export function normalizeDBValue(dbValue: number, minDb: number = -100, maxDb: number = 0): number {
   return Math.max(0, (dbValue - minDb) / (maxDb - minDb));
 }
 
@@ -138,11 +134,7 @@ export function normalizeDBValue(
  * @param bands - Object with low, mid, high frequency values in dB
  * @returns Normalized frequency bands
  */
-export function normalizeFrequencyBands(bands: {
-  low: number;
-  mid: number;
-  high: number;
-}): {
+export function normalizeFrequencyBands(bands: { low: number; mid: number; high: number }): {
   low: number;
   mid: number;
   high: number;

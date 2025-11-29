@@ -39,7 +39,14 @@ interface PedalboardUIProps {
   className?: string;
 }
 
-type PedalType = 'distortion' | 'delay' | 'reverb' | 'chorus' | 'flanger' | 'tremolo' | 'compressor';
+type PedalType =
+  | 'distortion'
+  | 'delay'
+  | 'reverb'
+  | 'chorus'
+  | 'flanger'
+  | 'tremolo'
+  | 'compressor';
 
 const PEDAL_TYPES: Array<{ type: PedalType; name: string; description: string; color: string }> = [
   { type: 'compressor', name: 'Compressor', description: 'Sustain & dynamics', color: 'orange' },
@@ -93,9 +100,7 @@ const PedalSlotUI: React.FC<{
             onClick={onToggle}
             className={cn(
               'p-1.5 rounded-lg transition-colors',
-              slot.enabled
-                ? 'bg-green-600 hover:bg-green-700'
-                : 'bg-gray-700 hover:bg-gray-600'
+              slot.enabled ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-700 hover:bg-gray-600'
             )}
           >
             <Power className="w-3 h-3 text-white" />
@@ -166,7 +171,7 @@ export const PedalboardUI: React.FC<PedalboardUIProps> = ({
     (type: PedalType) => {
       const id = `pedal-${Date.now()}`;
       const pedal = createPedal(type);
-      const pedalInfo = PEDAL_TYPES.find((p) => p.type === type);
+      const pedalInfo = PEDAL_TYPES.find(p => p.type === type);
 
       pedalboard.addPedal(id, pedalInfo?.name || 'Effect', pedal);
       setSlots(pedalboard.getPedals());
@@ -236,18 +241,12 @@ export const PedalboardUI: React.FC<PedalboardUIProps> = ({
         </div>
 
         <div className="flex items-center gap-3">
-          <Button
-            variant="secondary"
-            onClick={() => setShowLegendaryRigs(true)}
-          >
+          <Button variant="secondary" onClick={() => setShowLegendaryRigs(true)}>
             <Star className="w-4 h-4" />
             Legendary Rigs
           </Button>
 
-          <Button
-            variant="secondary"
-            onClick={() => setShowPedalSelector(true)}
-          >
+          <Button variant="secondary" onClick={() => setShowPedalSelector(true)}>
             <Plus className="w-4 h-4" />
             Add Pedal
           </Button>
@@ -273,7 +272,7 @@ export const PedalboardUI: React.FC<PedalboardUIProps> = ({
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {PEDAL_TYPES.map((pedalType) => (
+              {PEDAL_TYPES.map(pedalType => (
                 <button
                   key={pedalType.type}
                   onClick={() => handleAddPedal(pedalType.type)}
@@ -310,7 +309,7 @@ export const PedalboardUI: React.FC<PedalboardUIProps> = ({
             </div>
 
             <div className="space-y-4">
-              {LEGENDARY_RIGS.map((rig) => (
+              {LEGENDARY_RIGS.map(rig => (
                 <button
                   key={rig.name}
                   onClick={() => handleLoadLegendaryRig(rig.name)}
@@ -322,7 +321,7 @@ export const PedalboardUI: React.FC<PedalboardUIProps> = ({
                       <div className="text-sm text-sapphire-400 mb-2">"{rig.song}"</div>
                       <div className="text-sm text-gray-400 mb-3">{rig.description}</div>
                       <div className="flex items-center gap-2 flex-wrap">
-                        {rig.pedals.map((pedal) => (
+                        {rig.pedals.map(pedal => (
                           <span
                             key={pedal.id}
                             className="px-2 py-1 text-xs bg-gray-700 rounded text-gray-300"
@@ -399,24 +398,18 @@ export const PedalboardUI: React.FC<PedalboardUIProps> = ({
         >
           <div className="text-gray-500 mb-4">No pedals in the chain</div>
           <div className="flex items-center justify-center gap-3">
-            <Button
-              variant="secondary"
-              onClick={() => setShowLegendaryRigs(true)}
-            >
+            <Button variant="secondary" onClick={() => setShowLegendaryRigs(true)}>
               <Star className="w-4 h-4" />
               Load Legendary Rig
             </Button>
-            <Button
-              variant="secondary"
-              onClick={() => setShowPedalSelector(true)}
-            >
+            <Button variant="secondary" onClick={() => setShowPedalSelector(true)}>
               Add Your First Pedal
             </Button>
           </div>
         </motion.div>
       ) : (
         <Reorder.Group axis="y" values={slots} onReorder={handleReorder} className="space-y-3">
-          {slots.map((slot) => (
+          {slots.map(slot => (
             <Reorder.Item key={slot.id} value={slot}>
               <PedalSlotUI
                 slot={slot}
@@ -438,7 +431,7 @@ export const PedalboardUI: React.FC<PedalboardUIProps> = ({
           <div className="text-xs font-bold text-gray-400 uppercase mb-2">Signal Flow</div>
           <div className="flex items-center gap-2 text-xs text-gray-500 font-mono flex-wrap">
             <span>INPUT</span>
-            {slots.map((slot) => (
+            {slots.map(slot => (
               <React.Fragment key={slot.id}>
                 <span>→</span>
                 <span className={slot.enabled ? 'text-green-500' : 'text-gray-600'}>

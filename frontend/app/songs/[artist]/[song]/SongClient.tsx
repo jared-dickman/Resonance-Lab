@@ -1,13 +1,12 @@
 'use client';
 
-import { KEY_SIGNATURES, SongControls } from '@/components/SongControls';
+import { KEY_SIGNATURES, SongToolbar } from '@/components/SongToolbar';
 import type { Song } from '@/lib/types';
 import { transposeChord } from '@/lib/utils';
 import { calculateScrollSpeed } from '@/lib/utils/song/scrollSpeed';
 import type { ChordElementInfo } from '@/lib/utils/song/chordTracking';
 import { findClosestVisibleChord } from '@/lib/utils/song/chordTracking';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import Link from 'next/link';
 import styles from './SongClient.module.css';
 import { ChordDisplay } from '@/components/ChordDisplay';
 import { PianoDisplay } from '@/components/PianoDisplay';
@@ -15,7 +14,7 @@ import { ChordJourneyVisualization } from '@/components/ChordJourneyVisualizatio
 import { ChordRhythmGame } from '@/components/ChordRhythmGame';
 import { LoopPracticeMode } from '@/components/LoopPracticeMode';
 import { Button } from '@/components/ui/button';
-import { Guitar, Piano, Volume2, VolumeX, Trash2 } from 'lucide-react';
+import { Guitar, Piano } from 'lucide-react';
 import { useGuitarPlayback } from '@/lib/hooks';
 import IntelligentMusicPanel from '@/components/music-theory/IntelligentMusicPanel';
 import { useDeleteSong } from '@/app/features/songs/hooks';
@@ -201,62 +200,22 @@ export function SongClient({ song, artistSlug, songSlug }: SongClientProps): Rea
 
   return (
     <div className={styles.songContainer}>
-      <div className="flex justify-between items-start gap-4 mb-2">
-        <div className="flex-1">
-          <h1 className={styles.songTitle}>{song.title}</h1>
-          <h2 className={styles.songArtist}>
-            <Link href={`/songs/${artistSlug}`} className="hover:underline">
-              {song.artist}
-            </Link>
-          </h2>
-        </div>
-        <Button
-          variant="destructive"
-          size="sm"
-          onClick={handleDelete}
-          disabled={isDeleting}
-          className="gap-2"
-        >
-          <Trash2 className="h-4 w-4" />
-          Delete
-        </Button>
-      </div>
-
-      <div className="space-y-4">
-        <SongControls
-          transpose={transpose}
-          onTransposeChange={handleTransposeChange}
-          currentKey={currentKey ?? 'C'}
-          onKeyChange={handleKeyChange}
-          bpm={bpm}
-          onBpmChange={setBpm}
-          isAutoScrollEnabled={isAutoScrollEnabled}
-          onToggleAutoScroll={toggleAutoScroll}
-          originalKey={song.key ?? 'C'}
-        />
-
-        {/* Audio Playback Toggle */}
-        <div className="flex justify-center">
-          <Button
-            variant={isAudioEnabled ? 'default' : 'outline'}
-            onClick={() => setIsAudioEnabled(!isAudioEnabled)}
-            size="sm"
-            className="gap-2"
-          >
-            {isAudioEnabled ? (
-              <>
-                <Volume2 className="h-4 w-4" />
-                Guitar Audio Enabled
-              </>
-            ) : (
-              <>
-                <VolumeX className="h-4 w-4" />
-                Guitar Audio Disabled
-              </>
-            )}
-          </Button>
-        </div>
-      </div>
+      {/* Compact Toolbar - Linear/Stripe inspired */}
+      <SongToolbar
+        transpose={transpose}
+        onTransposeChange={handleTransposeChange}
+        currentKey={currentKey ?? 'C'}
+        onKeyChange={handleKeyChange}
+        originalKey={song.key ?? 'C'}
+        bpm={bpm}
+        onBpmChange={setBpm}
+        isAutoScrollEnabled={isAutoScrollEnabled}
+        onToggleAutoScroll={toggleAutoScroll}
+        isAudioEnabled={isAudioEnabled}
+        onToggleAudio={() => setIsAudioEnabled(!isAudioEnabled)}
+        onDelete={handleDelete}
+        isDeleting={isDeleting}
+      />
 
       {/* Lyrics Container */}
       <div ref={lyricsContainerRef} className={styles.lyricsContainer}>
@@ -329,8 +288,14 @@ export function SongClient({ song, artistSlug, songSlug }: SongClientProps): Rea
 
       {/* 🎯 INTELLIGENT MUSIC ENGINE - THE UNIVERSE-SAVING FEATURE */}
       <IntelligentMusicPanel
-        chords={transposedSections.flatMap(s => s.lines).filter(l => l.chord?.name).map(l => l.chord!.name)}
-        currentChordIndex={transposedSections.flatMap(s => s.lines).filter(l => l.chord?.name).findIndex(l => l.chord!.name === currentChord)}
+        chords={transposedSections
+          .flatMap(s => s.lines)
+          .filter(l => l.chord?.name)
+          .map(l => l.chord!.name)}
+        currentChordIndex={transposedSections
+          .flatMap(s => s.lines)
+          .filter(l => l.chord?.name)
+          .findIndex(l => l.chord!.name === currentChord)}
         onChordClick={chord => {
           setCurrentChord(chord);
           setIsAutoScrollEnabled(false);

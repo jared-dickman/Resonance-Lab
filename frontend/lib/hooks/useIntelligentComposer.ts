@@ -8,7 +8,12 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import * as Tone from 'tone';
 import { AcousticPiano, SynthBass, DrumKit } from '@/lib/audio/instruments';
-import { ChordAnalyzer, ChordSuggester, BassLineGenerator, DrumPatternGenerator } from '@/lib/music-theory/intelligence';
+import {
+  ChordAnalyzer,
+  ChordSuggester,
+  BassLineGenerator,
+  DrumPatternGenerator,
+} from '@/lib/music-theory/intelligence';
 import type { ChordSuggestion } from '@/lib/music-theory/intelligence';
 
 export interface ComposerState {
@@ -89,7 +94,7 @@ export function useIntelligentComposer(): [ComposerState, ComposerControls] {
     bassRef.current = new SynthBass({ preset: 'fat', volume: -12 });
     drumsRef.current = new DrumKit({ preset: 'rock', volume: -14 });
 
-    setState((prev) => ({ ...prev, isReady: true }));
+    setState(prev => ({ ...prev, isReady: true }));
   }, [state.isReady]);
 
   /**
@@ -119,7 +124,7 @@ export function useIntelligentComposer(): [ComposerState, ComposerControls] {
         octave: 2,
       });
 
-      bassLine.forEach((note) => {
+      bassLine.forEach(note => {
         bass.playNote({
           note: note.note,
           duration: '4n',
@@ -134,11 +139,11 @@ export function useIntelligentComposer(): [ComposerState, ComposerControls] {
         measures: 1,
       });
 
-      drumPattern.forEach((event) => {
+      drumPattern.forEach(event => {
         drums.hit(event.drum, `+${event.time * 0.5}`, event.velocity);
       });
 
-      setState((prev) => ({ ...prev, currentChord: chord }));
+      setState(prev => ({ ...prev, currentChord: chord }));
     },
     [state.isReady, state.key, state.genre, initialize]
   );
@@ -154,7 +159,7 @@ export function useIntelligentComposer(): [ComposerState, ComposerControls] {
         maxSuggestions: 3,
       });
 
-      setState((prev) => ({ ...prev, suggestions }));
+      setState(prev => ({ ...prev, suggestions }));
       return suggestions;
     },
     [state.key, state.genre]
@@ -165,7 +170,7 @@ export function useIntelligentComposer(): [ComposerState, ComposerControls] {
    */
   const addChordToProgression = useCallback(
     (chord: string) => {
-      setState((prev) => ({
+      setState(prev => ({
         ...prev,
         progression: [...prev.progression, chord],
         currentChord: chord,
@@ -189,7 +194,7 @@ export function useIntelligentComposer(): [ComposerState, ComposerControls] {
 
     if (!piano || !bass || !drums) return;
 
-    setState((prev) => ({ ...prev, isPlaying: true }));
+    setState(prev => ({ ...prev, isPlaying: true }));
 
     // Generate bass and drums for full progression
     const bassLine = bassGenRef.current.generate(state.progression, {
@@ -216,7 +221,7 @@ export function useIntelligentComposer(): [ComposerState, ComposerControls] {
     }, events);
 
     // Schedule bass
-    bassLine.forEach((note) => {
+    bassLine.forEach(note => {
       bass.playNote({
         note: note.note,
         duration: '4n',
@@ -226,7 +231,7 @@ export function useIntelligentComposer(): [ComposerState, ComposerControls] {
     });
 
     // Schedule drums
-    drumPattern.forEach((event) => {
+    drumPattern.forEach(event => {
       drums.hit(event.drum, `+${event.time * 0.5}`, event.velocity);
     });
 
@@ -235,7 +240,7 @@ export function useIntelligentComposer(): [ComposerState, ComposerControls] {
 
     // Stop after progression completes
     setTimeout(() => {
-      setState((prev) => ({ ...prev, isPlaying: false }));
+      setState(prev => ({ ...prev, isPlaying: false }));
     }, state.progression.length * 2000);
   }, [state.isReady, state.progression, state.key, state.genre, initialize]);
 
@@ -246,14 +251,14 @@ export function useIntelligentComposer(): [ComposerState, ComposerControls] {
     partRef.current?.stop();
     partRef.current?.dispose();
     partRef.current = null;
-    setState((prev) => ({ ...prev, isPlaying: false }));
+    setState(prev => ({ ...prev, isPlaying: false }));
   }, []);
 
   /**
    * Clear progression
    */
   const clearProgression = useCallback(() => {
-    setState((prev) => ({
+    setState(prev => ({
       ...prev,
       progression: [],
       currentChord: '',
@@ -265,14 +270,14 @@ export function useIntelligentComposer(): [ComposerState, ComposerControls] {
    * Change musical key
    */
   const setKey = useCallback((key: string) => {
-    setState((prev) => ({ ...prev, key }));
+    setState(prev => ({ ...prev, key }));
   }, []);
 
   /**
    * Change genre
    */
   const setGenre = useCallback((genre: ComposerState['genre']) => {
-    setState((prev) => ({ ...prev, genre }));
+    setState(prev => ({ ...prev, genre }));
   }, []);
 
   /**

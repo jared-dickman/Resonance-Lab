@@ -34,7 +34,7 @@ function handleMetaKey(event: KeyboardEvent, handlers: KeyboardShortcutHandlers)
     '1': handlers.onFocusNavigator,
     '2': handlers.onFocusWorkspace,
     '3': handlers.onFocusAssistant,
-    's': handlers.onSave,
+    s: handlers.onSave,
   };
 
   const handler = shortcuts[key];

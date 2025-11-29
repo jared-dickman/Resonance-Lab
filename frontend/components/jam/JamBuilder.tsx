@@ -92,7 +92,15 @@ export default function JamBuilder({ progression, onUpdate, onClear }: JamBuilde
       };
     }
     return undefined;
-  }, [isPlaying, currentChordIndex, progression.chords, bpm, isMuted, audioInitialized, getChordInterval]);
+  }, [
+    isPlaying,
+    currentChordIndex,
+    progression.chords,
+    bpm,
+    isMuted,
+    audioInitialized,
+    getChordInterval,
+  ]);
 
   const handlePlayPause = async () => {
     // Initialize audio on first play
@@ -249,42 +257,44 @@ export default function JamBuilder({ progression, onUpdate, onClear }: JamBuilde
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.3 }}
             >
-              <SimpleTooltip content={isPlaying ? 'Pause playback' : 'Start playing the progression'}>
+              <SimpleTooltip
+                content={isPlaying ? 'Pause playback' : 'Start playing the progression'}
+              >
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button size="lg" onClick={handlePlayPause} className="w-24">
-                  <motion.div
-                    key={isPlaying ? 'pause' : 'play'}
-                    initial={{ rotate: -90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex items-center"
-                  >
-                    {isPlaying ? (
-                      <>
-                        <Pause className="w-5 h-5 mr-2" />
-                        Pause
-                      </>
-                    ) : (
-                      <>
-                        <Play className="w-5 h-5 mr-2" />
-                        Play
-                      </>
-                    )}
-                  </motion.div>
-                </Button>
-              </motion.div>
+                    <motion.div
+                      key={isPlaying ? 'pause' : 'play'}
+                      initial={{ rotate: -90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: 90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="flex items-center"
+                    >
+                      {isPlaying ? (
+                        <>
+                          <Pause className="w-5 h-5 mr-2" />
+                          Pause
+                        </>
+                      ) : (
+                        <>
+                          <Play className="w-5 h-5 mr-2" />
+                          Play
+                        </>
+                      )}
+                    </motion.div>
+                  </Button>
+                </motion.div>
               </SimpleTooltip>
 
               <SimpleTooltip content="Reset to the first chord">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button variant="outline" size="lg" onClick={handleReset}>
-                  <motion.div whileHover={{ rotate: -180 }} transition={{ duration: 0.3 }}>
-                    <RotateCcw className="w-5 h-5 mr-2" />
-                  </motion.div>
-                  Reset
-                </Button>
-              </motion.div>
+                    <motion.div whileHover={{ rotate: -180 }} transition={{ duration: 0.3 }}>
+                      <RotateCcw className="w-5 h-5 mr-2" />
+                    </motion.div>
+                    Reset
+                  </Button>
+                </motion.div>
               </SimpleTooltip>
 
               <SimpleTooltip content={isMuted ? 'Unmute audio' : 'Mute audio'}>
@@ -294,16 +304,16 @@ export default function JamBuilder({ progression, onUpdate, onClear }: JamBuilde
                   animate={isMuted ? { opacity: 0.5 } : { opacity: 1 }}
                 >
                   <Button variant="ghost" size="lg" onClick={() => setIsMuted(!isMuted)}>
-                  <motion.div
-                    key={isMuted ? 'muted' : 'unmuted'}
-                    initial={{ scale: 0.5, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ type: 'spring', stiffness: 500, damping: 15 }}
-                  >
-                    {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
-                  </motion.div>
-                </Button>
-              </motion.div>
+                    <motion.div
+                      key={isMuted ? 'muted' : 'unmuted'}
+                      initial={{ scale: 0.5, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 15 }}
+                    >
+                      {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+                    </motion.div>
+                  </Button>
+                </motion.div>
               </SimpleTooltip>
 
               <SimpleTooltip content="Number of times the progression has looped">

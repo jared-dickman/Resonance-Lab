@@ -12,11 +12,11 @@ export interface DelayPreset {
   name: string;
   description: string;
   settings: {
-    time: number;         // 5ms-2000ms (in seconds for Pizzicato)
-    feedback: number;     // 0-1
-    mix: number;          // 0-1
-    modulation?: number;  // 0-1 (analog warmth)
-    pingPong?: boolean;   // Stereo ping-pong mode
+    time: number; // 5ms-2000ms (in seconds for Pizzicato)
+    feedback: number; // 0-1
+    mix: number; // 0-1
+    modulation?: number; // 0-1 (analog warmth)
+    pingPong?: boolean; // Stereo ping-pong mode
   };
 }
 
@@ -54,7 +54,8 @@ export class DelayPedal {
   constructor(config: DelayPedalConfig = {}) {
     const Pizzicato = loadPizzicato();
     const audioContext = Tone.getContext().rawContext as AudioContext;
-    const pizzicatoContext = ((Pizzicato as unknown as { context?: AudioContext }).context) ?? audioContext;
+    const pizzicatoContext =
+      (Pizzicato as unknown as { context?: AudioContext }).context ?? audioContext;
 
     // Create bridge nodes
     this.inputNode = new Tone.Gain(1);
@@ -66,7 +67,7 @@ export class DelayPedal {
       source: 'input',
       options: {
         volume: 1.0,
-      }
+      },
     });
 
     // Create delay effect with initial settings
@@ -164,7 +165,7 @@ export class DelayPedal {
         name: 'carbon-copy',
         description: 'MXR Carbon Copy - Warm analog delay',
         settings: {
-          time: 0.38,      // 380ms
+          time: 0.38, // 380ms
           feedback: 0.45,
           mix: 0.35,
           modulation: 0.3,
@@ -174,7 +175,7 @@ export class DelayPedal {
         name: 'slapback',
         description: 'Slapback Rockabilly - Classic 50s Elvis/Scotty Moore',
         settings: {
-          time: 0.12,      // 120ms
+          time: 0.12, // 120ms
           feedback: 0.1,
           mix: 0.25,
           modulation: 0,
@@ -184,7 +185,7 @@ export class DelayPedal {
         name: 'the-edge',
         description: "The Edge - U2's signature dotted eighth delay",
         settings: {
-          time: 0.38,      // 380ms (dotted 8th at 120 BPM)
+          time: 0.38, // 380ms (dotted 8th at 120 BPM)
           feedback: 0.6,
           mix: 0.5,
           modulation: 0.2,
@@ -194,7 +195,7 @@ export class DelayPedal {
         name: 'gilmour-ambient',
         description: 'Gilmour Ambient - Pink Floyd ethereal delay',
         settings: {
-          time: 0.46,      // 460ms
+          time: 0.46, // 460ms
           feedback: 0.65,
           mix: 0.45,
           modulation: 0.25,
@@ -204,7 +205,7 @@ export class DelayPedal {
         name: 'dub-echo',
         description: 'Dub Echo - Reggae/Dub massive feedback',
         settings: {
-          time: 0.75,      // 750ms
+          time: 0.75, // 750ms
           feedback: 0.85,
           mix: 0.6,
           modulation: 0.15,
@@ -217,7 +218,7 @@ export class DelayPedal {
    * Load a preset by name
    */
   loadPreset(presetName: string): this {
-    const preset = DelayPedal.getPresets().find((p) => p.name === presetName);
+    const preset = DelayPedal.getPresets().find(p => p.name === presetName);
 
     if (!preset) {
       throw new Error(`Preset "${presetName}" not found`);

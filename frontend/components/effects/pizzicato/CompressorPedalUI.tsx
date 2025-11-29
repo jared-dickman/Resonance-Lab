@@ -4,7 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Volume2, VolumeX, Settings, Gauge } from 'lucide-react';
 import { CompressorPedal } from '@/lib/audio/effects/pizzicato';
-import { Knob, Footswitch, PedalChassis } from '@/components/effects/pizzicato/shared/PedalControls';
+import {
+  Knob,
+  Footswitch,
+  PedalChassis,
+} from '@/components/effects/pizzicato/shared/PedalControls';
 import { cn } from '@/lib/utils';
 
 export interface CompressorPedalUIProps {
@@ -39,7 +43,7 @@ export const CompressorPedalUI: React.FC<CompressorPedalUIProps> = ({
   }, [threshold, ratio, attack, release, enabled, pedal, onStateChange]);
 
   const handlePresetLoad = (presetName: string) => {
-    const preset = presets.find((p) => p.name === presetName);
+    const preset = presets.find(p => p.name === presetName);
     if (!preset) return;
 
     setSelectedPreset(presetName);
@@ -76,7 +80,7 @@ export const CompressorPedalUI: React.FC<CompressorPedalUIProps> = ({
               Dynamics Control
             </label>
             <div className="grid grid-cols-2 gap-2">
-              {presets.map((preset) => (
+              {presets.map(preset => (
                 <button
                   key={preset.name}
                   onClick={() => handlePresetLoad(preset.name)}
@@ -102,7 +106,7 @@ export const CompressorPedalUI: React.FC<CompressorPedalUIProps> = ({
             min={-60}
             max={0}
             color="#fb923c"
-            displayFormat={(v) => `${v.toFixed(0)}dB`}
+            displayFormat={v => `${v.toFixed(0)}dB`}
           />
           <Knob
             label="Ratio"
@@ -111,7 +115,7 @@ export const CompressorPedalUI: React.FC<CompressorPedalUIProps> = ({
             min={1}
             max={20}
             color="#fdba74"
-            displayFormat={(v) => `${v.toFixed(1)}:1`}
+            displayFormat={v => `${v.toFixed(1)}:1`}
           />
           <Knob
             label="Attack"
@@ -120,7 +124,7 @@ export const CompressorPedalUI: React.FC<CompressorPedalUIProps> = ({
             min={0}
             max={1}
             color="#fed7aa"
-            displayFormat={(v) => `${(v * 1000).toFixed(0)}ms`}
+            displayFormat={v => `${(v * 1000).toFixed(0)}ms`}
           />
           <Knob
             label="Release"
@@ -129,7 +133,7 @@ export const CompressorPedalUI: React.FC<CompressorPedalUIProps> = ({
             min={0}
             max={1}
             color="#ffedd5"
-            displayFormat={(v) => `${(v * 1000).toFixed(0)}ms`}
+            displayFormat={v => `${(v * 1000).toFixed(0)}ms`}
           />
         </div>
 

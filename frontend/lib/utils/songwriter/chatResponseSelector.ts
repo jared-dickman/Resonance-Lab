@@ -21,12 +21,12 @@ function includesStructureKeywords(message: string): boolean {
 
 function includesLyricKeywords(message: string): boolean {
   const keywords = ['lyric', 'line', 'verse'];
-  return keywords.some((keyword) => message.includes(keyword));
+  return keywords.some(keyword => message.includes(keyword));
 }
 
 function includesGreetingKeywords(message: string): boolean {
   const greetings = ['hello', 'hi', 'hey'];
-  return greetings.some((greeting) => message.includes(greeting));
+  return greetings.some(greeting => message.includes(greeting));
 }
 
 export function selectResponseType(userMessage: string): ChatResponseType {

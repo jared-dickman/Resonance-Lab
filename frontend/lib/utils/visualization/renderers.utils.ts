@@ -33,11 +33,7 @@ export function renderFlowField(
   updateAndShowParticles(particles, flowField, alpha);
 }
 
-export function renderSpiral(
-  p: p5,
-  dimensions: P5Dimensions,
-  audioData: AudioData
-): void {
+export function renderSpiral(p: p5, dimensions: P5Dimensions, audioData: AudioData): void {
   drawSpiralBackground(p);
   p.translate(dimensions.width / 2, dimensions.height / 2);
 
@@ -53,12 +49,7 @@ export function renderSpiral(
   }
 }
 
-function renderSpiralArm(
-  p: p5,
-  pointCount: number,
-  audioData: AudioData,
-  armIndex: number
-): void {
+function renderSpiralArm(p: p5, pointCount: number, audioData: AudioData, armIndex: number): void {
   p.beginShape();
   p.noFill();
 
@@ -67,7 +58,8 @@ function renderSpiralArm(
     const waveVal = Math.abs(audioData.waveform[waveIndex] ?? 0);
 
     const angle = (i / pointCount) * p.TWO_PI * config.SPIRAL.ROTATION_MULTIPLIER;
-    const radius = i * config.VISUAL.SPIRAL.RADIUS_MULTIPLIER + waveVal * config.VISUAL.SPIRAL.WAVE_MULTIPLIER;
+    const radius =
+      i * config.VISUAL.SPIRAL.RADIUS_MULTIPLIER + waveVal * config.VISUAL.SPIRAL.WAVE_MULTIPLIER;
 
     const x = Math.cos(angle) * radius;
     const y = Math.sin(angle) * radius;
@@ -81,11 +73,7 @@ function renderSpiralArm(
   p.endShape();
 }
 
-export function renderMandala(
-  p: p5,
-  dimensions: P5Dimensions,
-  audioData: AudioData
-): void {
+export function renderMandala(p: p5, dimensions: P5Dimensions, audioData: AudioData): void {
   drawMandalaBackground(p);
   p.translate(dimensions.width / 2, dimensions.height / 2);
 
@@ -103,13 +91,15 @@ function renderMandalaLayer(
   baseRadius: number,
   audioData: AudioData
 ): void {
-  const radius = (layer + 1) * baseRadius + audioData.avgAmplitude * config.VISUAL.MANDALA.AMPLITUDE_MULTIPLIER;
+  const radius =
+    (layer + 1) * baseRadius + audioData.avgAmplitude * config.VISUAL.MANDALA.AMPLITUDE_MULTIPLIER;
 
   for (let i = 0; i < segmentCount; i++) {
     const waveIndex = Math.floor((i / segmentCount) * audioData.waveform.length);
     const waveVal = Math.abs(audioData.waveform[waveIndex] ?? 0);
 
-    const angle = (p.TWO_PI / segmentCount) * i + p.frameCount * config.VISUAL.MANDALA.ROTATION_SPEED;
+    const angle =
+      (p.TWO_PI / segmentCount) * i + p.frameCount * config.VISUAL.MANDALA.ROTATION_SPEED;
     const x = Math.cos(angle) * radius;
     const y = Math.sin(angle) * radius;
 
@@ -137,7 +127,7 @@ function renderMandalaConnection(
   segmentCount: number,
   hue: number
 ): void {
-  const nextAngle = (p.TWO_PI / segmentCount) + currentAngle;
+  const nextAngle = p.TWO_PI / segmentCount + currentAngle;
   const nextX = Math.cos(nextAngle) * radius;
   const nextY = Math.sin(nextAngle) * radius;
   const currentX = Math.cos(currentAngle) * radius;
@@ -148,16 +138,13 @@ function renderMandalaConnection(
   p.line(currentX, currentY, nextX, nextY);
 }
 
-export function renderParticleSystem(
-  p: p5,
-  dimensions: P5Dimensions,
-  audioData: AudioData
-): void {
+export function renderParticleSystem(p: p5, dimensions: P5Dimensions, audioData: AudioData): void {
   drawParticlesBackground(p);
   p.translate(dimensions.width / 2, dimensions.height / 2);
 
   const { COUNT, BASE_RADIUS } = config.PARTICLE_RING;
-  const radius = BASE_RADIUS + audioData.avgAmplitude * config.VISUAL.PARTICLES.AMPLITUDE_MULTIPLIER;
+  const radius =
+    BASE_RADIUS + audioData.avgAmplitude * config.VISUAL.PARTICLES.AMPLITUDE_MULTIPLIER;
 
   for (let i = 0; i < COUNT; i++) {
     renderParticle(p, i, COUNT, radius, audioData);
@@ -174,13 +161,15 @@ function renderParticle(
   const waveIndex = Math.floor((index / totalCount) * audioData.waveform.length);
   const waveVal = Math.abs(audioData.waveform[waveIndex] ?? 0);
 
-  const angle = (p.TWO_PI / totalCount) * index + p.frameCount * config.VISUAL.PARTICLES.ROTATION_SPEED;
+  const angle =
+    (p.TWO_PI / totalCount) * index + p.frameCount * config.VISUAL.PARTICLES.ROTATION_SPEED;
   const r = baseRadius + waveVal * config.VISUAL.PARTICLES.WAVE_MULTIPLIER;
 
   const x = Math.cos(angle) * r;
   const y = Math.sin(angle) * r;
 
-  const size = config.VISUAL.PARTICLES.SIZE_BASE + waveVal * config.VISUAL.PARTICLES.SIZE_MULTIPLIER;
+  const size =
+    config.VISUAL.PARTICLES.SIZE_BASE + waveVal * config.VISUAL.PARTICLES.SIZE_MULTIPLIER;
   const hue = (index * config.VISUAL.PARTICLES.HUE_MULTIPLIER + p.frameCount) % 360;
 
   p.fill(hue, config.VISUAL.COLOR.SATURATION, config.VISUAL.COLOR.BRIGHTNESS, 80);

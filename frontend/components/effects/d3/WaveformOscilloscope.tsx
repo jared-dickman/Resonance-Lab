@@ -84,9 +84,7 @@ function createCenterReferenceLine(
     .attr('opacity', WAVEFORM_CONFIG.OPACITY.CENTER_LINE);
 }
 
-function createGlowFilter(
-  svg: d3.Selection<SVGSVGElement, unknown, null, undefined>
-): void {
+function createGlowFilter(svg: d3.Selection<SVGSVGElement, unknown, null, undefined>): void {
   const defs = svg.append('defs');
   const filter = defs
     .append('filter')
@@ -110,7 +108,7 @@ function createWaveformLine(width: number, height: number): d3.Line<number> {
   return d3
     .line<number>()
     .x((_, i) => (i / WAVEFORM_CONFIG.SAMPLE_SIZE) * width)
-    .y((value) => height / 2 - (value * height) / 2)
+    .y(value => height / 2 - (value * height) / 2)
     .curve(d3.curveBasis);
 }
 

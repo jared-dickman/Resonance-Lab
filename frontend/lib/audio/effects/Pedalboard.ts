@@ -248,7 +248,7 @@ export class Pedalboard {
     return {
       masterVolume: this.masterVolume.volume.value,
       bypassAll: this.bypassAll,
-      pedals: this.getPedals().map((slot) => ({
+      pedals: this.getPedals().map(slot => ({
         id: slot.id,
         name: slot.name,
         enabled: slot.enabled,
@@ -262,7 +262,7 @@ export class Pedalboard {
    */
   dispose(): void {
     // Dispose all pedals
-    this.slots.forEach((slot) => {
+    this.slots.forEach(slot => {
       if ('dispose' in slot.pedal) {
         slot.pedal.dispose();
       }

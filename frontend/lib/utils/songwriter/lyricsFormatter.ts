@@ -7,15 +7,15 @@
 import type { SectionLyrics, LyricLine } from '@/components/songwriter/types/song';
 
 export function flattenLyricLines(lines: readonly LyricLine[]): string {
-  return lines.map((line) => line.text).join('\n');
+  return lines.map(line => line.text).join('\n');
 }
 
 export function flattenSongSections(sections: readonly SectionLyrics[]): string {
-  return sections.map((section) => flattenLyricLines(section.lines)).join('\n\n');
+  return sections.map(section => flattenLyricLines(section.lines)).join('\n\n');
 }
 
 export function splitIntoLines(text: string): string[] {
-  return text.split('\n').filter((line) => line.trim().length > 0);
+  return text.split('\n').filter(line => line.trim().length > 0);
 }
 
 export function countWords(text: string): number {

@@ -4,7 +4,12 @@
  */
 
 import * as Tone from 'tone';
-import type { InstrumentConfig, InstrumentPreset, Note, ChordOptions } from '@/lib/audio/instruments/base/InstrumentConfig';
+import type {
+  InstrumentConfig,
+  InstrumentPreset,
+  Note,
+  ChordOptions,
+} from '@/lib/audio/instruments/base/InstrumentConfig';
 
 type TriggerableInstrument = Tone.ToneAudioNode & {
   triggerAttackRelease(
@@ -62,29 +67,24 @@ export abstract class Instrument {
     }
 
     if (this.synth instanceof Tone.Sampler) {
-      this.synth.triggerAttackRelease(
-        noteString,
-        note.duration,
-        time,
-        velocity
-      );
+      this.synth.triggerAttackRelease(noteString, note.duration, time, velocity);
     } else {
-      this.synth.triggerAttackRelease(
-        noteString,
-        note.duration,
-        time,
-        velocity
-      );
+      this.synth.triggerAttackRelease(noteString, note.duration, time, velocity);
     }
   }
 
   /**
    * Play multiple notes simultaneously
    */
-  playChord(notes: string[], duration: Tone.Unit.Time, time?: Tone.Unit.Time, velocity = 0.8): void {
+  playChord(
+    notes: string[],
+    duration: Tone.Unit.Time,
+    time?: Tone.Unit.Time,
+    velocity = 0.8
+  ): void {
     const triggerTime = time ?? Tone.now();
 
-    notes.forEach((note) => {
+    notes.forEach(note => {
       this.playNote({
         note,
         duration,

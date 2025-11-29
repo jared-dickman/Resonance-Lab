@@ -94,7 +94,7 @@ const Knob: React.FC<KnobProps> = ({
           <div className="absolute inset-0 m-4 rounded-full bg-gradient-to-br from-gray-800 to-gray-900 shadow-inner" />
         </motion.div>
 
-        {[0, 0.25, 0.5, 0.75, 1].map((pos) => {
+        {[0, 0.25, 0.5, 0.75, 1].map(pos => {
           const angle = pos * 270 - 135;
           const rad = (angle * Math.PI) / 180;
           const x = Math.cos(rad) * 32 + 30;
@@ -124,7 +124,11 @@ interface FootswitchProps {
   color?: string;
 }
 
-const Footswitch: React.FC<FootswitchProps> = ({ enabled, onToggle, color = 'var(--sapphire-500)' }) => {
+const Footswitch: React.FC<FootswitchProps> = ({
+  enabled,
+  onToggle,
+  color = 'var(--sapphire-500)',
+}) => {
   return (
     <div className="flex flex-col items-center gap-3">
       <motion.div
@@ -191,7 +195,7 @@ export const DelayPedalUI: React.FC<DelayPedalUIProps> = ({
   }, [enabled, pedal, onStateChange]);
 
   const handlePresetLoad = (presetName: string) => {
-    const preset = presets.find((p) => p.name === presetName);
+    const preset = presets.find(p => p.name === presetName);
     if (!preset) return;
 
     setSelectedPreset(presetName);
@@ -222,9 +226,7 @@ export const DelayPedalUI: React.FC<DelayPedalUIProps> = ({
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <Clock className="w-6 h-6 text-blue-400" />
-            <h2 className="text-xl font-bold text-white uppercase tracking-wider">
-              Delay
-            </h2>
+            <h2 className="text-xl font-bold text-white uppercase tracking-wider">Delay</h2>
           </div>
 
           <button
@@ -247,7 +249,7 @@ export const DelayPedalUI: React.FC<DelayPedalUIProps> = ({
                 Legendary Presets
               </label>
               <div className="grid grid-cols-2 gap-2">
-                {presets.map((preset) => (
+                {presets.map(preset => (
                   <button
                     key={preset.name}
                     onClick={() => handlePresetLoad(preset.name)}
@@ -267,8 +269,20 @@ export const DelayPedalUI: React.FC<DelayPedalUIProps> = ({
         )}
 
         <div className="grid grid-cols-3 gap-6 mb-8">
-          <Knob label="Time" value={time} onChange={setTime} min={0.005} max={2} color="var(--sapphire-500)" />
-          <Knob label="Feedback" value={feedback} onChange={setFeedback} color="var(--sapphire-400)" />
+          <Knob
+            label="Time"
+            value={time}
+            onChange={setTime}
+            min={0.005}
+            max={2}
+            color="var(--sapphire-500)"
+          />
+          <Knob
+            label="Feedback"
+            value={feedback}
+            onChange={setFeedback}
+            color="var(--sapphire-400)"
+          />
           <Knob label="Mix" value={mix} onChange={setMix} color="var(--sapphire-300)" />
         </div>
 
@@ -284,9 +298,7 @@ export const DelayPedalUI: React.FC<DelayPedalUIProps> = ({
               ) : (
                 <VolumeX className="w-4 h-4" />
               )}
-              <span className="uppercase font-bold">
-                {enabled ? 'Active' : 'Bypassed'}
-              </span>
+              <span className="uppercase font-bold">{enabled ? 'Active' : 'Bypassed'}</span>
             </div>
             <span className="font-mono">{selectedPreset.toUpperCase()}</span>
           </div>

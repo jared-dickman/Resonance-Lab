@@ -12,11 +12,11 @@ export interface CompressorPreset {
   name: string;
   description: string;
   settings: {
-    threshold: number;  // -60 to 0 dB
-    knee: number;       // 0-40 dB (smoothness)
-    ratio: number;      // 1-20 (compression amount)
-    attack: number;     // 0-1 seconds
-    release: number;    // 0-1 seconds
+    threshold: number; // -60 to 0 dB
+    knee: number; // 0-40 dB (smoothness)
+    ratio: number; // 1-20 (compression amount)
+    attack: number; // 0-1 seconds
+    release: number; // 0-1 seconds
   };
 }
 
@@ -55,7 +55,8 @@ export class CompressorPedal {
   constructor(config: CompressorPedalConfig = {}) {
     const Pizzicato = loadPizzicato();
     const audioContext = Tone.getContext().rawContext as AudioContext;
-    const pizzicatoContext = ((Pizzicato as unknown as { context?: AudioContext }).context) ?? audioContext;
+    const pizzicatoContext =
+      (Pizzicato as unknown as { context?: AudioContext }).context ?? audioContext;
 
     // Create bridge nodes
     this.inputNode = new Tone.Gain(1);
@@ -67,7 +68,7 @@ export class CompressorPedal {
       source: 'input',
       options: {
         volume: 1.0,
-      }
+      },
     });
 
     // Create compressor effect
@@ -246,7 +247,7 @@ export class CompressorPedal {
    * Load a preset by name
    */
   loadPreset(presetName: string): this {
-    const preset = CompressorPedal.getPresets().find((p) => p.name === presetName);
+    const preset = CompressorPedal.getPresets().find(p => p.name === presetName);
 
     if (!preset) {
       throw new Error(`Preset "${presetName}" not found`);

@@ -4,7 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Volume2, VolumeX, Settings, Zap } from 'lucide-react';
 import { FlangerPedal } from '@/lib/audio/effects/pizzicato';
-import { Knob, Footswitch, PedalChassis } from '@/components/effects/pizzicato/shared/PedalControls';
+import {
+  Knob,
+  Footswitch,
+  PedalChassis,
+} from '@/components/effects/pizzicato/shared/PedalControls';
 import { cn } from '@/lib/utils';
 
 export interface FlangerPedalUIProps {
@@ -39,7 +43,7 @@ export const FlangerPedalUI: React.FC<FlangerPedalUIProps> = ({
   }, [rate, depth, feedback, mix, enabled, pedal, onStateChange]);
 
   const handlePresetLoad = (presetName: string) => {
-    const preset = presets.find((p) => p.name === presetName);
+    const preset = presets.find(p => p.name === presetName);
     if (!preset) return;
 
     setSelectedPreset(presetName);
@@ -76,7 +80,7 @@ export const FlangerPedalUI: React.FC<FlangerPedalUIProps> = ({
               Jet Plane Swoosh
             </label>
             <div className="grid grid-cols-2 gap-2">
-              {presets.map((preset) => (
+              {presets.map(preset => (
                 <button
                   key={preset.name}
                   onClick={() => handlePresetLoad(preset.name)}
@@ -102,7 +106,7 @@ export const FlangerPedalUI: React.FC<FlangerPedalUIProps> = ({
             min={0.1}
             max={10}
             color="#f87171"
-            displayFormat={(v) => `${v.toFixed(1)}Hz`}
+            displayFormat={v => `${v.toFixed(1)}Hz`}
           />
           <Knob label="Depth" value={depth} onChange={setDepth} color="#fca5a5" />
           <Knob label="Feedback" value={feedback} onChange={setFeedback} color="#fecaca" />

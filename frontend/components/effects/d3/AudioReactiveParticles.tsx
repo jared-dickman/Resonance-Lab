@@ -126,13 +126,11 @@ function calculateDynamicColor(
   amplitude: number,
   elapsedTime: number
 ): THREE.Color {
-  const { INTENSITY_BASE, INTENSITY_MULTIPLIER, HUE_ROTATION_SPEED } =
-    PARTICLE_CONFIG.ANIMATION;
+  const { INTENSITY_BASE, INTENSITY_MULTIPLIER, HUE_ROTATION_SPEED } = PARTICLE_CONFIG.ANIMATION;
   const { SATURATION } = PARTICLE_CONFIG.COLOR;
 
   const intensity = INTENSITY_BASE + amplitude * INTENSITY_MULTIPLIER;
-  const hue =
-    ((particleIndex / particleCount) * 360 + elapsedTime * HUE_ROTATION_SPEED) % 360;
+  const hue = ((particleIndex / particleCount) * 360 + elapsedTime * HUE_ROTATION_SPEED) % 360;
 
   return new THREE.Color(`hsl(${hue}, ${SATURATION}%, ${intensity * 100}%)`);
 }
@@ -166,8 +164,7 @@ function updateParticlesWithAudioData(
 }
 
 function rotateParticleSystem(mesh: THREE.Points, elapsedTime: number): void {
-  const { ROTATION_SPEED_Y, ROTATION_SPEED_X, ROTATION_AMPLITUDE } =
-    PARTICLE_CONFIG.ANIMATION;
+  const { ROTATION_SPEED_Y, ROTATION_SPEED_X, ROTATION_AMPLITUDE } = PARTICLE_CONFIG.ANIMATION;
 
   mesh.rotation.y = elapsedTime * ROTATION_SPEED_Y;
   mesh.rotation.x = Math.sin(elapsedTime * ROTATION_SPEED_X) * ROTATION_AMPLITUDE;
@@ -195,7 +192,7 @@ function Particles({ audioNode, count = PARTICLE_CONFIG.DEFAULT_COUNT }: Particl
     };
   }, [audioNode]);
 
-  useFrame((state) => {
+  useFrame(state => {
     if (!meshRef.current || !analyzerRef.current) return;
 
     const posAttr = meshRef.current.geometry.attributes.position;
@@ -219,18 +216,9 @@ function Particles({ audioNode, count = PARTICLE_CONFIG.DEFAULT_COUNT }: Particl
   return (
     <points ref={meshRef}>
       <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          args={[particles.positions, 3]}
-        />
-        <bufferAttribute
-          attach="attributes-color"
-          args={[particles.colors, 3]}
-        />
-        <bufferAttribute
-          attach="attributes-size"
-          args={[particles.sizes, 1]}
-        />
+        <bufferAttribute attach="attributes-position" args={[particles.positions, 3]} />
+        <bufferAttribute attach="attributes-color" args={[particles.colors, 3]} />
+        <bufferAttribute attach="attributes-size" args={[particles.sizes, 1]} />
       </bufferGeometry>
       <pointsMaterial
         size={MATERIAL_SIZE}
@@ -280,22 +268,15 @@ export const AudioReactiveParticles: React.FC<AudioReactiveParticlesProps> = ({
   const cameraConfig = createCameraConfiguration();
   const lightConfig = createLightConfiguration();
   const canvasStyle: CSSProperties = {
-    width: typeof width === 'number' ? `${width}px` : width ?? '100%',
+    width: typeof width === 'number' ? `${width}px` : (width ?? '100%'),
     height: typeof height === 'number' ? `${height}px` : height,
   };
 
   return (
     <div className="relative bg-black rounded-lg overflow-hidden border border-gray-800">
-      <Canvas
-        camera={cameraConfig}
-        style={canvasStyle}
-        gl={{ antialias: true }}
-      >
+      <Canvas camera={cameraConfig} style={canvasStyle} gl={{ antialias: true }}>
         <ambientLight intensity={lightConfig.ambientIntensity} />
-        <pointLight
-          position={lightConfig.pointPosition}
-          intensity={lightConfig.pointIntensity}
-        />
+        <pointLight position={lightConfig.pointPosition} intensity={lightConfig.pointIntensity} />
         <Particles audioNode={audioNode} count={particleCount} />
         <OrbitControls enableZoom={true} enablePan={true} enableRotate={true} />
       </Canvas>

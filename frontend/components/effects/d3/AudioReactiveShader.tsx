@@ -7,10 +7,7 @@ import { OrbitControls } from '@react-three/drei';
 import type * as THREE from 'three';
 import type * as Tone from 'tone';
 
-import {
-  CANVAS_DIMENSIONS,
-  SHADER_CONFIG,
-} from '@/lib/constants/visualization.constants';
+import { CANVAS_DIMENSIONS, SHADER_CONFIG } from '@/lib/constants/visualization.constants';
 import {
   createConnectedFFTAnalyzer,
   splitFrequencyBands,
@@ -87,7 +84,8 @@ const FRAGMENT_SHADER = `
 `;
 
 type ShaderUniformKey = 'uTime' | 'uAudioLow' | 'uAudioMid' | 'uAudioHigh';
-type ShaderUniforms = Record<ShaderUniformKey, THREE.IUniform<number>> & Record<string, THREE.IUniform<number>>;
+type ShaderUniforms = Record<ShaderUniformKey, THREE.IUniform<number>> &
+  Record<string, THREE.IUniform<number>>;
 
 interface AudioShaderMaterialProps {
   audioNode?: Tone.ToneAudioNode;
@@ -120,7 +118,7 @@ function rotateMeshWithTime(mesh: THREE.Mesh, elapsedTime: number): void {
   const { NORMAL } = SHADER_CONFIG.ANIMATION.ROTATION_SPEED;
 
   mesh.rotation.y = elapsedTime * NORMAL;
-  mesh.rotation.x = Math.sin(elapsedTime * NORMAL / 2) * NORMAL;
+  mesh.rotation.x = Math.sin((elapsedTime * NORMAL) / 2) * NORMAL;
 }
 
 function AudioShaderMaterial({ audioNode }: AudioShaderMaterialProps): ReactElement {
@@ -130,10 +128,7 @@ function AudioShaderMaterial({ audioNode }: AudioShaderMaterialProps): ReactElem
   const uniforms = useMemo(createInitialUniforms, []);
 
   useEffect(() => {
-    const analyzer = createConnectedFFTAnalyzer(
-      SHADER_CONFIG.FFT_SIZE.SMALL,
-      audioNode
-    );
+    const analyzer = createConnectedFFTAnalyzer(SHADER_CONFIG.FFT_SIZE.SMALL, audioNode);
     analyzerRef.current = analyzer;
 
     return () => {
@@ -141,7 +136,7 @@ function AudioShaderMaterial({ audioNode }: AudioShaderMaterialProps): ReactElem
     };
   }, [audioNode]);
 
-  useFrame((state) => {
+  useFrame(state => {
     if (!analyzerRef.current) return;
 
     const fftData = analyzerRef.current.getValue() as Float32Array;
@@ -204,16 +199,9 @@ export const AudioReactiveShader: React.FC<AudioReactiveShaderProps> = ({
 
   return (
     <div className="bg-black rounded-lg overflow-hidden border border-gray-800 relative">
-      <Canvas
-        camera={cameraConfig}
-        style={{ width, height }}
-        gl={{ antialias: true }}
-      >
+      <Canvas camera={cameraConfig} style={{ width, height }} gl={{ antialias: true }}>
         <ambientLight intensity={lightConfig.ambientIntensity} />
-        <pointLight
-          position={lightConfig.pointPosition}
-          intensity={lightConfig.pointIntensity}
-        />
+        <pointLight position={lightConfig.pointPosition} intensity={lightConfig.pointIntensity} />
         <AudioShaderMaterial audioNode={audioNode} />
         <OrbitControls enableZoom={true} enablePan={false} enableRotate={true} />
       </Canvas>

@@ -41,7 +41,7 @@ export function useGuitarPlayback({
         // Create guitar with strumming preset for realistic sound
         guitarRef.current = new AcousticGuitar({
           preset,
-          volume
+          volume,
         });
 
         logger.info('[useGuitarPlayback] AcousticGuitar created, waiting for samples...');
@@ -56,42 +56,44 @@ export function useGuitarPlayback({
   /**
    * Play a chord with realistic guitar strumming
    */
-  const playChord = useCallback((chordName: string) => {
-    if (!enabled) return;
+  const playChord = useCallback(
+    (chordName: string) => {
+      if (!enabled) return;
 
-    const guitar = guitarRef.current;
-    if (!guitar) {
-      logger.warn('Guitar not initialized yet');
-      return;
-    }
+      const guitar = guitarRef.current;
+      if (!guitar) {
+        logger.warn('Guitar not initialized yet');
+        return;
+      }
 
-    // Check if guitar samples are loaded
-    if (!guitar.isReady()) {
-      logger.warn('Guitar samples still loading, skipping chord:', chordName);
-      return;
-    }
+      // Check if guitar samples are loaded
+      if (!guitar.isReady()) {
+        logger.warn('Guitar samples still loading, skipping chord:', chordName);
+        return;
+      }
 
-    // Parse chord to get notes
-    const chord = Chord.get(chordName);
-    if (chord.empty || chord.notes.length === 0) {
-      logger.warn('Invalid chord:', chordName);
-      return;
-    }
+      // Parse chord to get notes
+      const chord = Chord.get(chordName);
+      if (chord.empty || chord.notes.length === 0) {
+        logger.warn('Invalid chord:', chordName);
+        return;
+      }
 
-    // Add octave to notes (typical guitar range: octaves 2-5)
-    // Distribute notes across guitar range for realistic voicing
-    const guitarNotes = chord.notes.map((note, index) => {
-      // Lower notes (root, bass) in octave 3, higher notes in octave 4
-      const octave = index < 2 ? 3 : 4;
-      return `${note}${octave}`;
-    });
+      // Add octave to notes (typical guitar range: octaves 2-5)
+      // Distribute notes across guitar range for realistic voicing
+      const guitarNotes = chord.notes.map((note, index) => {
+        // Lower notes (root, bass) in octave 3, higher notes in octave 4
+        const octave = index < 2 ? 3 : 4;
+        return `${note}${octave}`;
+      });
 
-    // Use the special strum method for realistic guitar feel
-    // Alternate down/up strumming for natural feel
-    const direction = Math.random() > 0.5 ? 'down' : 'up';
-    guitar.playStrum(guitarNotes, '2n', undefined, 0.85, direction);
-
-  }, [enabled]);
+      // Use the special strum method for realistic guitar feel
+      // Alternate down/up strumming for natural feel
+      const direction = Math.random() > 0.5 ? 'down' : 'up';
+      guitar.playStrum(guitarNotes, '2n', undefined, 0.85, direction);
+    },
+    [enabled]
+  );
 
   /**
    * Play chord when currentChord changes

@@ -30,10 +30,7 @@ export function calculateVoiceLeadingQuality(progression: ChordInstance[]): numb
   return totalQuality / (progression.length - 1);
 }
 
-export function determineHarmonicFunction(
-  chord: ChordInstance,
-  key: MusicalKey
-): HarmonicFunction {
+export function determineHarmonicFunction(chord: ChordInstance, key: MusicalKey): HarmonicFunction {
   const interval = calculateSemitoneDistance(key, chord.root);
 
   const functionMap: Record<number, HarmonicFunction> = {
@@ -97,10 +94,7 @@ export function analyzeProgressionResolves(progression: ChordProgression): boole
     return true;
   }
 
-  const penultimateFunction = determineHarmonicFunction(
-    penultimateChord,
-    progression.key
-  );
+  const penultimateFunction = determineHarmonicFunction(penultimateChord, progression.key);
 
   return penultimateFunction === 'dominant';
 }

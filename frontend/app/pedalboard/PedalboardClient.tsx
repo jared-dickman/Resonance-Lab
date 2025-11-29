@@ -226,7 +226,8 @@ export default function UltimatePedalboardPage() {
             </div>
 
             <p className="text-xl text-gray-400 max-w-3xl">
-              6 Legendary Pedals • 30 Iconic Presets • 5 Guitarist Rigs • Real-Time D3 Visualizations
+              6 Legendary Pedals • 30 Iconic Presets • 5 Guitarist Rigs • Real-Time D3
+              Visualizations
             </p>
 
             {/* Control Bar */}
@@ -266,13 +267,19 @@ export default function UltimatePedalboardPage() {
                     onClick={() => setShowVisualizations(!showVisualizations)}
                     className="flex items-center gap-2 px-6 py-3 bg-gray-800 hover:bg-gray-700 border border-sapphire-500/20 hover:border-sapphire-500/40 text-white rounded-lg font-medium transition-all duration-200"
                   >
-                    {showVisualizations ? <Minimize2 className="w-5 h-5" /> : <Maximize2 className="w-5 h-5" />}
+                    {showVisualizations ? (
+                      <Minimize2 className="w-5 h-5" />
+                    ) : (
+                      <Maximize2 className="w-5 h-5" />
+                    )}
                     {showVisualizations ? 'Hide' : 'Show'} Visualizations
                   </button>
 
                   {showVisualizations && (
                     <button
-                      onClick={() => setVisualizationLayout(visualizationLayout === 'grid' ? 'stack' : 'grid')}
+                      onClick={() =>
+                        setVisualizationLayout(visualizationLayout === 'grid' ? 'stack' : 'grid')
+                      }
                       className="flex items-center gap-2 px-6 py-3 bg-gray-800 hover:bg-gray-700 border border-sapphire-500/20 hover:border-sapphire-500/40 text-white rounded-lg font-medium transition-all duration-200"
                     >
                       <Settings className="w-5 h-5" />
@@ -390,7 +397,12 @@ export default function UltimatePedalboardPage() {
               </motion.div>
 
               {/* Audio Analysis Grid */}
-              <div className={cn('grid gap-6', visualizationLayout === 'grid' ? 'lg:grid-cols-2' : 'grid-cols-1')}>
+              <div
+                className={cn(
+                  'grid gap-6',
+                  visualizationLayout === 'grid' ? 'lg:grid-cols-2' : 'grid-cols-1'
+                )}
+              >
                 {/* Spectrum Analyzer */}
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
@@ -432,7 +444,7 @@ export default function UltimatePedalboardPage() {
                   className="border-2 border-sapphire-500/30 shadow-xl shadow-sapphire-500/10 rounded-xl overflow-hidden transition-all duration-200 hover:border-sapphire-500/40"
                 >
                   <SignalPathDiagram
-                    pedals={slots.map((s) => ({
+                    pedals={slots.map(s => ({
                       id: s.id,
                       name: s.name,
                       type: 'effect',
@@ -486,12 +498,8 @@ export default function UltimatePedalboardPage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
         >
-          <p>
-            Built with Tone.js, Pizzicato.js, D3.js, and Framer Motion
-          </p>
-          <p className="mt-2 text-xs">
-            The most advanced web-based guitar pedalboard ever created
-          </p>
+          <p>Built with Tone.js, Pizzicato.js, D3.js, and Framer Motion</p>
+          <p className="mt-2 text-xs">The most advanced web-based guitar pedalboard ever created</p>
         </motion.div>
       </div>
     </div>

@@ -35,17 +35,21 @@ export class ChordSuggester {
    * Suggest next chords based on current chord
    */
   suggest(currentChord: string, context: SuggestionContext = {}): ChordSuggestion[] {
-    const {
-      key = 'C',
-      genre = 'pop',
-      maxSuggestions = 3,
-    } = context;
+    const { key = 'C', genre = 'pop', maxSuggestions = 3 } = context;
 
     const suggestions: ChordSuggestion[] = [];
 
     // Get scale chords for the key
     const scale = Scale.get(`${key} major`);
-    const scaleChords = Progression.fromRomanNumerals(key, ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii']);
+    const scaleChords = Progression.fromRomanNumerals(key, [
+      'I',
+      'ii',
+      'iii',
+      'IV',
+      'V',
+      'vi',
+      'vii',
+    ]);
 
     // Analyze current chord
     const currentChordData = Chord.get(currentChord);

@@ -12,8 +12,8 @@ export interface TremoloPreset {
   name: string;
   description: string;
   settings: {
-    rate: number;   // 0.1-20 Hz (speed)
-    depth: number;  // 0-1 (intensity)
+    rate: number; // 0.1-20 Hz (speed)
+    depth: number; // 0-1 (intensity)
   };
 }
 
@@ -46,7 +46,8 @@ export class TremoloPedal {
   constructor(config: TremoloPedalConfig = {}) {
     const Pizzicato = loadPizzicato();
     const audioContext = Tone.getContext().rawContext as AudioContext;
-    const pizzicatoContext = ((Pizzicato as unknown as { context?: AudioContext }).context) ?? audioContext;
+    const pizzicatoContext =
+      (Pizzicato as unknown as { context?: AudioContext }).context ?? audioContext;
 
     // Create bridge nodes
     this.inputNode = new Tone.Gain(1);
@@ -58,14 +59,14 @@ export class TremoloPedal {
       source: 'input',
       options: {
         volume: 1.0,
-      }
+      },
     });
 
     // Create tremolo effect
     this.tremoloEffect = new Pizzicato.Effects.Tremolo({
       speed: config.rate ?? 4.0,
       depth: config.depth ?? 0.5,
-      mix: 1.0,  // Tremolo is always 100% wet (it modulates volume)
+      mix: 1.0, // Tremolo is always 100% wet (it modulates volume)
     });
 
     // Add effect to sound
@@ -142,7 +143,7 @@ export class TremoloPedal {
     return [
       {
         name: 'fender-65',
-        description: "Classic blackface amp tremolo",
+        description: 'Classic blackface amp tremolo',
         settings: {
           rate: 4.0,
           depth: 0.5,
@@ -187,7 +188,7 @@ export class TremoloPedal {
    * Load a preset by name
    */
   loadPreset(presetName: string): this {
-    const preset = TremoloPedal.getPresets().find((p) => p.name === presetName);
+    const preset = TremoloPedal.getPresets().find(p => p.name === presetName);
 
     if (!preset) {
       throw new Error(`Preset "${presetName}" not found`);

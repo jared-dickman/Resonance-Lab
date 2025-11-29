@@ -20,7 +20,7 @@ interface LyricsEditorProps {
 
 function calculateWordAndLineCounts(text: string): { words: number; lines: number } {
   const words = text.trim().split(/\s+/).filter(Boolean);
-  const lines = text.split('\n').filter((line) => line.trim());
+  const lines = text.split('\n').filter(line => line.trim());
   return { words: words.length, lines: lines.length };
 }
 
@@ -74,11 +74,7 @@ export default function LyricsEditor({
   const insertSection = (sectionName: string): void => {
     const textarea = document.querySelector('textarea');
     if (textarea) {
-      const newLyrics = insertSectionAtCursor(
-        localLyrics,
-        sectionName,
-        textarea.selectionStart
-      );
+      const newLyrics = insertSectionAtCursor(localLyrics, sectionName, textarea.selectionStart);
       handleLyricsChange(newLyrics);
     }
   };

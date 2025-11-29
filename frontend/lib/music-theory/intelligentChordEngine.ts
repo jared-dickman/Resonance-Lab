@@ -250,7 +250,10 @@ export function suggestNextChords(
 /**
  * Generate a bass line from chord progression
  */
-export function generateBassLine(chords: string[], style: 'root' | 'walking' | 'alternating' = 'root'): string[] {
+export function generateBassLine(
+  chords: string[],
+  style: 'root' | 'walking' | 'alternating' = 'root'
+): string[] {
   const bassNotes: string[] = [];
 
   chords.forEach((chordSymbol, index) => {
@@ -331,7 +334,9 @@ export function getChordColor(quality: ChordAnalysis['quality']): string {
   // Note: These return hex values for dynamic usage in canvas/SVG contexts
   // where CSS variables may not be available
   const colors = {
-    major: getComputedStyle(document.documentElement).getPropertyValue('--sapphire-500').trim() || '#3B82F6', // Blue
+    major:
+      getComputedStyle(document.documentElement).getPropertyValue('--sapphire-500').trim() ||
+      '#3B82F6', // Blue
     minor: '#8B5CF6', // Purple
     dominant: '#F59E0B', // Amber
     diminished: '#EF4444', // Red

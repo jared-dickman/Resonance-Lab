@@ -12,8 +12,8 @@ export interface ReverbPreset {
   name: string;
   description: string;
   settings: {
-    time: number;        // Decay time (0.01-10s)
-    mix: number;         // Wet/dry mix (0-1)
+    time: number; // Decay time (0.01-10s)
+    mix: number; // Wet/dry mix (0-1)
   };
 }
 
@@ -46,7 +46,8 @@ export class ReverbPedal {
   constructor(config: ReverbPedalConfig = {}) {
     const Pizzicato = loadPizzicato();
     const audioContext = Tone.getContext().rawContext as AudioContext;
-    const pizzicatoContext = ((Pizzicato as unknown as { context?: AudioContext }).context) ?? audioContext;
+    const pizzicatoContext =
+      (Pizzicato as unknown as { context?: AudioContext }).context ?? audioContext;
 
     // Create bridge nodes
     this.inputNode = new Tone.Gain(1);
@@ -58,13 +59,13 @@ export class ReverbPedal {
       source: 'input',
       options: {
         volume: 1.0,
-      }
+      },
     });
 
     // Create reverb effect
     this.reverbEffect = new Pizzicato.Effects.Reverb({
       time: config.time ?? 2.5,
-      decay: config.time ?? 2.5,  // Pizzicato uses 'decay' for reverb time
+      decay: config.time ?? 2.5, // Pizzicato uses 'decay' for reverb time
       reverse: false,
       mix: config.mix ?? 0.3,
     });
@@ -189,7 +190,7 @@ export class ReverbPedal {
    * Load a preset by name
    */
   loadPreset(presetName: string): this {
-    const preset = ReverbPedal.getPresets().find((p) => p.name === presetName);
+    const preset = ReverbPedal.getPresets().find(p => p.name === presetName);
 
     if (!preset) {
       throw new Error(`Preset "${presetName}" not found`);

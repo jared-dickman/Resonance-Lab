@@ -56,7 +56,7 @@ export default function IntelligentComposer() {
           <span className="text-sm font-medium">Key:</span>
           <select
             value={state.key}
-            onChange={(e) => controls.setKey(e.target.value)}
+            onChange={e => controls.setKey(e.target.value)}
             className="rounded-md border border-input bg-background px-3 py-1.5 text-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sapphire-500/50 focus-visible:border-sapphire-500/50"
           >
             <option>C</option>
@@ -70,7 +70,7 @@ export default function IntelligentComposer() {
           <span className="ml-4 text-sm font-medium">Genre:</span>
           <select
             value={state.genre}
-            onChange={(e) => controls.setGenre(e.target.value as typeof state.genre)}
+            onChange={e => controls.setGenre(e.target.value as typeof state.genre)}
             className="rounded-md border border-input bg-background px-3 py-1.5 text-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sapphire-500/50 focus-visible:border-sapphire-500/50"
           >
             <option value="pop">Pop</option>
@@ -85,8 +85,8 @@ export default function IntelligentComposer() {
           <Input
             type="text"
             value={inputChord}
-            onChange={(e) => setInputChord(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleAddChord()}
+            onChange={e => setInputChord(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && handleAddChord()}
             placeholder="Enter a chord (e.g., Cmaj7, Am, G7)"
             className="flex-1"
           />
@@ -129,9 +129,7 @@ export default function IntelligentComposer() {
                   className="w-full rounded-lg border border-sapphire-500/10 p-4 text-left transition-all duration-200 hover:bg-sapphire-500/5 hover:border-sapphire-500/30 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sapphire-500/50"
                 >
                   <div className="mb-1 flex items-center justify-between">
-                    <span className="text-xl font-bold text-sapphire-400">
-                      {suggestion.chord}
-                    </span>
+                    <span className="text-xl font-bold text-sapphire-400">{suggestion.chord}</span>
                     <Badge variant="default">
                       {Math.round(suggestion.confidence * 100)}% confident
                     </Badge>

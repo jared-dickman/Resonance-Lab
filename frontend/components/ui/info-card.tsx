@@ -48,11 +48,7 @@ export function InfoCard({
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, height: 0 }}
         transition={{ duration: 0.2 }}
-        className={cn(
-          'relative rounded-lg border p-4',
-          VARIANT_STYLES[variant],
-          className
-        )}
+        className={cn('relative rounded-lg border p-4', VARIANT_STYLES[variant], className)}
       >
         <div className="flex items-start gap-3">
           <Info className="w-5 h-5 shrink-0 mt-0.5" />

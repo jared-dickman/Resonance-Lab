@@ -1,25 +1,32 @@
-'use client'
+'use client';
 
-import {Badge} from '@/components/ui/badge'
-import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList} from '@/components/ui/command'
-import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover'
-import { cn } from '@/lib/utils'
-import {Check, ChevronsUpDown, X} from 'lucide-react'
-import {useState} from 'react'
+import { Badge } from '@/components/ui/badge';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { cn } from '@/lib/utils';
+import { Check, ChevronsUpDown, X } from 'lucide-react';
+import { useState } from 'react';
 
 export interface MultiSelectOption {
-  value: string
-  label: string
+  value: string;
+  label: string;
 }
 
 interface MultiSelectProps {
-  options: MultiSelectOption[]
-  selected: string[]
-  onChange: (selected: string[]) => void
-  placeholder?: string
-  maxItems?: number
-  className?: string
-  disabled?: boolean
+  options: MultiSelectOption[];
+  selected: string[];
+  onChange: (selected: string[]) => void;
+  placeholder?: string;
+  maxItems?: number;
+  className?: string;
+  disabled?: boolean;
 }
 
 export function MultiSelect({
@@ -31,29 +38,29 @@ export function MultiSelect({
   className,
   disabled = false,
 }: MultiSelectProps) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   function handleSelect(value: string) {
-    const isSelected = selected.includes(value)
+    const isSelected = selected.includes(value);
     if (isSelected) {
-      onChange(selected.filter(item => item !== value))
+      onChange(selected.filter(item => item !== value));
     } else {
       if (maxItems && selected.length >= maxItems) {
-        return
+        return;
       }
-      onChange([...selected, value])
+      onChange([...selected, value]);
     }
   }
 
   function handleRemove(value: string, e: React.MouseEvent | React.KeyboardEvent) {
-    e.preventDefault()
-    e.stopPropagation()
-    onChange(selected.filter(item => item !== value))
+    e.preventDefault();
+    e.stopPropagation();
+    onChange(selected.filter(item => item !== value));
   }
 
   const selectedLabels = selected
     .map(value => options.find(opt => opt.value === value)?.label)
-    .filter(Boolean) as string[]
+    .filter(Boolean) as string[];
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -83,19 +90,19 @@ export function MultiSelect({
                     role="button"
                     tabIndex={0}
                     className="inline-flex items-center justify-center rounded-sm hover:bg-background/20 transition-colors cursor-pointer"
-                    onMouseDown={(e) => {
-                      e.preventDefault()
-                      e.stopPropagation()
+                    onMouseDown={e => {
+                      e.preventDefault();
+                      e.stopPropagation();
                     }}
-                    onClick={(e) => {
-                      const val = selected[index]
-                      if (val) handleRemove(val, e)
+                    onClick={e => {
+                      const val = selected[index];
+                      if (val) handleRemove(val, e);
                     }}
-                    onKeyDown={(e) => {
+                    onKeyDown={e => {
                       if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault()
-                        const val = selected[index]
-                        if (val) handleRemove(val, e)
+                        e.preventDefault();
+                        const val = selected[index];
+                        if (val) handleRemove(val, e);
                       }
                     }}
                   >
@@ -114,9 +121,10 @@ export function MultiSelect({
           <CommandList className="max-h-[300px]">
             <CommandEmpty>No items found.</CommandEmpty>
             <CommandGroup className="p-1">
-              {options.map((option) => {
-                const isSelected = selected.includes(option.value)
-                const isDisabled = !isSelected && maxItems !== undefined && selected.length >= maxItems
+              {options.map(option => {
+                const isSelected = selected.includes(option.value);
+                const isDisabled =
+                  !isSelected && maxItems !== undefined && selected.length >= maxItems;
 
                 return (
                   <CommandItem
@@ -124,7 +132,7 @@ export function MultiSelect({
                     value={option.label}
                     onSelect={() => {
                       if (!isDisabled) {
-                        handleSelect(option.value)
+                        handleSelect(option.value);
                       }
                     }}
                     disabled={isDisabled}
@@ -133,20 +141,22 @@ export function MultiSelect({
                       isDisabled && 'opacity-50 cursor-not-allowed'
                     )}
                   >
-                    <div className={cn(
-                      'flex h-4 w-4 items-center justify-center rounded-sm border border-border',
-                      isSelected && 'bg-foreground text-background border-foreground'
-                    )}>
+                    <div
+                      className={cn(
+                        'flex h-4 w-4 items-center justify-center rounded-sm border border-border',
+                        isSelected && 'bg-foreground text-background border-foreground'
+                      )}
+                    >
                       {isSelected && <Check className="h-3 w-3" />}
                     </div>
                     <span className="text-sm">{option.label}</span>
                   </CommandItem>
-                )
+                );
               })}
             </CommandGroup>
           </CommandList>
         </Command>
       </PopoverContent>
     </Popover>
-  )
+  );
 }

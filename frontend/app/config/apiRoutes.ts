@@ -12,11 +12,9 @@ export const apiRoutes = {
 
   // Search
   search: '/api/search',
-  agentSearch: '/api/agent-search',
 
-  // Agent Chat
-  agentChat: '/api/agent-chat',
-  artistChat: '/api/artist-chat',
+  // Core Buddy (unified agent - search, download, artist exploration, musicology)
+  coreBuddy: '/api/core-buddy',
 
   // Lab
   lab: '/api/lab',

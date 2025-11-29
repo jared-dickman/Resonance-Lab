@@ -31,14 +31,20 @@ function useKeyboardControls(
 ): void {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent): void => {
-      const note = INTERACTIVE_SYNTH.KEYBOARD_MAPPING[e.key.toLowerCase() as keyof typeof INTERACTIVE_SYNTH.KEYBOARD_MAPPING];
+      const note =
+        INTERACTIVE_SYNTH.KEYBOARD_MAPPING[
+          e.key.toLowerCase() as keyof typeof INTERACTIVE_SYNTH.KEYBOARD_MAPPING
+        ];
       if (note && !activeNotes.has(note)) {
         playNote(note);
       }
     };
 
     const handleKeyUp = (e: KeyboardEvent): void => {
-      const note = INTERACTIVE_SYNTH.KEYBOARD_MAPPING[e.key.toLowerCase() as keyof typeof INTERACTIVE_SYNTH.KEYBOARD_MAPPING];
+      const note =
+        INTERACTIVE_SYNTH.KEYBOARD_MAPPING[
+          e.key.toLowerCase() as keyof typeof INTERACTIVE_SYNTH.KEYBOARD_MAPPING
+        ];
       if (note) {
         releaseNote(note);
       }
@@ -68,17 +74,17 @@ export const InteractiveSynthVisualizer: React.FC<InteractiveSynthVisualizerProp
     if (!synthRef.current) return;
 
     triggerNote(synthRef.current.synth, note);
-    setActiveNotes((prev) => new Set(prev).add(note));
+    setActiveNotes(prev => new Set(prev).add(note));
 
     const newNote = createNoteRecord(note);
-    setNoteHistory((prev) => addToNoteHistory(prev, newNote));
+    setNoteHistory(prev => addToNoteHistory(prev, newNote));
   };
 
   const releaseNote = (note: string): void => {
     if (!synthRef.current) return;
 
     releaseNoteFromSynth(synthRef.current.synth, note);
-    setActiveNotes((prev) => {
+    setActiveNotes(prev => {
       const newSet = new Set(prev);
       newSet.delete(note);
       return newSet;
@@ -135,7 +141,10 @@ export const InteractiveSynthVisualizer: React.FC<InteractiveSynthVisualizerProp
         <div className="text-sm font-semibold text-gray-400 mb-2">Recent Notes</div>
         <div className="flex flex-wrap gap-2">
           {noteHistory.slice(-INTERACTIVE_SYNTH.DISPLAY_LIMIT).map((note, i) => {
-            const color = VISUALIZATION_COLORS.NOTE_COLORS[note.note as keyof typeof VISUALIZATION_COLORS.NOTE_COLORS];
+            const color =
+              VISUALIZATION_COLORS.NOTE_COLORS[
+                note.note as keyof typeof VISUALIZATION_COLORS.NOTE_COLORS
+              ];
             return (
               <div
                 key={`${note.note}-${note.time}-${i}`}

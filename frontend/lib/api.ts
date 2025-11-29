@@ -20,7 +20,7 @@ export async function fetchSongDetail(artistSlug: string, songSlug: string): Pro
 }
 
 export async function searchLibrary(artist: string, title: string): Promise<SearchResponse> {
-  const response = await fetch(apiRoutes.agentSearch, {
+  const response = await fetch(apiRoutes.search, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ artist, title }),

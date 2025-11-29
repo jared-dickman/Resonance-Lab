@@ -42,7 +42,12 @@ export default function ArtistClient({ artistSlug }: ArtistClientProps) {
     };
   }, [songs, artistSlug]);
 
-  const handleDelete = (songArtistSlug: string, songSlug: string, title: string, event: React.MouseEvent) => {
+  const handleDelete = (
+    songArtistSlug: string,
+    songSlug: string,
+    title: string,
+    event: React.MouseEvent
+  ) => {
     event.preventDefault();
     event.stopPropagation();
 
@@ -57,7 +62,7 @@ export default function ArtistClient({ artistSlug }: ArtistClientProps) {
           setStatusMessage(`✨ ${title} deleted successfully.`);
           setTimeout(() => setStatusMessage(null), 3000);
         },
-        onError: (error) => {
+        onError: error => {
           setStatusMessage(error.message || 'Failed to delete song.');
           setTimeout(() => setStatusMessage(null), 3000);
         },
@@ -111,12 +116,6 @@ export default function ArtistClient({ artistSlug }: ArtistClientProps) {
   if (!artistData) {
     return (
       <div className="space-y-6">
-        <Link href={pageRoutes.home}>
-          <Button variant="ghost" size="sm">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Home
-          </Button>
-        </Link>
         <Card>
           <CardContent className="pt-6">
             <p className="text-muted-foreground">
@@ -130,13 +129,6 @@ export default function ArtistClient({ artistSlug }: ArtistClientProps) {
 
   return (
     <div className="space-y-6">
-      <Link href={pageRoutes.home}>
-        <Button variant="ghost" size="sm">
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Home
-        </Button>
-      </Link>
-
       <Card>
         <CardHeader>
           <div className="flex items-start justify-between">
@@ -193,7 +185,9 @@ export default function ArtistClient({ artistSlug }: ArtistClientProps) {
                       href={`/songs/${song.artistSlug}/${song.songSlug}`}
                       className="flex-1 space-y-1"
                     >
-                      <div className="font-medium hover:text-sapphire-400 transition-colors duration-200">{song.title}</div>
+                      <div className="font-medium hover:text-sapphire-400 transition-colors duration-200">
+                        {song.title}
+                      </div>
                       <div className="text-sm text-muted-foreground">
                         Updated {new Date(song.updatedAt).toLocaleDateString()}
                       </div>
@@ -205,7 +199,7 @@ export default function ArtistClient({ artistSlug }: ArtistClientProps) {
                         </span>
                       )}
                       <button
-                        onClick={(e) => handleDelete(song.artistSlug, song.songSlug, song.title, e)}
+                        onClick={e => handleDelete(song.artistSlug, song.songSlug, song.title, e)}
                         disabled={isDeleting}
                         className="opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-destructive/10 rounded text-destructive disabled:opacity-50"
                         title="Delete song"

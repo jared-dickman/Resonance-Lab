@@ -2,10 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
-import {
-  analyzeChord,
-  getChordColor,
-} from '@/lib/music-theory/intelligentChordEngine';
+import { analyzeChord, getChordColor } from '@/lib/music-theory/intelligentChordEngine';
 
 interface ChordWheelProps {
   currentChord?: string;
@@ -37,15 +34,22 @@ export default function ChordWheel({
   const [hoveredChord, setHoveredChord] = useState<string | null>(null);
 
   // Circle of fifths order
-  const circleOfFifths = [
-    'C', 'G', 'D', 'A', 'E', 'B',
-    'F♯/G♭', 'D♭', 'A♭', 'E♭', 'B♭', 'F'
-  ];
+  const circleOfFifths = ['C', 'G', 'D', 'A', 'E', 'B', 'F♯/G♭', 'D♭', 'A♭', 'E♭', 'B♭', 'F'];
 
   // Inner circle: minor chords
   const minorCircle = [
-    'Am', 'Em', 'Bm', 'F♯m', 'C♯m', 'G♯m',
-    'D♯m/E♭m', 'B♭m', 'Fm', 'Cm', 'Gm', 'Dm'
+    'Am',
+    'Em',
+    'Bm',
+    'F♯m',
+    'C♯m',
+    'G♯m',
+    'D♯m/E♭m',
+    'B♭m',
+    'Fm',
+    'Cm',
+    'Gm',
+    'Dm',
   ];
 
   useEffect(() => {
@@ -60,26 +64,21 @@ export default function ChordWheel({
     const innerRadius = outerRadius * 0.6;
 
     // Create main group
-    const g = svg
-      .append('g')
-      .attr('transform', `translate(${centerX},${centerY})`);
+    const g = svg.append('g').attr('transform', `translate(${centerX},${centerY})`);
 
     // Add gradient definitions
     const defs = svg.append('defs');
 
     // Glow filter for highlighted chords
     const glowFilter = defs.append('filter').attr('id', 'glow');
-    glowFilter
-      .append('feGaussianBlur')
-      .attr('stdDeviation', '4')
-      .attr('result', 'coloredBlur');
+    glowFilter.append('feGaussianBlur').attr('stdDeviation', '4').attr('result', 'coloredBlur');
     const feMerge = glowFilter.append('feMerge');
     feMerge.append('feMergeNode').attr('in', 'coloredBlur');
     feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
 
     // Draw major chords (outer circle)
     circleOfFifths.forEach((chord, i) => {
-      const angle = (i * 360 / 12) - 90; // Start at top
+      const angle = (i * 360) / 12 - 90; // Start at top
       const angleRad = (angle * Math.PI) / 180;
       const x = outerRadius * Math.cos(angleRad);
       const y = outerRadius * Math.sin(angleRad);
@@ -87,8 +86,9 @@ export default function ChordWheel({
       const normalizedChord = chord.replace('♯', '#').replace('♭', 'b');
       const chordRoot = normalizedChord.split(/[^A-G#b]/)[0] ?? normalizedChord;
       const analysis = analyzeChord(normalizedChord);
-      const isCurrentChord = currentChord && currentChord.replace('♯', '#').replace('♭', 'b') === normalizedChord;
-      const isSuggested = suggestedChords.some((sc) => {
+      const isCurrentChord =
+        currentChord && currentChord.replace('♯', '#').replace('♭', 'b') === normalizedChord;
+      const isSuggested = suggestedChords.some(sc => {
         const normalizedSuggested = sc.replace('♯', '#').replace('♭', 'b');
         return normalizedSuggested.startsWith(chordRoot);
       });
@@ -144,16 +144,17 @@ export default function ChordWheel({
 
     // Draw minor chords (inner circle)
     minorCircle.forEach((chord, i) => {
-      const angle = (i * 360 / 12) - 90;
+      const angle = (i * 360) / 12 - 90;
       const angleRad = (angle * Math.PI) / 180;
       const x = innerRadius * Math.cos(angleRad);
       const y = innerRadius * Math.sin(angleRad);
 
       const normalizedChord = chord.replace('♯', '#').replace('♭', 'b');
       const analysis = analyzeChord(normalizedChord);
-      const isCurrentChord = currentChord && currentChord.replace('♯', '#').replace('♭', 'b') === normalizedChord;
-      const isSuggested = suggestedChords.some(sc =>
-        sc.replace('♯', '#').replace('♭', 'b') === chord.replace('♯', '#').replace('♭', 'b')
+      const isCurrentChord =
+        currentChord && currentChord.replace('♯', '#').replace('♭', 'b') === normalizedChord;
+      const isSuggested = suggestedChords.some(
+        sc => sc.replace('♯', '#').replace('♭', 'b') === chord.replace('♯', '#').replace('♭', 'b')
       );
 
       // Draw chord circle
@@ -213,9 +214,7 @@ export default function ChordWheel({
       .text('Fifths');
 
     // Legend
-    const legend = svg
-      .append('g')
-      .attr('transform', `translate(20, ${height - 80})`);
+    const legend = svg.append('g').attr('transform', `translate(20, ${height - 80})`);
 
     const legendData = [
       { label: 'Current', color: '#FBBF24' },
@@ -241,17 +240,11 @@ export default function ChordWheel({
         .attr('font-size', '12px')
         .text(item.label);
     });
-
   }, [currentChord, suggestedChords, width, height, onChordClick]);
 
   return (
     <div className="relative">
-      <svg
-        ref={svgRef}
-        width={width}
-        height={height}
-        className="bg-gray-900 rounded-lg"
-      />
+      <svg ref={svgRef} width={width} height={height} className="bg-gray-900 rounded-lg" />
       {hoveredChord && (
         <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-gray-800 px-4 py-2 rounded-lg shadow-lg border border-gray-700">
           <p className="text-sm text-white font-medium">{hoveredChord}</p>

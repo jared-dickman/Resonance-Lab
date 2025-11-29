@@ -1,0 +1,612 @@
+{
+  "artist": "Journey",
+  "title": "Dont Stop Believin",
+  "sections": [
+    {
+      "name": "Intro",
+      "lines": [
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "E"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "B"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "C#m"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "A"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "-----------"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "-----------"
+        },
+        {
+          "chord": {
+            "name": "G#m"
+          },
+          "lyric": "-------"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "---|"
+        }
+      ]
+    },
+    {
+      "name": "Verse 1",
+      "lines": [
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Just a"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "small town gir"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "l, living in a"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "lonely world"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "She took the"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "midnight train going"
+        },
+        {
+          "chord": {
+            "name": "G#m"
+          },
+          "lyric": "anywhe"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "re"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Just a"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "city bo"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "y, born and raised in"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "south Detroit"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "He took the"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "midnight train going"
+        },
+        {
+          "chord": {
+            "name": "G#m"
+          },
+          "lyric": "anywhe"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "re"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "A singer in a"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "smoky roo"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "m, a smell of wine and"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "cheap perfume"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "For a smile they can"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "share the night, it goes"
+        },
+        {
+          "chord": {
+            "name": "G#m"
+          },
+          "lyric": "on and on and"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "on and on"
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "Strangers waiting"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "up and down the boulevard"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "heir shadows searching"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "in the night"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "Streetlights, people,"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "living just to find emotion"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "Hiding, somewhere in the"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "nig"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "ht"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Verse 2",
+      "lines": [
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Working hard to"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "get my fil"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "l, everybody"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "wants a thrill"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "anything to"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "roll the dice, just"
+        },
+        {
+          "chord": {
+            "name": "G#m"
+          },
+          "lyric": "one more"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "time"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Some will win,"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "some will lose,"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "some were born to"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "sing the blues"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "h, the movie"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "never ends; it goes"
+        },
+        {
+          "chord": {
+            "name": "G#m"
+          },
+          "lyric": "on and on and"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "on and on"
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "Strangers waitin"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "g up and down the boulevard"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "heir shadows searching in the"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "night"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "Streetlights, people,"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "living just to find emotion"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "Hiding, somewhere in the"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "nig"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "ht"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Outro",
+      "lines": [
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Don't stop bel"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "ieving h"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "old on to the f"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "eeling"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Streetlight"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "people"
+        },
+        {
+          "chord": {
+            "name": "G#m"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Don't stop bel"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "ieving h"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "old on to the f"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "eeling"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Streetlight"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "people"
+        },
+        {
+          "chord": {
+            "name": "G#m"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Don't stop bel"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "ieving h"
+        },
+        {
+          "chord": {
+            "name": "C#m"
+          },
+          "lyric": "old on to the f"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "eeling"
+        },
+        {
+          "chord": {
+            "name": "E"
+          },
+          "lyric": "Streetlight"
+        },
+        {
+          "chord": {
+            "name": "B"
+          },
+          "lyric": "people"
+        },
+        {
+          "chord": {
+            "name": "G#m"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": ""
+        }
+      ]
+    }
+  ]
+}

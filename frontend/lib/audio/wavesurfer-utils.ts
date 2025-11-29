@@ -242,11 +242,7 @@ export const analysisUtils = {
   /**
    * Detect peaks in waveform
    */
-  detectPeaks: (
-    decodedData: AudioBuffer,
-    threshold = 0.9,
-    minDistance = 0.5
-  ): number[] => {
+  detectPeaks: (decodedData: AudioBuffer, threshold = 0.9, minDistance = 0.5): number[] => {
     const peaks: number[] = [];
     const data = decodedData.getChannelData(0);
     const sampleRate = decodedData.sampleRate;

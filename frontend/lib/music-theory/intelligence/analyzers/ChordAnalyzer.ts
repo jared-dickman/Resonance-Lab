@@ -19,7 +19,14 @@ export interface ChordAnalysis {
   /** Chord quality */
   quality: 'major' | 'minor' | 'diminished' | 'augmented' | 'suspended' | 'dominant' | 'unknown';
   /** Harmonic function (if key provided) */
-  function?: 'tonic' | 'subdominant' | 'dominant' | 'mediant' | 'submediant' | 'leading' | 'unknown';
+  function?:
+    | 'tonic'
+    | 'subdominant'
+    | 'dominant'
+    | 'mediant'
+    | 'submediant'
+    | 'leading'
+    | 'unknown';
   /** Tension level (0-1, higher = more tension) */
   tension: number;
   /** Confidence in analysis (0-1) */
@@ -75,19 +82,15 @@ export class ChordAnalyzer {
   /**
    * Determine chord quality
    */
-  private determineQuality(
-    chord: ReturnType<typeof Chord.get>
-  ): ChordAnalysis['quality'] {
+  private determineQuality(chord: ReturnType<typeof Chord.get>): ChordAnalysis['quality'] {
     const type = chord.aliases[0]?.toLowerCase() ?? '';
 
     if (type.includes('dim')) return 'diminished';
     if (type.includes('aug')) return 'augmented';
     if (type.includes('sus')) return 'suspended';
-    if (type.includes('7') && !type.includes('maj7') && !type.includes('m7'))
-      return 'dominant';
+    if (type.includes('7') && !type.includes('maj7') && !type.includes('m7')) return 'dominant';
     if (type.includes('m') || type.includes('min')) return 'minor';
-    if (type.includes('M') || type.includes('maj') || chord.quality === 'Major')
-      return 'major';
+    if (type.includes('M') || type.includes('maj') || chord.quality === 'Major') return 'major';
 
     return 'unknown';
   }

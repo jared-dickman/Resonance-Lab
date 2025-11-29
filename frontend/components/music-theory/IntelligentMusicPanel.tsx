@@ -86,7 +86,8 @@ export default function IntelligentMusicPanel({
           </div>
           <div className="mt-4 text-center">
             <p className="text-sm text-gray-400">
-              🎵 Click any chord to preview it • Current chord pulses in gold • Suggested chords glow green
+              🎵 Click any chord to preview it • Current chord pulses in gold • Suggested chords
+              glow green
             </p>
           </div>
         </div>
@@ -96,10 +97,7 @@ export default function IntelligentMusicPanel({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Chord Progression Analyzer */}
         <div>
-          <ChordProgressionAnalyzer
-            chords={chords}
-            currentChordIndex={currentChordIndex}
-          />
+          <ChordProgressionAnalyzer chords={chords} currentChordIndex={currentChordIndex} />
         </div>
 
         {/* AI Chord Suggestions */}

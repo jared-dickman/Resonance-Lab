@@ -39,16 +39,19 @@ songwriter/
 ### Design Principles
 
 1. **Self-Documenting Names**: Function names describe exact behavior
+
    - `extractSyllableCountFromLyricLine` not `getSyllables`
    - `updateSongTitle` not `setTitle`
    - `createEmptySongState` not `init`
 
 2. **Pure Functions**: Business logic separated from React
+
    - All functions in `state/` and `chat/` are pure
    - No side effects in domain logic
    - Testable without React
 
 3. **Exhaustive Types**: 100+ type definitions
+
    - Zero `any` types
    - Explicit return types on all functions
    - Readonly arrays/objects for immutability

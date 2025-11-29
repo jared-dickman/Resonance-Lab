@@ -42,7 +42,12 @@ function createP5Sketch(
       p.background(0);
 
       flowField = createFlowField(p, dimensions);
-      particles = createParticles(p, GENERATIVE_ART.FLOW_FIELD.PARTICLE_COUNT, dimensions.width, dimensions.height);
+      particles = createParticles(
+        p,
+        GENERATIVE_ART.FLOW_FIELD.PARTICLE_COUNT,
+        dimensions.width,
+        dimensions.height
+      );
     };
 
     p.draw = (): void => {

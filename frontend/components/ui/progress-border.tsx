@@ -1,13 +1,13 @@
-'use client'
+'use client';
 
-import { cn } from '@/lib/utils'
-import * as React from 'react'
+import { cn } from '@/lib/utils';
+import * as React from 'react';
 
 interface ProgressBorderProps {
-  progress: number // 0-100
-  variant?: 'accent' | 'success' | 'error' | 'generating'
-  className?: string
-  children: React.ReactNode
+  progress: number; // 0-100
+  variant?: 'accent' | 'success' | 'error' | 'generating';
+  className?: string;
+  children: React.ReactNode;
 }
 
 /**
@@ -24,11 +24,12 @@ function ProgressBorder({
     accent: 'from-[var(--wizard-accent)] via-[var(--wizard-accent)] to-[var(--wizard-accent)]',
     success: 'from-[var(--wizard-accent)] via-[var(--wizard-accent)] to-[var(--wizard-accent)]',
     error: 'from-destructive via-destructive to-destructive',
-    generating: 'from-[var(--wizard-accent)] via-[var(--wizard-accent)] to-[var(--wizard-accent)] animate-gradient-x',
-  }
+    generating:
+      'from-[var(--wizard-accent)] via-[var(--wizard-accent)] to-[var(--wizard-accent)] animate-gradient-x',
+  };
 
-  const clampedProgress = Math.min(100, Math.max(0, progress))
-  const isLoading = clampedProgress > 0 && clampedProgress < 100
+  const clampedProgress = Math.min(100, Math.max(0, progress));
+  const isLoading = clampedProgress > 0 && clampedProgress < 100;
 
   return (
     <div className={cn('relative', className)}>
@@ -70,12 +71,10 @@ function ProgressBorder({
       </div>
 
       {/* Content container with inner background */}
-      <div className="relative bg-card rounded-lg m-[2px]">
-        {children}
-      </div>
+      <div className="relative bg-card rounded-lg m-[2px]">{children}</div>
     </div>
-  )
+  );
 }
 
-export {ProgressBorder}
-export type {ProgressBorderProps}
+export { ProgressBorder };
+export type { ProgressBorderProps };

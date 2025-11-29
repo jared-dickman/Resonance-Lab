@@ -138,9 +138,7 @@ function extractWordAtPosition(text: string, column: number): string | null {
   return fullWord.length > 0 ? fullWord : null;
 }
 
-function buildRecentEditSummary(
-  editHistory: ReadonlyArray<EditHistoryEntry>
-): RecentEditSummary {
+function buildRecentEditSummary(editHistory: ReadonlyArray<EditHistoryEntry>): RecentEditSummary {
   const lastFiveEdits = editHistory.slice(-5);
 
   const mostEditedSection = calculateMostEditedSection(editHistory);
@@ -196,7 +194,7 @@ function calculateEditFrequency(
   const now = new Date();
   const windowStart = new Date(now.getTime() - windowMinutes * 60 * 1000);
 
-  return editHistory.filter((edit) => edit.timestamp >= windowStart).length;
+  return editHistory.filter(edit => edit.timestamp >= windowStart).length;
 }
 
 function calculateAverageEditSize(editHistory: ReadonlyArray<EditHistoryEntry>): number {
@@ -294,9 +292,7 @@ function extractTopicsDiscussed(
   return Array.from(topics);
 }
 
-function determinePrimaryIntent(
-  messages: ReadonlyArray<ConversationMessage>
-): AgentIntentCategory {
+function determinePrimaryIntent(messages: ReadonlyArray<ConversationMessage>): AgentIntentCategory {
   const intentCounts = new Map<AgentIntentCategory, number>();
 
   for (const message of messages) {
@@ -323,9 +319,7 @@ function determinePrimaryIntent(
   return maxIntent;
 }
 
-function extractKeyDecisions(
-  messages: ReadonlyArray<ConversationMessage>
-): ReadonlyArray<string> {
+function extractKeyDecisions(messages: ReadonlyArray<ConversationMessage>): ReadonlyArray<string> {
   const decisions: string[] = [];
 
   const decisionPatterns = [
@@ -361,9 +355,7 @@ function extractUnresolvedQuestions(
     if (!message) continue;
 
     if (message.role === 'user' && message.content.includes('?')) {
-      const hasResponse = messages
-        .slice(i + 1)
-        .some((m) => m?.role === 'assistant');
+      const hasResponse = messages.slice(i + 1).some(m => m?.role === 'assistant');
 
       if (!hasResponse) {
         questions.push(message.content);
@@ -374,9 +366,7 @@ function extractUnresolvedQuestions(
   return questions;
 }
 
-function extractUserGoals(
-  messages: ReadonlyArray<ConversationMessage>
-): ReadonlyArray<string> {
+function extractUserGoals(messages: ReadonlyArray<ConversationMessage>): ReadonlyArray<string> {
   const goals: string[] = [];
 
   const goalPatterns = [

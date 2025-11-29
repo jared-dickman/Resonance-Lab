@@ -3,8 +3,8 @@
  * @returns Random element or undefined if array is empty
  */
 export function selectRandom<T>(array: readonly T[]): T | undefined {
-  if (array.length === 0) return undefined
-  return array[Math.floor(Math.random() * array.length)]
+  if (array.length === 0) return undefined;
+  return array[Math.floor(Math.random() * array.length)];
 }
 
 /**
@@ -12,5 +12,5 @@ export function selectRandom<T>(array: readonly T[]): T | undefined {
  * @returns Random element or fallback if array is empty
  */
 export function selectRandomWithFallback<T>(array: readonly T[], fallback: T): T {
-  return selectRandom(array) ?? fallback
+  return selectRandom(array) ?? fallback;
 }

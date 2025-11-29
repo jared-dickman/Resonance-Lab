@@ -1,15 +1,17 @@
-import { cn } from '@/lib/utils'
-import {Slot} from '@radix-ui/react-slot'
-import {cva, type VariantProps} from 'class-variance-authority'
-import * as React from 'react'
+import { cn } from '@/lib/utils';
+import { Slot } from '@radix-ui/react-slot';
+import { cva, type VariantProps } from 'class-variance-authority';
+import * as React from 'react';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all duration-150 cursor-pointer disabled:cursor-not-allowed disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*=\'size-\'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-accent/20 focus-visible:ring-[3px] focus-visible:ring-offset-1 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all duration-150 cursor-pointer disabled:cursor-not-allowed disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-accent/20 focus-visible:ring-[3px] focus-visible:ring-offset-1 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
   {
     variants: {
       variant: {
-        default: 'bg-accent text-accent-foreground shadow-sm shadow-black/5 dark:shadow-accent/20 hover:bg-accent-hover hover:shadow-md hover:shadow-black/10 dark:hover:shadow-accent/30 active:bg-accent-active active:scale-[0.97] active:shadow-sm [&_svg]:transition-all [&_svg]:duration-200 hover:[&_svg]:scale-110 active:[&_svg]:scale-95',
-        primary: 'group relative overflow-hidden bg-accent text-accent-foreground shadow-sm shadow-black/5 dark:shadow-accent/20 hover:bg-accent-hover hover:shadow-md hover:shadow-black/10 dark:hover:shadow-accent/30 active:bg-accent-active active:scale-[0.97] active:shadow-sm [&>span]:transition-transform [&>span]:duration-200 hover:[&>span]:animate-[magnetic-pull_0.2s_ease-out_forwards] [&_svg]:transition-all [&_svg]:duration-200 hover:[&_svg]:scale-110 active:[&_svg]:scale-95',
+        default:
+          'bg-accent text-accent-foreground shadow-sm shadow-black/5 dark:shadow-accent/20 hover:bg-accent-hover hover:shadow-md hover:shadow-black/10 dark:hover:shadow-accent/30 active:bg-accent-active active:scale-[0.97] active:shadow-sm [&_svg]:transition-all [&_svg]:duration-200 hover:[&_svg]:scale-110 active:[&_svg]:scale-95',
+        primary:
+          'group relative overflow-hidden bg-accent text-accent-foreground shadow-sm shadow-black/5 dark:shadow-accent/20 hover:bg-accent-hover hover:shadow-md hover:shadow-black/10 dark:hover:shadow-accent/30 active:bg-accent-active active:scale-[0.97] active:shadow-sm [&>span]:transition-transform [&>span]:duration-200 hover:[&>span]:animate-[magnetic-pull_0.2s_ease-out_forwards] [&_svg]:transition-all [&_svg]:duration-200 hover:[&_svg]:scale-110 active:[&_svg]:scale-95',
         destructive:
           'bg-destructive text-destructive-foreground shadow-sm shadow-black/5 dark:shadow-destructive/20 hover:bg-destructive/90 hover:shadow-md hover:shadow-black/10 dark:hover:shadow-destructive/30 active:bg-destructive/80 active:scale-[0.97] active:shadow-sm focus-visible:ring-destructive/20 [&_svg]:transition-all [&_svg]:duration-200 hover:[&_svg]:scale-110 active:[&_svg]:scale-95',
         outline:
@@ -33,23 +35,17 @@ const buttonVariants = cva(
       variant: 'secondary',
       size: 'default',
     },
-  },
-)
+  }
+);
 
 export interface ButtonProps
   extends React.ComponentProps<'button'>,
     VariantProps<typeof buttonVariants> {
-  asChild?: boolean
+  asChild?: boolean;
 }
 
-function Button({
-  className,
-  variant,
-  size,
-  asChild = false,
-  ...props
-}: ButtonProps) {
-  const Comp = asChild ? Slot : 'button'
+function Button({ className, variant, size, asChild = false, ...props }: ButtonProps) {
+  const Comp = asChild ? Slot : 'button';
 
   return (
     <Comp
@@ -57,7 +53,7 @@ function Button({
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     />
-  )
+  );
 }
 
-export {Button, buttonVariants}
+export { Button, buttonVariants };

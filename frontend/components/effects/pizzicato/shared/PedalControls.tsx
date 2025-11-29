@@ -95,7 +95,7 @@ export const Knob: React.FC<KnobProps> = ({
           <div className="absolute inset-0 m-4 rounded-full bg-gradient-to-br from-gray-800 to-gray-900 shadow-inner" />
         </motion.div>
 
-        {[0, 0.25, 0.5, 0.75, 1].map((pos) => {
+        {[0, 0.25, 0.5, 0.75, 1].map(pos => {
           const angle = pos * 270 - 135;
           const rad = (angle * Math.PI) / 180;
           const x = Math.cos(rad) * 32 + 30;
@@ -123,11 +123,7 @@ export interface FootswitchProps {
   color?: string;
 }
 
-export const Footswitch: React.FC<FootswitchProps> = ({
-  enabled,
-  onToggle,
-  color = '#ef4444',
-}) => {
+export const Footswitch: React.FC<FootswitchProps> = ({ enabled, onToggle, color = '#ef4444' }) => {
   return (
     <div className="flex flex-col items-center gap-3">
       <motion.div
@@ -193,11 +189,7 @@ export const PedalChassis: React.FC<PedalChassisProps> = ({
         { bottom: '1rem', left: '1rem' },
         { bottom: '1rem', right: '1rem' },
       ].map((pos, i) => (
-        <div
-          key={i}
-          className="absolute w-3 h-3 rounded-full bg-gray-700 shadow-inner"
-          style={pos}
-        >
+        <div key={i} className="absolute w-3 h-3 rounded-full bg-gray-700 shadow-inner" style={pos}>
           <div className="absolute inset-0.5 rounded-full bg-gray-800" />
         </div>
       ))}

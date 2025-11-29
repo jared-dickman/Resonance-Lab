@@ -4,6 +4,7 @@
  */
 export const pageRoutes = {
   home: '/',
+  songs: '/songs',
   artists: '/artists',
   songwriter: '/songwriter',
   jam: '/jam',

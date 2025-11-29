@@ -8,10 +8,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 
-import {
-  SIGNAL_PATH,
-  VISUALIZATION_COLORS,
-} from '@/lib/constants/visualization.constants';
+import { SIGNAL_PATH, VISUALIZATION_COLORS } from '@/lib/constants/visualization.constants';
 import { cn } from '@/lib/utils';
 
 interface PedalNode {
@@ -167,7 +164,7 @@ function createForceSimulation(
       'link',
       d3
         .forceLink<NodeDatum, LinkDatum>(links)
-        .id((d) => d.id)
+        .id(d => d.id)
         .distance(LINK_DISTANCE)
     )
     .force('charge', d3.forceManyBody().strength(CHARGE_STRENGTH))
@@ -183,14 +180,12 @@ function createZoomBehavior(
   return d3
     .zoom<SVGSVGElement, unknown>()
     .scaleExtent([MIN, MAX])
-    .on('zoom', (event) => {
+    .on('zoom', event => {
       container.attr('transform', event.transform);
     });
 }
 
-function createArrowMarker(
-  defs: d3.Selection<SVGDefsElement, unknown, null, undefined>
-): void {
+function createArrowMarker(defs: d3.Selection<SVGDefsElement, unknown, null, undefined>): void {
   const { VIEWBOX, REF_X, REF_Y, WIDTH, HEIGHT, PATH } = DIAGRAM_CONFIG.ARROW;
 
   defs
@@ -207,9 +202,7 @@ function createArrowMarker(
     .attr('fill', VISUALIZATION_COLORS.SIGNAL_STRENGTH.LOW);
 }
 
-function createGlowFilter(
-  defs: d3.Selection<SVGDefsElement, unknown, null, undefined>
-): void {
+function createGlowFilter(defs: d3.Selection<SVGDefsElement, unknown, null, undefined>): void {
   const glowFilter = defs
     .append('filter')
     .attr('id', FILTER_IDS.GLOW)
@@ -235,9 +228,7 @@ function getNodeFillColor(node: NodeDatum): string {
     return VISUALIZATION_COLORS.UI.BORDER;
   }
 
-  return node.enabled
-    ? VISUALIZATION_COLORS.KEY_TYPES.MAJOR
-    : VISUALIZATION_COLORS.UI.TEXT_MUTED;
+  return node.enabled ? VISUALIZATION_COLORS.KEY_TYPES.MAJOR : VISUALIZATION_COLORS.UI.TEXT_MUTED;
 }
 
 function shouldApplyGlow(node: NodeDatum): string {
@@ -283,7 +274,7 @@ function drawNodeLabels(
 
   nodeGroup
     .append('text')
-    .text((d) => d.name)
+    .text(d => d.name)
     .attr('text-anchor', 'middle')
     .attr('dy', '.35em')
     .attr('fill', VISUALIZATION_COLORS.UI.TEXT_PRIMARY)
@@ -299,7 +290,7 @@ function drawNodeTypeLabels(
 
   nodeGroup
     .append('text')
-    .text((d) => d.type)
+    .text(d => d.type)
     .attr('text-anchor', 'middle')
     .attr('dy', SECONDARY_Y_OFFSET)
     .attr('fill', VISUALIZATION_COLORS.UI.TEXT_SECONDARY)
@@ -355,15 +346,12 @@ function createDragBehavior(
   return d3
     .drag<SVGGElement, NodeDatum>()
     .subject((_event, d) => d)
-    .on('start', (event) => handleDragStart(event, simulation))
+    .on('start', event => handleDragStart(event, simulation))
     .on('drag', handleDrag)
-    .on('end', (event) => handleDragEnd(event, simulation));
+    .on('end', event => handleDragEnd(event, simulation));
 }
 
-function getCoordinate(
-  value: NodeDatum | string | number | undefined,
-  axis: 'x' | 'y'
-): number {
+function getCoordinate(value: NodeDatum | string | number | undefined, axis: 'x' | 'y'): number {
   if (typeof value === 'object' && value !== null) {
     const coordinate = (value as NodeDatum)[axis];
     return typeof coordinate === 'number' ? coordinate : 0;
@@ -376,12 +364,12 @@ function updatePositionsOnTick(
   nodeGroup: d3.Selection<SVGGElement, NodeDatum, SVGGElement, unknown>
 ): void {
   linkSelection
-    .attr('x1', (d) => getCoordinate(d.source as NodeDatum, 'x'))
-    .attr('y1', (d) => getCoordinate(d.source as NodeDatum, 'y'))
-    .attr('x2', (d) => getCoordinate(d.target as NodeDatum, 'x'))
-    .attr('y2', (d) => getCoordinate(d.target as NodeDatum, 'y'));
+    .attr('x1', d => getCoordinate(d.source as NodeDatum, 'x'))
+    .attr('y1', d => getCoordinate(d.source as NodeDatum, 'y'))
+    .attr('x2', d => getCoordinate(d.target as NodeDatum, 'x'))
+    .attr('y2', d => getCoordinate(d.target as NodeDatum, 'y'));
 
-  nodeGroup.attr('transform', (d) => `translate(${d.x ?? 0},${d.y ?? 0})`);
+  nodeGroup.attr('transform', d => `translate(${d.x ?? 0},${d.y ?? 0})`);
 }
 
 export const SignalPathDiagram: React.FC<SignalPathDiagramProps> = ({

@@ -51,10 +51,7 @@ function isRetryableError(error: unknown, config: Required<RetryConfig>): boolea
  * Retry wrapper for async functions
  * Automatically retries failed requests with exponential backoff
  */
-export async function withRetry<T>(
-  fn: () => Promise<T>,
-  config: RetryConfig = {}
-): Promise<T> {
+export async function withRetry<T>(fn: () => Promise<T>, config: RetryConfig = {}): Promise<T> {
   const finalConfig = { ...DEFAULT_RETRY_CONFIG, ...config };
   let lastError: unknown;
 
@@ -71,7 +68,9 @@ export async function withRetry<T>(
 
       // Wait before retrying
       const delay = calculateBackoff(attempt, finalConfig);
-      logger.warn(`Request failed (attempt ${attempt + 1}/${finalConfig.maxRetries}). Retrying in ${delay}ms...`);
+      logger.warn(
+        `Request failed (attempt ${attempt + 1}/${finalConfig.maxRetries}). Retrying in ${delay}ms...`
+      );
       await new Promise(resolve => setTimeout(resolve, delay));
     }
   }
@@ -181,11 +180,10 @@ class RequestDeduplicator {
     }
 
     // Start new request
-    const promise = fn()
-      .finally(() => {
-        // Remove from pending once complete
-        this.pending.delete(key);
-      });
+    const promise = fn().finally(() => {
+      // Remove from pending once complete
+      this.pending.delete(key);
+    });
 
     this.pending.set(key, promise);
     return promise;

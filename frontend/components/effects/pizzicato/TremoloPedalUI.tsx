@@ -4,7 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Volume2, VolumeX, Settings, Activity } from 'lucide-react';
 import { TremoloPedal } from '@/lib/audio/effects/pizzicato';
-import { Knob, Footswitch, PedalChassis } from '@/components/effects/pizzicato/shared/PedalControls';
+import {
+  Knob,
+  Footswitch,
+  PedalChassis,
+} from '@/components/effects/pizzicato/shared/PedalControls';
 import { cn } from '@/lib/utils';
 
 export interface TremoloPedalUIProps {
@@ -35,7 +39,7 @@ export const TremoloPedalUI: React.FC<TremoloPedalUIProps> = ({
   }, [rate, depth, enabled, pedal, onStateChange]);
 
   const handlePresetLoad = (presetName: string) => {
-    const preset = presets.find((p) => p.name === presetName);
+    const preset = presets.find(p => p.name === presetName);
     if (!preset) return;
 
     setSelectedPreset(presetName);
@@ -70,7 +74,7 @@ export const TremoloPedalUI: React.FC<TremoloPedalUIProps> = ({
               Volume Waves
             </label>
             <div className="grid grid-cols-2 gap-2">
-              {presets.map((preset) => (
+              {presets.map(preset => (
                 <button
                   key={preset.name}
                   onClick={() => handlePresetLoad(preset.name)}
@@ -96,7 +100,7 @@ export const TremoloPedalUI: React.FC<TremoloPedalUIProps> = ({
             min={0.1}
             max={20}
             color="#10b981"
-            displayFormat={(v) => `${v.toFixed(1)}Hz`}
+            displayFormat={v => `${v.toFixed(1)}Hz`}
           />
           <Knob label="Depth" value={depth} onChange={setDepth} color="#34d399" />
         </div>

@@ -100,7 +100,7 @@ export function drawWaveform(
   const line = d3
     .line<number>()
     .x((_d, i) => xScale(i))
-    .y((d) => yScale(d))
+    .y(d => yScale(d))
     .curve(d3.curveBasis);
 
   vizGroup
@@ -123,7 +123,9 @@ export function createSVGStructure(
 ): void {
   svg.selectAll('*').remove();
 
-  const g = svg.append('g').attr('transform', `translate(${VISUALIZATION_CONFIG.MARGIN}, ${VISUALIZATION_CONFIG.MARGIN})`);
+  const g = svg
+    .append('g')
+    .attr('transform', `translate(${VISUALIZATION_CONFIG.MARGIN}, ${VISUALIZATION_CONFIG.MARGIN})`);
 
   addTitle(g);
   const vizGroup = addVisualizationArea(g, width);
@@ -146,7 +148,8 @@ function addVisualizationArea(
   g: d3.Selection<SVGGElement, unknown, null, undefined>,
   width: number
 ): d3.Selection<SVGGElement, unknown, null, undefined> {
-  const vizGroup = g.append('g')
+  const vizGroup = g
+    .append('g')
     .attr('class', 'visualization')
     .attr('transform', `translate(0, ${VISUALIZATION_CONFIG.VIZ_OFFSET_Y})`);
 
@@ -187,7 +190,8 @@ function addPianoKeys(
   playNote: (note: string) => void,
   releaseNote: (note: string) => void
 ): void {
-  const keyGroup = g.append('g')
+  const keyGroup = g
+    .append('g')
     .attr('class', 'keys')
     .attr('transform', `translate(0, ${VISUALIZATION_CONFIG.PIANO_OFFSET_Y})`);
 
@@ -213,7 +217,8 @@ function addKeyBackground(
   playNote: (note: string) => void,
   releaseNote: (note: string) => void
 ): void {
-  const color = VISUALIZATION_COLORS.NOTE_COLORS[note as keyof typeof VISUALIZATION_COLORS.NOTE_COLORS];
+  const color =
+    VISUALIZATION_COLORS.NOTE_COLORS[note as keyof typeof VISUALIZATION_COLORS.NOTE_COLORS];
 
   keyG
     .append('rect')
@@ -235,7 +240,9 @@ function addKeyLabel(
   note: string,
   keyWidth: number
 ): void {
-  const color = VISUALIZATION_COLORS.NOTE_COLORS[note as keyof typeof VISUALIZATION_COLORS.NOTE_COLORS] || '#ffffff';
+  const color =
+    VISUALIZATION_COLORS.NOTE_COLORS[note as keyof typeof VISUALIZATION_COLORS.NOTE_COLORS] ||
+    '#ffffff';
 
   keyG
     .append('text')
@@ -268,7 +275,8 @@ function addKeyHint(
 function addGlowFilter(svg: SvgRootSelection): void {
   const defs = svg.append('defs');
   const filter = defs.append('filter').attr('id', 'glow');
-  filter.append('feGaussianBlur')
+  filter
+    .append('feGaussianBlur')
     .attr('stdDeviation', VISUALIZATION_CONFIG.GLOW_STD_DEVIATION)
     .attr('result', 'coloredBlur');
   const feMerge = filter.append('feMerge');
@@ -276,18 +284,16 @@ function addGlowFilter(svg: SvgRootSelection): void {
   feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
 }
 
-export function updateKeyStates(
-  svgRef: SVGSVGElement | null,
-  activeNotes: Set<string>
-): void {
+export function updateKeyStates(svgRef: SVGSVGElement | null, activeNotes: Set<string>): void {
   if (!svgRef) {
     return;
   }
   const svg = d3.select<SVGSVGElement, unknown>(svgRef);
 
-  INTERACTIVE_SYNTH.NOTES.forEach((note) => {
+  INTERACTIVE_SYNTH.NOTES.forEach(note => {
     const isActive = activeNotes.has(note);
-    const color = VISUALIZATION_COLORS.NOTE_COLORS[note as keyof typeof VISUALIZATION_COLORS.NOTE_COLORS];
+    const color =
+      VISUALIZATION_COLORS.NOTE_COLORS[note as keyof typeof VISUALIZATION_COLORS.NOTE_COLORS];
 
     svg
       .select(`.key-${note}`)

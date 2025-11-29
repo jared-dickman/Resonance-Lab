@@ -13,7 +13,9 @@ import { Chord } from 'tonal';
  */
 export default function MusicTheoryPage() {
   // Example chord progressions for demo
-  const [selectedProgression, setSelectedProgression] = useState<'I-IV-V-I' | 'ii-V-I' | 'I-V-vi-IV' | 'custom'>('I-IV-V-I');
+  const [selectedProgression, setSelectedProgression] = useState<
+    'I-IV-V-I' | 'ii-V-I' | 'I-V-vi-IV' | 'custom'
+  >('I-IV-V-I');
   const [customChords, setCustomChords] = useState<string[]>(['C', 'F', 'G', 'C']);
   const [currentChordIndex, setCurrentChordIndex] = useState(0);
 
@@ -22,23 +24,23 @@ export default function MusicTheoryPage() {
     'I-IV-V-I': {
       name: 'I-IV-V-I (Classic)',
       chords: ['C', 'F', 'G', 'C'],
-      description: 'The most common chord progression in Western music'
+      description: 'The most common chord progression in Western music',
     },
     'ii-V-I': {
       name: 'ii-V-I (Jazz)',
       chords: ['Dm7', 'G7', 'Cmaj7'],
-      description: 'The foundation of jazz harmony'
+      description: 'The foundation of jazz harmony',
     },
     'I-V-vi-IV': {
       name: 'I-V-vi-IV (Pop)',
       chords: ['C', 'G', 'Am', 'F'],
-      description: 'The "four chords" that power countless hits'
+      description: 'The "four chords" that power countless hits',
     },
-    'custom': {
+    custom: {
       name: 'Custom Progression',
       chords: customChords,
-      description: 'Create your own chord progression'
-    }
+      description: 'Create your own chord progression',
+    },
   };
 
   const currentProgression = progressions[selectedProgression];
@@ -61,11 +63,10 @@ export default function MusicTheoryPage() {
       {/* Hero Section */}
       <div className="mb-8">
         <div className="bg-gradient-to-r from-sapphire-800/40 to-sapphire-500/40 border border-sapphire-500/50 rounded-lg p-8">
-          <h1 className="text-4xl font-bold text-white mb-3">
-            🎼 Music Theory Explorer
-          </h1>
+          <h1 className="text-4xl font-bold text-white mb-3">🎼 Music Theory Explorer</h1>
           <p className="text-lg text-gray-300 mb-6">
-            Explore music theory with AI-powered visualizations, chord analysis, and smart suggestions
+            Explore music theory with AI-powered visualizations, chord analysis, and smart
+            suggestions
           </p>
           <div className="flex flex-wrap gap-2">
             <span className="px-3 py-1 bg-sapphire-500/20 text-sapphire-400 rounded-full text-sm">
@@ -88,7 +89,7 @@ export default function MusicTheoryPage() {
       <div className="mb-8 bg-gray-800/50 border border-sapphire-500/10 rounded-lg p-6 transition-all hover:border-sapphire-500/30">
         <h2 className="text-xl font-bold text-white mb-4">Select a Chord Progression</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          {(Object.keys(progressions) as Array<keyof typeof progressions>).map((key) => {
+          {(Object.keys(progressions) as Array<keyof typeof progressions>).map(key => {
             const prog = progressions[key];
             return (
               <button
@@ -144,7 +145,7 @@ export default function MusicTheoryPage() {
       <IntelligentMusicPanel
         chords={chords}
         currentChordIndex={currentChordIndex}
-        onChordClick={(chord) => {
+        onChordClick={chord => {
           const index = chords.indexOf(chord);
           if (index !== -1) {
             setCurrentChordIndex(index);
@@ -161,25 +162,29 @@ export default function MusicTheoryPage() {
           <div>
             <h3 className="font-bold text-sapphire-400 mb-2">1. Select a Progression</h3>
             <p className="text-sm">
-              Choose from classic progressions like I-IV-V-I, jazz's ii-V-I, or create your own custom sequence.
+              Choose from classic progressions like I-IV-V-I, jazz's ii-V-I, or create your own
+              custom sequence.
             </p>
           </div>
           <div>
             <h3 className="font-bold text-sapphire-300 mb-2">2. Explore the Circle</h3>
             <p className="text-sm">
-              Click chords on the Circle of Fifths to hear them. Current chord pulses in gold, suggestions glow green.
+              Click chords on the Circle of Fifths to hear them. Current chord pulses in gold,
+              suggestions glow green.
             </p>
           </div>
           <div>
             <h3 className="font-bold text-sapphire-400 mb-2">3. Analyze Harmony</h3>
             <p className="text-sm">
-              See the key, scale, and harmonic function (I, IV, V, etc.) of your progression in real-time.
+              See the key, scale, and harmonic function (I, IV, V, etc.) of your progression in
+              real-time.
             </p>
           </div>
           <div>
             <h3 className="font-bold text-sapphire-300 mb-2">4. Get AI Suggestions</h3>
             <p className="text-sm">
-              The AI engine suggests next chords based on music theory, with probability scores and reasons.
+              The AI engine suggests next chords based on music theory, with probability scores and
+              reasons.
             </p>
           </div>
         </div>

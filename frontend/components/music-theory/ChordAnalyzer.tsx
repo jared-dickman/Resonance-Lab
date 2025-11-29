@@ -82,16 +82,12 @@ export function ChordAnalyzer() {
         <h2 className="text-3xl font-bold text-sapphire-900 mb-2">
           🎵 Tonal.js Music Theory Explorer
         </h2>
-        <p className="text-sapphire-700">
-          Intelligent chord analysis powered by music theory
-        </p>
+        <p className="text-sapphire-700">Intelligent chord analysis powered by music theory</p>
       </div>
 
       {/* Chord Analyzer */}
       <div className="bg-white p-6 rounded-lg shadow-md">
-        <h3 className="text-xl font-semibold mb-4 text-sapphire-800">
-          Chord Analyzer
-        </h3>
+        <h3 className="text-xl font-semibold mb-4 text-sapphire-800">Chord Analyzer</h3>
 
         <div className="flex gap-2 mb-4">
           <Input
@@ -112,18 +108,12 @@ export function ChordAnalyzer() {
           <div className="space-y-3">
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-sapphire-50 p-4 rounded-lg">
-                <div className="text-sm text-sapphire-600 font-medium">
-                  Chord Name
-                </div>
-                <div className="text-lg font-bold text-sapphire-900">
-                  {chordInfo.name}
-                </div>
+                <div className="text-sm text-sapphire-600 font-medium">Chord Name</div>
+                <div className="text-lg font-bold text-sapphire-900">{chordInfo.name}</div>
               </div>
 
               <div className="bg-sapphire-50 p-4 rounded-lg">
-                <div className="text-sm text-sapphire-600 font-medium">
-                  Quality
-                </div>
+                <div className="text-sm text-sapphire-600 font-medium">Quality</div>
                 <div className="text-lg font-bold text-sapphire-900">
                   {chordInfo.quality || 'Unknown'}
                 </div>
@@ -137,9 +127,7 @@ export function ChordAnalyzer() {
               </div>
 
               <div className="bg-sapphire-50 p-4 rounded-lg">
-                <div className="text-sm text-sapphire-600 font-medium">
-                  Intervals
-                </div>
+                <div className="text-sm text-sapphire-600 font-medium">Intervals</div>
                 <div className="text-lg font-bold text-sapphire-900">
                   {chordInfo.intervals.join(' ')}
                 </div>
@@ -152,9 +140,7 @@ export function ChordAnalyzer() {
       {/* Next Chord Suggestions */}
       {suggestions.length > 0 && (
         <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-xl font-semibold mb-4 text-sapphire-800">
-            Suggested Next Chords
-          </h3>
+          <h3 className="text-xl font-semibold mb-4 text-sapphire-800">Suggested Next Chords</h3>
 
           <div className="space-y-2">
             {suggestions.map((suggestion, i) => (
@@ -164,12 +150,8 @@ export function ChordAnalyzer() {
                 onClick={() => handlePlayChord(suggestion.chord)}
               >
                 <div>
-                  <div className="font-bold text-sapphire-900">
-                    {suggestion.chord}
-                  </div>
-                  <div className="text-sm text-sapphire-600">
-                    {suggestion.reason}
-                  </div>
+                  <div className="font-bold text-sapphire-900">{suggestion.chord}</div>
+                  <div className="text-sm text-sapphire-600">{suggestion.reason}</div>
                 </div>
                 <div className="text-right">
                   <div className="text-sm text-sapphire-600">Probability</div>
@@ -186,9 +168,7 @@ export function ChordAnalyzer() {
       {/* Key Detection */}
       {keyInfo && (
         <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-xl font-semibold mb-4 text-sapphire-800">
-            Detected Key
-          </h3>
+          <h3 className="text-xl font-semibold mb-4 text-sapphire-800">Detected Key</h3>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-gradient-to-br from-sapphire-50 to-sapphire-100 p-4 rounded-lg">
@@ -199,9 +179,7 @@ export function ChordAnalyzer() {
             </div>
 
             <div className="bg-gradient-to-br from-sapphire-50 to-sapphire-100 p-4 rounded-lg">
-              <div className="text-sm text-sapphire-600 font-medium">
-                Related Keys
-              </div>
+              <div className="text-sm text-sapphire-600 font-medium">Related Keys</div>
               <div className="text-sm font-bold text-sapphire-900">
                 Relative: {keyInfo.relatives.relative}
               </div>
@@ -211,9 +189,7 @@ export function ChordAnalyzer() {
             </div>
 
             <div className="col-span-2 bg-gradient-to-br from-sapphire-50 to-sapphire-100 p-4 rounded-lg">
-              <div className="text-sm text-sapphire-600 font-medium mb-2">
-                Diatonic Chords
-              </div>
+              <div className="text-sm text-sapphire-600 font-medium mb-2">Diatonic Chords</div>
               <div className="flex flex-wrap gap-2">
                 {keyInfo.chords.map((chord, i) => (
                   <button
@@ -232,9 +208,7 @@ export function ChordAnalyzer() {
 
       {/* Chord Progression Tools */}
       <div className="bg-white p-6 rounded-lg shadow-md">
-        <h3 className="text-xl font-semibold mb-4 text-sapphire-800">
-          Chord Progression Tools
-        </h3>
+        <h3 className="text-xl font-semibold mb-4 text-sapphire-800">Chord Progression Tools</h3>
 
         <div className="space-y-4">
           <div>

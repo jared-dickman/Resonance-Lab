@@ -96,14 +96,14 @@ export const LEGENDARY_RIGS: LegendaryRigConfig[] = [
  * Load a legendary rig onto a pedalboard
  */
 export function loadLegendaryRig(pedalboard: Pedalboard, rigName: string): void {
-  const rig = LEGENDARY_RIGS.find((r) => r.name === rigName);
+  const rig = LEGENDARY_RIGS.find(r => r.name === rigName);
 
   if (!rig) {
     throw new Error(`Legendary rig "${rigName}" not found`);
   }
 
   // Clear existing pedals
-  pedalboard.getPedals().forEach((slot) => {
+  pedalboard.getPedals().forEach(slot => {
     pedalboard.removePedal(slot.id);
   });
 

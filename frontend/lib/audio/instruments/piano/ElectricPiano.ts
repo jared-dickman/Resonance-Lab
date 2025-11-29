@@ -5,7 +5,10 @@
 
 import * as Tone from 'tone';
 import { Instrument } from '@/lib/audio/instruments/base/Instrument';
-import type { InstrumentConfig, InstrumentPreset } from '@/lib/audio/instruments/base/InstrumentConfig';
+import type {
+  InstrumentConfig,
+  InstrumentPreset,
+} from '@/lib/audio/instruments/base/InstrumentConfig';
 
 export class ElectricPiano extends Instrument {
   private ready = false;
@@ -86,7 +89,7 @@ export class ElectricPiano extends Instrument {
   }
 
   loadPreset(presetName: string): void {
-    const preset = this.getPresets().find((p) => p.name === presetName);
+    const preset = this.getPresets().find(p => p.name === presetName);
     if (!preset) {
       throw new Error(`Preset "${presetName}" not found`);
     }

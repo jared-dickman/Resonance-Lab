@@ -55,7 +55,7 @@ class ClientEventTracker {
 
       if (this.logRocketAvailable) {
         import('logrocket')
-          .then((LogRocket) => {
+          .then(LogRocket => {
             // Filter out unknown types for LogRocket
             const logRocketProps: Record<
               string,
@@ -72,7 +72,7 @@ class ClientEventTracker {
               } else if (
                 Array.isArray(value) &&
                 value.every(
-                  (v) => typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean'
+                  v => typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean'
                 )
               ) {
                 logRocketProps[key] = value as string[] | number[] | boolean[];
@@ -98,7 +98,7 @@ class ClientEventTracker {
 
     if (this.logRocketAvailable && user.id) {
       import('logrocket')
-        .then((LogRocket) => {
+        .then(LogRocket => {
           LogRocket.default.identify(user.id!, {
             ...(user.name && { name: user.name }),
             ...(user.email && { email: user.email }),

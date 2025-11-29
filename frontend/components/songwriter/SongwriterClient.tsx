@@ -34,8 +34,16 @@ import {
   savePanelLayoutToLocalStorage,
   createDefaultPanelLayout,
 } from '@/components/songwriter/persistence/panelLayoutPersistence';
-import type { CompleteSongState, SectionLyrics, SectionType } from '@/components/songwriter/types/song';
-import type { PanelConfiguration, PanelId, PanelLayoutState } from '@/components/songwriter/types/ui';
+import type {
+  CompleteSongState,
+  SectionLyrics,
+  SectionType,
+} from '@/components/songwriter/types/song';
+import type {
+  PanelConfiguration,
+  PanelId,
+  PanelLayoutState,
+} from '@/components/songwriter/types/ui';
 import type { SongDraft } from '@/components/songwriter/types/legacy';
 import { usePanelInteractions } from '@/components/songwriter/hooks/usePanelInteractions';
 import {
@@ -87,7 +95,10 @@ export default function SongwriterClient(): React.JSX.Element {
   const [activeSectionId, setActiveSectionId] = useState<string | null>(null);
   const [chordProgression, setChordProgression] = useState<WorkspaceChord[]>([]);
 
-  const { togglePanel, focusPanel, isPanelExpanded } = usePanelInteractions(panelLayout, setPanelLayout);
+  const { togglePanel, focusPanel, isPanelExpanded } = usePanelInteractions(
+    panelLayout,
+    setPanelLayout
+  );
 
   const handleSaveDraft = useCallback((): void => {
     logger.info('Draft saved');
@@ -108,7 +119,10 @@ export default function SongwriterClient(): React.JSX.Element {
 
   const lyricsText = useMemo(() => flattenSongSections(songState.lyrics), [songState.lyrics]);
 
-  const sectionSummaries = useMemo(() => buildSectionSummaries(songState.lyrics), [songState.lyrics]);
+  const sectionSummaries = useMemo(
+    () => buildSectionSummaries(songState.lyrics),
+    [songState.lyrics]
+  );
 
   useEffect(() => {
     if (!activeSectionId && sectionSummaries.length > 0) {
@@ -294,7 +308,9 @@ function NavigatorColumn({
             <CardHeader className="pb-2">
               <div className="flex items-center gap-2">
                 <Compass className="h-4 w-4 text-sapphire-500" />
-                <span className="text-sm font-semibold uppercase tracking-wide">Creative Brief</span>
+                <span className="text-sm font-semibold uppercase tracking-wide">
+                  Creative Brief
+                </span>
               </div>
               <p className="text-xs text-muted-foreground">
                 Ground each session with clear musical intent.
@@ -305,10 +321,7 @@ function NavigatorColumn({
               <MetadataRow label="Audience" value={formatDisplayValue(metrics.targetAudience)} />
               <MetadataRow label="Release Plan" value={formatDisplayValue(metrics.releaseIntent)} />
               <MetadataRow label="Key" value={formatKey(metrics.key, metrics.mode)} />
-              <MetadataRow
-                label="Tempo"
-                value={metrics.tempo ? `${metrics.tempo} BPM` : '—'}
-              />
+              <MetadataRow label="Tempo" value={metrics.tempo ? `${metrics.tempo} BPM` : '—'} />
               <MetadataRow label="Time Signature" value={metrics.timeSignature} />
             </CardContent>
           </Card>
@@ -317,7 +330,9 @@ function NavigatorColumn({
             <CardHeader className="pb-2">
               <div className="flex items-center gap-2">
                 <Target className="h-4 w-4 text-sapphire-500" />
-                <span className="text-sm font-semibold uppercase tracking-wide">Session Insights</span>
+                <span className="text-sm font-semibold uppercase tracking-wide">
+                  Session Insights
+                </span>
               </div>
               <p className="text-xs text-muted-foreground">
                 Keep track of progress and creative momentum.
@@ -327,7 +342,10 @@ function NavigatorColumn({
               <div className="grid grid-cols-2 gap-3">
                 <InsightStat label="Completion" value={formatPercentage(metrics.completion)} />
                 <InsightStat label="Edits" value={metrics.editCount.toString()} />
-                <InsightStat label="Focus Time" value={formatDuration(metrics.totalTimeSpentSeconds)} />
+                <InsightStat
+                  label="Focus Time"
+                  value={formatDuration(metrics.totalTimeSpentSeconds)}
+                />
                 <InsightStat label="Chords" value={metrics.chordCount.toString()} />
                 <InsightStat label="Created" value={formatRelativeTime(metrics.createdAt)} />
                 <InsightStat label="Updated" value={formatRelativeTime(metrics.lastUpdated)} />
@@ -481,8 +499,7 @@ function SongConfigurationPreview({
     }
   }, [formattedJson]);
 
-  const copyLabel =
-    copyStatus === 'copied' ? 'Copied' : copyStatus === 'error' ? 'Retry' : 'Copy';
+  const copyLabel = copyStatus === 'copied' ? 'Copied' : copyStatus === 'error' ? 'Retry' : 'Copy';
 
   const CopyIcon = copyStatus === 'copied' ? ClipboardCheck : Clipboard;
 
@@ -508,9 +525,7 @@ function SongConfigurationPreview({
           </div>
         </div>
         <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
-          <span>
-            The assistant responds with updated JSON that syncs directly into your song.
-          </span>
+          <span>The assistant responds with updated JSON that syncs directly into your song.</span>
           <div className="flex items-center gap-2">
             <Button
               variant={copyStatus === 'error' ? 'destructive' : 'outline'}
@@ -532,9 +547,7 @@ function SongConfigurationPreview({
       </CardHeader>
       <CardContent className="flex-1 overflow-hidden p-0">
         <ScrollArea className="h-full">
-          <pre className="px-4 py-3 text-xs font-mono leading-relaxed">
-            {formattedJson}
-          </pre>
+          <pre className="px-4 py-3 text-xs font-mono leading-relaxed">{formattedJson}</pre>
         </ScrollArea>
       </CardContent>
     </Card>
@@ -572,10 +585,7 @@ function WorkspaceSummaryBar({
           <SummaryMetric label="Sections" value={metrics.sectionCount.toString()} />
           <SummaryMetric label="Words" value={metrics.wordCount.toString()} />
           <SummaryMetric label="Chords" value={metrics.chordCount.toString()} />
-          <SummaryMetric
-            label="Tempo"
-            value={metrics.tempo ? `${metrics.tempo} BPM` : '—'}
-          />
+          <SummaryMetric label="Tempo" value={metrics.tempo ? `${metrics.tempo} BPM` : '—'} />
           <SummaryMetric label="Key" value={formatKey(metrics.key, metrics.mode)} />
           <div className="flex items-center gap-2 border-l border-border pl-3">
             <PanelToggleButton
@@ -610,7 +620,11 @@ interface PanelToggleButtonProps {
   onClick: () => void;
 }
 
-function PanelToggleButton({ label, isActive, onClick }: PanelToggleButtonProps): React.JSX.Element {
+function PanelToggleButton({
+  label,
+  isActive,
+  onClick,
+}: PanelToggleButtonProps): React.JSX.Element {
   return (
     <SimpleTooltip content={`${isActive ? 'Hide' : 'Show'} ${label}`}>
       <Button
@@ -686,16 +700,17 @@ function initializePanelLayout(): PanelLayoutState {
 }
 
 function containsRequiredPanels(layout: PanelLayoutState): boolean {
-  return REQUIRED_PANEL_IDS.every(id =>
-    layout.panels.some(panel => panel.panelId === id)
-  );
+  return REQUIRED_PANEL_IDS.every(id => layout.panels.some(panel => panel.panelId === id));
 }
 
 function findPanelConfig(layout: PanelLayoutState, panelId: PanelId): PanelConfiguration | null {
   return layout.panels.find(panel => panel.panelId === panelId) ?? null;
 }
 
-function mapSizesToLayout(layout: PanelLayoutState, sizes: ReadonlyArray<number>): PanelLayoutState {
+function mapSizesToLayout(
+  layout: PanelLayoutState,
+  sizes: ReadonlyArray<number>
+): PanelLayoutState {
   const visiblePanels = getVisiblePanelsInOrder(layout);
   if (visiblePanels.length !== sizes.length) {
     return {
@@ -780,7 +795,9 @@ const SECTION_LABELS: Record<SectionType, string> = {
 
 function formatSectionLabel(sectionType: SectionType, index: number): string {
   const base = SECTION_LABELS[sectionType] ?? formatDisplayValue(sectionType);
-  const requiresIndex = !['intro', 'outro', 'interlude', 'breakdown', 'hook', 'refrain'].includes(sectionType);
+  const requiresIndex = !['intro', 'outro', 'interlude', 'breakdown', 'hook', 'refrain'].includes(
+    sectionType
+  );
   return requiresIndex ? `${base} ${index + 1}` : base;
 }
 

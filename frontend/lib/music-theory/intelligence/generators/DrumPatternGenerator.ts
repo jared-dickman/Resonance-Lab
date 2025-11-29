@@ -28,12 +28,7 @@ export class DrumPatternGenerator {
    * Generate drum pattern
    */
   generate(options: Partial<DrumPatternOptions> = {}): DrumEvent[] {
-    const {
-      style = 'rock',
-      measures = 1,
-      beatsPerMeasure = 4,
-      complexity = 0.5,
-    } = options;
+    const { style = 'rock', measures = 1, beatsPerMeasure = 4, complexity = 0.5 } = options;
 
     switch (style) {
       case 'rock':

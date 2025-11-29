@@ -4,7 +4,7 @@
  *
  * Uses process.env.NODE_ENV for consistent server/client behavior (no hydration mismatch)
  */
-const isDevelopment = process.env.NODE_ENV === 'development'
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 export const logger = {
   /**
@@ -13,7 +13,7 @@ export const logger = {
   info: (...args: unknown[]) => {
     if (isDevelopment) {
       // eslint-disable-next-line no-console
-      console.log(...args)
+      console.log(...args);
     }
   },
 
@@ -23,7 +23,7 @@ export const logger = {
   log: (...args: unknown[]) => {
     if (isDevelopment) {
       // eslint-disable-next-line no-console
-      console.log(...args)
+      console.log(...args);
     }
   },
 
@@ -33,7 +33,7 @@ export const logger = {
   warn: (...args: unknown[]) => {
     if (isDevelopment) {
       // eslint-disable-next-line no-console
-      console.warn(...args)
+      console.warn(...args);
     }
   },
 
@@ -43,7 +43,7 @@ export const logger = {
   debug: (...args: unknown[]) => {
     if (isDevelopment) {
       // eslint-disable-next-line no-console
-      console.debug(...args)
+      console.debug(...args);
     }
   },
 
@@ -53,20 +53,20 @@ export const logger = {
   error: (...args: unknown[]) => {
     if (isDevelopment) {
       // eslint-disable-next-line no-console
-      console.error(...args)
+      console.error(...args);
     } else {
       // In production, only log the error message without sensitive details
       const sanitizedArgs = args.map(arg => {
         if (arg instanceof Error) {
-          return arg.message
+          return arg.message;
         }
         if (typeof arg === 'object') {
-          return '[Object]'
+          return '[Object]';
         }
-        return arg
-      })
+        return arg;
+      });
       // eslint-disable-next-line no-console
-      console.error(...sanitizedArgs)
+      console.error(...sanitizedArgs);
     }
   },
-}
+};

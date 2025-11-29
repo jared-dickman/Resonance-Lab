@@ -12,12 +12,12 @@ export interface DistortionPreset {
   description: string;
   algorithm: DistortionAlgorithm;
   settings: {
-    drive: number;        // 0-1
-    tone: number;         // 0-1
-    level: number;        // 0-1
-    mix: number;          // 0-1
-    gate?: number;        // 0-1
-    bias?: number;        // -1 to 1
+    drive: number; // 0-1
+    tone: number; // 0-1
+    level: number; // 0-1
+    mix: number; // 0-1
+    gate?: number; // 0-1
+    bias?: number; // -1 to 1
   };
 }
 
@@ -338,7 +338,7 @@ export class DistortionPedal {
    * Load a preset by name
    */
   loadPreset(presetName: string): this {
-    const preset = DistortionPedal.getPresets().find((p) => p.name === presetName);
+    const preset = DistortionPedal.getPresets().find(p => p.name === presetName);
 
     if (!preset) {
       throw new Error(`Preset "${presetName}" not found`);
@@ -392,7 +392,8 @@ export class DistortionPedal {
    */
   getState() {
     const driveValue = typeof this.preGain.gain.value === 'number' ? this.preGain.gain.value : 1;
-    const toneValue = typeof this.toneFilter.frequency.value === 'number' ? this.toneFilter.frequency.value : 3000;
+    const toneValue =
+      typeof this.toneFilter.frequency.value === 'number' ? this.toneFilter.frequency.value : 3000;
     const levelValue = typeof this.postGain.gain.value === 'number' ? this.postGain.gain.value : 1;
     const mixValue = typeof this.wetDry.fade.value === 'number' ? this.wetDry.fade.value : 1;
 

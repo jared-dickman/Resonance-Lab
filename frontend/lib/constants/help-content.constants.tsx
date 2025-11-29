@@ -11,9 +11,7 @@ export const SONGWRITER_HELP = {
       icon: <MessageSquare className="w-4 h-4" />,
       content: (
         <>
-          <p className="mb-2">
-            Your AI songwriting partner. Ask for help with:
-          </p>
+          <p className="mb-2">Your AI songwriting partner. Ask for help with:</p>
           <ul className="list-disc pl-4 space-y-1">
             <li>Lyric ideas and rhyme suggestions</li>
             <li>Chord progression recommendations</li>
@@ -28,9 +26,7 @@ export const SONGWRITER_HELP = {
       icon: <FileText className="w-4 h-4" />,
       content: (
         <>
-          <p className="mb-2">
-            Write and refine your lyrics with real-time analysis:
-          </p>
+          <p className="mb-2">Write and refine your lyrics with real-time analysis:</p>
           <ul className="list-disc pl-4 space-y-1">
             <li>Automatic syllable counting</li>
             <li>Rhyme scheme detection</li>
@@ -45,9 +41,7 @@ export const SONGWRITER_HELP = {
       icon: <Music className="w-4 h-4" />,
       content: (
         <>
-          <p className="mb-2">
-            Build chord progressions that match your lyrics:
-          </p>
+          <p className="mb-2">Build chord progressions that match your lyrics:</p>
           <ul className="list-disc pl-4 space-y-1">
             <li>Add chords with timing information</li>
             <li>Visual chord diagrams for guitar/piano</li>
@@ -161,9 +155,7 @@ export const JAM_HELP = {
               <strong>Pre-dominant:</strong> Leads naturally to dominant
             </li>
           </ul>
-          <p className="mt-2 text-xs">
-            Color-coded cards help you see the harmonic journey!
-          </p>
+          <p className="mt-2 text-xs">Color-coded cards help you see the harmonic journey!</p>
         </>
       ),
     },

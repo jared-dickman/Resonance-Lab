@@ -29,7 +29,12 @@ const WAVEFORM_CONFIG = {
   INITIAL_REGIONS: [
     { startRatio: 0, endRatio: 0.25, color: WAVEFORM_EDITOR.REGION_COLORS.INTRO, label: 'Intro' },
     { startRatio: 0.25, endRatio: 0.5, color: WAVEFORM_EDITOR.REGION_COLORS.VERSE, label: 'Verse' },
-    { startRatio: 0.5, endRatio: 0.75, color: WAVEFORM_EDITOR.REGION_COLORS.CHORUS, label: 'Chorus' },
+    {
+      startRatio: 0.5,
+      endRatio: 0.75,
+      color: WAVEFORM_EDITOR.REGION_COLORS.CHORUS,
+      label: 'Chorus',
+    },
     { startRatio: 0.75, endRatio: 1, color: WAVEFORM_EDITOR.REGION_COLORS.OUTRO, label: 'Outro' },
   ],
 } as const;
@@ -80,13 +85,10 @@ export function enableDragSelection(regionsPlugin: RegionsPlugin): void {
   });
 }
 
-export function createInitialRegions(
-  regionsPlugin: RegionsPlugin,
-  duration: number
-): Region[] {
+export function createInitialRegions(regionsPlugin: RegionsPlugin, duration: number): Region[] {
   const regions: Region[] = [];
 
-  WAVEFORM_CONFIG.INITIAL_REGIONS.forEach((config) => {
+  WAVEFORM_CONFIG.INITIAL_REGIONS.forEach(config => {
     const start = duration * config.startRatio;
     const end = duration * config.endRatio;
 
@@ -146,10 +148,7 @@ export function getZoomLevels(): readonly number[] {
   return WAVEFORM_EDITOR.ZOOM_LEVELS;
 }
 
-export function convertToRegion(
-  wavesurferRegion: any,
-  label?: string
-): Region {
+export function convertToRegion(wavesurferRegion: any, label?: string): Region {
   return {
     id: wavesurferRegion.id,
     start: wavesurferRegion.start,

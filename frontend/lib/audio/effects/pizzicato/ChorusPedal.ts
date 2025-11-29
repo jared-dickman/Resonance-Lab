@@ -12,9 +12,9 @@ export interface ChorusPreset {
   name: string;
   description: string;
   settings: {
-    rate: number;    // 0.1-10 Hz (speed/LFO frequency)
-    depth: number;   // 0-1 (intensity)
-    mix: number;     // 0-1 (wet/dry)
+    rate: number; // 0.1-10 Hz (speed/LFO frequency)
+    depth: number; // 0-1 (intensity)
+    mix: number; // 0-1 (wet/dry)
   };
 }
 
@@ -49,7 +49,8 @@ export class ChorusPedal {
   constructor(config: ChorusPedalConfig = {}) {
     const Pizzicato = loadPizzicato();
     const audioContext = Tone.getContext().rawContext as AudioContext;
-    const pizzicatoContext = ((Pizzicato as unknown as { context?: AudioContext }).context) ?? audioContext;
+    const pizzicatoContext =
+      (Pizzicato as unknown as { context?: AudioContext }).context ?? audioContext;
 
     // Create bridge nodes
     this.inputNode = new Tone.Gain(1);
@@ -61,7 +62,7 @@ export class ChorusPedal {
       source: 'input',
       options: {
         volume: 1.0,
-      }
+      },
     });
 
     // Create flanger effect (Pizzicato's flanger works great for chorus)
@@ -69,7 +70,7 @@ export class ChorusPedal {
       time: 0.45,
       speed: config.rate ?? 1.2,
       depth: config.depth ?? 0.6,
-      feedback: 0.1,  // Low feedback for chorus (vs flanger)
+      feedback: 0.1, // Low feedback for chorus (vs flanger)
       mix: config.mix ?? 0.5,
     });
 
@@ -208,7 +209,7 @@ export class ChorusPedal {
    * Load a preset by name
    */
   loadPreset(presetName: string): this {
-    const preset = ChorusPedal.getPresets().find((p) => p.name === presetName);
+    const preset = ChorusPedal.getPresets().find(p => p.name === presetName);
 
     if (!preset) {
       throw new Error(`Preset "${presetName}" not found`);

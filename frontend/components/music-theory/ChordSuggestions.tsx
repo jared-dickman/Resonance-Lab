@@ -58,9 +58,7 @@ export default function ChordSuggestions({
           <Sparkles className="w-5 h-5 text-sapphire-400" />
           <h3 className="text-lg font-bold text-white">AI Chord Suggestions</h3>
         </div>
-        <p className="text-sm text-gray-400">
-          Play some chords to get intelligent suggestions...
-        </p>
+        <p className="text-sm text-gray-400">Play some chords to get intelligent suggestions...</p>
       </div>
     );
   }
@@ -77,9 +75,7 @@ export default function ChordSuggestions({
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sapphire-500" />
         </div>
       ) : suggestions.length === 0 ? (
-        <p className="text-sm text-gray-400">
-          No suggestions available for this progression.
-        </p>
+        <p className="text-sm text-gray-400">No suggestions available for this progression.</p>
       ) : (
         <div className="space-y-3">
           {suggestions.map((suggestion, i) => {
@@ -133,16 +129,16 @@ export default function ChordSuggestions({
                   <div>
                     <div className="flex items-center justify-between mb-1">
                       <p className="text-xs text-gray-400">Probability</p>
-                      <p className="text-xs font-medium text-sapphire-400">
-                        {probabilityPercent}%
-                      </p>
+                      <p className="text-xs font-medium text-sapphire-400">{probabilityPercent}%</p>
                     </div>
                     <div className="w-full bg-gray-700 rounded-full h-2">
                       <div
                         className={`h-2 rounded-full transition-all ${
-                          probabilityPercent >= 80 ? 'bg-sapphire-600' :
-                          probabilityPercent >= 60 ? 'bg-sapphire-500' :
-                          'bg-sapphire-400'
+                          probabilityPercent >= 80
+                            ? 'bg-sapphire-600'
+                            : probabilityPercent >= 60
+                              ? 'bg-sapphire-500'
+                              : 'bg-sapphire-400'
                         }`}
                         style={{ width: `${probabilityPercent}%` }}
                       />
@@ -152,9 +148,7 @@ export default function ChordSuggestions({
                   {/* Reason */}
                   <div className="flex items-start gap-2">
                     <div className="w-1 h-1 rounded-full bg-sapphire-400 mt-1.5" />
-                    <p className="text-sm text-gray-300">
-                      {suggestion.reason}
-                    </p>
+                    <p className="text-sm text-gray-300">{suggestion.reason}</p>
                   </div>
 
                   {/* Chord Notes */}

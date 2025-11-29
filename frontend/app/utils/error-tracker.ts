@@ -46,7 +46,7 @@ class LoggerTrackingProvider implements TrackingProvider {
 
     if (this.logRocketAvailable) {
       import('logrocket')
-        .then((LogRocket) => {
+        .then(LogRocket => {
           const sessionURL = LogRocket.default.sessionURL || undefined;
           const errorMessage = error instanceof Error ? error.message : String(error);
 
@@ -69,7 +69,7 @@ class LoggerTrackingProvider implements TrackingProvider {
 
     if (this.logRocketAvailable) {
       import('logrocket')
-        .then((LogRocket) => {
+        .then(LogRocket => {
           const sessionURL = LogRocket.default.sessionURL || undefined;
 
           LogRocket.default.captureException(exception, {
@@ -91,7 +91,7 @@ class LoggerTrackingProvider implements TrackingProvider {
 
     if (this.logRocketAvailable && user) {
       import('logrocket')
-        .then((LogRocket) => {
+        .then(LogRocket => {
           const traits: Record<string, string | number | boolean> = {};
           if (user.name) traits.name = user.name;
           if (user.email) traits.email = user.email;
@@ -105,7 +105,7 @@ class LoggerTrackingProvider implements TrackingProvider {
   addBreadcrumb(message: string, data?: Record<string, unknown>): void {
     if (this.logRocketAvailable) {
       import('logrocket')
-        .then((LogRocket) => {
+        .then(LogRocket => {
           LogRocket.default.log(message, data);
         })
         .catch(() => {});

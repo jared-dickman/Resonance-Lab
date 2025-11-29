@@ -223,7 +223,7 @@ export const progressionUtils = {
    */
   analyze: (chords: string[], key: string) => {
     const keyInfo = Key.majorKey(key);
-    const romanNumerals = chords.map((chord) => {
+    const romanNumerals = chords.map(chord => {
       const index = keyInfo.chords.indexOf(chord);
       const numerals = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
       return index !== -1 ? numerals[index] : '?';
@@ -241,6 +241,6 @@ export const progressionUtils = {
    * Transpose entire progression
    */
   transpose: (chords: string[], interval: string): string[] => {
-    return chords.map((chord) => chordUtils.transpose(chord, interval));
+    return chords.map(chord => chordUtils.transpose(chord, interval));
   },
 };

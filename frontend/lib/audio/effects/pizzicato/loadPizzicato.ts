@@ -16,7 +16,6 @@ export function loadPizzicato(): PizzicatoModule {
     throw new Error('Pizzicato is only available in browser environments.');
   }
 
-   
   const module = require('pizzicato') as PizzicatoModule & { default?: PizzicatoModule };
   const resolved = module.default ?? module;
 

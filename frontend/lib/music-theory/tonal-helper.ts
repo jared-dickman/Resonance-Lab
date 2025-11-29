@@ -55,10 +55,7 @@ export function analyzeChord(chordName: string): ChordInfo | null {
 /**
  * Get all notes in a chord with proper octave numbers
  */
-export function getChordNotes(
-  chordName: string,
-  octave: number = 4
-): string[] {
+export function getChordNotes(chordName: string, octave: number = 4): string[] {
   const chord = Chord.get(chordName);
 
   if (!chord.notes.length) {
@@ -86,16 +83,12 @@ export function detectKey(chordProgression: string[]): KeyInfo | null {
 
   // Determine if major or minor based on first chord quality
   const isMajor = firstChord.quality === 'Major' || !firstChord.quality;
-  const keyData = isMajor
-    ? Key.majorKey(firstChord.tonic)
-    : Key.minorKey(firstChord.tonic);
+  const keyData = isMajor ? Key.majorKey(firstChord.tonic) : Key.minorKey(firstChord.tonic);
 
   // Type guard for key data
   const scale = 'scale' in keyData ? [...keyData.scale] : [];
   const chords = 'chords' in keyData ? [...keyData.chords] : [];
-  const relative = isMajor
-    ? (keyData as ReturnType<typeof Key.majorKey>).minorRelative || ''
-    : '';
+  const relative = isMajor ? (keyData as ReturnType<typeof Key.majorKey>).minorRelative || '' : '';
 
   return {
     tonic: keyData.tonic,
@@ -104,9 +97,7 @@ export function detectKey(chordProgression: string[]): KeyInfo | null {
     chords,
     relatives: {
       relative,
-      parallel: isMajor
-        ? Key.minorKey(keyData.tonic).tonic
-        : Key.majorKey(keyData.tonic).tonic,
+      parallel: isMajor ? Key.minorKey(keyData.tonic).tonic : Key.majorKey(keyData.tonic).tonic,
     },
   };
 }
@@ -220,19 +211,14 @@ export function suggestNextChords(
   }
 
   // Remove duplicates and sort by probability
-  const unique = Array.from(
-    new Map(suggestions.map(s => [s.chord, s])).values()
-  );
+  const unique = Array.from(new Map(suggestions.map(s => [s.chord, s])).values());
   return unique.sort((a, b) => b.probability - a.probability);
 }
 
 /**
  * Transpose a chord by semitones
  */
-export function transposeChord(
-  chordName: string,
-  semitones: number
-): string | null {
+export function transposeChord(chordName: string, semitones: number): string | null {
   const chord = Chord.get(chordName);
 
   if (!chord.tonic) {
@@ -246,10 +232,7 @@ export function transposeChord(
 /**
  * Transpose an entire chord progression
  */
-export function transposeProgression(
-  chords: string[],
-  semitones: number
-): string[] {
+export function transposeProgression(chords: string[], semitones: number): string[] {
   return chords
     .map(chord => transposeChord(chord, semitones))
     .filter((chord): chord is string => chord !== null);
@@ -271,10 +254,7 @@ export function getBassNote(chordName: string, octave: number = 2): string {
 /**
  * Generate a walking bass line pattern from chord progression
  */
-export function generateWalkingBass(
-  chordProgression: string[],
-  octave: number = 2
-): string[] {
+export function generateWalkingBass(chordProgression: string[], octave: number = 2): string[] {
   const bassNotes: string[] = [];
 
   chordProgression.forEach((chord, i) => {
@@ -308,9 +288,7 @@ export function generateWalkingBass(
       if (Math.abs(diff) <= 2) {
         // Step-wise motion: add a passing tone
         const passingTone =
-          diff > 0
-            ? Note.transpose(rootNote, '2M')
-            : Note.transpose(rootNote, '-2M');
+          diff > 0 ? Note.transpose(rootNote, '2M') : Note.transpose(rootNote, '-2M');
         bassNotes.push(`${passingTone}${octave}`);
       } else {
         // Jump: use fifth of current chord
@@ -371,9 +349,8 @@ export function getCircleOfFifthsPosition(note: string): number {
 export function getRelatedKeys(keyName: string, type: 'major' | 'minor' = 'major') {
   const keyData = type === 'major' ? Key.majorKey(keyName) : Key.minorKey(keyName);
 
-  const relative = type === 'major'
-    ? (keyData as ReturnType<typeof Key.majorKey>).minorRelative || ''
-    : '';
+  const relative =
+    type === 'major' ? (keyData as ReturnType<typeof Key.majorKey>).minorRelative || '' : '';
 
   return {
     relative,

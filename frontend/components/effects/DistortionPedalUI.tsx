@@ -104,7 +104,7 @@ const Knob: React.FC<KnobProps> = ({
         </motion.div>
 
         {/* Degree markers */}
-        {[0, 0.25, 0.5, 0.75, 1].map((pos) => {
+        {[0, 0.25, 0.5, 0.75, 1].map(pos => {
           const angle = pos * 270 - 135;
           const rad = (angle * Math.PI) / 180;
           const x = Math.cos(rad) * 32 + 30;
@@ -222,7 +222,7 @@ export const DistortionPedalUI: React.FC<DistortionPedalUIProps> = ({
   }, [enabled, pedal, onStateChange]);
 
   const handlePresetLoad = (presetName: string) => {
-    const preset = presets.find((p) => p.name === presetName);
+    const preset = presets.find(p => p.name === presetName);
     if (!preset) return;
 
     setSelectedPreset(presetName);
@@ -257,9 +257,7 @@ export const DistortionPedalUI: React.FC<DistortionPedalUIProps> = ({
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <Zap className="w-6 h-6 text-sapphire-400" />
-            <h2 className="text-xl font-bold text-white uppercase tracking-wider">
-              Distortion
-            </h2>
+            <h2 className="text-xl font-bold text-white uppercase tracking-wider">Distortion</h2>
           </div>
 
           <button
@@ -284,7 +282,7 @@ export const DistortionPedalUI: React.FC<DistortionPedalUIProps> = ({
               </label>
               <select
                 value={algorithm}
-                onChange={(e) => setAlgorithm(e.target.value as DistortionAlgorithm)}
+                onChange={e => setAlgorithm(e.target.value as DistortionAlgorithm)}
                 className="w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white text-sm focus:outline-none focus:border-sapphire-400"
               >
                 <option value="tube">Tube</option>
@@ -300,7 +298,7 @@ export const DistortionPedalUI: React.FC<DistortionPedalUIProps> = ({
                 Presets
               </label>
               <div className="grid grid-cols-2 gap-2">
-                {presets.map((preset) => (
+                {presets.map(preset => (
                   <button
                     key={preset.name}
                     onClick={() => handlePresetLoad(preset.name)}
@@ -341,9 +339,7 @@ export const DistortionPedalUI: React.FC<DistortionPedalUIProps> = ({
               ) : (
                 <VolumeX className="w-4 h-4" />
               )}
-              <span className="uppercase font-bold">
-                {enabled ? algorithm : 'Bypassed'}
-              </span>
+              <span className="uppercase font-bold">{enabled ? algorithm : 'Bypassed'}</span>
             </div>
             <span className="font-mono">{selectedPreset.toUpperCase()}</span>
           </div>

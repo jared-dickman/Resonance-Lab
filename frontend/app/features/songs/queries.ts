@@ -31,7 +31,7 @@ export async function fetchSongDetail(
 }
 
 export async function searchSongs(input: SearchRequestInput): Promise<SearchResponseData> {
-  const response = await fetch(apiRoutes.agentSearch, {
+  const response = await fetch(apiRoutes.search, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(input),

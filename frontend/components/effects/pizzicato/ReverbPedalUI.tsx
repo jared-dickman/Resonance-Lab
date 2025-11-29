@@ -4,7 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Volume2, VolumeX, Settings, Waves } from 'lucide-react';
 import { ReverbPedal } from '@/lib/audio/effects/pizzicato';
-import { Knob, Footswitch, PedalChassis } from '@/components/effects/pizzicato/shared/PedalControls';
+import {
+  Knob,
+  Footswitch,
+  PedalChassis,
+} from '@/components/effects/pizzicato/shared/PedalControls';
 import { cn } from '@/lib/utils';
 
 export interface ReverbPedalUIProps {
@@ -35,7 +39,7 @@ export const ReverbPedalUI: React.FC<ReverbPedalUIProps> = ({
   }, [time, mix, enabled, pedal, onStateChange]);
 
   const handlePresetLoad = (presetName: string) => {
-    const preset = presets.find((p) => p.name === presetName);
+    const preset = presets.find(p => p.name === presetName);
     if (!preset) return;
 
     setSelectedPreset(presetName);
@@ -70,7 +74,7 @@ export const ReverbPedalUI: React.FC<ReverbPedalUIProps> = ({
               Legendary Spaces
             </label>
             <div className="grid grid-cols-2 gap-2">
-              {presets.map((preset) => (
+              {presets.map(preset => (
                 <button
                   key={preset.name}
                   onClick={() => handlePresetLoad(preset.name)}
@@ -96,7 +100,7 @@ export const ReverbPedalUI: React.FC<ReverbPedalUIProps> = ({
             min={0.01}
             max={10}
             color="#64748b"
-            displayFormat={(v) => `${v.toFixed(1)}s`}
+            displayFormat={v => `${v.toFixed(1)}s`}
           />
           <Knob label="Mix" value={mix} onChange={setMix} color="#94a3b8" />
         </div>

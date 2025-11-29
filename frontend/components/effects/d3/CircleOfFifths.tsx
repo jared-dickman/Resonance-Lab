@@ -70,7 +70,10 @@ function calculateSegmentAngles(index: number): {
   return { startAngle, endAngle, midAngle };
 }
 
-function calculateRadii(width: number, height: number): {
+function calculateRadii(
+  width: number,
+  height: number
+): {
   outer: number;
   inner: number;
   minor: number;
@@ -91,7 +94,10 @@ function calculateRadii(width: number, height: number): {
   };
 }
 
-function getMajorKeyColors(isSelected: boolean, isHovered: boolean): {
+function getMajorKeyColors(
+  isSelected: boolean,
+  isHovered: boolean
+): {
   fill: string;
   text: string;
 } {
@@ -113,7 +119,10 @@ function getMajorKeyColors(isSelected: boolean, isHovered: boolean): {
   };
 }
 
-function getMinorKeyColors(isSelected: boolean, isHovered: boolean): {
+function getMinorKeyColors(
+  isSelected: boolean,
+  isHovered: boolean
+): {
   fill: string;
   text: string;
 } {
@@ -136,15 +145,11 @@ function getMinorKeyColors(isSelected: boolean, isHovered: boolean): {
 }
 
 function getMajorKeyFontSize(isSelected: boolean): number {
-  return isSelected
-    ? LABEL_CONFIG.MAJOR_SELECTED_FONT_SIZE
-    : LABEL_CONFIG.MAJOR_FONT_SIZE;
+  return isSelected ? LABEL_CONFIG.MAJOR_SELECTED_FONT_SIZE : LABEL_CONFIG.MAJOR_FONT_SIZE;
 }
 
 function getMinorKeyFontSize(isSelected: boolean): number {
-  return isSelected
-    ? LABEL_CONFIG.MINOR_SELECTED_FONT_SIZE
-    : LABEL_CONFIG.MINOR_FONT_SIZE;
+  return isSelected ? LABEL_CONFIG.MINOR_SELECTED_FONT_SIZE : LABEL_CONFIG.MINOR_FONT_SIZE;
 }
 
 function createGlowFilter(svg: d3.Selection<SVGSVGElement, unknown, null, undefined>): void {
@@ -339,9 +344,7 @@ export const CircleOfFifths: React.FC<CircleOfFifthsProps> = ({
     const centerY = height / 2;
     const radii = calculateRadii(width, height);
 
-    const mainGroup = svg
-      .append('g')
-      .attr('transform', `translate(${centerX},${centerY})`);
+    const mainGroup = svg.append('g').attr('transform', `translate(${centerX},${centerY})`);
 
     drawBackgroundCircle(mainGroup, radii.outer);
 

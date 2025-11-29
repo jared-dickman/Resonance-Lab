@@ -255,7 +255,7 @@ export const AnimatedCableRouting: React.FC<AnimatedCableRoutingProps> = ({
 
     const cablesGroup: SvgGroupSelection = svg.append('g').attr('class', 'cables');
 
-    cables.forEach((cable) => renderCable(cablesGroup, cable));
+    cables.forEach(cable => renderCable(cablesGroup, cable));
   }, [cables]);
 
   return (

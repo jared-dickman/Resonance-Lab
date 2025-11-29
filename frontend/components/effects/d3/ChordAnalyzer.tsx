@@ -87,7 +87,7 @@ function findPeaksInFFTData(fftData: Float32Array, numPeaks: number): number[] {
   return peaks
     .sort((a, b) => b.value - a.value)
     .slice(0, numPeaks)
-    .map((peak) => peak.index);
+    .map(peak => peak.index);
 }
 
 function convertBinToFrequency(bin: number, fftSize: number, sampleRate: number): number {
@@ -114,9 +114,7 @@ function convertFrequencyToNote(frequency: number): string | null {
 function extractNotesFromFFT(fftValues: Float32Array, fftSize: number): string[] {
   const peaks = findPeaksInFFTData(fftValues, CHORD_CONFIG.PEAK_COUNT);
 
-  const frequencies = peaks.map((binIndex) =>
-    convertBinToFrequency(binIndex, fftSize, SAMPLE_RATE)
-  );
+  const frequencies = peaks.map(binIndex => convertBinToFrequency(binIndex, fftSize, SAMPLE_RATE));
 
   const notes = frequencies
     .map(convertFrequencyToNote)
@@ -144,7 +142,7 @@ function detectChordFromNotes(notes: string[]): string | null {
   }
 
   const detectedChords = Chord.detect(notes);
-  return detectedChords.length > 0 ? detectedChords[0] ?? null : null;
+  return detectedChords.length > 0 ? (detectedChords[0] ?? null) : null;
 }
 
 function updateChordHistory(
@@ -168,7 +166,10 @@ function calculateChartDimensions(
 }
 
 function createXScale(historyLength: number, chartWidth: number): d3.ScaleLinear<number, number> {
-  return d3.scaleLinear().domain([0, historyLength - 1]).range([0, chartWidth]);
+  return d3
+    .scaleLinear()
+    .domain([0, historyLength - 1])
+    .range([0, chartWidth]);
 }
 
 function createYScale(chartHeight: number): d3.ScaleLinear<number, number> {
@@ -184,7 +185,13 @@ function drawGridLines(
     .append('g')
     .attr('class', 'grid')
     .attr('transform', `translate(0,${chartHeight})`)
-    .call(d3.axisBottom(xScale).ticks(CHART_CONFIG.GRID_TICKS).tickSize(-chartHeight).tickFormat(() => ''))
+    .call(
+      d3
+        .axisBottom(xScale)
+        .ticks(CHART_CONFIG.GRID_TICKS)
+        .tickSize(-chartHeight)
+        .tickFormat(() => '')
+    )
     .attr('stroke', VISUALIZATION_COLORS.UI.BORDER)
     .attr('stroke-opacity', CHART_CONFIG.GRID_OPACITY);
 }
@@ -212,9 +219,9 @@ function drawChordBars(
     .append('rect')
     .attr('class', 'chord-bar')
     .attr('x', (_d, i) => xScale(i) ?? 0)
-    .attr('y', (d) => yScale(d.confidence) ?? 0)
+    .attr('y', d => yScale(d.confidence) ?? 0)
     .attr('width', barWidth)
-    .attr('height', (d) => chartHeight - (yScale(d.confidence) ?? 0))
+    .attr('height', d => chartHeight - (yScale(d.confidence) ?? 0))
     .attr('fill', (_d, i) => calculateBarColor(i, chordHistory.length))
     .attr('opacity', CHART_CONFIG.BAR_OPACITY);
 }
@@ -226,8 +233,7 @@ function drawChordLabels(
   chartWidth: number,
   chartHeight: number
 ): void {
-  const labelX = (index: number) =>
-    (xScale(index) ?? 0) + chartWidth / chordHistory.length / 2;
+  const labelX = (index: number) => (xScale(index) ?? 0) + chartWidth / chordHistory.length / 2;
 
   group
     .selectAll('.chord-label')
@@ -240,7 +246,7 @@ function drawChordLabels(
     .attr('text-anchor', 'middle')
     .attr('fill', VISUALIZATION_COLORS.UI.TEXT_SECONDARY)
     .attr('font-size', CHART_CONFIG.LABEL_FONT_SIZE)
-    .text((d) => d.name);
+    .text(d => d.name);
 }
 
 function drawYAxis(
@@ -271,9 +277,7 @@ function drawYAxisLabel(
 }
 
 function renderConfidenceIndicator(chord: DetectedChord): ReactElement {
-  const confidencePercentage = Math.round(
-    chord.confidence * CHORD_CONFIG.PERCENTAGE_MULTIPLIER
-  );
+  const confidencePercentage = Math.round(chord.confidence * CHORD_CONFIG.PERCENTAGE_MULTIPLIER);
 
   const confidenceDegrees = chord.confidence * CONFIDENCE_DISPLAY.DEGREES_PER_UNIT;
 
@@ -315,10 +319,7 @@ export const ChordAnalyzer: React.FC<ChordAnalyzerProps> = ({
   const animationRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const analyzer = createConnectedFFTAnalyzer(
-      AUDIO_ANALYSIS.FFT_SIZE.LARGE,
-      audioNode
-    );
+    const analyzer = createConnectedFFTAnalyzer(AUDIO_ANALYSIS.FFT_SIZE.LARGE, audioNode);
     analyzerRef.current = analyzer;
 
     const detectChord = (): void => {
@@ -329,7 +330,7 @@ export const ChordAnalyzer: React.FC<ChordAnalyzerProps> = ({
       if (chordName) {
         const newChord = createDetectedChord(chordName, notes);
         setDetectedChord(newChord);
-        setChordHistory((prev) => updateChordHistory(prev, newChord));
+        setChordHistory(prev => updateChordHistory(prev, newChord));
       }
 
       animationRef.current = requestAnimationFrame(detectChord);
@@ -354,15 +355,20 @@ export const ChordAnalyzer: React.FC<ChordAnalyzerProps> = ({
     const chartDimensions = calculateChartDimensions(width, height);
     const { TOP, LEFT } = CHART_CONFIG.MARGIN;
 
-    const mainGroup = svg
-      .append('g')
-      .attr('transform', `translate(${LEFT},${TOP})`);
+    const mainGroup = svg.append('g').attr('transform', `translate(${LEFT},${TOP})`);
 
     const xScale = createXScale(chordHistory.length, chartDimensions.width);
     const yScale = createYScale(chartDimensions.height);
 
     drawGridLines(mainGroup, xScale, chartDimensions.height);
-    drawChordBars(mainGroup, chordHistory, xScale, yScale, chartDimensions.width, chartDimensions.height);
+    drawChordBars(
+      mainGroup,
+      chordHistory,
+      xScale,
+      yScale,
+      chartDimensions.width,
+      chartDimensions.height
+    );
     drawChordLabels(mainGroup, chordHistory, xScale, chartDimensions.width, chartDimensions.height);
     drawYAxis(mainGroup, yScale);
     drawYAxisLabel(mainGroup, chartDimensions.height);

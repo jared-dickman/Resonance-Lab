@@ -31,16 +31,8 @@ export class BassLineGenerator {
   /**
    * Generate bass line for chord progression
    */
-  generate(
-    chords: string[],
-    options: Partial<BassLineOptions> = {}
-  ): BassNote[] {
-    const {
-      style = 'root',
-      octave = 2,
-      beatsPerMeasure = 4,
-      complexity = 0.5,
-    } = options;
+  generate(chords: string[], options: Partial<BassLineOptions> = {}): BassNote[] {
+    const { style = 'root', octave = 2, beatsPerMeasure = 4, complexity = 0.5 } = options;
 
     switch (style) {
       case 'walking':

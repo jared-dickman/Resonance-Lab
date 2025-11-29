@@ -5,7 +5,10 @@
 
 import * as Tone from 'tone';
 import { Instrument } from '@/lib/audio/instruments/base/Instrument';
-import type { InstrumentConfig, InstrumentPreset } from '@/lib/audio/instruments/base/InstrumentConfig';
+import type {
+  InstrumentConfig,
+  InstrumentPreset,
+} from '@/lib/audio/instruments/base/InstrumentConfig';
 import { logger } from '@/lib/logger';
 
 export class AcousticGuitar extends Instrument {
@@ -52,7 +55,7 @@ export class AcousticGuitar extends Instrument {
         logger.info('[AcousticGuitar] High-quality samples loaded successfully!');
         this.ready = true;
       },
-      onerror: (error) => {
+      onerror: error => {
         logger.error('[AcousticGuitar] Failed to load samples:', error);
         // Fallback to synthesis
         logger.warn('[AcousticGuitar] Falling back to PluckSynth');
@@ -135,7 +138,7 @@ export class AcousticGuitar extends Instrument {
   }
 
   loadPreset(presetName: string): void {
-    const preset = this.getPresets().find((p) => p.name === presetName);
+    const preset = this.getPresets().find(p => p.name === presetName);
     if (!preset) {
       throw new Error(`Preset "${presetName}" not found`);
     }
@@ -163,7 +166,13 @@ export class AcousticGuitar extends Instrument {
    * Play a strumming pattern for more realistic guitar feel
    * Slightly delays each note in a chord for natural strum effect
    */
-  playStrum(notes: string[], duration: Tone.Unit.Time, time?: Tone.Unit.Time, velocity = 0.8, direction: 'down' | 'up' = 'down'): void {
+  playStrum(
+    notes: string[],
+    duration: Tone.Unit.Time,
+    time?: Tone.Unit.Time,
+    velocity = 0.8,
+    direction: 'down' | 'up' = 'down'
+  ): void {
     const triggerTime = time !== undefined ? Tone.Time(time).toSeconds() : Tone.now();
     const strumDelay = 0.02; // 20ms between each note
 

@@ -71,7 +71,15 @@ export function drawFingerPositions(
     isInverted?: boolean;
   }
 ): void {
-  const { padding, stringSpacing, fretWidth, startFret, endFret, showFingerNumbers, isInverted = false } = config;
+  const {
+    padding,
+    stringSpacing,
+    fretWidth,
+    startFret,
+    endFret,
+    showFingerNumbers,
+    isInverted = false,
+  } = config;
 
   frets.forEach((fret, stringIndex) => {
     const stringPosition = isInverted ? STRING_COUNT - 1 - stringIndex : stringIndex;

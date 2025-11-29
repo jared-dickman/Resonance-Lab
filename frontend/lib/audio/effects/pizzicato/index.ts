@@ -19,4 +19,7 @@ export { TremoloPedal } from '@/lib/audio/effects/pizzicato/TremoloPedal';
 export type { TremoloPreset, TremoloPedalConfig } from '@/lib/audio/effects/pizzicato/TremoloPedal';
 
 export { CompressorPedal } from '@/lib/audio/effects/pizzicato/CompressorPedal';
-export type { CompressorPreset, CompressorPedalConfig } from '@/lib/audio/effects/pizzicato/CompressorPedal';
+export type {
+  CompressorPreset,
+  CompressorPedalConfig,
+} from '@/lib/audio/effects/pizzicato/CompressorPedal';

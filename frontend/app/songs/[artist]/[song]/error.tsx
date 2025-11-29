@@ -30,7 +30,7 @@ export default function Error({
       <Link href={pageRoutes.home}>
         <Button variant="ghost" size="sm">
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Home
+          Home
         </Button>
       </Link>
 

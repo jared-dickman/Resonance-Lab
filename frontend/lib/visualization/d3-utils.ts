@@ -12,16 +12,8 @@ export type D3ScaleBand = d3.ScaleBand<string>;
 /**
  * Create a frequency spectrum visualization
  */
-export function createFrequencySpectrum(
-  container: HTMLElement,
-  width: number,
-  height: number
-) {
-  const svg = d3
-    .select(container)
-    .append('svg')
-    .attr('width', width)
-    .attr('height', height);
+export function createFrequencySpectrum(container: HTMLElement, width: number, height: number) {
+  const svg = d3.select(container).append('svg').attr('width', width).attr('height', height);
 
   const xScale = d3.scaleLinear().range([0, width]);
   const yScale = d3.scaleLinear().range([height, 0]);
@@ -39,10 +31,10 @@ export function createFrequencySpectrum(
         .data(frequencyData)
         .join('rect')
         .attr('x', (_d, i) => xScale(i))
-        .attr('y', (d) => yScale(d))
+        .attr('y', d => yScale(d))
         .attr('width', width / frequencyData.length - 1)
-        .attr('height', (d) => height - yScale(d))
-        .attr('fill', (d) => d3.interpolateViridis(d / 255));
+        .attr('height', d => height - yScale(d))
+        .attr('fill', d => d3.interpolateViridis(d / 255));
     },
     clear: () => svg.selectAll('*').remove(),
   };
@@ -61,15 +53,9 @@ export function createChordWheel(
   const centerX = width / 2;
   const centerY = height / 2;
 
-  const svg = d3
-    .select(container)
-    .append('svg')
-    .attr('width', width)
-    .attr('height', height);
+  const svg = d3.select(container).append('svg').attr('width', width).attr('height', height);
 
-  const group = svg
-    .append('g')
-    .attr('transform', `translate(${centerX}, ${centerY})`);
+  const group = svg.append('g').attr('transform', `translate(${centerX}, ${centerY})`);
 
   return {
     svg,
@@ -92,7 +78,7 @@ export function createChordWheel(
       // Add circles
       chordGroups
         .selectAll('circle')
-        .data((d) => [d])
+        .data(d => [d])
         .join('circle')
         .attr('r', 25)
         .attr('fill', (_d, i) => (i === currentIndex ? '#8b5cf6' : '#4c1d95'))
@@ -104,7 +90,7 @@ export function createChordWheel(
       // Add text labels
       chordGroups
         .selectAll('text')
-        .data((d) => [d])
+        .data(d => [d])
         .join('text')
         .attr('text-anchor', 'middle')
         .attr('dy', '0.35em')
@@ -112,7 +98,7 @@ export function createChordWheel(
         .attr('font-size', '14px')
         .attr('font-weight', 'bold')
         .style('pointer-events', 'none')
-        .text((d) => d);
+        .text(d => d);
     },
     clear: () => svg.selectAll('*').remove(),
   };
@@ -121,16 +107,8 @@ export function createChordWheel(
 /**
  * Create a waveform visualization
  */
-export function createWaveform(
-  container: HTMLElement,
-  width: number,
-  height: number
-) {
-  const svg = d3
-    .select(container)
-    .append('svg')
-    .attr('width', width)
-    .attr('height', height);
+export function createWaveform(container: HTMLElement, width: number, height: number) {
+  const svg = d3.select(container).append('svg').attr('width', width).attr('height', height);
 
   const xScale = d3.scaleLinear().range([0, width]);
   const yScale = d3.scaleLinear().range([height, 0]);
@@ -138,7 +116,7 @@ export function createWaveform(
   const line = d3
     .line<number>()
     .x((_d, i) => xScale(i))
-    .y((d) => yScale(d))
+    .y(d => yScale(d))
     .curve(d3.curveMonotoneX);
 
   const path = svg
@@ -153,10 +131,7 @@ export function createWaveform(
     yScale,
     update: (waveformData: number[]) => {
       xScale.domain([0, waveformData.length - 1]);
-      yScale.domain([
-        Math.min(...waveformData, -1),
-        Math.max(...waveformData, 1),
-      ]);
+      yScale.domain([Math.min(...waveformData, -1), Math.max(...waveformData, 1)]);
 
       path.attr('d', line(waveformData));
     },

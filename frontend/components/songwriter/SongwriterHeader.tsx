@@ -90,7 +90,11 @@ interface HeaderActionsProps {
   showDraftManager: boolean;
 }
 
-function HeaderActions({ onToggleDrafts, onSaveDraft, showDraftManager }: HeaderActionsProps): React.JSX.Element {
+function HeaderActions({
+  onToggleDrafts,
+  onSaveDraft,
+  showDraftManager,
+}: HeaderActionsProps): React.JSX.Element {
   return (
     <div className="flex items-center gap-2">
       <SimpleTooltip content="Access and manage your saved song drafts">

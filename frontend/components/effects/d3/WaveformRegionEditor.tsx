@@ -43,15 +43,15 @@ function setupRegionEventListeners(
   onRegionCreate?: (region: Region) => void,
   onRegionUpdate?: (region: Region) => void
 ): void {
-  regionsPlugin.on('region-created', (region) => {
+  regionsPlugin.on('region-created', region => {
     const newRegion = convertToRegion(region, 'New Region');
-    setRegions((prev) => [...prev, newRegion]);
+    setRegions(prev => [...prev, newRegion]);
     onRegionCreate?.(newRegion);
   });
 
-  regionsPlugin.on('region-updated', (region) => {
+  regionsPlugin.on('region-updated', region => {
     const updatedRegion = convertToRegion(region);
-    setRegions((prev) => prev.map((r) => (r.id === region.id ? updatedRegion : r)));
+    setRegions(prev => prev.map(r => (r.id === region.id ? updatedRegion : r)));
     onRegionUpdate?.(updatedRegion);
   });
 
@@ -114,7 +114,7 @@ export const WaveformRegionEditor: React.FC<WaveformRegionEditorProps> = ({
     if (!regionsPluginRef.current) return;
 
     const newRegion = addRegion(regionsPluginRef.current, start, end, color, label);
-    setRegions((prev) => [...prev, newRegion]);
+    setRegions(prev => [...prev, newRegion]);
   };
 
   const handlePlayPause = (): void => {
@@ -159,7 +159,7 @@ export const WaveformRegionEditor: React.FC<WaveformRegionEditorProps> = ({
         </button>
         <div className="flex items-center space-x-2">
           <span className="text-sm text-gray-400">Zoom:</span>
-          {getZoomLevels().map((level) => (
+          {getZoomLevels().map(level => (
             <button
               key={level}
               onClick={() => handleZoom(level)}
@@ -173,19 +173,14 @@ export const WaveformRegionEditor: React.FC<WaveformRegionEditorProps> = ({
 
       {/* Region List */}
       <div className="space-y-2">
-        <div className="text-sm font-semibold text-gray-400 mb-2">
-          Regions ({regions.length})
-        </div>
-        {regions.map((region) => (
+        <div className="text-sm font-semibold text-gray-400 mb-2">Regions ({regions.length})</div>
+        {regions.map(region => (
           <div
             key={region.id}
             className="flex items-center justify-between p-2 bg-gray-900 rounded"
           >
             <div className="flex items-center space-x-3">
-              <div
-                className="w-4 h-4 rounded"
-                style={{ backgroundColor: region.color }}
-              />
+              <div className="w-4 h-4 rounded" style={{ backgroundColor: region.color }} />
               <span className="text-sm text-white font-medium">{region.label}</span>
             </div>
             <div className="text-xs text-gray-500">

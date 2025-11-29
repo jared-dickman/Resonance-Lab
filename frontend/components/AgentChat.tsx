@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, type FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
 import { useIntervalEffect } from '@/lib/hooks/useIntervalEffect';
 import { Send, Sparkles, Zap, Bot } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -27,171 +28,171 @@ const AgentChatTestIds = {
 } as const;
 
 const THINKING_PUNS = [
-  "Tuning up the search engines...",
-  "Shredding through the database...",
-  "Finding your jam...",
-  "Dropping into the groove...",
-  "Strumming through results...",
-  "Picking the best tabs...",
-  "Riffing on your request...",
-  "Plugging into Ultimate Guitar...",
-  "Cranking up the research amp...",
-  "Noodling through the archives...",
-  "Harmonizing with the servers...",
-  "Bending some strings...",
-  "Checking the setlist...",
-  "Warming up the fretboard...",
-  "Dialing in the tone...",
-  "Running scales on your query...",
-  "Hitting the right notes...",
-  "Fingerpicking through files...",
-  "Sliding into the search...",
-  "Tapping into the data...",
-  "Palm muting the noise...",
-  "Sweeping through arpeggios...",
-  "Pulling off a hammer-on...",
-  "Vibrato-ing through results...",
-  "Dropping the bass... search...",
-  "Capo-ing up to the right key...",
-  "Reading between the bar lines...",
-  "Counting in... 1, 2, 3, 4...",
-  "Loading the pedalboard...",
-  "Wah-wah-ing through tabs...",
-  "Distorting reality for results...",
-  "Clean tone searching...",
-  "Overdrive engaged...",
-  "Chorus effect on the query...",
-  "Delay pedal processing...",
-  "Reverb-erating through servers...",
-  "Flanger-ing the database...",
-  "Phaser set to stun...",
-  "Tremolo picking data...",
-  "Power chord processing...",
-  "Barre chord barricading...",
-  "Open chord opening files...",
-  "Seventh chord sophistication...",
-  "Major key searching...",
-  "Minor key melancholy loading...",
-  "Pentatonic pattern matching...",
-  "Blues scale browsing...",
-  "Modal interchange loading...",
-  "Dorian mode: engaged...",
-  "Mixolydian mixup incoming...",
-  "Phrygian phrasing...",
-  "Lydian lifting off...",
-  "Locrian... actually never mind...",
-  "Circle of fifths calculating...",
-  "Relative minor relating...",
-  "Tritone tension building...",
-  "Perfect fifth perfecting...",
-  "Octave jumping...",
-  "Unison loading...",
-  "Checking the bridge...",
-  "Adjusting the truss rod...",
-  "Intonating the results...",
-  "Setting the action...",
-  "Locking the tuners...",
-  "Winding new strings...",
-  "Breaking in the picks...",
-  "Rosewood reasoning...",
-  "Maple neck navigating...",
-  "Mahogany crunching...",
-  "Alder body building...",
-  "Ash-tonishing results coming...",
-  "Basswood base loading...",
-  "Single coil searching...",
-  "Humbucker hunting...",
-  "P90 processing...",
-  "Active pickup activating...",
-  "Piezo piecing together...",
-  "Acoustic algorithm...",
-  "Electric excitement...",
-  "Classical computing...",
-  "Flamenco flourishing...",
-  "Jazz hands... I mean, jazz chords...",
-  "Blues brother buffering...",
-  "Rock and roll retrieving...",
-  "Metal melting servers...",
-  "Punk rock punching through...",
-  "Indie indexing...",
-  "Folk finding...",
-  "Country crossfading...",
-  "Reggae rhythm riding...",
-  "Funk funking around...",
-  "Soul searching (literally)...",
-  "R&B retrieving beautifully...",
-  "Gospel glory loading...",
-  "Grunge grinding gears...",
-  "Shoegaze staring at results...",
-  "Post-rock posting results...",
-  "Math rock calculating...",
-  "Prog rock progressing...",
-  "Djent djenting...",
-  "Surf rock surfing the web...",
-  "Psychedelic swirling...",
-  "Britpop britting...",
-  "Garage band garaging...",
-  "Stadium rock scaling up...",
-  "Unplugged and loading...",
-  "MTV era nostalgia searching...",
-  "Woodstock vibes loading...",
-  "Abbey Road crossing...",
-  "Sunset Strip searching...",
-  "CBGB crawling...",
-  "Nashville tuning up...",
-  "Memphis soul searching...",
-  "Chicago blues buffering...",
-  "Delta slide sliding...",
-  "Laurel Canyon lounging...",
-  "Seattle grunge grinding...",
-  "Austin weird-ing out...",
-  "Liverpool lads loading...",
-  "LA rock rocking...",
-  "NYC punk punking...",
-  "Detroit rock city-ing...",
-  "Backstage pass processing...",
-  "Green room loading...",
-  "Sound check... check... check...",
-  "Mic drop incoming...",
-  "Stage dive searching...",
-  "Crowd surf computing...",
-  "Encore encoding...",
-  "Opening act opening...",
-  "Headliner heading your way...",
-  "Festival finding...",
-  "Setlist shuffling...",
-  "Roadie retrieving...",
-  "Tour bus touring...",
-  "Guitar tech teching...",
-  "Drum roll please...",
-  "Bass drop dropping...",
-  "Keyboard warrior-ing...",
-  "Vocalist vocalizing...",
-  "Harmony harmonizing...",
-  "Melody making...",
-  "Rhythm rolling...",
-  "Tempo tapping...",
-  "Time signature signing...",
-  "Key change changing...",
-  "Bridge building...",
-  "Verse versing...",
-  "Chorus chorusing...",
-  "Outro outing...",
-  "Intro introducing...",
-  "Hook hooking...",
-  "Breakdown breaking down...",
-  "Solo solo-ing...",
-  "Lick licking... wait...",
-  "Riff raff-ing...",
-  "Groove grooving...",
-  "Pocket pocketing...",
-  "Feel feeling it...",
-  "Vibe vibing...",
-  "Tone chasing...",
-  "Gear acquiring...",
-  "GAS attacking...",
-  "NPD browsing... (new pedal day)...",
-  "NGD loading... (new guitar day)...",
+  'Tuning up the search engines...',
+  'Shredding through the database...',
+  'Finding your jam...',
+  'Dropping into the groove...',
+  'Strumming through results...',
+  'Picking the best tabs...',
+  'Riffing on your request...',
+  'Plugging into Ultimate Guitar...',
+  'Cranking up the research amp...',
+  'Noodling through the archives...',
+  'Harmonizing with the servers...',
+  'Bending some strings...',
+  'Checking the setlist...',
+  'Warming up the fretboard...',
+  'Dialing in the tone...',
+  'Running scales on your query...',
+  'Hitting the right notes...',
+  'Fingerpicking through files...',
+  'Sliding into the search...',
+  'Tapping into the data...',
+  'Palm muting the noise...',
+  'Sweeping through arpeggios...',
+  'Pulling off a hammer-on...',
+  'Vibrato-ing through results...',
+  'Dropping the bass... search...',
+  'Capo-ing up to the right key...',
+  'Reading between the bar lines...',
+  'Counting in... 1, 2, 3, 4...',
+  'Loading the pedalboard...',
+  'Wah-wah-ing through tabs...',
+  'Distorting reality for results...',
+  'Clean tone searching...',
+  'Overdrive engaged...',
+  'Chorus effect on the query...',
+  'Delay pedal processing...',
+  'Reverb-erating through servers...',
+  'Flanger-ing the database...',
+  'Phaser set to stun...',
+  'Tremolo picking data...',
+  'Power chord processing...',
+  'Barre chord barricading...',
+  'Open chord opening files...',
+  'Seventh chord sophistication...',
+  'Major key searching...',
+  'Minor key melancholy loading...',
+  'Pentatonic pattern matching...',
+  'Blues scale browsing...',
+  'Modal interchange loading...',
+  'Dorian mode: engaged...',
+  'Mixolydian mixup incoming...',
+  'Phrygian phrasing...',
+  'Lydian lifting off...',
+  'Locrian... actually never mind...',
+  'Circle of fifths calculating...',
+  'Relative minor relating...',
+  'Tritone tension building...',
+  'Perfect fifth perfecting...',
+  'Octave jumping...',
+  'Unison loading...',
+  'Checking the bridge...',
+  'Adjusting the truss rod...',
+  'Intonating the results...',
+  'Setting the action...',
+  'Locking the tuners...',
+  'Winding new strings...',
+  'Breaking in the picks...',
+  'Rosewood reasoning...',
+  'Maple neck navigating...',
+  'Mahogany crunching...',
+  'Alder body building...',
+  'Ash-tonishing results coming...',
+  'Basswood base loading...',
+  'Single coil searching...',
+  'Humbucker hunting...',
+  'P90 processing...',
+  'Active pickup activating...',
+  'Piezo piecing together...',
+  'Acoustic algorithm...',
+  'Electric excitement...',
+  'Classical computing...',
+  'Flamenco flourishing...',
+  'Jazz hands... I mean, jazz chords...',
+  'Blues brother buffering...',
+  'Rock and roll retrieving...',
+  'Metal melting servers...',
+  'Punk rock punching through...',
+  'Indie indexing...',
+  'Folk finding...',
+  'Country crossfading...',
+  'Reggae rhythm riding...',
+  'Funk funking around...',
+  'Soul searching (literally)...',
+  'R&B retrieving beautifully...',
+  'Gospel glory loading...',
+  'Grunge grinding gears...',
+  'Shoegaze staring at results...',
+  'Post-rock posting results...',
+  'Math rock calculating...',
+  'Prog rock progressing...',
+  'Djent djenting...',
+  'Surf rock surfing the web...',
+  'Psychedelic swirling...',
+  'Britpop britting...',
+  'Garage band garaging...',
+  'Stadium rock scaling up...',
+  'Unplugged and loading...',
+  'MTV era nostalgia searching...',
+  'Woodstock vibes loading...',
+  'Abbey Road crossing...',
+  'Sunset Strip searching...',
+  'CBGB crawling...',
+  'Nashville tuning up...',
+  'Memphis soul searching...',
+  'Chicago blues buffering...',
+  'Delta slide sliding...',
+  'Laurel Canyon lounging...',
+  'Seattle grunge grinding...',
+  'Austin weird-ing out...',
+  'Liverpool lads loading...',
+  'LA rock rocking...',
+  'NYC punk punking...',
+  'Detroit rock city-ing...',
+  'Backstage pass processing...',
+  'Green room loading...',
+  'Sound check... check... check...',
+  'Mic drop incoming...',
+  'Stage dive searching...',
+  'Crowd surf computing...',
+  'Encore encoding...',
+  'Opening act opening...',
+  'Headliner heading your way...',
+  'Festival finding...',
+  'Setlist shuffling...',
+  'Roadie retrieving...',
+  'Tour bus touring...',
+  'Guitar tech teching...',
+  'Drum roll please...',
+  'Bass drop dropping...',
+  'Keyboard warrior-ing...',
+  'Vocalist vocalizing...',
+  'Harmony harmonizing...',
+  'Melody making...',
+  'Rhythm rolling...',
+  'Tempo tapping...',
+  'Time signature signing...',
+  'Key change changing...',
+  'Bridge building...',
+  'Verse versing...',
+  'Chorus chorusing...',
+  'Outro outing...',
+  'Intro introducing...',
+  'Hook hooking...',
+  'Breakdown breaking down...',
+  'Solo solo-ing...',
+  'Lick licking... wait...',
+  'Riff raff-ing...',
+  'Groove grooving...',
+  'Pocket pocketing...',
+  'Feel feeling it...',
+  'Vibe vibing...',
+  'Tone chasing...',
+  'Gear acquiring...',
+  'GAS attacking...',
+  'NPD browsing... (new pedal day)...',
+  'NGD loading... (new guitar day)...',
 ];
 
 interface Suggestion {
@@ -238,20 +239,23 @@ function SearchResultButton({ result, type, onClick, disabled }: SearchResultBut
         </span>
       </div>
       <span className="text-xs text-muted-foreground">{result.artist}</span>
-      <span className="sr-only" data-testid={AgentChatTestIds.downloadButton}>Download</span>
+      <span className="sr-only" data-testid={AgentChatTestIds.downloadButton}>
+        Download
+      </span>
     </button>
   );
 }
 
 export function AgentChat({ onSave, isSaving }: AgentChatProps) {
+  const router = useRouter();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [thinkingPun, setThinkingPun] = useState('');
-  const [conversationHistory, setConversationHistory] = useState<Array<{ role: string; content: string }>>([]);
-  const [currentPlaceholder, setCurrentPlaceholder] = useState(() =>
-    selectRandom(placeholders)
-  );
+  const [conversationHistory, setConversationHistory] = useState<
+    Array<{ role: string; content: string }>
+  >([]);
+  const [currentPlaceholder, setCurrentPlaceholder] = useState(() => selectRandom(placeholders));
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -278,41 +282,56 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
     try {
       const newHistory = [...conversationHistory, { role: 'user', content: userMessage }];
 
-      const response = await fetch(apiRoutes.agentChat, {
+      const response = await fetch(apiRoutes.coreBuddy, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: newHistory }),
       });
 
-      const data = await response.json() as {
+      const data = (await response.json()) as {
         message: string;
         autoDownload?: boolean;
         suggestions?: Suggestion[];
         results?: { chords: SearchResult[]; tabs: SearchResult[] };
+        navigateTo?: string;
       };
 
       setConversationHistory([...newHistory, { role: 'assistant', content: data.message }]);
 
+      // Handle navigation if agent requested it
+      if (data.navigateTo) {
+        router.push(data.navigateTo);
+      }
+
       // Auto-download top chord if agent signals clear match
       if (data.autoDownload && data.results?.chords?.[0]) {
         onSave(data.results.chords[0], 'chord');
-        setMessages(prev => [...prev, {
-          role: 'assistant',
-          content: data.message,
-        }]);
+        setMessages(prev => [
+          ...prev,
+          {
+            role: 'assistant',
+            content: data.message,
+          },
+        ]);
       } else {
-        setMessages(prev => [...prev, {
-          role: 'assistant',
-          content: data.message,
-          suggestions: data.suggestions,
-          results: data.results,
-        }]);
+        setMessages(prev => [
+          ...prev,
+          {
+            role: 'assistant',
+            content: data.message,
+            suggestions: data.suggestions,
+            results: data.results,
+          },
+        ]);
       }
     } catch {
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: 'Sorry, I encountered an error. Please try again.',
-      }]);
+      setMessages(prev => [
+        ...prev,
+        {
+          role: 'assistant',
+          content: 'Sorry, I encountered an error. Please try again.',
+        },
+      ]);
     } finally {
       setIsLoading(false);
     }
@@ -372,7 +391,9 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
                 <Zap className="h-4 w-4 text-sapphire-400" />
               </motion.div>
               <p className="text-xs opacity-70">Just tell me what you want to play</p>
-              <p className="text-xs mt-1 opacity-50">e.g. &quot;Wonderwall&quot; or &quot;something bluesy in E&quot;</p>
+              <p className="text-xs mt-1 opacity-50">
+                e.g. &quot;Wonderwall&quot; or &quot;something bluesy in E&quot;
+              </p>
             </motion.div>
           )}
         </AnimatePresence>
@@ -383,19 +404,20 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
             initial={{ opacity: 0, y: 10, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.2, delay: i * 0.05 }}
-            className={cn(
-              "flex",
-              message.role === 'user' ? "justify-end" : "justify-start"
-            )}
+            className={cn('flex', message.role === 'user' ? 'justify-end' : 'justify-start')}
           >
             <div
               className={cn(
-                "max-w-[85%] rounded-lg px-3 py-2 text-sm shadow-sm",
+                'max-w-[85%] rounded-lg px-3 py-2 text-sm shadow-sm',
                 message.role === 'user'
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-background border border-border/50"
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-background border border-border/50'
               )}
-              data-testid={message.role === 'user' ? AgentChatTestIds.userMessage : AgentChatTestIds.agentMessage}
+              data-testid={
+                message.role === 'user'
+                  ? AgentChatTestIds.userMessage
+                  : AgentChatTestIds.agentMessage
+              }
             >
               <p className="whitespace-pre-wrap">{message.content}</p>
 
@@ -408,45 +430,47 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
                       disabled={isLoading || isSaving}
                       className="px-3 py-1.5 rounded-full border border-primary/30 bg-primary/10 hover:bg-primary/20 transition-colors text-xs font-medium disabled:opacity-50"
                     >
-                      {suggestion.title} {suggestion.key && <span className="opacity-60">({suggestion.key})</span>}
+                      {suggestion.title}{' '}
+                      {suggestion.key && <span className="opacity-60">({suggestion.key})</span>}
                     </button>
                   ))}
                 </div>
               )}
 
-              {message.results && (message.results.chords.length > 0 || message.results.tabs.length > 0) && (
-                <div className="mt-3 space-y-2" data-testid={AgentChatTestIds.searchResults}>
-                  {message.results.chords.length > 0 && (
-                    <div>
-                      <p className="text-xs font-medium mb-1 opacity-70">Chords:</p>
-                      {message.results.chords.slice(0, 3).map(result => (
-                        <SearchResultButton
-                          key={result.id}
-                          result={result}
-                          type="chord"
-                          onClick={handleSelectResult}
-                          disabled={isSaving}
-                        />
-                      ))}
-                    </div>
-                  )}
+              {message.results &&
+                (message.results.chords.length > 0 || message.results.tabs.length > 0) && (
+                  <div className="mt-3 space-y-2" data-testid={AgentChatTestIds.searchResults}>
+                    {message.results.chords.length > 0 && (
+                      <div>
+                        <p className="text-xs font-medium mb-1 opacity-70">Chords:</p>
+                        {message.results.chords.slice(0, 3).map(result => (
+                          <SearchResultButton
+                            key={result.id}
+                            result={result}
+                            type="chord"
+                            onClick={handleSelectResult}
+                            disabled={isSaving}
+                          />
+                        ))}
+                      </div>
+                    )}
 
-                  {message.results.tabs.length > 0 && (
-                    <div>
-                      <p className="text-xs font-medium mb-1 opacity-70">Tabs:</p>
-                      {message.results.tabs.slice(0, 3).map(result => (
-                        <SearchResultButton
-                          key={result.id}
-                          result={result}
-                          type="tab"
-                          onClick={handleSelectResult}
-                          disabled={isSaving}
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
+                    {message.results.tabs.length > 0 && (
+                      <div>
+                        <p className="text-xs font-medium mb-1 opacity-70">Tabs:</p>
+                        {message.results.tabs.slice(0, 3).map(result => (
+                          <SearchResultButton
+                            key={result.id}
+                            result={result}
+                            type="tab"
+                            onClick={handleSelectResult}
+                            disabled={isSaving}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
             </div>
           </motion.div>
         ))}

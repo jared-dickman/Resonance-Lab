@@ -1,29 +1,29 @@
-import { cn } from '@/lib/utils'
-import * as React from 'react'
+import { cn } from '@/lib/utils';
+import * as React from 'react';
 
 interface DescriptionsItemProps {
-  label: string
-  children: React.ReactNode
-  span?: 1 | 2 | 3
-  className?: string
+  label: string;
+  children: React.ReactNode;
+  span?: 1 | 2 | 3;
+  className?: string;
 }
 
 interface DescriptionsProps {
-  children: React.ReactNode
-  column?: 1 | 2 | 3
-  className?: string
-  bordered?: boolean
+  children: React.ReactNode;
+  column?: 1 | 2 | 3;
+  className?: string;
+  bordered?: boolean;
 }
 
 function DescriptionsItem({}: DescriptionsItemProps) {
-  return null
+  return null;
 }
 
 function Descriptions({ children, column = 2, className, bordered = false }: DescriptionsProps) {
   const items = React.Children.toArray(children).filter(
     (child): child is React.ReactElement<DescriptionsItemProps> =>
       React.isValidElement(child) && child.type === DescriptionsItem
-  )
+  );
 
   return (
     <div className={cn('w-full', className)}>
@@ -36,7 +36,7 @@ function Descriptions({ children, column = 2, className, bordered = false }: Des
         )}
       >
         {items.map((item, index) => {
-          const { label, children, span = 1, className: itemClassName } = item.props
+          const { label, children, span = 1, className: itemClassName } = item.props;
           return (
             <div
               key={index}
@@ -51,13 +51,13 @@ function Descriptions({ children, column = 2, className, bordered = false }: Des
               <dt className="text-sm font-medium text-muted-foreground">{label}</dt>
               <dd className="text-sm text-foreground">{children}</dd>
             </div>
-          )
+          );
         })}
       </div>
     </div>
-  )
+  );
 }
 
-Descriptions.Item = DescriptionsItem
+Descriptions.Item = DescriptionsItem;
 
-export { Descriptions, DescriptionsItem }
+export { Descriptions, DescriptionsItem };

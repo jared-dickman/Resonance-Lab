@@ -102,7 +102,10 @@ export function createFlowField(p: p5, _dimensions: P5Dimensions): p5.Vector[][]
   for (let x = 0; x < COLS; x++) {
     flowField[x] = [];
     for (let y = 0; y < ROWS; y++) {
-      const angle = p.noise(x * NOISE_SCALE, y * NOISE_SCALE) * p.TWO_PI * VISUAL_CONFIG.FLOW_FIELD.NOISE_MULTIPLIER;
+      const angle =
+        p.noise(x * NOISE_SCALE, y * NOISE_SCALE) *
+        p.TWO_PI *
+        VISUAL_CONFIG.FLOW_FIELD.NOISE_MULTIPLIER;
       const v = p5.Vector.fromAngle(angle);
       v.setMag(VISUAL_CONFIG.FLOW_FIELD.BASE_MAG);
       const column = flowField[x] ?? [];
@@ -131,7 +134,10 @@ export function updateFlowField(
         VISUAL_CONFIG.FLOW_FIELD.NOISE_MULTIPLIER *
         (1 + amplitude * VISUAL_CONFIG.FLOW_FIELD.AMPLITUDE_FORCE_MULTIPLIER);
       const v = p5.Vector.fromAngle(angle);
-      v.setMag(VISUAL_CONFIG.FLOW_FIELD.BASE_MAG + amplitude * VISUAL_CONFIG.FLOW_FIELD.AMPLITUDE_MULTIPLIER);
+      v.setMag(
+        VISUAL_CONFIG.FLOW_FIELD.BASE_MAG +
+          amplitude * VISUAL_CONFIG.FLOW_FIELD.AMPLITUDE_MULTIPLIER
+      );
       const column = flowField[x] ?? [];
       column[y] = v;
       flowField[x] = column;
@@ -156,7 +162,9 @@ export function drawParticlesBackground(p: p5): void {
 }
 
 export function calculateParticleAlpha(amplitude: number): number {
-  return VISUAL_CONFIG.FLOW_FIELD.ALPHA_BASE + amplitude * VISUAL_CONFIG.FLOW_FIELD.ALPHA_MULTIPLIER;
+  return (
+    VISUAL_CONFIG.FLOW_FIELD.ALPHA_BASE + amplitude * VISUAL_CONFIG.FLOW_FIELD.ALPHA_MULTIPLIER
+  );
 }
 
 export function calculateSpiralStrokeWeight(amplitude: number): number {

@@ -12,10 +12,10 @@ export interface FlangerPreset {
   name: string;
   description: string;
   settings: {
-    rate: number;      // 0.1-10 Hz (LFO speed)
-    depth: number;     // 0-1 (intensity)
-    feedback: number;  // 0-1 (regeneration)
-    mix: number;       // 0-1 (wet/dry)
+    rate: number; // 0.1-10 Hz (LFO speed)
+    depth: number; // 0-1 (intensity)
+    feedback: number; // 0-1 (regeneration)
+    mix: number; // 0-1 (wet/dry)
   };
 }
 
@@ -52,7 +52,8 @@ export class FlangerPedal {
   constructor(config: FlangerPedalConfig = {}) {
     const Pizzicato = loadPizzicato();
     const audioContext = Tone.getContext().rawContext as AudioContext;
-    const pizzicatoContext = ((Pizzicato as unknown as { context?: AudioContext }).context) ?? audioContext;
+    const pizzicatoContext =
+      (Pizzicato as unknown as { context?: AudioContext }).context ?? audioContext;
 
     // Create bridge nodes
     this.inputNode = new Tone.Gain(1);
@@ -64,7 +65,7 @@ export class FlangerPedal {
       source: 'input',
       options: {
         volume: 1.0,
-      }
+      },
     });
 
     // Create flanger effect
@@ -227,7 +228,7 @@ export class FlangerPedal {
    * Load a preset by name
    */
   loadPreset(presetName: string): this {
-    const preset = FlangerPedal.getPresets().find((p) => p.name === presetName);
+    const preset = FlangerPedal.getPresets().find(p => p.name === presetName);
 
     if (!preset) {
       throw new Error(`Preset "${presetName}" not found`);

@@ -41,7 +41,7 @@ export default function ChordProgressionAnalyzer({
     setKeyAnalysis(key);
 
     // Analyze each chord
-    const analyses = chords.map((chord) => analyzeChord(chord));
+    const analyses = chords.map(chord => analyzeChord(chord));
     setChordAnalyses(analyses);
 
     // Determine chord functions
@@ -103,23 +103,17 @@ export default function ChordProgressionAnalyzer({
 
           <div>
             <p className="text-sm text-gray-400 mb-1">Scale</p>
-            <p className="text-sm text-white font-mono">
-              {keyAnalysis.scale.join(' - ')}
-            </p>
+            <p className="text-sm text-white font-mono">{keyAnalysis.scale.join(' - ')}</p>
           </div>
 
           <div>
             <p className="text-sm text-gray-400 mb-1">Relative Key</p>
-            <p className="text-sm text-white font-medium">
-              {keyAnalysis.relativeKey}
-            </p>
+            <p className="text-sm text-white font-medium">{keyAnalysis.relativeKey}</p>
           </div>
 
           <div>
             <p className="text-sm text-gray-400 mb-1">Parallel Key</p>
-            <p className="text-sm text-white font-medium">
-              {keyAnalysis.parallelKey}
-            </p>
+            <p className="text-sm text-white font-medium">{keyAnalysis.parallelKey}</p>
           </div>
         </div>
       </div>
@@ -148,19 +142,27 @@ export default function ChordProgressionAnalyzer({
                 )}
               >
                 <div className="flex flex-col items-center gap-1">
-                  <p className="text-xs text-gray-400 font-medium">
-                    {romanNumeral}
-                  </p>
-                  <p className={cn('text-lg font-bold', isCurrent ? 'text-sapphire-400' : 'text-white')}>
+                  <p className="text-xs text-gray-400 font-medium">{romanNumeral}</p>
+                  <p
+                    className={cn(
+                      'text-lg font-bold',
+                      isCurrent ? 'text-sapphire-400' : 'text-white'
+                    )}
+                  >
                     {chord}
                   </p>
                   {analysis && (
                     <div
                       className="w-3 h-3 rounded-full"
                       style={{
-                        backgroundColor: analysis.quality === 'major' ? 'var(--sapphire-500)' :
-                          analysis.quality === 'minor' ? 'var(--sapphire-400)' :
-                          analysis.quality === 'dominant' ? 'var(--sapphire-300)' : '#6B7280'
+                        backgroundColor:
+                          analysis.quality === 'major'
+                            ? 'var(--sapphire-500)'
+                            : analysis.quality === 'minor'
+                              ? 'var(--sapphire-400)'
+                              : analysis.quality === 'dominant'
+                                ? 'var(--sapphire-300)'
+                                : '#6B7280',
                       }}
                     />
                   )}
@@ -213,7 +215,9 @@ export default function ChordProgressionAnalyzer({
 
       {/* Diatonic Chords in Key */}
       <div className="bg-gray-800/50 border border-sapphire-500/10 rounded-lg p-6 transition-all hover:border-sapphire-500/30">
-        <h3 className="text-sm font-bold text-white mb-3">Diatonic Chords in {keyAnalysis.tonic} {keyAnalysis.type}</h3>
+        <h3 className="text-sm font-bold text-white mb-3">
+          Diatonic Chords in {keyAnalysis.tonic} {keyAnalysis.type}
+        </h3>
         <div className="flex flex-wrap gap-2">
           {keyAnalysis.chords.slice(0, 7).map((chord, i) => (
             <div

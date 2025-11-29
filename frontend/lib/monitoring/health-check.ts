@@ -207,7 +207,10 @@ export function registerDefaultHealthChecks(apiBaseUrl: string): void {
 
     const missingFeatures = requiredFeatures.filter(feature => {
       if (feature === 'AudioContext') {
-        return !(window.AudioContext || (window as Window & { webkitAudioContext?: unknown }).webkitAudioContext);
+        return !(
+          window.AudioContext ||
+          (window as Window & { webkitAudioContext?: unknown }).webkitAudioContext
+        );
       }
       return !(feature in window);
     });
@@ -229,9 +232,15 @@ export function registerDefaultHealthChecks(apiBaseUrl: string): void {
   });
 
   // Memory Usage Check (if available)
-  if ('memory' in performance && (performance as Performance & { memory?: { usedJSHeapSize: number; jsHeapSizeLimit: number } }).memory) {
+  if (
+    'memory' in performance &&
+    (performance as Performance & { memory?: { usedJSHeapSize: number; jsHeapSizeLimit: number } })
+      .memory
+  ) {
     healthCheck.register('memory', async () => {
-      const memory = (performance as Performance & { memory: { usedJSHeapSize: number; jsHeapSizeLimit: number } }).memory;
+      const memory = (
+        performance as Performance & { memory: { usedJSHeapSize: number; jsHeapSizeLimit: number } }
+      ).memory;
       const usagePercent = (memory.usedJSHeapSize / memory.jsHeapSizeLimit) * 100;
 
       let status: 'healthy' | 'degraded' | 'unhealthy';

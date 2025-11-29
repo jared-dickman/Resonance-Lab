@@ -28,7 +28,11 @@ export interface RenderContext {
   width: number;
 }
 
-export function createVexFlowRenderer(container: HTMLDivElement, width: number, height: number): Renderer {
+export function createVexFlowRenderer(
+  container: HTMLDivElement,
+  width: number,
+  height: number
+): Renderer {
   const renderer = new Renderer(container, Renderer.Backends.SVG);
   renderer.resize(width, height);
   return renderer;
@@ -52,7 +56,7 @@ export function createStave(
 
 export function createStaveNotes(notes: readonly Note[], clef: 'treble' | 'bass'): StaveNote[] {
   return notes.map(
-    (note) =>
+    note =>
       new StaveNote({
         keys: [...note.keys],
         duration: note.duration,
@@ -84,16 +88,17 @@ export function formatAndRenderVoice(
 
 export function renderBeams(context: any, staveNotes: StaveNote[]): void {
   const beams = Beam.generateBeams(staveNotes);
-  beams.forEach((beam) => beam.setContext(context).draw());
+  beams.forEach(beam => beam.setContext(context).draw());
 }
 
 export function chordToNotation(chordName: string): Note[] {
-  const keys = CHORD_TO_NOTES_MAP[chordName as keyof typeof CHORD_TO_NOTES_MAP] || CHORD_TO_NOTES_MAP.C;
+  const keys =
+    CHORD_TO_NOTES_MAP[chordName as keyof typeof CHORD_TO_NOTES_MAP] || CHORD_TO_NOTES_MAP.C;
   return [{ keys: [...keys], duration: 'w' }];
 }
 
 export function getDefaultNotes(): Note[] {
-  return DEFAULT_NOTATION_NOTES.map((note) => ({
+  return DEFAULT_NOTATION_NOTES.map(note => ({
     keys: [...note.keys],
     duration: note.duration,
   }));

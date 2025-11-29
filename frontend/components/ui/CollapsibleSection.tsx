@@ -1,19 +1,19 @@
-'use client'
+'use client';
 
-import type { ReactNode} from 'react';
-import {useState} from 'react'
-import {ChevronDown, ChevronUp} from 'lucide-react'
-import { cn } from '@/lib/utils'
-import {Button} from '@/components/ui/button'
+import type { ReactNode } from 'react';
+import { useState } from 'react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 interface CollapsibleSectionProps {
-  title: string
-  defaultExpanded?: boolean
-  sticky?: boolean
-  children: ReactNode
-  className?: string
-  badge?: ReactNode
-  actions?: ReactNode
+  title: string;
+  defaultExpanded?: boolean;
+  sticky?: boolean;
+  children: ReactNode;
+  className?: string;
+  badge?: ReactNode;
+  actions?: ReactNode;
 }
 
 export function CollapsibleSection({
@@ -25,7 +25,7 @@ export function CollapsibleSection({
   badge,
   actions,
 }: CollapsibleSectionProps) {
-  const [isExpanded, setIsExpanded] = useState(defaultExpanded)
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
 
   return (
     <section className={cn('space-y-6', className)}>
@@ -60,5 +60,5 @@ export function CollapsibleSection({
         {isExpanded && children}
       </div>
     </section>
-  )
+  );
 }

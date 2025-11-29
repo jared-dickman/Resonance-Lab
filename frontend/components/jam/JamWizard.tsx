@@ -161,9 +161,7 @@ export function JamWizard({ steps, onComplete, className }: JamWizardProps) {
                   className="mb-6"
                 >
                   <h2 className="text-2xl md:text-3xl font-bold mb-2">{step.title}</h2>
-                  {step.description && (
-                    <p className="text-muted-foreground">{step.description}</p>
-                  )}
+                  {step.description && <p className="text-muted-foreground">{step.description}</p>}
                 </motion.div>
 
                 <motion.div

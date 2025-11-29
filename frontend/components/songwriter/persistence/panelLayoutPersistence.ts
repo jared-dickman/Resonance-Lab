@@ -1,6 +1,10 @@
 import { withLocalStorage } from '@/lib/utils/dom/safeBrowserStorage';
 
-import type { PanelConfiguration, PanelId, PanelLayoutState } from '@/components/songwriter/types/ui';
+import type {
+  PanelConfiguration,
+  PanelId,
+  PanelLayoutState,
+} from '@/components/songwriter/types/ui';
 
 const PANEL_LAYOUT_STORAGE_KEY = 'songwriter_panel_layout_v2';
 const REQUIRED_PANELS: ReadonlyArray<PanelId> = ['navigator', 'workspace', 'assistant'];
@@ -27,18 +31,18 @@ export function loadPanelLayoutFromLocalStorage(): PanelLayoutState | null {
           return null;
         }
 
-      const parsed = JSON.parse(serialized);
-      const layout: PanelLayoutState = {
-        panels: parsed.panels,
-        totalWidth: parsed.totalWidth,
-        layoutVersion: parsed.layoutVersion,
-        lastResizedAt: parsed.lastResizedAt ? new Date(parsed.lastResizedAt) : null,
-      };
+        const parsed = JSON.parse(serialized);
+        const layout: PanelLayoutState = {
+          panels: parsed.panels,
+          totalWidth: parsed.totalWidth,
+          layoutVersion: parsed.layoutVersion,
+          lastResizedAt: parsed.lastResizedAt ? new Date(parsed.lastResizedAt) : null,
+        };
 
-      return hasAllRequiredPanels(layout) ? layout : null;
-    },
-    () => null
-  ) ?? null
+        return hasAllRequiredPanels(layout) ? layout : null;
+      },
+      () => null
+    ) ?? null
   );
 }
 
@@ -96,10 +100,8 @@ export function updatePanelWidth(
   panelId: string,
   newWidthPercentage: number
 ): PanelLayoutState {
-  const updatedPanels = layout.panels.map((panel) =>
-    panel.panelId === panelId
-      ? { ...panel, widthPercentage: newWidthPercentage }
-      : panel
+  const updatedPanels = layout.panels.map(panel =>
+    panel.panelId === panelId ? { ...panel, widthPercentage: newWidthPercentage } : panel
   );
 
   return {
@@ -110,11 +112,8 @@ export function updatePanelWidth(
   };
 }
 
-export function togglePanelState(
-  layout: PanelLayoutState,
-  panelId: string
-): PanelLayoutState {
-  const updatedPanels = layout.panels.map((panel) => {
+export function togglePanelState(layout: PanelLayoutState, panelId: string): PanelLayoutState {
+  const updatedPanels = layout.panels.map(panel => {
     if (panel.panelId === panelId) {
       const newState: 'expanded' | 'collapsed' =
         panel.state === 'collapsed' ? 'expanded' : 'collapsed';
@@ -131,30 +130,24 @@ export function togglePanelState(
   };
 }
 
-export function calculatePanelWidthInPixels(
-  panel: PanelConfiguration,
-  totalWidth: number
-): number {
+export function calculatePanelWidthInPixels(panel: PanelConfiguration, totalWidth: number): number {
   return Math.floor((panel.widthPercentage / 100) * totalWidth);
 }
 
 export function validatePanelWidths(layout: PanelLayoutState): boolean {
-  const totalPercentage = layout.panels.reduce(
-    (sum, panel) => sum + panel.widthPercentage,
-    0
-  );
+  const totalPercentage = layout.panels.reduce((sum, panel) => sum + panel.widthPercentage, 0);
 
   return Math.abs(totalPercentage - 100) < 0.1;
 }
 
 export function redistributePanelWidths(layout: PanelLayoutState): PanelLayoutState {
-  const expandedPanels = layout.panels.filter((p) => p.state === 'expanded');
+  const expandedPanels = layout.panels.filter(p => p.state === 'expanded');
 
   if (expandedPanels.length === 0) return layout;
 
   const equalWidth = 100 / expandedPanels.length;
 
-  const updatedPanels = layout.panels.map((panel) =>
+  const updatedPanels = layout.panels.map(panel =>
     panel.state === 'expanded'
       ? { ...panel, widthPercentage: equalWidth }
       : { ...panel, widthPercentage: 0 }

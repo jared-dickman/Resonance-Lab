@@ -151,7 +151,9 @@ class PerformanceMonitor {
 
     // Track page load time
     window.addEventListener('load', () => {
-      const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+      const navigation = performance.getEntriesByType(
+        'navigation'
+      )[0] as PerformanceNavigationTiming;
       if (navigation) {
         this.recordMetric({
           name: 'Page Load Time',

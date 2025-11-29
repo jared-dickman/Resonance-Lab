@@ -21,16 +21,17 @@ import { PanelLabel } from '@/components/ui/panel-label';
 import { InfoCard } from '@/components/ui/info-card';
 import { SimpleTooltip } from '@/components/ui/simple-tooltip';
 import { QUICK_TIPS } from '@/lib/constants/help-content.constants';
-import {
-  CHAT_RESPONSES,
-  WELCOME_MESSAGE,
-} from '@/lib/constants/chatResponses.constants';
+import { CHAT_RESPONSES, WELCOME_MESSAGE } from '@/lib/constants/chatResponses.constants';
 import {
   selectResponseType,
   selectRandomResponse,
   calculateTypingDelay,
 } from '@/lib/utils/songwriter/chatResponseSelector';
-import { CHAT_CONFIG, ANIMATION_DURATION, ANIMATION_DELAY } from '@/lib/constants/songwriter.constants';
+import {
+  CHAT_CONFIG,
+  ANIMATION_DURATION,
+  ANIMATION_DELAY,
+} from '@/lib/constants/songwriter.constants';
 
 interface Message {
   id: string;
@@ -85,7 +86,7 @@ export default function ChatInterface({
     if (!input.trim()) return;
 
     const userMessage = createUserMessage(input);
-    setMessages((prev) => [...prev, userMessage]);
+    setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsTyping(true);
 
@@ -94,7 +95,7 @@ export default function ChatInterface({
     setTimeout(() => {
       const response = generateAIResponse(input);
       const assistantMessage = createAssistantMessage(response);
-      setMessages((prev) => [...prev, assistantMessage]);
+      setMessages(prev => [...prev, assistantMessage]);
       setIsTyping(false);
     }, delay);
   }
@@ -138,7 +139,7 @@ export default function ChatInterface({
             </InfoCard>
 
             <AnimatePresence mode="popLayout">
-              {messages.map((message) => (
+              {messages.map(message => (
                 <ChatMessage key={message.id} message={message} />
               ))}
             </AnimatePresence>
@@ -154,7 +155,7 @@ export default function ChatInterface({
           <div className="flex gap-2">
             <Input
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={e => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Ask for lyrics, chords, or songwriting advice..."
               className="flex-1"
@@ -226,7 +227,11 @@ function TypingDot({ delay }: { delay: number }): React.JSX.Element {
     <motion.div
       className="w-2 h-2 bg-sapphire-500 rounded-full"
       animate={{ scale: [1, 1.2, 1] }}
-      transition={{ duration: ANIMATION_DURATION.TYPING_DOT / 1000, repeat: Infinity, delay: delay / 1000 }}
+      transition={{
+        duration: ANIMATION_DURATION.TYPING_DOT / 1000,
+        repeat: Infinity,
+        delay: delay / 1000,
+      }}
     />
   );
 }

@@ -10,26 +10,25 @@ export interface PanelInteractionHandlers {
 
 export function usePanelInteractions(
   panelLayout: PanelLayoutState,
-  setPanelLayout: (layout: PanelLayoutState | ((prev: PanelLayoutState) => PanelLayoutState)) => void
+  setPanelLayout: (
+    layout: PanelLayoutState | ((prev: PanelLayoutState) => PanelLayoutState)
+  ) => void
 ): PanelInteractionHandlers {
   const togglePanel = useCallback(
     (panelId: PanelId): void => {
-      setPanelLayout((prev) => togglePanelState(prev, panelId));
+      setPanelLayout(prev => togglePanelState(prev, panelId));
     },
     [setPanelLayout]
   );
 
-  const focusPanel = useCallback(
-    (panelId: PanelId): void => {
-      const panelElement = document.getElementById(`${panelId}-panel`);
-      panelElement?.focus();
-    },
-    []
-  );
+  const focusPanel = useCallback((panelId: PanelId): void => {
+    const panelElement = document.getElementById(`${panelId}-panel`);
+    panelElement?.focus();
+  }, []);
 
   const isPanelExpanded = useCallback(
     (panelId: PanelId): boolean => {
-      const panel = panelLayout.panels.find((p) => p.panelId === panelId);
+      const panel = panelLayout.panels.find(p => p.panelId === panelId);
       return panel?.state === 'expanded';
     },
     [panelLayout]

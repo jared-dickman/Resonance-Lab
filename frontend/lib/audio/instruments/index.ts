@@ -14,7 +14,12 @@
 
 // Base classes and types
 export { Instrument } from '@/lib/audio/instruments/base/Instrument';
-export type { InstrumentConfig, InstrumentPreset, Note, ChordOptions } from '@/lib/audio/instruments/base/InstrumentConfig';
+export type {
+  InstrumentConfig,
+  InstrumentPreset,
+  Note,
+  ChordOptions,
+} from '@/lib/audio/instruments/base/InstrumentConfig';
 
 // Piano instruments
 export { AcousticPiano, ElectricPiano } from '@/lib/audio/instruments/piano';
