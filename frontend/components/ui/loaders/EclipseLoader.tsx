@@ -50,12 +50,12 @@ export function EclipseLoader({ className, size = 'md' }: LoaderProps) {
           r={radius * 0.95}
           fill={`url(#moon-glow-${size})`}
           animate={{
-            x: [-dim * 0.8, dim * 0.8],
+            x: [-dim * 1.2, dim * 1.2],
           }}
           transition={{
             duration: 4,
             repeat: Infinity,
-            ease: 'easeInOut',
+            ease: 'linear',
           }}
         />
 

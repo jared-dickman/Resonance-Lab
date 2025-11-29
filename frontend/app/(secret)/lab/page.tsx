@@ -43,7 +43,7 @@ import {
   CassetteLoader, DialLoader, RadarLoader, OscilloscopeLoader, NixieLoader,
   TerminalLoader, ScanlineLoader,
   // Gaming
-  PacmanLoader, TetrisLoader, PongLoader, JoystickLoader, CoinLoader,
+  PacmanLoader, TetrisLoader, PongLoader, CoinLoader,
   HealthBarLoader, RespawnLoader,
   // Arcade
   GalagaLoader, BreakoutLoader,
@@ -243,7 +243,6 @@ export default function LabPage() {
         <LoaderCard name="PACMAN"><PacmanLoader size="md" /></LoaderCard>
         <LoaderCard name="TETRIS"><TetrisLoader size="md" /></LoaderCard>
         <LoaderCard name="PONG"><PongLoader size="md" /></LoaderCard>
-        <LoaderCard name="JOYSTICK"><JoystickLoader size="md" /></LoaderCard>
         <LoaderCard name="COIN"><CoinLoader size="md" /></LoaderCard>
         <LoaderCard name="HEALTH BAR"><HealthBarLoader size="md" /></LoaderCard>
         <LoaderCard name="RESPAWN"><RespawnLoader size="md" /></LoaderCard>

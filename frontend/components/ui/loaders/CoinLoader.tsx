@@ -8,6 +8,14 @@ export function CoinLoader({ className, size = 'md' }: LoaderProps) {
   const center = dim / 2;
   const coinRadius = dim * 0.32;
 
+  // Multiple sparkles that twinkle and move across the coin
+  const sparkles = [
+    { delay: 0, x: 0.15, y: 0.2, duration: 1.8 },
+    { delay: 0.3, x: 0.25, y: 0.35, duration: 2.0 },
+    { delay: 0.6, x: 0.35, y: 0.25, duration: 1.6 },
+    { delay: 0.9, x: 0.2, y: 0.3, duration: 2.2 },
+  ];
+
   return (
     <div
       role="status"
@@ -22,26 +30,9 @@ export function CoinLoader({ className, size = 'md' }: LoaderProps) {
             <stop offset="50%" stopColor={SAPPHIRE[2]} />
             <stop offset="100%" stopColor={SAPPHIRE[1]} />
           </radialGradient>
-          <linearGradient id={`sparkle-${size}`} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="transparent" />
-            <stop offset="45%" stopColor="transparent" />
-            <stop offset="50%" stopColor={SAPPHIRE[3]} />
-            <stop offset="55%" stopColor="transparent" />
-            <stop offset="100%" stopColor="transparent" />
-          </linearGradient>
         </defs>
 
-        {/* Shadow */}
-        <ellipse
-          cx={center}
-          cy={dim * 0.85}
-          rx={coinRadius * 0.9}
-          ry={dim * 0.06}
-          fill={SAPPHIRE[0]}
-          opacity={0.3}
-        />
-
-        {/* Coin body - static gold */}
+        {/* Coin body - static gold surface */}
         <circle
           cx={center}
           cy={center}
@@ -49,55 +40,58 @@ export function CoinLoader({ className, size = 'md' }: LoaderProps) {
           fill={`url(#coin-gold-${size})`}
         />
 
-        {/* Outer rim */}
-        <circle
-          cx={center}
-          cy={center}
-          r={coinRadius}
-          fill="none"
-          stroke={SAPPHIRE[1]}
-          strokeWidth={dim * 0.025}
-        />
-
-        {/* Inner detail ring */}
-        <circle
-          cx={center}
-          cy={center}
-          r={coinRadius * 0.75}
-          fill="none"
-          stroke={SAPPHIRE[2]}
-          strokeWidth={dim * 0.015}
-          opacity={0.7}
-        />
-
-        {/* Star emblem */}
-        <text
-          x={center}
-          y={center + dim * 0.08}
-          textAnchor="middle"
-          fontSize={dim * 0.24}
-          fill={SAPPHIRE[3]}
-          fontWeight="bold"
-        >
-          ★
-        </text>
-
-        {/* Animated sparkle/glimmer effect */}
-        <motion.rect
-          x={-dim * 0.2}
-          y={-dim * 0.5}
-          width={dim * 0.4}
-          height={dim * 2}
-          fill={`url(#sparkle-${size})`}
-          opacity={0.8}
-          animate={{ x: [-dim * 0.3, dim * 1.3] }}
-          transition={{
-            duration: 2.5,
-            repeat: Infinity,
-            ease: 'linear',
-            repeatDelay: 0.5
-          }}
-        />
+        {/* Multiple animated star sparkles that twinkle and move */}
+        {sparkles.map((sparkle, i) => (
+          <motion.g
+            key={`sparkle-${i}`}
+            animate={{
+              opacity: [0, 1, 1, 0],
+              scale: [0.5, 1.2, 1, 0.5],
+            }}
+            transition={{
+              duration: sparkle.duration,
+              repeat: Infinity,
+              delay: sparkle.delay,
+              ease: 'easeInOut',
+            }}
+            style={{
+              originX: `${center + coinRadius * sparkle.x}px`,
+              originY: `${center - coinRadius * sparkle.y}px`,
+            }}
+          >
+            {/* Four-pointed star sparkle */}
+            <path
+              d={`
+                M ${center + coinRadius * sparkle.x} ${center - coinRadius * sparkle.y - dim * 0.05}
+                L ${center + coinRadius * sparkle.x + dim * 0.015} ${center - coinRadius * sparkle.y}
+                L ${center + coinRadius * sparkle.x} ${center - coinRadius * sparkle.y + dim * 0.05}
+                L ${center + coinRadius * sparkle.x - dim * 0.015} ${center - coinRadius * sparkle.y}
+                Z
+              `}
+              fill="#ffffff"
+            />
+            {/* Horizontal beam */}
+            <path
+              d={`
+                M ${center + coinRadius * sparkle.x - dim * 0.04} ${center - coinRadius * sparkle.y}
+                L ${center + coinRadius * sparkle.x + dim * 0.04} ${center - coinRadius * sparkle.y}
+              `}
+              stroke="#ffffff"
+              strokeWidth={dim * 0.01}
+              opacity={0.8}
+            />
+            {/* Vertical beam */}
+            <path
+              d={`
+                M ${center + coinRadius * sparkle.x} ${center - coinRadius * sparkle.y - dim * 0.04}
+                L ${center + coinRadius * sparkle.x} ${center - coinRadius * sparkle.y + dim * 0.04}
+              `}
+              stroke="#ffffff"
+              strokeWidth={dim * 0.01}
+              opacity={0.8}
+            />
+          </motion.g>
+        ))}
       </svg>
     </div>
   );

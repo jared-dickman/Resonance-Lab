@@ -34,40 +34,53 @@ export function ClockworkLoader({ className, size = 'md' }: LoaderProps) {
       className={cn('flex items-center justify-center', className)}
       style={{ width: dim, height: dim }}
     >
-      <svg width={dim} height={dim} viewBox={`0 0 ${dim} ${dim}`}>
+      <svg width={dim} height={dim} viewBox="0 0 100 100">
         {/* Outer casing */}
-        <circle cx={centerX} cy={centerY} r={outerRadius} fill="none" stroke={SAPPHIRE[0]} strokeWidth={dim * 0.025} opacity={0.5} />
+        <circle cx="50" cy="50" r="38" fill="none" stroke={SAPPHIRE[0]} strokeWidth="2.5" opacity={0.5} />
 
         {/* Rotating outer gear */}
         <motion.path
-          d={createGearPath(24)}
+          d={(() => {
+            const points = [];
+            const teeth = 24;
+            const toothDepth = 3;
+            const radius = 35;
+
+            for (let i = 0; i < teeth; i++) {
+              const angle1 = (i / teeth) * Math.PI * 2;
+              const angle2 = ((i + 0.4) / teeth) * Math.PI * 2;
+              points.push([50 + Math.cos(angle1) * radius, 50 + Math.sin(angle1) * radius]);
+              points.push([50 + Math.cos(angle2) * (radius + toothDepth), 50 + Math.sin(angle2) * (radius + toothDepth)]);
+            }
+            return points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p[0]} ${p[1]}`).join(' ') + ' Z';
+          })()}
           fill="none"
           stroke={SAPPHIRE[1]}
-          strokeWidth={dim * 0.012}
+          strokeWidth="1.2"
           opacity={0.6}
           animate={{ rotate: 360 }}
           transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
-          style={{ originX: `${centerX}px`, originY: `${centerY}px` }}
+          style={{ transformOrigin: '50px 50px' }}
         />
 
         {/* Main clockwork wheel */}
         <motion.g
           animate={{ rotate: -360 }}
           transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
-          style={{ originX: `${centerX}px`, originY: `${centerY}px` }}
+          style={{ transformOrigin: '50px 50px' }}
         >
-          <circle cx={centerX} cy={centerY} r={dim * 0.28} fill="none" stroke={SAPPHIRE[1]} strokeWidth={dim * 0.018} opacity={0.7} />
+          <circle cx="50" cy="50" r="28" fill="none" stroke={SAPPHIRE[1]} strokeWidth="1.8" opacity={0.7} />
           {[0, 60, 120, 180, 240, 300].map((angle) => {
             const rad = (angle * Math.PI) / 180;
             return (
               <line
                 key={angle}
-                x1={centerX}
-                y1={centerY}
-                x2={centerX + Math.cos(rad) * dim * 0.28}
-                y2={centerY + Math.sin(rad) * dim * 0.28}
+                x1="50"
+                y1="50"
+                x2={50 + Math.cos(rad) * 28}
+                y2={50 + Math.sin(rad) * 28}
                 stroke={SAPPHIRE[2]}
-                strokeWidth={dim * 0.015}
+                strokeWidth="1.5"
                 opacity={0.5}
               />
             );
@@ -78,21 +91,21 @@ export function ClockworkLoader({ className, size = 'md' }: LoaderProps) {
         <motion.g
           animate={{ rotate: 360 }}
           transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-          style={{ originX: `${centerX}px`, originY: `${centerY}px` }}
+          style={{ transformOrigin: '50px 50px' }}
         >
           {Array.from({ length: 12 }, (_, i) => {
             const angle = (i * 30 * Math.PI) / 180;
-            const innerR = dim * 0.12;
-            const outerR = dim * 0.18;
+            const innerR = 12;
+            const outerR = 18;
             return (
               <line
                 key={i}
-                x1={centerX + Math.cos(angle) * innerR}
-                y1={centerY + Math.sin(angle) * innerR}
-                x2={centerX + Math.cos(angle) * outerR}
-                y2={centerY + Math.sin(angle) * outerR}
+                x1={50 + Math.cos(angle) * innerR}
+                y1={50 + Math.sin(angle) * innerR}
+                x2={50 + Math.cos(angle) * outerR}
+                y2={50 + Math.sin(angle) * outerR}
                 stroke={SAPPHIRE[3]}
-                strokeWidth={dim * 0.02}
+                strokeWidth="2"
                 strokeLinecap="round"
               />
             );
@@ -100,9 +113,9 @@ export function ClockworkLoader({ className, size = 'md' }: LoaderProps) {
         </motion.g>
 
         {/* Central pivot */}
-        <circle cx={centerX} cy={centerY} r={dim * 0.08} fill={SAPPHIRE[0]} opacity={0.8} />
-        <circle cx={centerX} cy={centerY} r={dim * 0.05} fill={SAPPHIRE[1]} />
-        <circle cx={centerX} cy={centerY} r={dim * 0.025} fill={SAPPHIRE[2]} />
+        <circle cx="50" cy="50" r="8" fill={SAPPHIRE[0]} opacity={0.8} />
+        <circle cx="50" cy="50" r="5" fill={SAPPHIRE[1]} />
+        <circle cx="50" cy="50" r="2.5" fill={SAPPHIRE[2]} />
       </svg>
     </div>
   );

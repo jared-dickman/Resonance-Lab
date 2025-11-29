@@ -10,35 +10,40 @@ export function HealthBarLoader({ className, size = 'md' }: LoaderProps) {
   const startX = dim * 0.2;
   const heartY = dim * 0.5;
 
-  // 8-bit pixel heart path
+  // Classic Zelda 8-bit pixel heart path
   const createPixelHeart = (x: number, y: number) => {
-    const pixelSize = heartSize / 8;
+    const p = heartSize / 8;
+    // Classic Zelda heart shape using pixel grid
     return `
-      M ${x + pixelSize * 2} ${y}
-      h ${pixelSize}
-      v ${pixelSize}
-      h ${pixelSize}
-      v ${pixelSize}
-      h ${pixelSize}
-      v ${pixelSize}
-      h ${pixelSize}
-      v ${pixelSize}
-      h ${-pixelSize}
-      v ${pixelSize}
-      h ${-pixelSize}
-      v ${pixelSize}
-      h ${-pixelSize * 2}
-      v ${-pixelSize}
-      h ${-pixelSize}
-      v ${-pixelSize}
-      h ${-pixelSize}
-      v ${-pixelSize}
-      h ${pixelSize}
-      v ${-pixelSize}
-      h ${pixelSize}
-      v ${-pixelSize}
-      h ${pixelSize}
-      v ${-pixelSize}
+      M ${x + p * 1} ${y + p * 2}
+      h ${p}
+      v ${-p}
+      h ${p}
+      v ${-p}
+      h ${p * 2}
+      v ${p}
+      h ${p}
+      v ${p}
+      h ${p}
+      v ${p * 2}
+      h ${-p}
+      v ${p}
+      h ${-p}
+      v ${p}
+      h ${-p}
+      v ${-p}
+      h ${-p}
+      v ${-p}
+      h ${-p}
+      v ${p}
+      h ${-p}
+      v ${p}
+      h ${-p}
+      v ${-p}
+      h ${-p}
+      v ${-p * 2}
+      h ${p}
+      v ${-p}
       z
     `;
   };
@@ -61,59 +66,74 @@ export function HealthBarLoader({ className, size = 'md' }: LoaderProps) {
           </filter>
         </defs>
 
-        {/* Heart 1 */}
-        <motion.path
-          d={createPixelHeart(startX, heartY)}
-          fill={SAPPHIRE[1]}
-          filter={`url(#glow-${size})`}
-          animate={{
-            opacity: [0.6, 1, 0.6],
-            scale: [0.95, 1.05, 0.95]
-          }}
-          transition={{
-            duration: 1.8,
-            repeat: Infinity,
-            ease: 'easeInOut',
-            delay: 0
-          }}
-          style={{ originX: `${startX + heartSize / 2}px`, originY: `${heartY + heartSize / 2}px` }}
-        />
+        {/* Heart 1 - Dark red outline + red fill */}
+        <g>
+          <path
+            d={createPixelHeart(startX, heartY)}
+            fill="#8B0000"
+            stroke="none"
+          />
+          <motion.path
+            d={createPixelHeart(startX + heartSize * 0.1, heartY + heartSize * 0.1)}
+            fill="#DC143C"
+            stroke="none"
+            animate={{
+              opacity: [0.7, 1, 0.7],
+            }}
+            transition={{
+              duration: 1.8,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: 0
+            }}
+          />
+        </g>
 
-        {/* Heart 2 */}
-        <motion.path
-          d={createPixelHeart(startX + spacing, heartY)}
-          fill={SAPPHIRE[2]}
-          filter={`url(#glow-${size})`}
-          animate={{
-            opacity: [0.6, 1, 0.6],
-            scale: [0.95, 1.05, 0.95]
-          }}
-          transition={{
-            duration: 1.8,
-            repeat: Infinity,
-            ease: 'easeInOut',
-            delay: 0.3
-          }}
-          style={{ originX: `${startX + spacing + heartSize / 2}px`, originY: `${heartY + heartSize / 2}px` }}
-        />
+        {/* Heart 2 - Dark red outline + red fill */}
+        <g>
+          <path
+            d={createPixelHeart(startX + spacing, heartY)}
+            fill="#8B0000"
+            stroke="none"
+          />
+          <motion.path
+            d={createPixelHeart(startX + spacing + heartSize * 0.1, heartY + heartSize * 0.1)}
+            fill="#DC143C"
+            stroke="none"
+            animate={{
+              opacity: [0.7, 1, 0.7],
+            }}
+            transition={{
+              duration: 1.8,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: 0.3
+            }}
+          />
+        </g>
 
-        {/* Heart 3 */}
-        <motion.path
-          d={createPixelHeart(startX + spacing * 2, heartY)}
-          fill={SAPPHIRE[3]}
-          filter={`url(#glow-${size})`}
-          animate={{
-            opacity: [0.6, 1, 0.6],
-            scale: [0.95, 1.05, 0.95]
-          }}
-          transition={{
-            duration: 1.8,
-            repeat: Infinity,
-            ease: 'easeInOut',
-            delay: 0.6
-          }}
-          style={{ originX: `${startX + spacing * 2 + heartSize / 2}px`, originY: `${heartY + heartSize / 2}px` }}
-        />
+        {/* Heart 3 - Dark red outline + red fill */}
+        <g>
+          <path
+            d={createPixelHeart(startX + spacing * 2, heartY)}
+            fill="#8B0000"
+            stroke="none"
+          />
+          <motion.path
+            d={createPixelHeart(startX + spacing * 2 + heartSize * 0.1, heartY + heartSize * 0.1)}
+            fill="#DC143C"
+            stroke="none"
+            animate={{
+              opacity: [0.7, 1, 0.7],
+            }}
+            transition={{
+              duration: 1.8,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: 0.6
+            }}
+          />
+        </g>
       </svg>
     </div>
   );

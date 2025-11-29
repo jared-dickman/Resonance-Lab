@@ -36,12 +36,11 @@ export function CometLoader({ className, size = 'md' }: LoaderProps) {
         <motion.g
           animate={{
             x: [-dim * 0.7, dim * 1.3],
-            y: [dim * 0.15, -dim * 0.15],
           }}
           transition={{
             duration: 3,
             repeat: Infinity,
-            ease: [0.45, 0, 0.55, 1],
+            ease: 'linear',
           }}
         >
           {/* Trailing tail particles */}

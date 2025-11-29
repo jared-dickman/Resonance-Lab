@@ -124,7 +124,6 @@ export { ScanlineLoader } from '@/components/ui/loaders/ScanlineLoader';
 export { PacmanLoader } from '@/components/ui/loaders/PacmanLoader';
 export { TetrisLoader } from '@/components/ui/loaders/TetrisLoader';
 export { PongLoader } from '@/components/ui/loaders/PongLoader';
-export { JoystickLoader } from '@/components/ui/loaders/JoystickLoader';
 export { CoinLoader } from '@/components/ui/loaders/CoinLoader';
 export { HealthBarLoader } from '@/components/ui/loaders/HealthBarLoader';
 export { RespawnLoader } from '@/components/ui/loaders/RespawnLoader';

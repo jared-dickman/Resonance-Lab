@@ -24,128 +24,138 @@ export function RespawnLoader({ className, size = 'md' }: LoaderProps) {
           </radialGradient>
         </defs>
 
-        {/* Character silhouette - fades out */}
+        {/* Link silhouette - forms from sparkles */}
         <motion.g
           animate={{
-            opacity: [1, 1, 0, 0, 0, 0.3, 1, 1],
-            scale: [1, 1, 0.8, 0, 0, 0.6, 1, 1],
+            opacity: [0, 0, 0.3, 1, 1],
+            scale: [0.5, 0.5, 0.8, 1, 1],
           }}
           transition={{
             duration: cycleDuration,
             repeat: Infinity,
-            times: [0, 0.2, 0.3, 0.35, 0.5, 0.6, 0.75, 1],
-            ease: 'easeInOut',
+            times: [0, 0.4, 0.5, 0.7, 1],
+            ease: 'easeOut',
           }}
           style={{ originX: `${center}px`, originY: `${center}px` }}
         >
-          {/* Simple character silhouette */}
-          <circle cx={center} cy={center - dim * 0.12} r={dim * 0.08} fill={SAPPHIRE[2]} />
-          <rect
-            x={center - dim * 0.08}
-            y={center - dim * 0.03}
-            width={dim * 0.16}
-            height={dim * 0.18}
-            rx={dim * 0.03}
+          {/* Head */}
+          <circle cx={center} cy={center - dim * 0.15} r={dim * 0.09} fill={SAPPHIRE[2]} />
+          {/* Body/tunic */}
+          <path
+            d={`
+              M ${center - dim * 0.1} ${center - dim * 0.05}
+              L ${center} ${center - dim * 0.08}
+              L ${center + dim * 0.1} ${center - dim * 0.05}
+              L ${center + dim * 0.12} ${center + dim * 0.12}
+              L ${center - dim * 0.12} ${center + dim * 0.12}
+              Z
+            `}
             fill={SAPPHIRE[2]}
           />
+          {/* Legs */}
           <rect
-            x={center - dim * 0.08}
-            y={center + 0.15 * dim}
-            width={dim * 0.06}
-            height={dim * 0.12}
-            rx={dim * 0.02}
+            x={center - dim * 0.09}
+            y={center + 0.12 * dim}
+            width={dim * 0.07}
+            height={dim * 0.14}
             fill={SAPPHIRE[1]}
           />
           <rect
             x={center + dim * 0.02}
-            y={center + 0.15 * dim}
-            width={dim * 0.06}
-            height={dim * 0.12}
-            rx={dim * 0.02}
+            y={center + 0.12 * dim}
+            width={dim * 0.07}
+            height={dim * 0.14}
             fill={SAPPHIRE[1]}
           />
         </motion.g>
 
-        {/* Particle burst - 12 particles */}
-        {Array.from({ length: 12 }).map((_, i) => {
-          const angle = (i * Math.PI * 2) / 12;
-          const distance = dim * 0.3;
+        {/* Sparkle burst - 8 four-pointed stars */}
+        {Array.from({ length: 8 }).map((_, i) => {
+          const angle = (i * Math.PI * 2) / 8;
+          const distance = dim * 0.25;
+          const starSize = dim * 0.04;
           return (
-            <motion.circle
-              key={`particle-${i}`}
-              cx={center}
-              cy={center}
-              r={dim * 0.025}
-              fill={SAPPHIRE[i % 3 + 1]}
+            <motion.g
+              key={`star-${i}`}
               animate={{
-                cx: [center, center + Math.cos(angle) * distance],
-                cy: [center, center + Math.sin(angle) * distance],
-                opacity: [0, 0, 1, 0],
-                scale: [0, 0, 1.5, 0],
+                opacity: [1, 1, 0],
+                scale: [1.5, 1, 0.5],
               }}
               transition={{
                 duration: cycleDuration,
                 repeat: Infinity,
-                times: [0, 0.3, 0.4, 0.5],
+                times: [0, 0.3, 0.5],
                 ease: 'easeOut',
+                delay: i * 0.03,
               }}
-            />
+              style={{
+                originX: `${center + Math.cos(angle) * distance}px`,
+                originY: `${center + Math.sin(angle) * distance}px`,
+              }}
+            >
+              {/* Four-pointed star */}
+              <path
+                d={`
+                  M ${center + Math.cos(angle) * distance} ${center + Math.sin(angle) * distance - starSize}
+                  L ${center + Math.cos(angle) * distance + starSize * 0.3} ${center + Math.sin(angle) * distance}
+                  L ${center + Math.cos(angle) * distance} ${center + Math.sin(angle) * distance + starSize}
+                  L ${center + Math.cos(angle) * distance - starSize * 0.3} ${center + Math.sin(angle) * distance}
+                  Z
+                `}
+                fill="#ffffff"
+              />
+            </motion.g>
           );
         })}
 
-        {/* Central energy burst */}
+        {/* Central magic burst */}
         <motion.circle
           cx={center}
           cy={center}
           r={dim * 0.15}
           fill={`url(#burst-${size})`}
           animate={{
-            scale: [0, 0, 3, 0],
-            opacity: [0, 0, 0.9, 0],
+            scale: [2, 2, 0.5],
+            opacity: [1, 0.6, 0],
           }}
           transition={{
             duration: cycleDuration,
             repeat: Infinity,
-            times: [0, 0.3, 0.4, 0.5],
+            times: [0, 0.3, 0.5],
             ease: 'easeOut',
           }}
         />
 
-        {/* Respawn glow rings */}
-        <motion.circle
-          cx={center}
-          cy={center}
-          r={dim * 0.32}
-          fill="none"
-          stroke={SAPPHIRE[3]}
-          strokeWidth={dim * 0.015}
-          animate={{
-            opacity: [0, 0, 0, 0.8, 0.4, 0.4],
-            scale: [0.5, 0.5, 0.5, 1.1, 1, 1],
-          }}
-          transition={{
-            duration: cycleDuration,
-            repeat: Infinity,
-            times: [0, 0.3, 0.5, 0.6, 0.75, 1],
-          }}
-        />
-        <motion.circle
-          cx={center}
-          cy={center}
-          r={dim * 0.24}
-          fill="none"
-          stroke={SAPPHIRE[2]}
-          strokeWidth={dim * 0.012}
-          animate={{
-            opacity: [0, 0, 0, 0.6, 0.3, 0.3],
-            scale: [0.6, 0.6, 0.6, 1.05, 1, 1],
-          }}
-          transition={{
-            duration: cycleDuration,
-            repeat: Infinity,
-            times: [0, 0.3, 0.5, 0.65, 0.75, 1],
-          }}
-        />
+        {/* Triforce-inspired triangular sparkles */}
+        {[0, 120, 240].map((rotation, i) => (
+          <motion.path
+            key={`tri-${i}`}
+            d={`
+              M ${center} ${center - dim * 0.2}
+              L ${center + dim * 0.06} ${center - dim * 0.1}
+              L ${center - dim * 0.06} ${center - dim * 0.1}
+              Z
+            `}
+            fill={SAPPHIRE[3]}
+            opacity={0.8}
+            animate={{
+              opacity: [0, 0, 0.8, 0.3],
+              scale: [0, 0, 1.2, 1],
+            }}
+            transition={{
+              duration: cycleDuration,
+              repeat: Infinity,
+              times: [0, 0.2, 0.4, 1],
+              ease: 'easeOut',
+              delay: i * 0.1,
+            }}
+            style={{
+              originX: `${center}px`,
+              originY: `${center}px`,
+              transform: `rotate(${rotation}deg)`,
+            }}
+          />
+        ))}
       </svg>
     </div>
   );

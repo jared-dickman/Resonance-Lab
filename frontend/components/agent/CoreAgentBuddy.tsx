@@ -522,7 +522,8 @@ export function CoreAgentBuddy({ onSave, isSaving = false, onboarding }: CoreAge
                   exit={{ opacity: 0, height: 0 }}
                   className="flex flex-col"
                 >
-                  {/* Mini Nav Bar - Stripe/Linear inspired with horizontal scroll */}
+                  {/* Mini Nav Bar - hidden during onboarding */}
+                  {!isOnboarding && (
                   <nav className="relative border-b border-white/5 bg-white/[0.02]">
                     {/* Scroll fade indicators */}
                     <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-slate-900/95 to-transparent z-10 pointer-events-none" />
@@ -549,6 +550,7 @@ export function CoreAgentBuddy({ onSave, isSaving = false, onboarding }: CoreAge
                       })}
                     </div>
                   </nav>
+                  )}
 
                   {/* Messages */}
                   <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 py-3 space-y-3 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
@@ -556,7 +558,7 @@ export function CoreAgentBuddy({ onSave, isSaving = false, onboarding }: CoreAge
                       {isEmptyState && <EmptyState placeholder={currentPlaceholder} />}
                     </AnimatePresence>
 
-                    {messages.map((message, i) => (
+                    {displayMessages.map((message, i) => (
                       <motion.div
                         key={i}
                         initial={{ opacity: 0, y: 8 }}
@@ -633,31 +635,40 @@ export function CoreAgentBuddy({ onSave, isSaving = false, onboarding }: CoreAge
                     ))}
 
                     <AnimatePresence>
-                      {isLoading && <ThinkingIndicator pun={thinkingPun} />}
+                      {displayLoading && <ThinkingIndicator pun={isOnboarding ? 'Finding your jam...' : thinkingPun} />}
                     </AnimatePresence>
 
                     <div ref={messagesEndRef} />
                   </div>
 
-                  {/* Input */}
+                  {/* Input - typewriter display during onboarding */}
                   <form onSubmit={handleSubmit} data-buddy-form className="px-4 py-3 border-t border-white/5">
                     <div className="flex gap-2">
-                      <Input
-                        ref={inputRef}
-                        value={input}
-                        onChange={e => setInput(e.target.value)}
-                        placeholder={BUDDY_INPUT_PLACEHOLDER}
-                        disabled={isLoading || isSaving}
-                        className="flex-1 h-9 bg-white/5 border-white/10 focus:border-blue-500/50 text-xs text-white placeholder:text-white/30 rounded-lg"
-                      />
-                      <Button
-                        type="submit"
-                        size="icon"
-                        className="h-9 w-9 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 border-0 rounded-lg"
-                        disabled={isLoading || isSaving || !input.trim()}
-                      >
-                        {isLoading ? <Spinner className="h-4 w-4" /> : <Send className="h-4 w-4" />}
-                      </Button>
+                      {isOnboarding ? (
+                        <div className="flex-1 h-9 bg-white/5 border border-white/10 rounded-lg px-3 flex items-center text-xs text-white/80">
+                          {displayInput}
+                          {displayInput && <span className="ml-0.5 w-0.5 h-4 bg-blue-400 animate-pulse" />}
+                        </div>
+                      ) : (
+                        <Input
+                          ref={inputRef}
+                          value={input}
+                          onChange={e => setInput(e.target.value)}
+                          placeholder={BUDDY_INPUT_PLACEHOLDER}
+                          disabled={isLoading || isSaving}
+                          className="flex-1 h-9 bg-white/5 border-white/10 focus:border-blue-500/50 text-xs text-white placeholder:text-white/30 rounded-lg"
+                        />
+                      )}
+                      {!isOnboarding && (
+                        <Button
+                          type="submit"
+                          size="icon"
+                          className="h-9 w-9 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 border-0 rounded-lg"
+                          disabled={isLoading || isSaving || !input.trim()}
+                        >
+                          {isLoading ? <Spinner className="h-4 w-4" /> : <Send className="h-4 w-4" />}
+                        </Button>
+                      )}
                     </div>
                   </form>
                 </motion.div>

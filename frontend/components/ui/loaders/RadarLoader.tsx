@@ -67,7 +67,10 @@ export function RadarLoader({ className, size = 'md' }: LoaderProps) {
         <motion.g
           animate={{ rotate: 360 }}
           transition={{ duration: 2.5, repeat: Infinity, ease: 'linear' }}
-          style={{ transformOrigin: `${centerX}px ${centerY}px` }}
+          style={{
+            transformOrigin: `${centerX}px ${centerY}px`,
+            transformBox: 'fill-box'
+          }}
         >
           <path
             d={`M ${centerX} ${centerY} L ${centerX + maxRadius} ${centerY} A ${maxRadius} ${maxRadius} 0 0 1 ${centerX} ${centerY - maxRadius} Z`}
