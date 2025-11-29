@@ -47,7 +47,7 @@ export function QuickStart({ tips, className, onDismiss }: QuickStartProps) {
                   <div className="flex items-center justify-between gap-2 mb-2">
                     <h3 className="font-semibold text-sm">Quick Start</h3>
                     <Button
-                      variant="ghost"
+                      variant="outline"
                       size="sm"
                       onClick={handleDismiss}
                       className="h-6 w-6 p-0 hover:bg-primary/20"

@@ -114,7 +114,7 @@ export default function DraftManager({ currentDraft, onClose, onLoadDraft }: Dra
                 <FileText className="w-5 h-5 text-primary" />
                 Draft Manager
               </CardTitle>
-              <Button variant="ghost" size="sm" onClick={onClose}>
+              <Button variant="outline" size="sm" onClick={onClose}>
                 <X className="w-4 h-4" />
               </Button>
             </div>
@@ -151,7 +151,7 @@ export default function DraftManager({ currentDraft, onClose, onLoadDraft }: Dra
                       <Button variant="outline" size="sm" onClick={saveDraft}>
                         Save
                       </Button>
-                      <Button variant="ghost" size="sm" onClick={() => exportDraft(currentDraft)}>
+                      <Button variant="outline" size="sm" onClick={() => exportDraft(currentDraft)}>
                         <Download className="w-4 h-4" />
                       </Button>
                     </div>
@@ -206,14 +206,14 @@ export default function DraftManager({ currentDraft, onClose, onLoadDraft }: Dra
                                   Load
                                 </Button>
                                 <Button
-                                  variant="ghost"
+                                  variant="outline"
                                   size="sm"
                                   onClick={() => exportDraft(draft)}
                                 >
                                   <Download className="w-4 h-4" />
                                 </Button>
                                 <Button
-                                  variant="ghost"
+                                  variant="outline"
                                   size="sm"
                                   onClick={() => deleteDraft(draft.id)}
                                 >

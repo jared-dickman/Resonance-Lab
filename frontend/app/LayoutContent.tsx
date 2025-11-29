@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { motion } from 'framer-motion';
 import { Bot } from 'lucide-react';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { initializeApp } from '@/lib/init';
@@ -41,22 +42,33 @@ function LayoutInner({ children }: { children: React.ReactNode }) {
                   Jamium
                 </h1>
               </Link>
-              <Breadcrumbs />
+              {!isLandingPage && <Breadcrumbs />}
             </div>
             {/* Buddy toggle - hidden on landing page where onboarding takes over */}
             {!isLandingPage && (
               <Button
-                variant={isOpen ? "default" : "ghost"}
+                variant="outline"
                 size="sm"
-                className={`font-medium h-8 gap-2 shrink-0 ${
-                  isOpen
-                    ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
+                className="font-medium h-8 gap-2 shrink-0 relative overflow-hidden border-accent/50 hover:border-accent"
                 onClick={toggleBuddy}
               >
-                <Bot className="h-4 w-4" />
-                <span className="hidden sm:inline">Buddy</span>
+                {/* Animated gradient fill - sweeps right-to-left on open, follows Buddy out on close */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 bg-[length:200%_100%]"
+                  initial={false}
+                  animate={{
+                    clipPath: isOpen ? 'inset(0 0 0 0)' : 'inset(0 0 0 100%)',
+                    backgroundPosition: isOpen ? '100% 0' : '0% 0',
+                  }}
+                  transition={{
+                    clipPath: isOpen
+                      ? { type: 'spring', stiffness: 180, damping: 20 }  // Open: slow reveal (matches panel)
+                      : { type: 'spring', stiffness: 450, damping: 32 }, // Close: fast snap (matches panel)
+                    backgroundPosition: { duration: 0.4, ease: 'easeOut' },
+                  }}
+                />
+                <Bot className={`h-4 w-4 relative z-10 transition-colors duration-300 ${isOpen ? 'text-white' : ''}`} />
+                <span className={`hidden sm:inline relative z-10 transition-colors duration-300 ${isOpen ? 'text-white' : ''}`}>Buddy</span>
               </Button>
             )}
           </div>

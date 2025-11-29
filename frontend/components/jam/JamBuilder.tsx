@@ -303,7 +303,7 @@ export default function JamBuilder({ progression, onUpdate, onClear }: JamBuilde
                   whileTap={{ scale: 0.9 }}
                   animate={isMuted ? { opacity: 0.5 } : { opacity: 1 }}
                 >
-                  <Button variant="ghost" size="lg" onClick={() => setIsMuted(!isMuted)}>
+                  <Button variant="outline" size="lg" onClick={() => setIsMuted(!isMuted)}>
                     <motion.div
                       key={isMuted ? 'muted' : 'unmuted'}
                       initial={{ scale: 0.5, opacity: 0 }}
@@ -637,7 +637,7 @@ export default function JamBuilder({ progression, onUpdate, onClear }: JamBuilde
                     Current Chord: {currentChord.name}
                   </motion.span>
                   <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                    <Button variant="ghost" size="sm" onClick={() => setShowChordDisplay(false)}>
+                    <Button variant="outline" size="sm" onClick={() => setShowChordDisplay(false)}>
                       <motion.div
                         animate={{ rotate: showChordDisplay ? 0 : 180 }}
                         transition={{ duration: 0.3 }}

@@ -93,7 +93,7 @@ export function SongToolbar({
 
           {/* Settings Button */}
           <Button
-            variant="ghost"
+            variant="outline"
             size="icon"
             onClick={() => setIsMenuOpen(true)}
             className="h-11 w-11 rounded-xl"
@@ -132,7 +132,7 @@ export function SongToolbar({
                 <div className="flex items-center justify-between px-6 pb-4">
                   <h2 className="text-xl font-bold text-white">Song Settings</h2>
                   <Button
-                    variant="ghost"
+                    variant="outline"
                     size="icon"
                     onClick={() => setIsMenuOpen(false)}
                     className="h-10 w-10 rounded-full text-white/60 hover:text-white hover:bg-white/10"
@@ -336,13 +336,13 @@ export function SongToolbar({
               <option key={key} value={key}>{key}</option>
             ))}
           </select>
-          <Button variant="ghost" size="sm" onClick={() => onTransposeChange(transpose - 1)} className="h-7 w-6 p-0">
+          <Button variant="outline" size="sm" onClick={() => onTransposeChange(transpose - 1)} className="h-7 w-6 p-0">
             <ChevronDown className="h-3.5 w-3.5" />
           </Button>
           <span className="w-6 text-center text-xs font-mono tabular-nums text-muted-foreground">
             {transpose >= 0 ? `+${transpose}` : transpose}
           </span>
-          <Button variant="ghost" size="sm" onClick={() => onTransposeChange(transpose + 1)} className="h-7 w-6 p-0">
+          <Button variant="outline" size="sm" onClick={() => onTransposeChange(transpose + 1)} className="h-7 w-6 p-0">
             <ChevronUp className="h-3.5 w-3.5" />
           </Button>
         </div>
@@ -350,7 +350,7 @@ export function SongToolbar({
         <div className="w-px h-5 bg-border/50 mx-1" />
 
         <div className="flex items-center gap-0.5">
-          <Button variant="ghost" size="sm" onClick={() => onBpmChange(Math.max(40, bpm - 5))} className="h-7 w-6 p-0 text-muted-foreground hover:text-foreground">
+          <Button variant="outline" size="sm" onClick={() => onBpmChange(Math.max(40, bpm - 5))} className="h-7 w-6 p-0 text-muted-foreground hover:text-foreground">
             <ChevronDown className="h-3.5 w-3.5" />
           </Button>
           <div className="flex items-center gap-1 px-1">
@@ -367,7 +367,7 @@ export function SongToolbar({
             />
             <span className="text-[10px] text-muted-foreground font-medium">BPM</span>
           </div>
-          <Button variant="ghost" size="sm" onClick={() => onBpmChange(Math.min(300, bpm + 5))} className="h-7 w-6 p-0 text-muted-foreground hover:text-foreground">
+          <Button variant="outline" size="sm" onClick={() => onBpmChange(Math.min(300, bpm + 5))} className="h-7 w-6 p-0 text-muted-foreground hover:text-foreground">
             <ChevronUp className="h-3.5 w-3.5" />
           </Button>
         </div>
@@ -375,7 +375,7 @@ export function SongToolbar({
         <div className="w-px h-5 bg-border/50 mx-1" />
 
         <Button
-          variant="ghost"
+          variant="outline"
           size="sm"
           onClick={onToggleAudio}
           className={`h-8 w-8 p-0 ${isAudioEnabled ? 'text-sapphire-400' : 'text-muted-foreground'}`}
@@ -384,7 +384,7 @@ export function SongToolbar({
         </Button>
 
         <Button
-          variant="ghost"
+          variant="outline"
           size="sm"
           onClick={onDelete}
           disabled={isDeleting}

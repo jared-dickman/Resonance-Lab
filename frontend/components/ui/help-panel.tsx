@@ -40,7 +40,7 @@ export function HelpPanel({ title, sections, className, defaultOpen = false }: H
     <div className={cn('relative', className)}>
       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
         <Button
-          variant="ghost"
+          variant="outline"
           size="sm"
           onClick={() => setIsOpen(!isOpen)}
           className="gap-2"
@@ -65,7 +65,7 @@ export function HelpPanel({ title, sections, className, defaultOpen = false }: H
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-lg">{title}</CardTitle>
                   <Button
-                    variant="ghost"
+                    variant="outline"
                     size="sm"
                     onClick={() => setIsOpen(false)}
                     className="h-6 w-6 p-0"

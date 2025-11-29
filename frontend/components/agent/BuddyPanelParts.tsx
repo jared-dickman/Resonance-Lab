@@ -56,7 +56,7 @@ export function BuddyHeader({ context, isStatic, isOnboarding, isMinimized, onMi
         </div>
       </div>
       {isOnboarding ? (
-        <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-white/40 hover:text-white/80 hover:bg-white/10" onClick={onSkip}>
+        <Button variant="outline" size="sm" className="h-6 px-2 text-xs text-white/40 hover:text-white/80 hover:bg-white/10" onClick={onSkip}>
           Skip
         </Button>
       ) : (

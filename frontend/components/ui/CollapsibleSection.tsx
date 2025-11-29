@@ -37,7 +37,7 @@ export function CollapsibleSection({
       >
         <div className="flex items-center gap-3">
           <Button
-            variant="ghost"
+            variant="outline"
             size="sm"
             onClick={() => setIsExpanded(!isExpanded)}
             className="h-8 w-8 p-0"

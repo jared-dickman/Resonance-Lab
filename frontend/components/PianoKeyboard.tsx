@@ -206,7 +206,7 @@ export function PianoKeyboard({
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="icon" onClick={toggleSound} title="Toggle sound">
+          <Button variant="ghost" size="icon" onClick={toggleSound} title="Toggle sound">
             {isSoundEnabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
           </Button>
           {isSoundEnabled && (
@@ -230,13 +230,13 @@ export function PianoKeyboard({
       {/* Voicing Navigation */}
       {voicings.length > 1 && (
         <div className="flex items-center justify-center gap-4">
-          <Button variant="outline" size="icon" onClick={handlePrevVoicing}>
+          <Button variant="ghost" size="icon" onClick={handlePrevVoicing}>
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <span className="text-sm text-muted-foreground">
             Voicing {currentVoicingIndex + 1} of {voicings.length}
           </span>
-          <Button variant="outline" size="icon" onClick={handleNextVoicing}>
+          <Button variant="ghost" size="icon" onClick={handleNextVoicing}>
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>

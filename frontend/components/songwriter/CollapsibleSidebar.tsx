@@ -35,7 +35,7 @@ export function CollapsibleSidebar({
     >
       {/* Collapse Toggle Button */}
       <Button
-        variant="ghost"
+        variant="outline"
         size="sm"
         onClick={() => setIsCollapsed(!isCollapsed)}
         className={cn(

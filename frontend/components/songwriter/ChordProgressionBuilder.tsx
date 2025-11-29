@@ -98,7 +98,7 @@ export default function ChordProgressionBuilder({
           />
           <div className="flex gap-2">
             <SimpleTooltip content="Clear all chords">
-              <Button variant="ghost" size="sm" onClick={clearAll} disabled={chords.length === 0}>
+              <Button variant="outline" size="sm" onClick={clearAll} disabled={chords.length === 0}>
                 <RotateCcw className="w-4 h-4" />
               </Button>
             </SimpleTooltip>
@@ -139,7 +139,7 @@ export default function ChordProgressionBuilder({
                       </span>
                     </div>
                     <Button
-                      variant="ghost"
+                      variant="outline"
                       size="sm"
                       onClick={() => removeChord(index)}
                       className="flex-shrink-0"

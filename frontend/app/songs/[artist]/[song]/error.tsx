@@ -28,7 +28,7 @@ export default function Error({
   return (
     <div className="space-y-6">
       <Link href={pageRoutes.home}>
-        <Button variant="ghost" size="sm">
+        <Button variant="outline" size="sm">
           <ArrowLeft className="h-4 w-4 mr-2" />
           Home
         </Button>

@@ -192,7 +192,7 @@ export function JamWizard({ steps, onComplete, className }: JamWizardProps) {
 
         <div className="flex items-center gap-2">
           {step.canSkip && !isLastStep && (
-            <Button variant="ghost" size="lg" onClick={goToNext}>
+            <Button variant="outline" size="lg" onClick={goToNext}>
               Skip
             </Button>
           )}
