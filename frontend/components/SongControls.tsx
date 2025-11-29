@@ -89,7 +89,7 @@ export function SongControls({
             id="key-selector"
             value={currentKey}
             onChange={handleKeyChange}
-            className="rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sapphire-500/50 transition-all duration-200"
+            className="rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sapphire-500/50 transition-all duration-200 appearance-none cursor-pointer"
           >
             {KEY_SIGNATURES.map(key => (
               <option key={key} value={key}>
