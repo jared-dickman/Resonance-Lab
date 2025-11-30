@@ -15,7 +15,7 @@ import { ChordJourneyVisualization } from '@/components/ChordJourneyVisualizatio
 import { ChordRhythmGame } from '@/components/ChordRhythmGame';
 import { LoopPracticeMode } from '@/components/LoopPracticeMode';
 import { Button } from '@/components/ui/button';
-import { Guitar, Piano } from 'lucide-react';
+import { Guitar, Piano, ChevronDown, ChevronUp } from 'lucide-react';
 import { useGuitarPlayback } from '@/lib/hooks';
 import IntelligentMusicPanel from '@/components/music-theory/IntelligentMusicPanel';
 import { useDeleteSong } from '@/app/features/songs/hooks';
@@ -76,8 +76,33 @@ export function SongClient({ song, artistSlug, songSlug }: SongClientProps): Rea
   const [currentChord, setCurrentChord] = useState<string | null>(null);
   const [instrument, setInstrument] = useState<'guitar' | 'piano'>('guitar');
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
+  const [isChordsVisible, setIsChordsVisible] = useState(true);
+  const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
 
   const { mutate: deleteSongMutation, isPending: isDeleting } = useDeleteSong();
+
+  // Load collapsed sections from localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storageKey = `song-sections-${artistSlug}-${songSlug}`;
+      const stored = localStorage.getItem(storageKey);
+      if (stored) {
+        try {
+          setCollapsedSections(JSON.parse(stored));
+        } catch (e) {
+          // Invalid JSON, ignore
+        }
+      }
+    }
+  }, [artistSlug, songSlug]);
+
+  // Save collapsed sections to localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storageKey = `song-sections-${artistSlug}-${songSlug}`;
+      localStorage.setItem(storageKey, JSON.stringify(collapsedSections));
+    }
+  }, [collapsedSections, artistSlug, songSlug]);
 
   // Initialize guitar playback
   useGuitarPlayback({
@@ -226,6 +251,134 @@ export function SongClient({ song, artistSlug, songSlug }: SongClientProps): Rea
     );
   };
 
+  const toggleSection = (sectionKey: string) => {
+    setCollapsedSections(prev => ({
+      ...prev,
+      [sectionKey]: !prev[sectionKey],
+    }));
+  };
+
+  // Get color for section type (subtle sapphire/purple variations)
+  const getSectionColor = (sectionName: string) => {
+    const name = sectionName.toLowerCase();
+    if (name.includes('verse')) return 'sapphire-400';
+    if (name.includes('chorus')) return 'sapphire-500';
+    if (name.includes('bridge')) return 'purple-400';
+    if (name.includes('intro')) return 'sapphire-300';
+    if (name.includes('outro')) return 'purple-500';
+    if (name.includes('pre-chorus')) return 'purple-300';
+    return 'sapphire-400'; // default
+  };
+
+  // Group consecutive lines for Ultimate Guitar-style display
+  const groupConsecutiveLines = (lines: typeof transposedSections[0]['lines']) => {
+    const groups: Array<{ lines: typeof lines; chords: Array<{ name: string; charPos: number }> }> = [];
+    let currentGroup: typeof lines = [];
+    let charPosition = 0;
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      if (!line) continue;
+
+      const hasLyric = line.lyric && line.lyric.trim().length > 0;
+      const hasChord = line.chord?.name;
+
+      if (hasLyric || hasChord) {
+        // Add to current group
+        currentGroup.push(line);
+
+        // Check if next line should be part of this group
+        const nextLine = lines[i + 1];
+        const shouldContinue = nextLine && nextLine.chord && (!nextLine.lyric || nextLine.lyric.trim().length === 0);
+
+        if (!shouldContinue) {
+          // Finalize this group
+          const chords: Array<{ name: string; charPos: number }> = [];
+          let pos = 0;
+
+          for (const groupLine of currentGroup) {
+            if (groupLine.chord?.name) {
+              chords.push({ name: groupLine.chord.name, charPos: pos });
+              // Advance position: if there's a lyric, use its length,
+              // otherwise use chord name length + padding for spacing
+              if (groupLine.lyric) {
+                pos += groupLine.lyric.length;
+              } else {
+                // Add spacing: chord name length + 3 characters padding
+                pos += groupLine.chord.name.length + 3;
+              }
+            } else if (groupLine.lyric) {
+              // Lyric without chord - still advance position
+              pos += groupLine.lyric.length;
+            }
+          }
+
+          groups.push({ lines: [...currentGroup], chords });
+          currentGroup = [];
+          charPosition = 0;
+        }
+      } else if (currentGroup.length > 0) {
+        // Empty line - finalize current group
+        const chords: Array<{ name: string; charPos: number }> = [];
+        let pos = 0;
+
+        for (const groupLine of currentGroup) {
+          if (groupLine.chord?.name) {
+            chords.push({ name: groupLine.chord.name, charPos: pos });
+            // Advance position: if there's a lyric, use its length,
+            // otherwise use chord name length + padding for spacing
+            if (groupLine.lyric) {
+              pos += groupLine.lyric.length;
+            } else {
+              // Add spacing: chord name length + 3 characters padding
+              pos += groupLine.chord.name.length + 3;
+            }
+          } else if (groupLine.lyric) {
+            // Lyric without chord - still advance position
+            pos += groupLine.lyric.length;
+          }
+        }
+
+        groups.push({ lines: [...currentGroup], chords });
+        currentGroup = [];
+        charPosition = 0;
+
+        // Add empty line as its own group
+        groups.push({ lines: [line], chords: [] });
+      } else {
+        // Empty line with no current group
+        groups.push({ lines: [line], chords: [] });
+      }
+    }
+
+    // Don't forget the last group
+    if (currentGroup.length > 0) {
+      const chords: Array<{ name: string; charPos: number }> = [];
+      let pos = 0;
+
+      for (const groupLine of currentGroup) {
+        if (groupLine.chord?.name) {
+          chords.push({ name: groupLine.chord.name, charPos: pos });
+          // Advance position: if there's a lyric, use its length,
+          // otherwise use chord name length + padding for spacing
+          if (groupLine.lyric) {
+            pos += groupLine.lyric.length;
+          } else {
+            // Add spacing: chord name length + 3 characters padding
+            pos += groupLine.chord.name.length + 3;
+          }
+        } else if (groupLine.lyric) {
+          // Lyric without chord - still advance position
+          pos += groupLine.lyric.length;
+        }
+      }
+
+      groups.push({ lines: [...currentGroup], chords });
+    }
+
+    return groups;
+  };
+
   return (
     <div className={styles.songContainer}>
       {/* Compact Toolbar - Linear/Stripe inspired */}
@@ -241,45 +394,97 @@ export function SongClient({ song, artistSlug, songSlug }: SongClientProps): Rea
         onToggleAutoScroll={toggleAutoScroll}
         isAudioEnabled={isAudioEnabled}
         onToggleAudio={() => setIsAudioEnabled(!isAudioEnabled)}
+        isChordsVisible={isChordsVisible}
+        onToggleChordsVisible={() => setIsChordsVisible(!isChordsVisible)}
         onDelete={handleDelete}
         isDeleting={isDeleting}
       />
 
       {/* Lyrics Container */}
       <div ref={lyricsContainerRef} className={styles.lyricsContainer}>
-        {transposedSections.map((section, sectionIndex) => (
-          <div key={`${section.name}-${sectionIndex}`} className={styles.section}>
-            <h3 className={styles.sectionTitle}>{section.name}</h3>
-            {section.lines.map((line, lineIndex) => {
-              const chordKey = `${sectionIndex}-${lineIndex}`;
-              const isActive = line.chord?.name === currentChord;
+        {transposedSections.map((section, sectionIndex) => {
+          const sectionKey = `${section.name}-${sectionIndex}`;
+          const isCollapsed = collapsedSections[sectionKey] || false;
+          const sectionColor = getSectionColor(section.name);
 
-              return (
-                <div key={chordKey} className={styles.line}>
-                  {line.chord?.name && (
-                    <span
-                      ref={el => {
-                        if (el && line.chord?.name) {
-                          chordElementsRef.current.set(chordKey, {
-                            element: el,
-                            chordName: line.chord.name,
-                          });
-                        }
-                      }}
-                      className={`${styles.chord} ${isActive ? styles.chordActive : ''}`}
-                      onClick={() => setCurrentChord(line.chord!.name)}
-                      style={{ cursor: 'pointer' }}
-                      title="Click to view chord diagram"
-                    >
-                      {line.chord.name}
-                    </span>
-                  )}
-                  <span className={styles.lyric}>{line.lyric}</span>
+          return (
+            <div
+              key={sectionKey}
+              className={styles.sectionCard}
+              style={{
+                borderColor: `color-mix(in srgb, var(--${sectionColor}) 30%, transparent)`,
+              }}
+            >
+              {/* Section Header - Clickable */}
+              <button
+                className={styles.sectionHeader}
+                onClick={() => toggleSection(sectionKey)}
+                style={{
+                  backgroundColor: `color-mix(in srgb, var(--${sectionColor}) 8%, transparent)`,
+                }}
+              >
+                <h3 className={styles.sectionTitle}>{section.name}</h3>
+                {isCollapsed ? (
+                  <ChevronDown className={styles.chevron} />
+                ) : (
+                  <ChevronUp className={styles.chevron} />
+                )}
+              </button>
+
+              {/* Section Content - Collapsible */}
+              {!isCollapsed && (
+                <div className={styles.sectionContent}>
+                  {groupConsecutiveLines(section.lines).map((group, groupIndex) => {
+                    const groupKey = `${sectionIndex}-group-${groupIndex}`;
+                    const fullLyric = group.lines.map(l => l.lyric || '').join('');
+
+                    return (
+                      <div key={groupKey} className={styles.lineGroup}>
+                        {/* Chord line - positioned chords in Ultimate Guitar style */}
+                        {isChordsVisible && group.chords.length > 0 && (
+                          <div className={styles.chordLine}>
+                            {group.chords.map((chord, chordIdx) => {
+                              const chordKey = `${groupKey}-chord-${chordIdx}`;
+                              const isActive = chord.name === currentChord;
+
+                              return (
+                                <span
+                                  key={chordKey}
+                                  ref={el => {
+                                    if (el) {
+                                      chordElementsRef.current.set(chordKey, {
+                                        element: el,
+                                        chordName: chord.name,
+                                      });
+                                    }
+                                  }}
+                                  className={`${styles.chord} ${isActive ? styles.chordActive : ''}`}
+                                  onClick={() => setCurrentChord(chord.name)}
+                                  style={{
+                                    position: 'absolute',
+                                    left: `${chord.charPos}ch`,
+                                    cursor: 'pointer',
+                                  }}
+                                  title="Click to view chord diagram"
+                                >
+                                  {chord.name}
+                                </span>
+                              );
+                            })}
+                          </div>
+                        )}
+                        {/* Lyric line */}
+                        <div className={styles.lyricLine}>
+                          <span className={styles.lyric}>{fullLyric}</span>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-              );
-            })}
-          </div>
-        ))}
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {/* Instrument Toggle and Display */}

@@ -16,6 +16,8 @@ import {
   Gauge,
   RotateCcw,
   X,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -36,6 +38,8 @@ interface SongToolbarProps {
   onToggleAutoScroll: () => void;
   isAudioEnabled: boolean;
   onToggleAudio: () => void;
+  isChordsVisible: boolean;
+  onToggleChordsVisible: () => void;
   onDelete: () => void;
   isDeleting?: boolean;
 }
@@ -52,6 +56,8 @@ export function SongToolbar({
   onToggleAutoScroll,
   isAudioEnabled,
   onToggleAudio,
+  isChordsVisible,
+  onToggleChordsVisible,
   onDelete,
   isDeleting,
 }: SongToolbarProps) {
@@ -248,7 +254,7 @@ export function SongToolbar({
                   <div className="space-y-3">
                     <div className="flex items-center gap-2 text-white/60">
                       <Volume2 className="h-4 w-4" />
-                      <span className="text-sm font-medium uppercase tracking-wider">Audio</span>
+                      <span className="text-sm font-medium uppercase tracking-wider">Audio & Display</span>
                     </div>
                     <button
                       onClick={onToggleAudio}
@@ -272,6 +278,31 @@ export function SongToolbar({
                         <div className={cn(
                           'absolute top-1 w-5 h-5 bg-white rounded-full transition-all',
                           isAudioEnabled ? 'left-6' : 'left-1'
+                        )} />
+                      </div>
+                    </button>
+                    <button
+                      onClick={onToggleChordsVisible}
+                      className={cn(
+                        'w-full flex items-center justify-between p-4 rounded-2xl transition-all',
+                        isChordsVisible ? 'bg-purple-500/20 border border-purple-500/30' : 'bg-white/5'
+                      )}
+                    >
+                      <div className="flex items-center gap-3">
+                        {isChordsVisible ? (
+                          <Eye className="h-5 w-5 text-purple-400" />
+                        ) : (
+                          <EyeOff className="h-5 w-5 text-white/40" />
+                        )}
+                        <span className="text-white">Show Chords</span>
+                      </div>
+                      <div className={cn(
+                        'w-12 h-7 rounded-full transition-all relative',
+                        isChordsVisible ? 'bg-purple-500' : 'bg-white/20'
+                      )}>
+                        <div className={cn(
+                          'absolute top-1 w-5 h-5 bg-white rounded-full transition-all',
+                          isChordsVisible ? 'left-6' : 'left-1'
                         )} />
                       </div>
                     </button>
@@ -381,6 +412,16 @@ export function SongToolbar({
           className={`h-8 w-8 p-0 ${isAudioEnabled ? 'text-sapphire-400' : 'text-muted-foreground'}`}
         >
           {isAudioEnabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+        </Button>
+
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={onToggleChordsVisible}
+          className={`h-8 w-8 p-0 ${isChordsVisible ? 'text-purple-400' : 'text-muted-foreground'}`}
+          title={isChordsVisible ? 'Hide chords' : 'Show chords'}
+        >
+          {isChordsVisible ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
         </Button>
 
         <Button
