@@ -91,13 +91,15 @@
 }
 
 .lineGroup {
+  position: relative;
   margin-bottom: 0.75rem;
   font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 .chordLine {
+  position: relative;
+  height: 1.75rem;
   margin-bottom: 0.25rem;
-  min-height: 1.5rem;
 }
 
 .lyricLine {

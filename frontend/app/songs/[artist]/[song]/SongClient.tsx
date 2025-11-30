@@ -270,6 +270,91 @@ export function SongClient({ song, artistSlug, songSlug }: SongClientProps): Rea
     return 'sapphire-400'; // default
   };
 
+  // Group consecutive lines for Ultimate Guitar-style display
+  const groupConsecutiveLines = (lines: typeof transposedSections[0]['lines']) => {
+    const groups: Array<{ lines: typeof lines; chords: Array<{ name: string; charPos: number }> }> = [];
+    let currentGroup: typeof lines = [];
+    let charPosition = 0;
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      if (!line) continue;
+
+      const hasLyric = line.lyric && line.lyric.trim().length > 0;
+      const hasChord = line.chord?.name;
+
+      if (hasLyric || hasChord) {
+        // Add to current group
+        currentGroup.push(line);
+
+        // Check if next line should be part of this group
+        const nextLine = lines[i + 1];
+        const shouldContinue = nextLine && nextLine.chord && (!nextLine.lyric || nextLine.lyric.trim().length === 0);
+
+        if (!shouldContinue) {
+          // Finalize this group
+          const chords: Array<{ name: string; charPos: number }> = [];
+          let pos = 0;
+
+          for (const groupLine of currentGroup) {
+            if (groupLine.chord?.name) {
+              chords.push({ name: groupLine.chord.name, charPos: pos });
+            }
+            if (groupLine.lyric) {
+              pos += groupLine.lyric.length;
+            }
+          }
+
+          groups.push({ lines: [...currentGroup], chords });
+          currentGroup = [];
+          charPosition = 0;
+        }
+      } else if (currentGroup.length > 0) {
+        // Empty line - finalize current group
+        const chords: Array<{ name: string; charPos: number }> = [];
+        let pos = 0;
+
+        for (const groupLine of currentGroup) {
+          if (groupLine.chord?.name) {
+            chords.push({ name: groupLine.chord.name, charPos: pos });
+          }
+          if (groupLine.lyric) {
+            pos += groupLine.lyric.length;
+          }
+        }
+
+        groups.push({ lines: [...currentGroup], chords });
+        currentGroup = [];
+        charPosition = 0;
+
+        // Add empty line as its own group
+        groups.push({ lines: [line], chords: [] });
+      } else {
+        // Empty line with no current group
+        groups.push({ lines: [line], chords: [] });
+      }
+    }
+
+    // Don't forget the last group
+    if (currentGroup.length > 0) {
+      const chords: Array<{ name: string; charPos: number }> = [];
+      let pos = 0;
+
+      for (const groupLine of currentGroup) {
+        if (groupLine.chord?.name) {
+          chords.push({ name: groupLine.chord.name, charPos: pos });
+        }
+        if (groupLine.lyric) {
+          pos += groupLine.lyric.length;
+        }
+      }
+
+      groups.push({ lines: [...currentGroup], chords });
+    }
+
+    return groups;
+  };
+
   return (
     <div className={styles.songContainer}>
       {/* Compact Toolbar - Linear/Stripe inspired */}
@@ -325,36 +410,48 @@ export function SongClient({ song, artistSlug, songSlug }: SongClientProps): Rea
               {/* Section Content - Collapsible */}
               {!isCollapsed && (
                 <div className={styles.sectionContent}>
-                  {section.lines.map((line, lineIndex) => {
-                    const chordKey = `${sectionIndex}-${lineIndex}`;
-                    const isActive = line.chord?.name === currentChord;
+                  {groupConsecutiveLines(section.lines).map((group, groupIndex) => {
+                    const groupKey = `${sectionIndex}-group-${groupIndex}`;
+                    const fullLyric = group.lines.map(l => l.lyric || '').join('');
 
                     return (
-                      <div key={chordKey} className={styles.lineGroup}>
-                        {/* Chord line - only show if chords are visible and chord exists */}
-                        {isChordsVisible && line.chord?.name && (
+                      <div key={groupKey} className={styles.lineGroup}>
+                        {/* Chord line - positioned chords in Ultimate Guitar style */}
+                        {isChordsVisible && group.chords.length > 0 && (
                           <div className={styles.chordLine}>
-                            <span
-                              ref={el => {
-                                if (el && line.chord?.name) {
-                                  chordElementsRef.current.set(chordKey, {
-                                    element: el,
-                                    chordName: line.chord.name,
-                                  });
-                                }
-                              }}
-                              className={`${styles.chord} ${isActive ? styles.chordActive : ''}`}
-                              onClick={() => setCurrentChord(line.chord!.name)}
-                              style={{ cursor: 'pointer' }}
-                              title="Click to view chord diagram"
-                            >
-                              {line.chord.name}
-                            </span>
+                            {group.chords.map((chord, chordIdx) => {
+                              const chordKey = `${groupKey}-chord-${chordIdx}`;
+                              const isActive = chord.name === currentChord;
+
+                              return (
+                                <span
+                                  key={chordKey}
+                                  ref={el => {
+                                    if (el) {
+                                      chordElementsRef.current.set(chordKey, {
+                                        element: el,
+                                        chordName: chord.name,
+                                      });
+                                    }
+                                  }}
+                                  className={`${styles.chord} ${isActive ? styles.chordActive : ''}`}
+                                  onClick={() => setCurrentChord(chord.name)}
+                                  style={{
+                                    position: 'absolute',
+                                    left: `${chord.charPos}ch`,
+                                    cursor: 'pointer',
+                                  }}
+                                  title="Click to view chord diagram"
+                                >
+                                  {chord.name}
+                                </span>
+                              );
+                            })}
                           </div>
                         )}
                         {/* Lyric line */}
                         <div className={styles.lyricLine}>
-                          <span className={styles.lyric}>{line.lyric}</span>
+                          <span className={styles.lyric}>{fullLyric}</span>
                         </div>
                       </div>
                     );
