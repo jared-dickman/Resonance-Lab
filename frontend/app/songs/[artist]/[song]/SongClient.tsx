@@ -299,8 +299,16 @@ export function SongClient({ song, artistSlug, songSlug }: SongClientProps): Rea
           for (const groupLine of currentGroup) {
             if (groupLine.chord?.name) {
               chords.push({ name: groupLine.chord.name, charPos: pos });
-            }
-            if (groupLine.lyric) {
+              // Advance position: if there's a lyric, use its length,
+              // otherwise use chord name length + padding for spacing
+              if (groupLine.lyric) {
+                pos += groupLine.lyric.length;
+              } else {
+                // Add spacing: chord name length + 3 characters padding
+                pos += groupLine.chord.name.length + 3;
+              }
+            } else if (groupLine.lyric) {
+              // Lyric without chord - still advance position
               pos += groupLine.lyric.length;
             }
           }
@@ -317,8 +325,16 @@ export function SongClient({ song, artistSlug, songSlug }: SongClientProps): Rea
         for (const groupLine of currentGroup) {
           if (groupLine.chord?.name) {
             chords.push({ name: groupLine.chord.name, charPos: pos });
-          }
-          if (groupLine.lyric) {
+            // Advance position: if there's a lyric, use its length,
+            // otherwise use chord name length + padding for spacing
+            if (groupLine.lyric) {
+              pos += groupLine.lyric.length;
+            } else {
+              // Add spacing: chord name length + 3 characters padding
+              pos += groupLine.chord.name.length + 3;
+            }
+          } else if (groupLine.lyric) {
+            // Lyric without chord - still advance position
             pos += groupLine.lyric.length;
           }
         }
@@ -343,8 +359,16 @@ export function SongClient({ song, artistSlug, songSlug }: SongClientProps): Rea
       for (const groupLine of currentGroup) {
         if (groupLine.chord?.name) {
           chords.push({ name: groupLine.chord.name, charPos: pos });
-        }
-        if (groupLine.lyric) {
+          // Advance position: if there's a lyric, use its length,
+          // otherwise use chord name length + padding for spacing
+          if (groupLine.lyric) {
+            pos += groupLine.lyric.length;
+          } else {
+            // Add spacing: chord name length + 3 characters padding
+            pos += groupLine.chord.name.length + 3;
+          }
+        } else if (groupLine.lyric) {
+          // Lyric without chord - still advance position
           pos += groupLine.lyric.length;
         }
       }
