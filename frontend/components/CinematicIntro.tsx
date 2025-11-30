@@ -11,9 +11,10 @@ interface CinematicIntroProps {
 }
 
 const TRIPLE_CLICK_WINDOW = 300;
-const FADE_IN = 0.8;
-const HOLD = 1.4;
-const FLY_TO_HEADER = 0.6;
+const BLACK_DELAY = 0.42;
+const FADE_IN = 3.2;
+const HOLD = 0.8;
+const FLY_TO_HEADER = 0.45;
 
 export function CinematicIntro({ onComplete, headerLogoRef }: CinematicIntroProps) {
   const reducedMotion = useReducedMotion();
@@ -108,7 +109,7 @@ export function CinematicIntro({ onComplete, headerLogoRef }: CinematicIntroProp
           <motion.h1
             ref={textRef}
             className="text-4xl sm:text-6xl md:text-8xl font-bold tracking-tight logo-gradient select-none"
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.96 }}
             animate={
               isFlying
                 ? {
@@ -117,12 +118,17 @@ export function CinematicIntro({ onComplete, headerLogoRef }: CinematicIntroProp
                     scale: targetPosition.scale,
                     opacity: 1,
                   }
-                : { opacity: 1, scale: 1, x: 0, y: 0 }
+                : { opacity: 1, scale: [0.96, 1.012, 1], x: 0, y: 0 }
             }
             transition={
               isFlying
                 ? { duration: FLY_TO_HEADER, ease: [0.32, 0.72, 0, 1] }
-                : { duration: FADE_IN, ease: 'easeOut' }
+                : {
+                    duration: FADE_IN,
+                    delay: BLACK_DELAY,
+                    ease: 'easeOut',
+                    scale: { duration: FADE_IN * 1.2, delay: BLACK_DELAY, times: [0, 0.7, 1], ease: 'easeInOut' },
+                  }
             }
             onAnimationComplete={() => {
               if (phase === 'fadeIn') {
