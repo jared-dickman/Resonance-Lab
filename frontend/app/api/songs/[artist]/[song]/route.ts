@@ -1,9 +1,17 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
+import { z } from 'zod';
 import { env } from '@/app/config/env';
 import { serverErrorTracker } from '@/app/utils/error-tracker.server';
+import { songDetailSchema } from '@/app/features/songs/dto/song-response.schema';
 
 const API_BASE_URL = env.API_BASE_URL;
+
+// Security: Validate path parameters with strict bounds
+const PathParamsSchema = z.object({
+  artist: z.string().min(1).max(200),
+  song: z.string().min(1).max(300),
+}).strict();
 
 interface RouteParams {
   params: Promise<{ artist: string; song: string }>;
@@ -23,8 +31,23 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
 
   try {
     const resolvedParams = await params;
-    artist = resolvedParams.artist;
-    song = resolvedParams.song;
+
+    // Security: Validate params before URL construction (prevents path traversal)
+    const parseResult = PathParamsSchema.safeParse(resolvedParams);
+    if (!parseResult.success) {
+      serverErrorTracker.captureApiError(
+        new Error('Invalid path parameters'),
+        {
+          service: 'songs-api',
+          operation: 'get-song-detail',
+          validationErrors: parseResult.error.flatten(),
+        }
+      );
+      return NextResponse.json({ error: 'Invalid parameters' }, { status: 400 });
+    }
+
+    artist = parseResult.data.artist;
+    song = parseResult.data.song;
 
     const response = await fetch(`${API_BASE_URL}/api/songs/${artist}/${song}`, {
       cache: 'no-store',
@@ -40,8 +63,25 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: 'Song not found' }, { status: response.status });
     }
 
-    const data = await response.json();
-    return NextResponse.json(data);
+    const rawData = await response.json();
+
+    // Security: Validate response before returning
+    const validationResult = songDetailSchema.safeParse(rawData);
+    if (!validationResult.success) {
+      serverErrorTracker.captureApiError(
+        new Error('Invalid response from upstream API'),
+        {
+          service: 'songs-api',
+          operation: 'get-song-detail',
+          artist,
+          title: song,
+          validationErrors: validationResult.error.flatten(),
+        }
+      );
+      return NextResponse.json({ error: 'Invalid response data' }, { status: 500 });
+    }
+
+    return NextResponse.json(validationResult.data);
   } catch (err) {
     serverErrorTracker.captureApiError(err, {
       service: 'songs-api',
@@ -67,8 +107,23 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
 
   try {
     const resolvedParams = await params;
-    artist = resolvedParams.artist;
-    song = resolvedParams.song;
+
+    // Security: Validate params before URL construction (prevents path traversal)
+    const parseResult = PathParamsSchema.safeParse(resolvedParams);
+    if (!parseResult.success) {
+      serverErrorTracker.captureApiError(
+        new Error('Invalid path parameters'),
+        {
+          service: 'songs-api',
+          operation: 'delete-song',
+          validationErrors: parseResult.error.flatten(),
+        }
+      );
+      return NextResponse.json({ error: 'Invalid parameters' }, { status: 400 });
+    }
+
+    artist = parseResult.data.artist;
+    song = parseResult.data.song;
 
     serverErrorTracker.addBreadcrumb('songs-api', 'Deleting song', { artist, title: song });
 
