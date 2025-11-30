@@ -25,4 +25,11 @@ fi
 
 echo "✅ No secrets detected"
 
+# Auto-sync package-lock.json if package.json changed
+if git diff --cached --name-only | grep -q "package\.json"; then
+  echo "📦 Syncing package-lock.json..."
+  npm install --package-lock-only --silent 2>/dev/null
+  git add package-lock.json
+fi
+
 npm run ast-grep:scan && cd frontend && npm run lint:fix && npm run format && npm run type-check
