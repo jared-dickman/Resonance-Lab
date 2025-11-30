@@ -25,11 +25,12 @@ export function useHeaderLogoRef() {
 function LayoutInner({ children, headerLogoRef }: { children: React.ReactNode; headerLogoRef: React.RefObject<HTMLHeadingElement | null> }) {
   const pathname = usePathname();
   const { isOpen, toggleBuddy } = useBuddy();
-  const { introComplete } = useIntro();
+  const { introComplete, introLanding } = useIntro();
 
   const isLandingPage = pathname === '/';
   const isSongwriterPage = pathname === '/songwriter';
-  const showIntro = isLandingPage && !introComplete;
+  // Header logo visible when: not landing page, OR intro is landing/complete (crossfade)
+  const headerLogoVisible = !isLandingPage || introLanding || introComplete;
 
   useEffect(() => {
     initializeApp();
@@ -50,7 +51,7 @@ function LayoutInner({ children, headerLogoRef }: { children: React.ReactNode; h
               >
                 <h1
                   ref={headerLogoRef}
-                  className={`text-xl font-bold tracking-tight logo-gradient transition-opacity duration-200 ${showIntro ? 'opacity-0' : 'opacity-100'}`}
+                  className={`text-xl font-bold tracking-tight logo-gradient transition-opacity duration-200 ${headerLogoVisible ? 'opacity-100' : 'opacity-0'}`}
                 >
                   Jamium
                 </h1>

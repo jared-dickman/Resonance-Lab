@@ -36,6 +36,7 @@
   "scripts": {
     "build": "npm run build -w frontend",
     "dev": "npm run dev -w frontend",
+    "jamium": "pnpm dev",
     "start": "npm run start -w frontend",
     "test": "echo \"No unit tests configured yet\" && exit 0",
     "lint": "eslint . --fix",

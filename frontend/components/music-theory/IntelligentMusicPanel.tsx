@@ -23,7 +23,7 @@ interface IntelligentMusicPanelProps {
  * - AI chord suggestions
  * - Real-time harmonic analysis
  *
- * This is THE feature that makes Resonance Lab unprecedented.
+ * This is THE feature that makes Jamium unprecedented.
  */
 export default function IntelligentMusicPanel({
   chords,

@@ -4,20 +4,27 @@ import { createContext, useContext, useState, useCallback, ReactNode } from 'rea
 
 interface IntroContextType {
   introComplete: boolean;
+  introLanding: boolean;
   setIntroComplete: (complete: boolean) => void;
+  setIntroLanding: (landing: boolean) => void;
 }
 
 const IntroContext = createContext<IntroContextType | null>(null);
 
 export function IntroProvider({ children }: { children: ReactNode }) {
   const [introComplete, setIntroCompleteState] = useState(false);
+  const [introLanding, setIntroLandingState] = useState(false);
 
   const setIntroComplete = useCallback((complete: boolean) => {
     setIntroCompleteState(complete);
   }, []);
 
+  const setIntroLanding = useCallback((landing: boolean) => {
+    setIntroLandingState(landing);
+  }, []);
+
   return (
-    <IntroContext.Provider value={{ introComplete, setIntroComplete }}>
+    <IntroContext.Provider value={{ introComplete, introLanding, setIntroComplete, setIntroLanding }}>
       {children}
     </IntroContext.Provider>
   );

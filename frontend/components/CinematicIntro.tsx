@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useReducedMotion } from '@/components/ui/ai/hooks/useReducedMotion';
+import { useIntro } from '@/lib/contexts/IntroContext';
 
 interface CinematicIntroProps {
   onComplete: () => void;
@@ -16,6 +17,7 @@ const FLY_TO_HEADER = 0.6;
 
 export function CinematicIntro({ onComplete, headerLogoRef }: CinematicIntroProps) {
   const reducedMotion = useReducedMotion();
+  const { setIntroLanding } = useIntro();
   const [phase, setPhase] = useState<'fadeIn' | 'hold' | 'flyToHeader' | 'done'>('fadeIn');
   const [targetPosition, setTargetPosition] = useState<{ x: number; y: number; scale: number } | null>(null);
   const textRef = useRef<HTMLHeadingElement>(null);
@@ -57,6 +59,13 @@ export function CinematicIntro({ onComplete, headerLogoRef }: CinematicIntroProp
       });
     }
   }, [phase, headerLogoRef]);
+
+  // Trigger header logo fade-in midway through fly animation for seamless crossfade
+  useEffect(() => {
+    if (phase !== 'flyToHeader') return;
+    const timer = setTimeout(() => setIntroLanding(true), FLY_TO_HEADER * 300);
+    return () => clearTimeout(timer);
+  }, [phase, setIntroLanding]);
 
   const handleClick = useCallback(() => {
     clickCount.current++;

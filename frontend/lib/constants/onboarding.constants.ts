@@ -9,27 +9,29 @@ export interface OnboardingStep {
 
 export const ONBOARDING_SCRIPT: OnboardingStep[] = [
   {
-    query: 'What can you do?',
-    response:
-      "I'm Buddy! I find songs, explain music theory, navigate the app, and coach your playing. Ask me anything!",
+    query: 'What is this?',
+    response: 'Your guitar coach. Pick a song, play along, and I help you nail the hard parts.',
   },
   {
-    query: 'Find Hotel California',
-    response: 'Found it! Hotel California by Eagles. Key: Bm. Want me to add it to your library?',
+    query: 'How does that work?',
+    response: 'I hear your chords in real-time. When you stumble, I show you exactly what to fix.',
   },
   {
-    query: 'What makes that key special?',
-    response:
-      'B minor has a haunting, introspective quality. The iconic intro uses Am to E7 - that unresolved tension defines the song.',
+    query: 'Any song?',
+    response: 'If it has chords online, you can learn it here. What do you want to play?',
+  },
+  {
+    query: "Let's go",
+    response: "Alright, enough talk. Let's play something.",
   },
 ];
 
 export const ONBOARDING_TIMING = {
-  INITIAL_DELAY_MS: 800,
-  CHAR_DELAY_MS: 45,
-  THINKING_DELAY_MS: 1200,
-  POST_RESPONSE_DELAY_MS: 1500,
-  CTA_DELAY_MS: 800,
+  INITIAL_DELAY_MS: 1200,
+  CHAR_DELAY_MS: 35,
+  THINKING_DELAY_MS: 1500,
+  POST_RESPONSE_DELAY_MS: 2800,
+  CTA_DELAY_MS: 1800,
 } as const;
 
 export const ONBOARDING_STORAGE_KEY = 'buddy_onboarding_seen';

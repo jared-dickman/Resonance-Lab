@@ -44,6 +44,50 @@ interface BuddyHeaderProps {
   onSkip?: () => void;
 }
 
+const HEADER_BUTTON_CLASS = 'h-6 w-6 text-white/40 hover:text-white/80 hover:bg-white/10';
+const RESULT_LABEL_CLASS = 'text-[9px] uppercase tracking-widest text-white/40 mb-1';
+
+function ResultSection({ label, results, type, onSelect, disabled }: {
+  label: string;
+  results: SearchResult[];
+  type: 'chord' | 'tab';
+  onSelect: (result: SearchResult, type: 'chord' | 'tab') => void;
+  disabled: boolean;
+}) {
+  if (results.length === 0) return null;
+  return (
+    <div>
+      <div className={RESULT_LABEL_CLASS}>{label}</div>
+      {results.slice(0, BUDDY_MAX_VISIBLE_RESULTS).map(result => (
+        <SearchResultButton key={result.id} result={result} type={type} onClick={onSelect} disabled={disabled} />
+      ))}
+    </div>
+  );
+}
+
+function BuddyHeaderControls({ isStatic, isOnboarding, isMinimized, onMinimize, onClose, onSkip }: Omit<BuddyHeaderProps, 'context'>) {
+  if (isOnboarding) {
+    return (
+      <Button variant="outline" size="sm" className="h-6 px-2 text-xs text-white/40 hover:text-white/80 hover:bg-white/10" onClick={onSkip}>
+        Skip
+      </Button>
+    );
+  }
+
+  if (isStatic) return null;
+
+  return (
+    <div className="flex items-center gap-1">
+      <Button variant="ghost" size="icon" className={HEADER_BUTTON_CLASS} onClick={(e) => { e.stopPropagation(); onMinimize(); }}>
+        {isMinimized ? <Maximize2 className="h-3 w-3" /> : <Minimize2 className="h-3 w-3" />}
+      </Button>
+      <Button variant="ghost" size="icon" className={HEADER_BUTTON_CLASS} onClick={(e) => { e.stopPropagation(); onClose(); }}>
+        <X className="h-3 w-3" />
+      </Button>
+    </div>
+  );
+}
+
 export function BuddyHeader({ context, isStatic, isOnboarding, isMinimized, onMinimize, onClose, onSkip }: BuddyHeaderProps) {
   return (
     <div className={cn('flex items-center justify-between px-4 py-3 border-b border-white/5 select-none', !isStatic && 'cursor-grab active:cursor-grabbing')}>
@@ -61,20 +105,7 @@ export function BuddyHeader({ context, isStatic, isOnboarding, isMinimized, onMi
           {!isMinimized && <ContextChip page={context.page} artist={context.artist} song={context.song} />}
         </div>
       </div>
-      {isOnboarding ? (
-        <Button variant="outline" size="sm" className="h-6 px-2 text-xs text-white/40 hover:text-white/80 hover:bg-white/10" onClick={onSkip}>
-          Skip
-        </Button>
-      ) : (
-        <div className="flex items-center gap-1">
-          <Button variant="ghost" size="icon" className="h-6 w-6 text-white/40 hover:text-white/80 hover:bg-white/10" onClick={(e) => { e.stopPropagation(); onMinimize(); }}>
-            {isMinimized ? <Maximize2 className="h-3 w-3" /> : <Minimize2 className="h-3 w-3" />}
-          </Button>
-          <Button variant="ghost" size="icon" className="h-6 w-6 text-white/40 hover:text-white/80 hover:bg-white/10" onClick={(e) => { e.stopPropagation(); onClose(); }}>
-            <X className="h-3 w-3" />
-          </Button>
-        </div>
-      )}
+      <BuddyHeaderControls {...{ isStatic, isOnboarding, isMinimized, onMinimize, onClose, onSkip }} />
     </div>
   );
 }
@@ -178,22 +209,8 @@ export function BuddyMessageList({ messages, isLoading, thinkingPun, placeholder
 
             {message.results && (message.results.chords.length > 0 || message.results.tabs.length > 0) && (
               <div className="mt-2 space-y-2">
-                {message.results.chords.length > 0 && (
-                  <div>
-                    <div className="text-[9px] uppercase tracking-widest text-white/40 mb-1">Chords</div>
-                    {message.results.chords.slice(0, BUDDY_MAX_VISIBLE_RESULTS).map(result => (
-                      <SearchResultButton key={result.id} result={result} type="chord" onClick={onSelectResult} disabled={isSaving} />
-                    ))}
-                  </div>
-                )}
-                {message.results.tabs.length > 0 && (
-                  <div>
-                    <div className="text-[9px] uppercase tracking-widest text-white/40 mb-1">Tabs</div>
-                    {message.results.tabs.slice(0, BUDDY_MAX_VISIBLE_RESULTS).map(result => (
-                      <SearchResultButton key={result.id} result={result} type="tab" onClick={onSelectResult} disabled={isSaving} />
-                    ))}
-                  </div>
-                )}
+                <ResultSection label="Chords" results={message.results.chords} type="chord" onSelect={onSelectResult} disabled={isSaving} />
+                <ResultSection label="Tabs" results={message.results.tabs} type="tab" onSelect={onSelectResult} disabled={isSaving} />
               </div>
             )}
           </div>

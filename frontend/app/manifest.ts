@@ -1,9 +1,10 @@
 import type { MetadataRoute } from 'next';
+import { APP_NAME } from '@/app/config/app';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Resonance Lab',
-    short_name: 'Resonance',
+    name: APP_NAME,
+    short_name: APP_NAME,
     description: 'Your musical laboratory for creation and discovery',
     start_url: '/',
     display: 'standalone',

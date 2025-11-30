@@ -38,7 +38,7 @@ import {
   BUDDY_PANEL_WIDTH,
   BUDDY_PANEL_HEIGHT,
   BUDDY_EDGE_PADDING,
-  BUDDY_NAV_ROUTES,
+  BUDDY_HEADER_HEIGHT,
   BUDDY_INPUT_PLACEHOLDER,
   BUDDY_ICON_GLOW_ANIMATION,
   BUDDY_ICON_GLOW_TRANSITION,
@@ -53,23 +53,19 @@ interface CoreAgentBuddyProps {
   onboarding?: OnboardingState;
 }
 
-const PANEL_WIDTH = BUDDY_PANEL_WIDTH;
-const PANEL_HEIGHT = BUDDY_PANEL_HEIGHT;
-const EDGE_PADDING = BUDDY_EDGE_PADDING;
-
 function clampPosition(x: number, y: number): { x: number; y: number } {
   if (typeof window === 'undefined') return { x, y };
   return {
-    x: Math.max(EDGE_PADDING, Math.min(x, window.innerWidth - PANEL_WIDTH - EDGE_PADDING)),
-    y: Math.max(EDGE_PADDING, Math.min(y, window.innerHeight - PANEL_HEIGHT - EDGE_PADDING)),
+    x: Math.max(BUDDY_EDGE_PADDING, Math.min(x, window.innerWidth - BUDDY_PANEL_WIDTH - BUDDY_EDGE_PADDING)),
+    y: Math.max(BUDDY_EDGE_PADDING, Math.min(y, window.innerHeight - BUDDY_PANEL_HEIGHT - BUDDY_EDGE_PADDING)),
   };
 }
 
 function getCenteredPosition(): { x: number; y: number } {
   if (typeof window === 'undefined') return { x: 100, y: 100 };
   return clampPosition(
-    Math.round((window.innerWidth - PANEL_WIDTH) / 2),
-    Math.round((window.innerHeight - PANEL_HEIGHT) / 2)
+    Math.round((window.innerWidth - BUDDY_PANEL_WIDTH) / 2),
+    Math.round((window.innerHeight - BUDDY_PANEL_HEIGHT) / 2)
   );
 }
 
@@ -243,8 +239,6 @@ interface MobilePanelProps {
 }
 
 function MobilePanel({ context, messages, input, isLoading, isSaving, thinkingPun, placeholder, inputRef, onInputChange, onSubmit, onClose, onSelectSuggestion, onSelectResult }: MobilePanelProps) {
-  const isEmptyState = messages.length === 0;
-
   return (
     <motion.div
       initial={{ y: '100%' }}
@@ -351,8 +345,6 @@ function DesktopPanel({
   thinkingPun, placeholder, inputRef, onInputChange, onSubmit, onPositionChange, onDragEnd,
   onMinimize, onClose, onSkip, onAnimationComplete, onSelectSuggestion, onSelectResult
 }: DesktopPanelProps) {
-  const isEmptyState = displayMessages.length === 0;
-
   // Manual drag state - no Framer Motion drag (which fights with position state)
   const [isDragging, setIsDragging] = useState(false);
   const dragStartRef = useRef<{ mouseX: number; mouseY: number; posX: number; posY: number } | null>(null);
@@ -363,10 +355,10 @@ function DesktopPanel({
     const target = e.target as HTMLElement;
     if (target.closest('button, input, a, [role="button"]')) return;
 
-    // Only drag from header area (first 56px)
+    // Only drag from header area
     const rect = e.currentTarget.getBoundingClientRect();
     const relativeY = e.clientY - rect.top;
-    if (relativeY > 56) return; // Not in header
+    if (relativeY > BUDDY_HEADER_HEIGHT) return;
 
     e.currentTarget.setPointerCapture(e.pointerId);
     setIsDragging(true);
@@ -412,8 +404,8 @@ function DesktopPanel({
       className={cn('fixed z-50', isStatic ? 'block' : 'hidden md:block')}
       style={{
         touchAction: 'none',
-        left: isStatic ? `calc(50% - ${PANEL_WIDTH / 2}px)` : position.x,
-        top: isStatic ? `calc(50% - ${PANEL_HEIGHT / 2}px)` : position.y,
+        left: isStatic ? `calc(50% - ${BUDDY_PANEL_WIDTH / 2}px)` : position.x,
+        top: isStatic ? `calc(50% - ${BUDDY_PANEL_HEIGHT / 2}px)` : position.y,
         cursor: isDragging ? 'grabbing' : undefined,
       }}
     >

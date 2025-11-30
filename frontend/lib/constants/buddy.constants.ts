@@ -11,6 +11,7 @@ export const BUDDY_PANEL_HEIGHT = 640;
 export const BUDDY_EDGE_PADDING = 32;
 export const BUDDY_MINIMIZED_WIDTH = 280;
 export const BUDDY_MINIMIZED_HEIGHT = 56;
+export const BUDDY_HEADER_HEIGHT = 56;
 export const BUDDY_PLACEHOLDER_INTERVAL_MS = 8000;
 export const BUDDY_MAX_VISIBLE_RESULTS = 3;
 export const BUDDY_DEFAULT_RATING = 0;

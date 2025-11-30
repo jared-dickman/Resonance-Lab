@@ -1,0 +1,6 @@
+# Local dev: jamium.localhost:4242 (direct Next.js, no proxy)
+# Caddy only needed for custom domain or HTTPS
+
+http://jamium.localhost {
+	reverse_proxy localhost:4242
+}

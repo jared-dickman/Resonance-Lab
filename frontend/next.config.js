@@ -9,6 +9,7 @@ jiti('./app/config/env');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  allowedDevOrigins: ['http://jamium.localhost:4242'],
   typescript: {
     ignoreBuildErrors: false,
   },

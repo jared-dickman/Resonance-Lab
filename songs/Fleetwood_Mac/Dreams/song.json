@@ -1,0 +1,776 @@
+{
+  "artist": "Fleetwood Mac",
+  "title": "Dreams",
+  "sections": [
+    {
+      "name": "Intro",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "Song: Dreams"
+        },
+        {
+          "chord": null,
+          "lyric": "Band: Fleetwood Mac"
+        },
+        {
+          "chord": null,
+          "lyric": "Album: Dreams single 1977"
+        },
+        {
+          "chord": null,
+          "lyric": "Tabbed: Daniel Thomas (dt_69er@hotmail.com)"
+        },
+        {
+          "chord": null,
+          "lyric": "Tuning: EADGBE"
+        },
+        {
+          "chord": null,
+          "lyric": "CHORDS USED:"
+        },
+        {
+          "chord": null,
+          "lyric": "1x2210"
+        },
+        {
+          "chord": null,
+          "lyric": "133211"
+        },
+        {
+          "chord": null,
+          "lyric": "320003"
+        },
+        {
+          "chord": null,
+          "lyric": "32000x"
+        }
+      ]
+    },
+    {
+      "name": "Verse",
+      "lines": [
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "Now here you"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "go again"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "you want your f"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "reedom"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "Well, who am"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "I to keep you down"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "?"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "It's only righ"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "t that you should"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "play the way you f"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "eel it"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "ten caref"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "ully to the so"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "und"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "oneliness, like a h"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "eartbeat, drives you"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "mad"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "llness of re"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "membering what you ha"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "d"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "ost"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "ad"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "ost"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "thunder only ha"
+        },
+        {
+          "chord": {
+            "name": "G6"
+          },
+          "lyric": "ppens when it's r"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "aining"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "Players only l"
+        },
+        {
+          "chord": {
+            "name": "G6"
+          },
+          "lyric": "ove you when they're p"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "laying"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "women they will co"
+        },
+        {
+          "chord": {
+            "name": "G6"
+          },
+          "lyric": "me and they will"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "go"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "When the rain wash"
+        },
+        {
+          "chord": {
+            "name": "G6"
+          },
+          "lyric": "es you clean, you'll"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "know"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "know"
+        }
+      ]
+    },
+    {
+      "name": "Instrumental Break",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "|("
+        },
+        {
+          "chord": null,
+          "lyric": ")|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        },
+        {
+          "chord": null,
+          "lyric": "|"
+        }
+      ]
+    },
+    {
+      "name": "Verse",
+      "lines": [
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "Now here I"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "go again"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "ee your crystal"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "visions"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "I keep my v"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "isions to myse"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "lf"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "It's only me"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "who wants to wra"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "p around you dream"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "s and,"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "Have you any d"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "reams you'd like to s"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "ell"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "neliness like a"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "heartbeat drives you"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "mad"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "tillness of re"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "membering what you ha"
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "d"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "ost"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "ad"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "F"
+          },
+          "lyric": "lost"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "thunder only hap"
+        },
+        {
+          "chord": {
+            "name": "G6"
+          },
+          "lyric": "pens when it's ra"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "ining"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "Players only l"
+        },
+        {
+          "chord": {
+            "name": "G6"
+          },
+          "lyric": "ove you when they're pl"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "aying"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "women, they will c"
+        },
+        {
+          "chord": {
+            "name": "G6"
+          },
+          "lyric": "ome and they will"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "go"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "When the rain wash"
+        },
+        {
+          "chord": {
+            "name": "G6"
+          },
+          "lyric": "es you clean, you'll"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "know"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "hunder only happe"
+        },
+        {
+          "chord": {
+            "name": "G6"
+          },
+          "lyric": "ns when it's ra"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "ining"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "Players only l"
+        },
+        {
+          "chord": {
+            "name": "G6"
+          },
+          "lyric": "ove you when they're pl"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "aying"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "women, they will c"
+        },
+        {
+          "chord": {
+            "name": "G6"
+          },
+          "lyric": "ome and they will"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "go"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "When the rain wash"
+        },
+        {
+          "chord": {
+            "name": "G6"
+          },
+          "lyric": "es you clean, you'l"
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "l know"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "know"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "know"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": ""
+        },
+        {
+          "chord": {
+            "name": "Fmaj7"
+          },
+          "lyric": "u'll know"
+        }
+      ]
+    }
+  ]
+}
