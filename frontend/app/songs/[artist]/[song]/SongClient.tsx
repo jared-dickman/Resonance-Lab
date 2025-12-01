@@ -264,49 +264,93 @@ export function SongClient({ song, artistSlug, songSlug }: SongClientProps): Rea
 
       {/* Lyrics Container */}
       <div ref={lyricsContainerRef} className={styles.lyricsContainer}>
-        {transposedSections.map((section, sectionIndex) => (
-          <CollapsibleSongSection
-            key={`${section.name}-${sectionIndex}`}
-            sectionName={section.name}
-            sectionIndex={sectionIndex}
-            songId={`${artistSlug}-${songSlug}`}
-            className="mb-4"
-          >
-            {section.lines.map((line, lineIndex) => {
-              const chordKey = `${sectionIndex}-${lineIndex}`;
-              const isActive = line.chord?.name === currentChord;
+        {transposedSections.map((section, sectionIndex) => {
+          // Group lines that should appear together (Ultimate Guitar style)
+          const groupedLines: Array<typeof section.lines> = [];
+          let currentGroup: typeof section.lines = [];
 
-              return (
-                <div key={chordKey} className={styles.lineGroup}>
-                  {/* Chord line (Ultimate Guitar style) */}
-                  {showChords && (
-                    <div className={styles.chordLine}>
-                      {line.chord?.name && (
-                        <span
-                          ref={el => {
-                            if (el && line.chord?.name) {
-                              chordElementsRef.current.set(chordKey, {
-                                element: el,
-                                chordName: line.chord.name,
-                              });
-                            }
-                          }}
-                          className={`${styles.chord} ${isActive ? styles.chordActive : ''}`}
-                          onClick={() => setCurrentChord(line.chord!.name)}
-                          title="Click to view chord diagram"
-                        >
-                          {line.chord.name}
-                        </span>
-                      )}
-                    </div>
-                  )}
-                  {/* Lyric line */}
-                  <div className={styles.lyricLine}>{line.lyric}</div>
-                </div>
-              );
-            })}
-          </CollapsibleSongSection>
-        ))}
+          section.lines.forEach((line, idx) => {
+            currentGroup.push(line);
+
+            // Start a new group if this line ends with punctuation or is the last line
+            // or if the next line starts with a capital letter (new sentence)
+            const isLastLine = idx === section.lines.length - 1;
+            const nextLine = section.lines[idx + 1];
+            const endsWithPunctuation = /[.!?,;\n]$/.test(line.lyric.trim());
+            const nextStartsCapital = nextLine && /^[A-Z]/.test(nextLine.lyric.trim());
+
+            if (isLastLine || endsWithPunctuation || nextStartsCapital) {
+              groupedLines.push([...currentGroup]);
+              currentGroup = [];
+            }
+          });
+
+          return (
+            <CollapsibleSongSection
+              key={`${section.name}-${sectionIndex}`}
+              sectionName={section.name}
+              sectionIndex={sectionIndex}
+              songId={`${artistSlug}-${songSlug}`}
+              className="mb-4"
+            >
+              {groupedLines.map((lineGroup, groupIndex) => {
+                // Calculate chord positions and build combined lyric
+                let combinedLyric = '';
+                const chordPositions: Array<{ position: number; chord: string; lineIdx: number }> = [];
+
+                lineGroup.forEach((line, localIdx) => {
+                  if (line.chord?.name) {
+                    chordPositions.push({
+                      position: combinedLyric.length,
+                      chord: line.chord.name,
+                      lineIdx: groupIndex * 10 + localIdx, // Unique index for refs
+                    });
+                  }
+                  combinedLyric += line.lyric;
+                });
+
+                return (
+                  <div key={`group-${groupIndex}`} className={styles.lineGroup}>
+                    {/* Chord line with positioned chords (Ultimate Guitar style) */}
+                    {showChords && chordPositions.length > 0 && (
+                      <div className={styles.chordLine}>
+                        {chordPositions.map((chordPos, idx) => {
+                          const isActive = chordPos.chord === currentChord;
+                          const chordKey = `${sectionIndex}-${chordPos.lineIdx}`;
+
+                          return (
+                            <span
+                              key={idx}
+                              ref={el => {
+                                if (el) {
+                                  chordElementsRef.current.set(chordKey, {
+                                    element: el,
+                                    chordName: chordPos.chord,
+                                  });
+                                }
+                              }}
+                              className={`${styles.chord} ${isActive ? styles.chordActive : ''}`}
+                              onClick={() => setCurrentChord(chordPos.chord)}
+                              title="Click to view chord diagram"
+                              style={{
+                                position: 'absolute',
+                                left: `${chordPos.position * 0.6}ch`, // Approximate character width
+                              }}
+                            >
+                              {chordPos.chord}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    )}
+                    {/* Lyric line */}
+                    <div className={styles.lyricLine}>{combinedLyric}</div>
+                  </div>
+                );
+              })}
+            </CollapsibleSongSection>
+          );
+        })}
       </div>
 
       {/* Instrument Toggle and Display */}

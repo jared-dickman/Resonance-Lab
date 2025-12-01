@@ -49,6 +49,7 @@
 }
 
 .chordLine {
+  position: relative;
   min-height: 1.5rem;
   margin-bottom: 0.125rem;
   line-height: 1.5rem;
