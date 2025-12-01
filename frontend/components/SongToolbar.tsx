@@ -13,6 +13,7 @@ import {
   Trash2,
   Settings2,
   Music,
+  Music2,
   Gauge,
   RotateCcw,
   X,
@@ -38,6 +39,8 @@ interface SongToolbarProps {
   onToggleAudio: () => void;
   onDelete: () => void;
   isDeleting?: boolean;
+  showChords: boolean;
+  onToggleChords: () => void;
 }
 
 export function SongToolbar({
@@ -54,6 +57,8 @@ export function SongToolbar({
   onToggleAudio,
   onDelete,
   isDeleting,
+  showChords,
+  onToggleChords,
 }: SongToolbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -277,6 +282,35 @@ export function SongToolbar({
                     </button>
                   </div>
 
+                  {/* Chord Visibility Section */}
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2 text-white/60">
+                      <Music2 className="h-4 w-4" />
+                      <span className="text-sm font-medium uppercase tracking-wider">Display</span>
+                    </div>
+                    <button
+                      onClick={onToggleChords}
+                      className={cn(
+                        'w-full flex items-center justify-between p-4 rounded-2xl transition-all',
+                        showChords ? 'bg-purple-500/20 border border-purple-500/30' : 'bg-white/5'
+                      )}
+                    >
+                      <div className="flex items-center gap-3">
+                        <Music2 className={cn('h-5 w-5', showChords ? 'text-purple-400' : 'text-white/40')} />
+                        <span className="text-white">Show Chords</span>
+                      </div>
+                      <div className={cn(
+                        'w-12 h-7 rounded-full transition-all relative',
+                        showChords ? 'bg-purple-500' : 'bg-white/20'
+                      )}>
+                        <div className={cn(
+                          'absolute top-1 w-5 h-5 bg-white rounded-full transition-all',
+                          showChords ? 'left-6' : 'left-1'
+                        )} />
+                      </div>
+                    </button>
+                  </div>
+
                   {/* Actions */}
                   <div className="space-y-3 pt-2">
                     <Button
@@ -378,9 +412,19 @@ export function SongToolbar({
           variant="outline"
           size="sm"
           onClick={onToggleAudio}
-          className={`h-8 w-8 p-0 ${isAudioEnabled ? 'text-sapphire-400' : 'text-muted-foreground'}`}
+          className={cn('h-8 w-8 p-0', isAudioEnabled ? 'text-sapphire-400' : 'text-muted-foreground')}
         >
           {isAudioEnabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+        </Button>
+
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={onToggleChords}
+          className={cn('h-8 w-8 p-0', showChords ? 'text-purple-400' : 'text-muted-foreground')}
+          title={showChords ? 'Hide chords' : 'Show chords'}
+        >
+          <Music2 className="h-4 w-4" />
         </Button>
 
         <Button
