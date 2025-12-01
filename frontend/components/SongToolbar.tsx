@@ -412,7 +412,7 @@ export function SongToolbar({
           variant="outline"
           size="sm"
           onClick={onToggleAudio}
-          className={`h-8 w-8 p-0 ${isAudioEnabled ? 'text-sapphire-400' : 'text-muted-foreground'}`}
+          className={cn('h-8 w-8 p-0', isAudioEnabled ? 'text-sapphire-400' : 'text-muted-foreground')}
         >
           {isAudioEnabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
         </Button>
@@ -421,7 +421,7 @@ export function SongToolbar({
           variant="outline"
           size="sm"
           onClick={onToggleChords}
-          className={`h-8 w-8 p-0 ${showChords ? 'text-purple-400' : 'text-muted-foreground'}`}
+          className={cn('h-8 w-8 p-0', showChords ? 'text-purple-400' : 'text-muted-foreground')}
           title={showChords ? 'Hide chords' : 'Show chords'}
         >
           <Music2 className="h-4 w-4" />

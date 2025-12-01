@@ -2,7 +2,7 @@
 
 import { KEY_SIGNATURES, SongToolbar } from '@/components/SongToolbar';
 import type { Song } from '@/lib/types';
-import { transposeChord } from '@/lib/utils';
+import { transposeChord, cn } from '@/lib/utils';
 import { calculateScrollSpeed } from '@/lib/utils/song/scrollSpeed';
 import type { ChordElementInfo } from '@/lib/utils/song/chordTracking';
 import { findClosestVisibleChord } from '@/lib/utils/song/chordTracking';
@@ -329,7 +329,7 @@ export function SongClient({ song, artistSlug, songSlug }: SongClientProps): Rea
                                   });
                                 }
                               }}
-                              className={`${styles.chord} ${isActive ? styles.chordActive : ''}`}
+                              className={cn(styles.chord, isActive && styles.chordActive)}
                               onClick={() => setCurrentChord(chordPos.chord)}
                               title="Click to view chord diagram"
                               style={{
