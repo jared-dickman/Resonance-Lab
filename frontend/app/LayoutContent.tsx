@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Bot } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { initializeApp } from '@/lib/init';
 
@@ -81,8 +82,8 @@ function LayoutInner({ children, headerLogoRef }: { children: React.ReactNode; h
                     backgroundPosition: { duration: 0.4, ease: 'easeOut' },
                   }}
                 />
-                <Bot className={`h-4 w-4 relative z-10 transition-colors duration-300 ${isOpen ? 'text-white' : ''}`} />
-                <span className={`hidden sm:inline relative z-10 transition-colors duration-300 ${isOpen ? 'text-white' : ''}`}>Buddy</span>
+                <Bot className={cn('h-4 w-4 relative z-10 transition-colors duration-300', isOpen && 'text-white')} />
+                <span className={cn('hidden sm:inline relative z-10 transition-colors duration-300', isOpen && 'text-white')}>Buddy</span>
               </Button>
             )}
           </div>
