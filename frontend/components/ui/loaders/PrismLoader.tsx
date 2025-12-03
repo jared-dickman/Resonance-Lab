@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { SAPPHIRE, LOADER_SIZE, LOADER_STROKE, type LoaderProps } from './loader.constants';
+import { SAPPHIRE, LOADER_SIZE, LOADER_STROKE, type LoaderProps } from '@/components/ui/loaders/loader.constants';
 
 export function PrismLoader({ size = 'md' }: LoaderProps) {
   const dimension = LOADER_SIZE[size];

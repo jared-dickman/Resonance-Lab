@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { LOADER_SIZE, type LoaderProps } from './loader.constants';
+import { LOADER_SIZE, type LoaderProps } from '@/components/ui/loaders/loader.constants';
 
 interface LoaderWrapperProps extends LoaderProps {
   children: React.ReactNode;

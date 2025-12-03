@@ -146,7 +146,7 @@ export async function POST(request: NextRequest): Promise<Response> {
       await sendEvent('start', { model: MODEL, tools: BUDDY_TOOL_NAMES });
 
       // MCP tools require streaming input mode - must use async generator, not string
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
       async function* generateMessages(): AsyncGenerator<any> {
         yield {
           type: 'user',

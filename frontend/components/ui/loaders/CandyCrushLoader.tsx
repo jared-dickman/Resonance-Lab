@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { SAPPHIRE, LOADER_SIZE, type LoaderProps, DURATION } from './loader.constants';
+import { SAPPHIRE, LOADER_SIZE, type LoaderProps, DURATION } from '@/components/ui/loaders/loader.constants';
 import { useState, useEffect } from 'react';
 
 // Candy colors: SAPPHIRE palette + sweet extras

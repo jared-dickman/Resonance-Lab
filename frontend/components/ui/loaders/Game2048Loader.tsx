@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { SAPPHIRE, LOADER_SIZE, type LoaderProps } from './loader.constants';
+import { SAPPHIRE, LOADER_SIZE, type LoaderProps } from '@/components/ui/loaders/loader.constants';
 
 interface Tile {
   id: string;

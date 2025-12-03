@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { SAPPHIRE, LOADER_SIZE, type LoaderProps } from './loader.constants';
+import { SAPPHIRE, LOADER_SIZE, type LoaderProps } from '@/components/ui/loaders/loader.constants';
 
 export function HourglassLoader({ className, size = 'md' }: LoaderProps) {
   const dim = LOADER_SIZE[size];

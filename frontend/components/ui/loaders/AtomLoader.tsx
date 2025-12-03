@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { SAPPHIRE, LOADER_SIZE, DURATION, OPACITY, TRANSITION, type LoaderProps } from './loader.constants';
+import { SAPPHIRE, LOADER_SIZE, DURATION, OPACITY, TRANSITION, type LoaderProps } from '@/components/ui/loaders/loader.constants';
 
 export function AtomLoader({ size = 'md' }: LoaderProps) {
   const dimension = LOADER_SIZE[size];

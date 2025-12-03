@@ -3,7 +3,7 @@ import { tool, createSdkMcpServer } from '@anthropic-ai/claude-agent-sdk';
 // Type assertion needed: SDK types reference 'zod' (v4 in project) but expects v3 at runtime
 import { z } from 'zod3';
 // Helper to bridge zod3 schemas to SDK's expected zod types (zod v3 → SDK)
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 const asSchema = <T extends Record<string, unknown>>(schema: T): any => schema;
 import {
   executeSearch,
@@ -11,7 +11,7 @@ import {
   executeListArtists,
   executeGetArtistSongs,
   executeNavigate,
-} from './executors';
+} from '@/lib/agents/buddy/executors';
 import { AllParams, PageParams } from '@/lib/params/pageParams';
 import { buddyRoutes } from '@/lib/routes';
 
@@ -156,9 +156,7 @@ export function createBuddyMcpServer(apiBaseUrl: string, onNavigate?: Navigation
         asSchema(SearchInputSchema),
         async (args) => {
           const { artist, title } = args as { artist: string; title: string };
-          console.log('[buddy-tools/search] handler invoked', args);
           const result = await executeSearch(apiBaseUrl, artist, title);
-          console.log('[buddy-tools/search] result', result.substring(0, 100));
           return { content: [{ type: 'text' as const, text: result }] };
         }
       ),
@@ -176,7 +174,6 @@ export function createBuddyMcpServer(apiBaseUrl: string, onNavigate?: Navigation
         LIST_ARTISTS_DESCRIPTION,
         {},
         async () => {
-          console.log('[buddy-tools/list_artists] handler invoked');
           const result = await executeListArtists(apiBaseUrl);
           return { content: [{ type: 'text' as const, text: result }] };
         }

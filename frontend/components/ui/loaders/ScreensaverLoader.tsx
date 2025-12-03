@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { SAPPHIRE, LOADER_SIZE, type LoaderProps } from './loader.constants';
+import { SAPPHIRE, LOADER_SIZE, type LoaderProps } from '@/components/ui/loaders/loader.constants';
 
 const WIN95_SAYINGS = [
   'Windows 95',
