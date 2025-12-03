@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, type FC } from 'react';
+import { useState, type FC } from 'react';
 import { PulseLoader } from '@/components/ui/loaders/PulseLoader';
 import { SineLoader } from '@/components/ui/loaders/SineLoader';
 import { FrequencyLoader } from '@/components/ui/loaders/FrequencyLoader';
@@ -105,17 +105,20 @@ const NUMBER_LOADERS = [
 
 export const ALL_LOADERS = [...STANDARD_LOADERS, ...NUMBER_LOADERS];
 
-export function RandomLoader({ size = 'md', className }: RandomLoaderProps) {
-  const [loaderIndex, setLoaderIndex] = useState<number | null>(null);
-
-  useEffect(() => {
-    setLoaderIndex(Math.floor(Math.random() * STANDARD_LOADERS.length));
-  }, []);
-
-  if (loaderIndex === null) return null;
+export function RandomLoader({ size = 'lg', className }: RandomLoaderProps) {
+  // Lazy initializer: computed once on mount, stable across re-renders, no flash
+  const [loaderIndex] = useState(() =>
+    Math.floor(Math.random() * STANDARD_LOADERS.length)
+  );
 
   const LoaderComponent = STANDARD_LOADERS[loaderIndex];
   if (!LoaderComponent) return null;
 
-  return <LoaderComponent size={size} className={className} />;
+  return (
+    <div className="flex items-center justify-center w-full h-full">
+      <div className="scale-150">
+        <LoaderComponent size={size} className={className} />
+      </div>
+    </div>
+  );
 }

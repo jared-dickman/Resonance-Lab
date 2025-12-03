@@ -1,4 +1,12 @@
-import type Anthropic from '@anthropic-ai/sdk';
+import { tool, createSdkMcpServer } from '@anthropic-ai/claude-agent-sdk';
+import { z, type ZodRawShape } from 'zod';
+import {
+  executeSearch,
+  executeDownload,
+  executeListArtists,
+  executeGetArtistSongs,
+  executeNavigate,
+} from './executors';
 
 // =============================================================================
 // TOOL DEFINITIONS
@@ -9,9 +17,37 @@ import type Anthropic from '@anthropic-ai/sdk';
 // - Poka-yoke: make wrong thing impossible
 // =============================================================================
 
-export const searchTool: Anthropic.Tool = {
-  name: 'search_ultimate_guitar',
-  description: `Search Ultimate Guitar for tabs and chords.
+// Tool input schemas (Zod) - cast to ZodRawShape for SDK compatibility
+export const SearchInputSchema = {
+  artist: z
+    .string()
+    .describe('Full artist/band name. Fix typos. Expand abbreviations.'),
+  title: z.string().describe('Song title. Drop unnecessary words if search fails.'),
+} as ZodRawShape;
+
+export const DownloadInputSchema = {
+  songUrl: z
+    .string()
+    .describe(
+      'The Ultimate Guitar URL from search results. Format: https://tabs.ultimate-guitar.com/...'
+    ),
+  artist: z.string().optional().describe('Artist name (optional, for logging)'),
+  title: z.string().optional().describe('Song title (optional, for logging)'),
+} as ZodRawShape;
+
+export const GetArtistSongsInputSchema = {
+  artist: z
+    .string()
+    .describe('Artist name or slug. Case-insensitive. Partial matches work.'),
+} as ZodRawShape;
+
+export const NavigateInputSchema = {
+  path: z.string().describe('URL path. Use Title_Case_With_Underscores for slugs.'),
+  reason: z.string().optional().describe('Brief reason shown to user. Keep it casual.'),
+} as ZodRawShape;
+
+// Tool descriptions
+const SEARCH_DESCRIPTION = `Search Ultimate Guitar for tabs and chords.
 
 WHEN TO USE: User wants to find a song they don't have yet.
 
@@ -28,26 +64,9 @@ EXAMPLES:
 TIPS:
 - Fix obvious typos: "Nirvan" → "Nirvana"
 - Use full artist names: "RHCP" → "Red Hot Chili Peppers"
-- If no results, try simpler title (drop "The", parentheticals)`,
-  input_schema: {
-    type: 'object',
-    properties: {
-      artist: {
-        type: 'string',
-        description: 'Full artist/band name. Fix typos. Expand abbreviations.',
-      },
-      title: {
-        type: 'string',
-        description: 'Song title. Drop unnecessary words if search fails.',
-      },
-    },
-    required: ['artist', 'title'],
-  },
-};
+- If no results, try simpler title (drop "The", parentheticals)`;
 
-export const downloadSongTool: Anthropic.Tool = {
-  name: 'download_song',
-  description: `Download a song to the user's library.
+const DOWNLOAD_DESCRIPTION = `Download a song to the user's library.
 
 WHEN TO USE: After search_ultimate_guitar returns results, use songUrl to download.
 
@@ -63,31 +82,9 @@ RETURNS: { success: true, song: { artist, title, artistSlug, songSlug } }
 
 COMMON ERRORS:
 - "Download failed" → URL might be invalid, try different search result
-- Empty songUrl → You must search first to get valid URLs`,
-  input_schema: {
-    type: 'object',
-    properties: {
-      songUrl: {
-        type: 'string',
-        description:
-          'The Ultimate Guitar URL from search results. Format: https://tabs.ultimate-guitar.com/...',
-      },
-      artist: {
-        type: 'string',
-        description: 'Artist name (optional, for logging)',
-      },
-      title: {
-        type: 'string',
-        description: 'Song title (optional, for logging)',
-      },
-    },
-    required: ['songUrl'],
-  },
-};
+- Empty songUrl → You must search first to get valid URLs`;
 
-export const listArtistsTool: Anthropic.Tool = {
-  name: 'list_artists',
-  description: `List all artists in the user's library.
+const LIST_ARTISTS_DESCRIPTION = `List all artists in the user's library.
 
 WHEN TO USE:
 - "What songs do I have?"
@@ -96,17 +93,9 @@ WHEN TO USE:
 
 RETURNS: { artists: [{ name, slug, songCount }], count: number }
 
-TIP: Use this to answer library questions without needing specifics.`,
-  input_schema: {
-    type: 'object',
-    properties: {},
-    required: [],
-  },
-};
+TIP: Use this to answer library questions without needing specifics.`;
 
-export const getArtistSongsTool: Anthropic.Tool = {
-  name: 'get_artist_songs',
-  description: `Get all songs by a specific artist from the library.
+const GET_ARTIST_SONGS_DESCRIPTION = `Get all songs by a specific artist from the library.
 
 WHEN TO USE:
 - "What Beatles songs do I have?"
@@ -115,22 +104,9 @@ WHEN TO USE:
 
 RETURNS: { artist, songs: [{ title, artist, artistSlug, songSlug }], count }
 
-IMPORTANT: Use artistSlug and songSlug from results for navigate tool.`,
-  input_schema: {
-    type: 'object',
-    properties: {
-      artist: {
-        type: 'string',
-        description: 'Artist name or slug. Case-insensitive. Partial matches work.',
-      },
-    },
-    required: ['artist'],
-  },
-};
+IMPORTANT: Use artistSlug and songSlug from results for navigate tool.`;
 
-export const navigateTool: Anthropic.Tool = {
-  name: 'navigate',
-  description: `Navigate the user to a page in the app.
+const NAVIGATE_DESCRIPTION = `Navigate the user to a page in the app.
 
 WHEN TO USE:
 - After downloading a song: offer to navigate to it
@@ -154,27 +130,72 @@ EXAMPLES:
 - path: "/songs/Led_Zeppelin/Stairway_to_Heaven"
 - path: "/jam"
 
-TIP: After download, use the artistSlug/songSlug from the response.`,
-  input_schema: {
-    type: 'object',
-    properties: {
-      path: {
-        type: 'string',
-        description: 'URL path. Use Title_Case_With_Underscores for slugs.',
-      },
-      reason: {
-        type: 'string',
-        description: 'Brief reason shown to user. Keep it casual.',
-      },
-    },
-    required: ['path'],
-  },
-};
+TIP: After download, use the artistSlug/songSlug from the response.`;
 
-export const ALL_BUDDY_TOOLS = [
-  searchTool,
-  downloadSongTool,
-  listArtistsTool,
-  getArtistSongsTool,
-  navigateTool,
+/**
+ * Create buddy MCP server with all tools
+ * @param apiBaseUrl - The base URL for API calls (passed at runtime)
+ */
+export function createBuddyMcpServer(apiBaseUrl: string) {
+  // Type casting needed due to Zod version mismatch between project and SDK
+  const createTool = tool as unknown as (
+    name: string,
+    description: string,
+    schema: Record<string, unknown>,
+    handler: (args: Record<string, unknown>) => Promise<{ content: { type: string; text: string }[] }>
+  ) => unknown;
+
+  return createSdkMcpServer({
+    name: 'buddy-tools',
+    version: '1.0.0',
+    tools: [
+      createTool('search_ultimate_guitar', SEARCH_DESCRIPTION, SearchInputSchema, async args => ({
+        content: [{ type: 'text', text: await executeSearch(apiBaseUrl, args.artist as string, args.title as string) }],
+      })),
+      createTool('download_song', DOWNLOAD_DESCRIPTION, DownloadInputSchema, async args => ({
+        content: [
+          {
+            type: 'text',
+            text: await executeDownload(apiBaseUrl, args.songUrl as string, args.artist as string | undefined, args.title as string | undefined),
+          },
+        ],
+      })),
+      createTool('list_artists', LIST_ARTISTS_DESCRIPTION, {}, async () => ({
+        content: [{ type: 'text', text: await executeListArtists(apiBaseUrl) }],
+      })),
+      createTool('get_artist_songs', GET_ARTIST_SONGS_DESCRIPTION, GetArtistSongsInputSchema, async args => ({
+        content: [{ type: 'text', text: await executeGetArtistSongs(apiBaseUrl, args.artist as string) }],
+      })),
+      createTool('navigate', NAVIGATE_DESCRIPTION, NavigateInputSchema, async args => ({
+        content: [{ type: 'text', text: executeNavigate(args.path as string, args.reason as string | undefined) }],
+      })),
+    ] as Parameters<typeof createSdkMcpServer>[0]['tools'],
+  });
+}
+
+// Export tool names for reference
+export const BUDDY_TOOL_NAMES = [
+  'search_ultimate_guitar',
+  'download_song',
+  'list_artists',
+  'get_artist_songs',
+  'navigate',
 ] as const;
+
+// Export input types
+export interface SearchToolInput {
+  artist: string;
+  title: string;
+}
+export interface DownloadSongToolInput {
+  songUrl: string;
+  artist?: string;
+  title?: string;
+}
+export interface GetArtistSongsToolInput {
+  artist: string;
+}
+export interface NavigateToolInput {
+  path: string;
+  reason?: string;
+}

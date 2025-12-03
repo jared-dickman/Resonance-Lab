@@ -1,16 +1,13 @@
 import type { NextRequest } from 'next/server';
-import Anthropic from '@anthropic-ai/sdk';
+import { query } from '@anthropic-ai/claude-agent-sdk';
+import { z } from 'zod';
 import { logger } from '@/lib/logger';
 import { env } from '@/app/config/env';
 import { serverErrorTracker } from '@/app/utils/error-tracker.server';
 import {
-  ALL_BUDDY_TOOLS,
+  createBuddyMcpServer,
+  BUDDY_TOOL_NAMES,
   buildSystemPrompt,
-  executeSearch,
-  executeDownload,
-  executeListArtists,
-  executeGetArtistSongs,
-  executeNavigate,
   parseNavigationResult,
   type BuddyContext,
 } from '@/lib/agents/buddy';
@@ -19,19 +16,35 @@ export const runtime = 'nodejs';
 export const maxDuration = 60;
 
 const API_BASE_URL = env.API_BASE_URL ?? '';
-const MODEL = 'claude-3-5-haiku-latest';
-const MAX_TOKENS = 2048;
-const MAX_TOOL_ITERATIONS = 5;
+const MODEL = 'claude-sonnet-4-5-20250929';
+const MAX_MESSAGE_LENGTH = 4000;
+const MAX_MESSAGES = 50;
+const MAX_TURNS = 5;
 
-interface ChatMessage {
-  role: 'user' | 'assistant';
-  content: string;
-}
+// Zod schemas for runtime validation
+const ChatMessageSchema = z
+  .object({
+    role: z.enum(['user', 'assistant']),
+    content: z.string().min(1).max(MAX_MESSAGE_LENGTH),
+  })
+  .strict();
 
-interface RequestBody {
-  messages: ChatMessage[];
-  context?: BuddyContext;
-}
+const BuddyContextSchema = z
+  .object({
+    page: z.string().max(50),
+    artist: z.string().max(200).optional(),
+    song: z.string().max(200).optional(),
+    chords: z.array(z.string().max(20)).max(50).optional(),
+    key: z.string().max(20).optional(),
+  })
+  .strict();
+
+const RequestBodySchema = z
+  .object({
+    messages: z.array(ChatMessageSchema).min(1).max(MAX_MESSAGES),
+    context: BuddyContextSchema.optional(),
+  })
+  .strict();
 
 interface UsageStats {
   inputTokens: number;
@@ -41,79 +54,10 @@ interface UsageStats {
 }
 
 /**
- * Execute a single tool call
- */
-async function executeToolCall(
-  toolName: string,
-  input: Record<string, unknown>
-): Promise<{ result: string; navigation?: { path: string; reason?: string } }> {
-  let result: string;
-  let navigation: { path: string; reason?: string } | undefined;
-
-  switch (toolName) {
-    case 'search_ultimate_guitar': {
-      const { artist, title } = input as { artist: string; title: string };
-      result = await executeSearch(API_BASE_URL, artist, title);
-      break;
-    }
-    case 'download_song': {
-      const { songUrl, artist, title } = input as { songUrl: string; artist?: string; title?: string };
-      result = await executeDownload(API_BASE_URL, songUrl, artist, title);
-      break;
-    }
-    case 'list_artists': {
-      result = await executeListArtists(API_BASE_URL);
-      break;
-    }
-    case 'get_artist_songs': {
-      const { artist } = input as { artist: string };
-      result = await executeGetArtistSongs(API_BASE_URL, artist);
-      break;
-    }
-    case 'navigate': {
-      const { path, reason } = input as { path: string; reason?: string };
-      result = executeNavigate(path, reason);
-      const navResult = parseNavigationResult(result);
-      if (navResult?.navigateTo) {
-        navigation = { path: navResult.navigateTo, reason: navResult.reason };
-      }
-      break;
-    }
-    default:
-      result = JSON.stringify({ error: `Unknown tool: ${toolName}` });
-  }
-
-  return { result, navigation };
-}
-
-/**
- * Execute multiple tool calls in parallel when possible
- */
-async function executeToolCallsParallel(
-  toolUseBlocks: Anthropic.ToolUseBlock[]
-): Promise<Map<string, { result: string; navigation?: { path: string; reason?: string } }>> {
-  const results = new Map<string, { result: string; navigation?: { path: string; reason?: string } }>();
-
-  // Execute all tools in parallel
-  const executions = toolUseBlocks.map(async block => {
-    const { result, navigation } = await executeToolCall(block.name, block.input as Record<string, unknown>);
-    return { id: block.id, result, navigation };
-  });
-
-  const completed = await Promise.all(executions);
-  for (const { id, result, navigation } of completed) {
-    results.set(id, { result, navigation });
-  }
-
-  return results;
-}
-
-/**
  * Create SSE encoder for streaming responses
  */
 function createSSEStream() {
   const encoder = new TextEncoder();
-
   return new TransformStream({
     transform(chunk: string, controller) {
       controller.enqueue(encoder.encode(`data: ${chunk}\n\n`));
@@ -122,13 +66,21 @@ function createSSEStream() {
 }
 
 /**
- * State-of-the-art streaming agent endpoint
- * - Real-time SSE streaming
- * - Parallel tool execution
+ * State-of-the-art streaming agent endpoint using Claude Agent SDK
+ * - Real-time SSE streaming via query()
+ * - MCP server for tool execution
  * - Usage tracking
  * - Graceful error recovery
  */
 export async function POST(request: NextRequest): Promise<Response> {
+  const abortController = new AbortController();
+
+  // Handle client disconnect
+  request.signal.addEventListener('abort', () => {
+    logger.info('[buddy-stream/abort] Client disconnected');
+    abortController.abort();
+  });
+
   const { readable, writable } = new TransformStream();
   const sseStream = createSSEStream();
   const writer = sseStream.writable.getWriter();
@@ -139,131 +91,129 @@ export async function POST(request: NextRequest): Promise<Response> {
 
   // Process in background, stream results
   (async () => {
-    const usage: UsageStats = { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, cacheWriteTokens: 0 };
+    const usage: UsageStats = {
+      inputTokens: 0,
+      outputTokens: 0,
+      cacheReadTokens: 0,
+      cacheWriteTokens: 0,
+    };
     let pendingNavigation: { path: string; reason?: string } | null = null;
 
     try {
-      const { messages, context } = (await request.json()) as RequestBody;
-      logger.info('[buddy-stream/request]', { context, messageCount: messages?.length });
+      // Runtime validation with Zod
+      const rawBody = await request.json();
+      const parseResult = RequestBodySchema.safeParse(rawBody);
 
-      if (!messages || messages.length === 0) {
-        await sendEvent('error', { message: 'Messages required' });
+      if (!parseResult.success) {
+        logger.warn('[buddy-stream/validation]', { errors: parseResult.error.flatten() });
+        await sendEvent('error', { message: 'Invalid request format' });
         await writer.close();
         return;
       }
 
-      const anthropic = new Anthropic();
+      const { messages, context } = parseResult.data;
+      logger.info('[buddy-stream/request]', { context, messageCount: messages.length });
+
+      // Create MCP server with tools bound to API
+      const buddyMcpServer = createBuddyMcpServer(API_BASE_URL);
       const systemPrompt = buildSystemPrompt(context || { page: 'home' });
 
-      const anthropicMessages: Anthropic.MessageParam[] = messages.map(msg => ({
-        role: msg.role,
-        content: msg.content,
-      }));
-
-      await sendEvent('start', { model: MODEL, tools: ALL_BUDDY_TOOLS.map(t => t.name) });
-
-      let iterations = 0;
-      let continueLoop = true;
-
-      while (continueLoop && iterations < MAX_TOOL_ITERATIONS) {
-        iterations++;
-
-        // Stream the response
-        const stream = await anthropic.messages.stream({
-          model: MODEL,
-          max_tokens: MAX_TOKENS,
-          system: systemPrompt,
-          tools: [...ALL_BUDDY_TOOLS],
-          messages: anthropicMessages,
-        });
-
-        let currentText = '';
-        const toolUseBlocks: Anthropic.ToolUseBlock[] = [];
-
-        // Stream tokens as they arrive
-        for await (const event of stream) {
-          if (event.type === 'content_block_delta') {
-            if (event.delta.type === 'text_delta') {
-              currentText += event.delta.text;
-              await sendEvent('text', { text: event.delta.text });
-            }
-          } else if (event.type === 'content_block_start') {
-            if (event.content_block.type === 'tool_use') {
-              await sendEvent('tool_start', { tool: event.content_block.name, id: event.content_block.id });
-            }
-          } else if (event.type === 'message_delta') {
-            if (event.usage) {
-              usage.outputTokens += event.usage.output_tokens;
-            }
-          }
-        }
-
-        // Get final message
-        const finalMessage = await stream.finalMessage();
-
-        // Track usage
-        if (finalMessage.usage) {
-          usage.inputTokens += finalMessage.usage.input_tokens;
-          usage.outputTokens += finalMessage.usage.output_tokens;
-          if ('cache_read_input_tokens' in finalMessage.usage) {
-            usage.cacheReadTokens += (finalMessage.usage as { cache_read_input_tokens?: number }).cache_read_input_tokens || 0;
-          }
-          if ('cache_creation_input_tokens' in finalMessage.usage) {
-            usage.cacheWriteTokens += (finalMessage.usage as { cache_creation_input_tokens?: number }).cache_creation_input_tokens || 0;
-          }
-        }
-
-        // Collect tool use blocks
-        for (const block of finalMessage.content) {
-          if (block.type === 'tool_use') {
-            toolUseBlocks.push(block);
-          }
-        }
-
-        // If no tool calls, we're done
-        if (finalMessage.stop_reason !== 'tool_use' || toolUseBlocks.length === 0) {
-          continueLoop = false;
-          break;
-        }
-
-        // Execute tools in parallel
-        logger.info(`[buddy-stream/tools] executing ${toolUseBlocks.length} tools in parallel`);
-        await sendEvent('tools_executing', { count: toolUseBlocks.length });
-
-        const toolResults = await executeToolCallsParallel(toolUseBlocks);
-
-        // Check for navigation
-        for (const [, { navigation }] of toolResults) {
-          if (navigation) {
-            pendingNavigation = navigation;
-          }
-        }
-
-        // Build tool results for next iteration
-        const toolResultContents: Anthropic.ToolResultBlockParam[] = [];
-        for (const block of toolUseBlocks) {
-          const result = toolResults.get(block.id);
-          toolResultContents.push({
-            type: 'tool_result',
-            tool_use_id: block.id,
-            content: result?.result || JSON.stringify({ error: 'Tool execution failed' }),
-          });
-          await sendEvent('tool_result', { id: block.id, tool: block.name });
-        }
-
-        // Add assistant message and tool results for next iteration
-        anthropicMessages.push({ role: 'assistant', content: finalMessage.content });
-        anthropicMessages.push({ role: 'user', content: toolResultContents });
+      // Build conversation prompt from messages
+      const lastUserMessage = messages.filter(m => m.role === 'user').pop();
+      if (!lastUserMessage) {
+        await sendEvent('error', { message: 'No user message found' });
+        await writer.close();
+        return;
       }
+
+      await sendEvent('start', { model: MODEL, tools: BUDDY_TOOL_NAMES });
+
+      // Use agent-sdk query() for streaming
+      const result = query({
+        prompt: lastUserMessage.content,
+        options: {
+          model: MODEL,
+          systemPrompt,
+          maxTurns: MAX_TURNS,
+          abortController,
+          mcpServers: {
+            buddy: buddyMcpServer,
+          },
+          allowedTools: BUDDY_TOOL_NAMES.map(name => `mcp__buddy__${name}`),
+          permissionMode: 'acceptEdits',
+          includePartialMessages: true,
+        },
+      });
+
+      // Stream messages as they arrive (SDK yields single SDKMessage per iteration)
+      for await (const message of result) {
+        switch (message.type) {
+          case 'assistant': {
+            // Full assistant message - skip text blocks (already streamed via stream_event)
+            // Only process tool_use and tool_result blocks here
+            const assistantMsg = message as { type: 'assistant'; message: { content: unknown } };
+            if (Array.isArray(assistantMsg.message.content)) {
+              for (const block of assistantMsg.message.content) {
+                const b = block as { type: string; text?: string; name?: string; id?: string; tool_use_id?: string; content?: string };
+                if (b.type === 'tool_use') {
+                  await sendEvent('tool_start', { tool: b.name, id: b.id });
+                } else if (b.type === 'tool_result') {
+                  await sendEvent('tool_result', { id: b.tool_use_id });
+
+                  // Parse navigation from tool result
+                  if (typeof b.content === 'string') {
+                    const navResult = parseNavigationResult(b.content);
+                    if (navResult?.navigateTo) {
+                      pendingNavigation = { path: navResult.navigateTo, reason: navResult.reason };
+                    }
+                  }
+                }
+              }
+            }
+            break;
+          }
+          case 'stream_event': {
+            // Streaming partial message (SDK uses 'stream_event' not 'partial')
+            const streamMsg = message as { type: 'stream_event'; event?: { type: string; delta?: { type: string; text?: string } } };
+            if (streamMsg.event?.type === 'content_block_delta' && streamMsg.event.delta?.type === 'text_delta' && streamMsg.event.delta.text) {
+              await sendEvent('text', { text: streamMsg.event.delta.text });
+            }
+            break;
+          }
+          case 'result': {
+            // Final result with usage
+            const resultMsg = message as { type: 'result'; usage?: { input_tokens?: number; output_tokens?: number; cache_read_input_tokens?: number; cache_creation_input_tokens?: number } };
+            if (resultMsg.usage) {
+              usage.inputTokens = resultMsg.usage.input_tokens ?? 0;
+              usage.outputTokens = resultMsg.usage.output_tokens ?? 0;
+              usage.cacheReadTokens = resultMsg.usage.cache_read_input_tokens ?? 0;
+              usage.cacheWriteTokens = resultMsg.usage.cache_creation_input_tokens ?? 0;
+            }
+            break;
+          }
+        }
+      }
+
+      // Calculate cost savings
+      const totalInput = usage.inputTokens + usage.cacheWriteTokens;
+      const cacheHitRate =
+        totalInput > 0 ? ((usage.cacheReadTokens / totalInput) * 100).toFixed(1) : '0.0';
+      const estimatedSavings =
+        totalInput > 0 ? ((usage.cacheReadTokens * 0.9) / totalInput * 100).toFixed(1) : '0.0';
 
       // Send final response
       await sendEvent('complete', {
         usage,
-        iterations,
+        cacheHitRate: `${cacheHitRate}%`,
+        estimatedSavings: `${estimatedSavings}%`,
         ...(pendingNavigation && { navigateTo: pendingNavigation.path }),
       });
 
-      logger.info('[buddy-stream/done]', { usage, iterations });
+      logger.info('[buddy-stream/done]', {
+        usage,
+        cacheHitRate: `${cacheHitRate}%`,
+        estimatedSavings: `${estimatedSavings}%`,
+      });
     } catch (err) {
       const errorDetails = serverErrorTracker.captureApiError(err, {
         service: 'buddy-stream',
