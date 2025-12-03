@@ -8,7 +8,6 @@ import {
   createBuddyMcpServer,
   BUDDY_TOOL_NAMES,
   buildSystemPrompt,
-  parseNavigationResult,
   type BuddyContext,
 } from '@/lib/agents/buddy';
 
@@ -97,7 +96,8 @@ export async function POST(request: NextRequest): Promise<Response> {
       cacheReadTokens: 0,
       cacheWriteTokens: 0,
     };
-    let pendingNavigation: { path: string; reason?: string } | null = null;
+    // Using object container so TypeScript can track callback mutations
+    const navigation: { pending: { path: string; reason?: string } | null } = { pending: null };
 
     try {
       // Runtime validation with Zod
@@ -114,11 +114,18 @@ export async function POST(request: NextRequest): Promise<Response> {
       const { messages, context } = parseResult.data;
       logger.info('[buddy-stream/request]', { context, messageCount: messages.length });
 
-      // Create MCP server with tools bound to API
-      const buddyMcpServer = createBuddyMcpServer(API_BASE_URL);
+      // Create MCP server with tools bound to API + navigation callback
+      logger.info('[buddy-stream] Creating MCP server', { API_BASE_URL });
+      const buddyMcpServer = createBuddyMcpServer(API_BASE_URL, (path, reason) => {
+        // Capture navigation from tool execution via callback
+        // (SDK tool results are internal, not exposed in yielded messages)
+        logger.info('[buddy-stream/navigate-callback]', { path, reason });
+        navigation.pending = { path, reason };
+      });
+      logger.info('[buddy-stream] MCP server created', { tools: BUDDY_TOOL_NAMES });
       const systemPrompt = buildSystemPrompt(context || { page: 'home' });
 
-      // Build conversation prompt from messages
+      // Build conversation prompt with full history
       const lastUserMessage = messages.filter(m => m.role === 'user').pop();
       if (!lastUserMessage) {
         await sendEvent('error', { message: 'No user message found' });
@@ -126,12 +133,33 @@ export async function POST(request: NextRequest): Promise<Response> {
         return;
       }
 
+      // Format conversation history for context (exclude last user message - it becomes the prompt)
+      const historyMessages = messages.slice(0, -1);
+      const conversationHistory = historyMessages.length > 0
+        ? historyMessages.map(m => `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.content}`).join('\n\n')
+        : '';
+
+      const fullPrompt = conversationHistory
+        ? `<conversation_history>\n${conversationHistory}\n</conversation_history>\n\nUser: ${lastUserMessage.content}`
+        : lastUserMessage.content;
+
       await sendEvent('start', { model: MODEL, tools: BUDDY_TOOL_NAMES });
-      await sendEvent('thinking', {});
+
+      // MCP tools require streaming input mode - must use async generator, not string
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      async function* generateMessages(): AsyncGenerator<any> {
+        yield {
+          type: 'user',
+          message: {
+            role: 'user',
+            content: fullPrompt,
+          },
+        };
+      }
 
       // Use agent-sdk query() for streaming
       const result = query({
-        prompt: lastUserMessage.content,
+        prompt: generateMessages(),
         options: {
           model: MODEL,
           systemPrompt,
@@ -148,27 +176,19 @@ export async function POST(request: NextRequest): Promise<Response> {
 
       // Stream messages as they arrive (SDK yields single SDKMessage per iteration)
       for await (const message of result) {
+        logger.info('[buddy-stream/message]', { type: message.type });
         switch (message.type) {
           case 'assistant': {
-            // Full assistant message - skip text blocks (already streamed via stream_event)
-            // Only process tool_use and tool_result blocks here
+            // Full assistant message - track tool_use for UI feedback
+            // Note: tool_result is NOT yielded by SDK (handled internally), use callback instead
             const assistantMsg = message as { type: 'assistant'; message: { content: unknown } };
             if (Array.isArray(assistantMsg.message.content)) {
               for (const block of assistantMsg.message.content) {
-                const b = block as { type: string; text?: string; name?: string; id?: string; tool_use_id?: string; content?: string };
+                const b = block as { type: string; name?: string; id?: string; input?: unknown };
                 if (b.type === 'tool_use') {
+                  logger.info('[buddy-stream/tool_use]', { tool: b.name, id: b.id, input: b.input });
                   await sendEvent('tool_start', { tool: b.name, id: b.id });
-                } else if (b.type === 'tool_result') {
-                  await sendEvent('tool_result', { id: b.tool_use_id });
-                  await sendEvent('thinking', {}); // Agent processing tool result
-
-                  // Parse navigation from tool result
-                  if (typeof b.content === 'string') {
-                    const navResult = parseNavigationResult(b.content);
-                    if (navResult?.navigateTo) {
-                      pendingNavigation = { path: navResult.navigateTo, reason: navResult.reason };
-                    }
-                  }
+                  await sendEvent('thinking', {}); // Agent executing tool
                 }
               }
             }
@@ -208,7 +228,7 @@ export async function POST(request: NextRequest): Promise<Response> {
         usage,
         cacheHitRate: `${cacheHitRate}%`,
         estimatedSavings: `${estimatedSavings}%`,
-        ...(pendingNavigation && { navigateTo: pendingNavigation.path }),
+        ...(navigation.pending ? { navigateTo: navigation.pending.path } : {}),
       });
 
       logger.info('[buddy-stream/done]', {

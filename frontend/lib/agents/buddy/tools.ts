@@ -1,5 +1,6 @@
 import { tool, createSdkMcpServer } from '@anthropic-ai/claude-agent-sdk';
-import { z, type ZodRawShape } from 'zod';
+// SDK requires Zod 3 (not Zod 4) - see https://github.com/anthropics/claude-agent-sdk-typescript/issues/4
+import { z } from 'zod3';
 import {
   executeSearch,
   executeDownload,
@@ -17,13 +18,13 @@ import {
 // - Poka-yoke: make wrong thing impossible
 // =============================================================================
 
-// Tool input schemas (Zod) - cast to ZodRawShape for SDK compatibility
+// Tool input schemas using Zod 3 (plain object format per SDK docs)
 export const SearchInputSchema = {
   artist: z
     .string()
     .describe('Full artist/band name. Fix typos. Expand abbreviations.'),
   title: z.string().describe('Song title. Drop unnecessary words if search fails.'),
-} as ZodRawShape;
+};
 
 export const DownloadInputSchema = {
   songUrl: z
@@ -33,18 +34,18 @@ export const DownloadInputSchema = {
     ),
   artist: z.string().optional().describe('Artist name (optional, for logging)'),
   title: z.string().optional().describe('Song title (optional, for logging)'),
-} as ZodRawShape;
+};
 
 export const GetArtistSongsInputSchema = {
   artist: z
     .string()
     .describe('Artist name or slug. Case-insensitive. Partial matches work.'),
-} as ZodRawShape;
+};
 
 export const NavigateInputSchema = {
   path: z.string().describe('URL path. Use Title_Case_With_Underscores for slugs.'),
   reason: z.string().optional().describe('Brief reason shown to user. Keep it casual.'),
-} as ZodRawShape;
+};
 
 // Tool descriptions
 const SEARCH_DESCRIPTION = `Search Ultimate Guitar for tabs and chords.
@@ -132,44 +133,71 @@ EXAMPLES:
 
 TIP: After download, use the artistSlug/songSlug from the response.`;
 
+export interface NavigationCallback {
+  (path: string, reason?: string): void;
+}
+
 /**
  * Create buddy MCP server with all tools
  * @param apiBaseUrl - The base URL for API calls (passed at runtime)
+ * @param onNavigate - Callback fired when navigate tool is used (captures navigation for SSE)
  */
-export function createBuddyMcpServer(apiBaseUrl: string) {
-  // Type casting needed due to Zod version mismatch between project and SDK
-  const createTool = tool as unknown as (
-    name: string,
-    description: string,
-    schema: Record<string, unknown>,
-    handler: (args: Record<string, unknown>) => Promise<{ content: { type: string; text: string }[] }>
-  ) => unknown;
-
+export function createBuddyMcpServer(apiBaseUrl: string, onNavigate?: NavigationCallback) {
   return createSdkMcpServer({
     name: 'buddy-tools',
     version: '1.0.0',
     tools: [
-      createTool('search_ultimate_guitar', SEARCH_DESCRIPTION, SearchInputSchema, async args => ({
-        content: [{ type: 'text', text: await executeSearch(apiBaseUrl, args.artist as string, args.title as string) }],
-      })),
-      createTool('download_song', DOWNLOAD_DESCRIPTION, DownloadInputSchema, async args => ({
-        content: [
-          {
-            type: 'text',
-            text: await executeDownload(apiBaseUrl, args.songUrl as string, args.artist as string | undefined, args.title as string | undefined),
-          },
-        ],
-      })),
-      createTool('list_artists', LIST_ARTISTS_DESCRIPTION, {}, async () => ({
-        content: [{ type: 'text', text: await executeListArtists(apiBaseUrl) }],
-      })),
-      createTool('get_artist_songs', GET_ARTIST_SONGS_DESCRIPTION, GetArtistSongsInputSchema, async args => ({
-        content: [{ type: 'text', text: await executeGetArtistSongs(apiBaseUrl, args.artist as string) }],
-      })),
-      createTool('navigate', NAVIGATE_DESCRIPTION, NavigateInputSchema, async args => ({
-        content: [{ type: 'text', text: executeNavigate(args.path as string, args.reason as string | undefined) }],
-      })),
-    ] as Parameters<typeof createSdkMcpServer>[0]['tools'],
+      tool(
+        'search_ultimate_guitar',
+        SEARCH_DESCRIPTION,
+        SearchInputSchema,
+        async (args) => {
+          console.log('[buddy-tools/search] handler invoked', args);
+          const result = await executeSearch(apiBaseUrl, args.artist, args.title);
+          console.log('[buddy-tools/search] result', result.substring(0, 100));
+          return { content: [{ type: 'text' as const, text: result }] };
+        }
+      ),
+      tool(
+        'download_song',
+        DOWNLOAD_DESCRIPTION,
+        DownloadInputSchema,
+        async (args) => ({
+          content: [{ type: 'text' as const, text: await executeDownload(apiBaseUrl, args.songUrl, args.artist, args.title) }],
+        })
+      ),
+      tool(
+        'list_artists',
+        LIST_ARTISTS_DESCRIPTION,
+        {},
+        async () => {
+          console.log('[buddy-tools/list_artists] handler invoked');
+          const result = await executeListArtists(apiBaseUrl);
+          return { content: [{ type: 'text' as const, text: result }] };
+        }
+      ),
+      tool(
+        'get_artist_songs',
+        GET_ARTIST_SONGS_DESCRIPTION,
+        GetArtistSongsInputSchema,
+        async (args) => ({
+          content: [{ type: 'text' as const, text: await executeGetArtistSongs(apiBaseUrl, args.artist) }],
+        })
+      ),
+      tool(
+        'navigate',
+        NAVIGATE_DESCRIPTION,
+        NavigateInputSchema,
+        async (args) => {
+          // Fire callback to capture navigation for SSE event
+          // (SDK tool results are internal, not yielded to consumer)
+          onNavigate?.(args.path, args.reason);
+          return {
+            content: [{ type: 'text' as const, text: executeNavigate(args.path, args.reason) }],
+          };
+        }
+      ),
+    ],
   });
 }
 
