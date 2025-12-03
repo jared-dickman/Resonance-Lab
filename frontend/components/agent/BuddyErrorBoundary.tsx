@@ -82,10 +82,6 @@ function BuddyErrorFallback({ onReset }: { onReset: () => void }) {
         Buddy hit a wrong note
       </motion.p>
 
-      <p className="text-[10px] text-white/30 mt-2 max-w-[180px]">
-        Something went wrong. Let&apos;s try again.
-      </p>
-
       <Button
         onClick={onReset}
         className={cn('mt-4 h-8 px-4 rounded-lg text-xs', BUDDY_GRADIENT_SEND_BTN)}

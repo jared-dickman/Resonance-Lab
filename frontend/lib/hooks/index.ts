@@ -3,3 +3,4 @@ export { useChordVoicings, type UseChordVoicingsResult } from '@/lib/hooks/useCh
 export { useIntelligentComposer } from '@/lib/hooks/useIntelligentComposer';
 export type { ComposerState, ComposerControls } from '@/lib/hooks/useIntelligentComposer';
 export { useGuitarPlayback } from '@/lib/hooks/useGuitarPlayback';
+export { useJamParams, useJamParamsMap, jamParsers } from '@/lib/hooks/useJamParams';

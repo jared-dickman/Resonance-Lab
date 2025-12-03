@@ -115,10 +115,8 @@ export function RandomLoader({ size = 'lg', className }: RandomLoaderProps) {
   if (!LoaderComponent) return null;
 
   return (
-    <div className="flex items-center justify-center w-full h-full">
-      <div className="scale-150">
-        <LoaderComponent size={size} className={className} />
-      </div>
+    <div className="flex items-center justify-center">
+      <LoaderComponent size={size} className={className} />
     </div>
   );
 }

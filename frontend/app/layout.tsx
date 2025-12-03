@@ -4,6 +4,7 @@ import { QueryClientProvider } from '@/app/providers/QueryClientProvider';
 import { LayoutContent } from '@/app/LayoutContent';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { LogRocketInit } from '@/app/components/analytics/LogRocketInit';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
 export const metadata: Metadata = {
   title: 'Jamium',
@@ -19,9 +20,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           fallbackTitle="Application Error"
           fallbackMessage="The application encountered an unexpected error. Please reload the page."
         >
-          <QueryClientProvider>
-            <LayoutContent>{children}</LayoutContent>
-          </QueryClientProvider>
+          <NuqsAdapter>
+            <QueryClientProvider>
+              <LayoutContent>{children}</LayoutContent>
+            </QueryClientProvider>
+          </NuqsAdapter>
         </ErrorBoundary>
       </body>
     </html>

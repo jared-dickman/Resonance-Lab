@@ -118,6 +118,7 @@ export function CoreAgentBuddy({ onSave, isSaving = false, isLanding = false, on
 
   const displayMessages = isOnboarding ? (onboarding?.messages as BuddyMessage[]) : chat.messages;
   const displayLoading = isOnboarding ? onboarding?.isLoading : chat.isLoading;
+  const displayThinking = isOnboarding ? false : chat.isThinking;
   const displayInput = isOnboarding ? onboarding?.typingText : chat.input;
   const isEmptyState = displayMessages.length === 0;
   const shouldRotatePlaceholder = isEmptyState && isOpen && !isMinimized && !isStatic;
@@ -183,6 +184,7 @@ export function CoreAgentBuddy({ onSave, isSaving = false, isLanding = false, on
               messages={chat.messages}
               input={chat.input}
               isLoading={chat.isLoading}
+              isThinking={chat.isThinking}
               isSaving={isSaving}
               thinkingPun={chat.thinkingPun}
               placeholder={currentPlaceholder}
@@ -205,6 +207,7 @@ export function CoreAgentBuddy({ onSave, isSaving = false, isLanding = false, on
             position={position}
             displayMessages={displayMessages}
             displayLoading={displayLoading}
+            displayThinking={displayThinking}
             displayInput={displayInput}
             input={chat.input}
             isLoading={chat.isLoading}
@@ -234,6 +237,7 @@ interface MobilePanelProps {
   messages: BuddyMessage[];
   input: string;
   isLoading: boolean;
+  isThinking: boolean;
   isSaving: boolean;
   thinkingPun: string;
   placeholder: string;
@@ -245,14 +249,14 @@ interface MobilePanelProps {
   onSelectResult: (result: SearchResult, type: 'chord' | 'tab') => void;
 }
 
-function MobilePanel({ context, messages, input, isLoading, isSaving, thinkingPun, placeholder, inputRef, onInputChange, onSubmit, onClose, onSelectSuggestion, onSelectResult }: MobilePanelProps) {
+function MobilePanel({ context, messages, input, isLoading, isThinking, isSaving, thinkingPun, placeholder, inputRef, onInputChange, onSubmit, onClose, onSelectSuggestion, onSelectResult }: MobilePanelProps) {
   return (
     <motion.div
       initial={{ y: '100%' }}
       animate={{ y: 0 }}
       exit={{ y: '100%' }}
       transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-      className="fixed inset-0 z-50 md:hidden bg-slate-950"
+      className="fixed inset-x-0 bottom-0 top-12 z-[60] md:hidden bg-slate-950 pb-[env(safe-area-inset-bottom)]"
     >
       <div className="flex flex-col h-full">
         <MobileHeader context={context} onClose={onClose} />
@@ -262,6 +266,7 @@ function MobilePanel({ context, messages, input, isLoading, isSaving, thinkingPu
           <BuddyMessageList
             messages={messages}
             isLoading={isLoading}
+            isThinking={isThinking}
             thinkingPun={thinkingPun}
             placeholder={placeholder}
             isSaving={isSaving}
@@ -327,6 +332,7 @@ interface DesktopPanelProps {
   position: { x: number; y: number };
   displayMessages: BuddyMessage[];
   displayLoading?: boolean;
+  displayThinking?: boolean;
   displayInput?: string;
   input: string;
   isLoading: boolean;
@@ -348,7 +354,7 @@ interface DesktopPanelProps {
 
 function DesktopPanel({
   context, isStatic, isOnboarding, isMinimized, isFirstLoad, position,
-  displayMessages, displayLoading, displayInput, input, isLoading, isSaving,
+  displayMessages, displayLoading, displayThinking, displayInput, input, isLoading, isSaving,
   thinkingPun, placeholder, inputRef, onInputChange, onSubmit, onPositionChange, onDragEnd,
   onMinimize, onClose, onSkip, onAnimationComplete, onSelectSuggestion, onSelectResult
 }: DesktopPanelProps) {
@@ -408,7 +414,7 @@ function DesktopPanel({
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
-      className={cn('fixed z-50', isStatic ? 'block' : 'hidden md:block')}
+      className={cn('fixed z-[60] isolate', isStatic ? 'block' : 'hidden md:block')}
       style={{
         touchAction: 'none',
         left: isStatic ? `calc(50% - ${BUDDY_PANEL_WIDTH / 2}px)` : position.x,
@@ -449,12 +455,13 @@ function DesktopPanel({
               exit={{ opacity: 0, height: 0 }}
               className="flex flex-col"
             >
-              {!isOnboarding && <BuddyNavBar />}
+              {!isOnboarding && <BuddyNavBar onNavigate={onClose} />}
 
               <div className={BUDDY_SCROLL_CONTAINER_CLASS}>
                 <BuddyMessageList
                   messages={displayMessages}
                   isLoading={displayLoading ?? false}
+                  isThinking={displayThinking ?? false}
                   thinkingPun={isOnboarding ? 'Finding your jam...' : thinkingPun}
                   placeholder={placeholder}
                   isSaving={isSaving}
@@ -483,22 +490,22 @@ function DesktopPanel({
 
 function GlowEffects({ isFirstLoad }: { isFirstLoad: boolean }) {
   return (
-    <>
+    <div className="absolute inset-0 -z-10 overflow-visible pointer-events-none" style={{ contain: 'layout' }}>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.5, ease: 'easeOut' }}
-        className="absolute -inset-4 rounded-3xl bg-gradient-to-b from-blue-500/8 via-transparent to-purple-500/8 blur-xl -z-20"
+        className="absolute -inset-4 rounded-3xl bg-gradient-to-b from-blue-500/8 via-transparent to-purple-500/8 blur-xl"
       />
       {isFirstLoad && (
         <motion.div
           variants={BUDDY_GLOW_VARIANTS}
           initial="hidden"
           animate="visible"
-          className="absolute -inset-6 rounded-3xl bg-gradient-to-br from-blue-400/15 via-indigo-500/10 to-purple-400/15 blur-2xl -z-20"
+          className="absolute -inset-6 rounded-3xl bg-gradient-to-br from-blue-400/15 via-indigo-500/10 to-purple-400/15 blur-2xl"
         />
       )}
-      <div className="absolute -bottom-3 left-4 right-4 h-6 bg-black/20 blur-xl rounded-full -z-30" />
-    </>
+      <div className="absolute -bottom-3 left-4 right-4 h-6 bg-black/20 blur-xl rounded-full" />
+    </div>
   );
 }

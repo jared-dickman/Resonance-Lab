@@ -55,6 +55,11 @@ export function useBuddyChat({ context, onSave }: UseBuddyChatOptions) {
     setThinkingPun(selectRandomWithFallback(BUDDY_THINKING_PUNS, BUDDY_DEFAULT_THINKING));
     setIsLoading(true);
 
+    // Scroll to bottom after 0.42s
+    setTimeout(() => {
+      document.querySelector('[data-buddy-messages-end]')?.scrollIntoView({ behavior: 'smooth' });
+    }, 420);
+
     const newHistory = [...conversationHistory, { role: 'user', content: userMessage }];
     setConversationHistory(newHistory);
 

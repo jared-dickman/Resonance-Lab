@@ -1,6 +1,11 @@
 import { tool, createSdkMcpServer } from '@anthropic-ai/claude-agent-sdk';
 // SDK requires Zod 3 (not Zod 4) - see https://github.com/anthropics/claude-agent-sdk-typescript/issues/4
+// Type assertion needed: SDK types reference 'zod' (v4 in project) but expects v3 at runtime
 import { z } from 'zod3';
+import type { ZodRawShape } from 'zod';
+
+// Helper to bridge zod3 schemas to SDK's expected zod types
+const asSchema = <T extends Record<string, unknown>>(schema: T): ZodRawShape => schema as unknown as ZodRawShape;
 import {
   executeSearch,
   executeDownload,
@@ -8,6 +13,7 @@ import {
   executeGetArtistSongs,
   executeNavigate,
 } from './executors';
+import { AllParams } from '@/lib/params/pageParams';
 
 // =============================================================================
 // TOOL DEFINITIONS
@@ -45,6 +51,7 @@ export const GetArtistSongsInputSchema = {
 export const NavigateInputSchema = {
   path: z.string().describe('URL path. Use Title_Case_With_Underscores for slugs.'),
   reason: z.string().optional().describe('Brief reason shown to user. Keep it casual.'),
+  params: z.record(z.string()).optional().describe('URL params to control UI state (bpm, capo, tab, etc). Auto-appended as query string.'),
 };
 
 // Tool descriptions
@@ -107,31 +114,32 @@ RETURNS: { artist, songs: [{ title, artist, artistSlug, songSlug }], count }
 
 IMPORTANT: Use artistSlug and songSlug from results for navigate tool.`;
 
-const NAVIGATE_DESCRIPTION = `Navigate the user to a page in the app.
+const NAVIGATE_DESCRIPTION = `Navigate the user to a page with optional UI state params.
 
 WHEN TO USE:
-- After downloading a song: offer to navigate to it
-- User asks to go somewhere: "take me to jam mode"
-- User wants to see a specific song/artist
+- After downloading a song: navigate with preferred settings
+- User asks to go somewhere with specific settings
+- Control UI state: tempo, capo, tab type, etc.
 
 PAGES:
 - /songs → Full library
 - /songs/{artistSlug}/{songSlug} → Specific song
-- /jam → Practice mode with looping
-- /composer → Build chord progressions
-- /metronome → Timing practice
-- /music-theory → Theory tools
+- /jam → Practice mode
+- /composer → Build progressions
 
-SLUG FORMAT: Title_Case_With_Underscores
-- "The Beatles" → "The_Beatles"
-- "Let It Be" → "Let_It_Be"
+AVAILABLE PARAMS (optional):
+- tab: "chords" | "tab" | "both" (tab view type)
+- bpm: tempo as string (e.g. "90")
+- capo: fret position (e.g. "2")
+- transpose: semitones (e.g. "-2")
+- view: "practice" | "perform" | "edit"
 
 EXAMPLES:
-- path: "/songs/The_Beatles/Let_It_Be"
-- path: "/songs/Led_Zeppelin/Stairway_to_Heaven"
-- path: "/jam"
+- path: "/songs/Oasis/Wonderwall", params: { tab: "chords", bpm: "80", capo: "2" }
+- path: "/jam", params: { bpm: "120" }
+- path: "/songs" (no params = defaults)
 
-TIP: After download, use the artistSlug/songSlug from the response.`;
+SLUG FORMAT: Title_Case_With_Underscores`;
 
 export interface NavigationCallback {
   (path: string, reason?: string): void;
@@ -150,10 +158,11 @@ export function createBuddyMcpServer(apiBaseUrl: string, onNavigate?: Navigation
       tool(
         'search_ultimate_guitar',
         SEARCH_DESCRIPTION,
-        SearchInputSchema,
+        asSchema(SearchInputSchema),
         async (args) => {
+          const { artist, title } = args as { artist: string; title: string };
           console.log('[buddy-tools/search] handler invoked', args);
-          const result = await executeSearch(apiBaseUrl, args.artist, args.title);
+          const result = await executeSearch(apiBaseUrl, artist, title);
           console.log('[buddy-tools/search] result', result.substring(0, 100));
           return { content: [{ type: 'text' as const, text: result }] };
         }
@@ -161,10 +170,11 @@ export function createBuddyMcpServer(apiBaseUrl: string, onNavigate?: Navigation
       tool(
         'download_song',
         DOWNLOAD_DESCRIPTION,
-        DownloadInputSchema,
-        async (args) => ({
-          content: [{ type: 'text' as const, text: await executeDownload(apiBaseUrl, args.songUrl, args.artist, args.title) }],
-        })
+        asSchema(DownloadInputSchema),
+        async (args) => {
+          const { songUrl, artist, title } = args as { songUrl: string; artist?: string; title?: string };
+          return { content: [{ type: 'text' as const, text: await executeDownload(apiBaseUrl, songUrl, artist, title) }] };
+        }
       ),
       tool(
         'list_artists',
@@ -179,21 +189,34 @@ export function createBuddyMcpServer(apiBaseUrl: string, onNavigate?: Navigation
       tool(
         'get_artist_songs',
         GET_ARTIST_SONGS_DESCRIPTION,
-        GetArtistSongsInputSchema,
-        async (args) => ({
-          content: [{ type: 'text' as const, text: await executeGetArtistSongs(apiBaseUrl, args.artist) }],
-        })
+        asSchema(GetArtistSongsInputSchema),
+        async (args) => {
+          const { artist } = args as { artist: string };
+          return { content: [{ type: 'text' as const, text: await executeGetArtistSongs(apiBaseUrl, artist) }] };
+        }
       ),
       tool(
         'navigate',
         NAVIGATE_DESCRIPTION,
-        NavigateInputSchema,
+        asSchema(NavigateInputSchema),
         async (args) => {
+          const { path, reason, params } = args as { path: string; reason?: string; params?: Record<string, string> };
+          // Build full path with query string if params provided
+          let fullPath = path;
+          if (params && Object.keys(params).length > 0) {
+            const validKeys = Object.keys(AllParams);
+            const invalidKeys = Object.keys(params).filter((k) => !validKeys.includes(k));
+            if (invalidKeys.length > 0) {
+              return {
+                content: [{ type: 'text' as const, text: JSON.stringify({ error: `Invalid params: ${invalidKeys.join(', ')}`, validKeys }) }],
+              };
+            }
+            fullPath = `${path}?${new URLSearchParams(params).toString()}`;
+          }
           // Fire callback to capture navigation for SSE event
-          // (SDK tool results are internal, not yielded to consumer)
-          onNavigate?.(args.path, args.reason);
+          onNavigate?.(fullPath, reason);
           return {
-            content: [{ type: 'text' as const, text: executeNavigate(args.path, args.reason) }],
+            content: [{ type: 'text' as const, text: executeNavigate(fullPath, reason) }],
           };
         }
       ),
@@ -226,4 +249,5 @@ export interface GetArtistSongsToolInput {
 export interface NavigateToolInput {
   path: string;
   reason?: string;
+  params?: Record<string, string>;
 }

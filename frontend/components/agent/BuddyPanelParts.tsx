@@ -241,13 +241,15 @@ export function BuddyMessageList({ messages, isLoading, isThinking, thinkingPun,
           animate={{ opacity: 1, scale: 1 }}
           className="flex justify-start"
         >
-          <div className="py-2 px-3">
-            <RandomLoader size="sm" />
+          <div className="flex items-center gap-2 rounded-xl px-3 py-2 bg-white/5 border border-white/10">
+            <div className="w-4 h-4">
+              <RandomLoader size="sm" />
+            </div>
           </div>
         </motion.div>
       )}
 
-      <div ref={messagesEndRef} />
+      <div ref={messagesEndRef} data-buddy-messages-end />
     </div>
   );
 }
@@ -289,7 +291,7 @@ export function BuddyInput({ input, isLoading, isSaving, isOnboarding, typingTex
             className={cn('h-9 w-9 rounded-lg', BUDDY_GRADIENT_SEND_BTN)}
             disabled={isLoading || isSaving || !input.trim()}
           >
-            {isLoading ? <RandomLoader size="sm" /> : <Send className="h-4 w-4" />}
+            <Send className="h-4 w-4" />
           </Button>
         )}
       </div>
