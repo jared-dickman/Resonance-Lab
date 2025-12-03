@@ -3,10 +3,10 @@
 import { useRef, useEffect, type FormEvent, type RefObject } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bot, X, Minimize2, Maximize2, GripHorizontal, Home, Music, Users, PenLine, Guitar, BookOpen, Clock, Piano, SlidersHorizontal, Send } from 'lucide-react';
+import { Bot, X, Minimize2, Maximize2, GripHorizontal, Home, Music, Users, PenLine, Guitar, BookOpen, Clock, Piano, SlidersHorizontal, Send, Layers, Radio, Headphones, Feather, AudioWaveform, Disc3 as Turntable } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Spinner } from '@/components/ui/spinner';
+import { RandomLoader } from '@/components/ui/loaders/RandomLoader';
 import { cn } from '@/lib/utils';
 import type { BuddyMessage, Suggestion } from '@/lib/types/buddy.types';
 import type { SearchResult } from '@/lib/types';
@@ -15,7 +15,6 @@ import {
   SearchResultButton,
   StructuredBlock,
   EmptyState,
-  ThinkingIndicator,
 } from '@/components/agent/BuddySubComponents';
 import {
   BUDDY_NAV_ROUTES,
@@ -32,6 +31,8 @@ import {
 const NAV_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   home: Home, music: Music, users: Users, pen: PenLine, guitar: Guitar,
   book: BookOpen, clock: Clock, piano: Piano, sliders: SlidersHorizontal,
+  layers: Layers, radio: Radio, headphones: Headphones, feather: Feather,
+  waveform: AudioWaveform, turntable: Turntable,
 };
 
 interface BuddyHeaderProps {
@@ -168,58 +169,69 @@ export function BuddyMessageList({ messages, isLoading, thinkingPun, placeholder
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  // Check if the last message is an empty streaming assistant message
+  const lastMessage = messages[messages.length - 1];
+  const isStreamingEmpty = isLoading && lastMessage?.role === 'assistant' && !lastMessage?.content;
+
   return (
     <div className={BUDDY_SCROLL_CONTAINER_CLASS}>
       <AnimatePresence mode="wait">
-        {isEmptyState && <EmptyState placeholder={placeholder} />}
+        {isEmptyState && !isLoading && <EmptyState placeholder={placeholder} />}
       </AnimatePresence>
 
-      {messages.map((message, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.15 }}
-          className={cn('flex', message.role === 'user' ? 'justify-end' : 'justify-start')}
-        >
-          <div className={cn(
-            'max-w-[85%] rounded-xl px-3 py-2 text-xs',
-            message.role === 'user'
-              ? BUDDY_GRADIENT_USER_MSG
-              : 'bg-white/5 border border-white/10 text-white/80'
-          )}>
-            <p className="whitespace-pre-wrap leading-relaxed">{message.content}</p>
+      {messages.map((message, i) => {
+        const isLastEmptyStreaming = i === messages.length - 1 && isStreamingEmpty;
 
-            {message.structured && <StructuredBlock data={message.structured} />}
-
-            {message.suggestions && message.suggestions.length > 0 && (
-              <div className="mt-2 flex flex-wrap gap-1">
-                {message.suggestions.map((suggestion, idx) => (
-                  <button
-                    key={`${suggestion.artist}-${suggestion.title}-${idx}`}
-                    onClick={() => onSelectSuggestion(suggestion)}
-                    disabled={isLoading || isSaving}
-                    className="px-2 py-0.5 rounded-md bg-white/10 border border-white/10 hover:border-white/20 hover:bg-white/15 transition-all text-[10px] font-medium text-white/70 disabled:opacity-50"
-                  >
-                    {suggestion.title}
-                  </button>
-                ))}
+        return (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.15 }}
+            className={cn('flex', message.role === 'user' ? 'justify-end' : 'justify-start', isLastEmptyStreaming && 'justify-center w-full')}
+          >
+            {/* Centered loader without background when streaming empty */}
+            {isLastEmptyStreaming ? (
+              <div className="py-6">
+                <RandomLoader size="lg" />
               </div>
-            )}
+            ) : (
+            <div className={cn(
+              'max-w-[85%] rounded-xl px-3 py-2 text-xs',
+              message.role === 'user'
+                ? BUDDY_GRADIENT_USER_MSG
+                : 'bg-white/5 border border-white/10 text-white/80'
+            )}>
+              <p className="whitespace-pre-wrap leading-relaxed">{message.content}</p>
 
-            {message.results && (message.results.chords.length > 0 || message.results.tabs.length > 0) && (
-              <div className="mt-2 space-y-2">
-                <ResultSection label="Chords" results={message.results.chords} type="chord" onSelect={onSelectResult} disabled={isSaving} />
-                <ResultSection label="Tabs" results={message.results.tabs} type="tab" onSelect={onSelectResult} disabled={isSaving} />
-              </div>
-            )}
-          </div>
-        </motion.div>
-      ))}
+              {message.structured && <StructuredBlock data={message.structured} />}
 
-      <AnimatePresence>
-        {isLoading && <ThinkingIndicator pun={thinkingPun} />}
-      </AnimatePresence>
+              {message.suggestions && message.suggestions.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-1">
+                  {message.suggestions.map((suggestion, idx) => (
+                    <button
+                      key={`${suggestion.artist}-${suggestion.title}-${idx}`}
+                      onClick={() => onSelectSuggestion(suggestion)}
+                      disabled={isLoading || isSaving}
+                      className="px-2 py-0.5 rounded-md bg-white/10 border border-white/10 hover:border-white/20 hover:bg-white/15 transition-all text-[10px] font-medium text-white/70 disabled:opacity-50"
+                    >
+                      {suggestion.title}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {message.results && (message.results.chords.length > 0 || message.results.tabs.length > 0) && (
+                <div className="mt-2 space-y-2">
+                  <ResultSection label="Chords" results={message.results.chords} type="chord" onSelect={onSelectResult} disabled={isSaving} />
+                  <ResultSection label="Tabs" results={message.results.tabs} type="tab" onSelect={onSelectResult} disabled={isSaving} />
+                </div>
+              )}
+            </div>
+            )}
+          </motion.div>
+        );
+      })}
 
       <div ref={messagesEndRef} />
     </div>
@@ -263,7 +275,7 @@ export function BuddyInput({ input, isLoading, isSaving, isOnboarding, typingTex
             className={cn('h-9 w-9 rounded-lg', BUDDY_GRADIENT_SEND_BTN)}
             disabled={isLoading || isSaving || !input.trim()}
           >
-            {isLoading ? <Spinner className="h-4 w-4" /> : <Send className="h-4 w-4" />}
+            {isLoading ? <RandomLoader size="sm" /> : <Send className="h-4 w-4" />}
           </Button>
         )}
       </div>
