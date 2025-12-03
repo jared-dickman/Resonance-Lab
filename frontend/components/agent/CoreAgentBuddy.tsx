@@ -7,7 +7,7 @@ import { useIntervalEffect } from '@/lib/hooks/useIntervalEffect';
 import { useBuddyChat } from '@/lib/hooks/useBuddyChat';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Spinner } from '@/components/ui/spinner';
+import { RandomLoader } from '@/components/ui/loaders/RandomLoader';
 import { cn, selectRandomWithFallback } from '@/lib/utils';
 import { useBuddy } from '@/lib/contexts/BuddyContext';
 import type { SearchResult } from '@/lib/types';
@@ -91,7 +91,7 @@ function loadSavedMinimized(): boolean {
 }
 
 export function CoreAgentBuddy({ onSave, isSaving = false, isLanding = false, onboarding }: CoreAgentBuddyProps) {
-  const { context, isOpen, setIsOpen } = useBuddy();
+  const { context, isOpen, setIsOpen, expandSignal } = useBuddy();
   const isOnboarding = !!onboarding;
   const isStatic = isLanding || isOnboarding;
 
@@ -131,6 +131,13 @@ export function CoreAgentBuddy({ onSave, isSaving = false, isLanding = false, on
     setPosition(loadSavedPosition());
     setIsMinimizedInternal(loadSavedMinimized());
   }, []);
+
+  // Expand when explicitly summoned (button/shortcut)
+  useEffect(() => {
+    if (expandSignal > 0) {
+      setIsMinimized(false);
+    }
+  }, [expandSignal, setIsMinimized]);
 
   const positionSaveTimeoutRef = useRef<NodeJS.Timeout>(undefined);
   const handleDragEnd = useCallback(() => {
@@ -279,7 +286,7 @@ function MobilePanel({ context, messages, input, isLoading, isSaving, thinkingPu
               className="h-12 w-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl"
               disabled={isLoading || isSaving || !input.trim()}
             >
-              {isLoading ? <Spinner className="h-5 w-5" /> : <Send className="h-5 w-5" />}
+              {isLoading ? <RandomLoader size="sm" /> : <Send className="h-5 w-5" />}
             </Button>
           </div>
         </form>

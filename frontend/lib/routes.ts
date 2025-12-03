@@ -4,10 +4,12 @@
  */
 export const pageRoutes = {
   home: '/',
+  repertoire: '/repertoire',
   songs: '/songs',
   artists: '/artists',
   songwriter: '/songwriter',
   jam: '/jam',
+  studio: '/studio',
   metronome: '/metronome',
   musicTheory: '/music-theory',
   composer: '/composer',

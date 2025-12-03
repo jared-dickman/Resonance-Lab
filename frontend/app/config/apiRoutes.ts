@@ -13,8 +13,8 @@ export const apiRoutes = {
   // Search
   search: '/api/search',
 
-  // Core Buddy (unified agent - search, download, artist exploration, musicology)
-  coreBuddy: '/api/core-buddy',
+  // Buddy Agent (streaming, tools, musicology)
+  buddyStream: '/api/buddy-stream',
 
   // Lab
   lab: '/api/lab',

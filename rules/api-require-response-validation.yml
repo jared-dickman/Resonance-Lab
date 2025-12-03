@@ -1,0 +1,45 @@
+id: api-require-response-validation
+message: |
+  API success responses should be validated with Zod schema.parse()
+
+  ❌ Bad - No validation:
+    return NextResponse.json(response)
+
+  ✅ Good - Schema validation:
+    return NextResponse.json(responseSchema.parse(response))
+
+  ✅ OK - Error response (no validation needed):
+    return NextResponse.json({error: 'Not found'}, {status: 404})
+
+  ✅ OK - Simple success response:
+    return NextResponse.json({success: true})
+
+  Import schemas from @/app/features/*/dto/*-response.schema.ts
+severity: error
+language: typescript
+note: Validate API responses with Zod schema to catch field mismatches at runtime
+rule:
+  all:
+    - pattern: "return NextResponse.json($RESPONSE)"
+    - not:
+        pattern: "return NextResponse.json($$$SCHEMA.parse($$$))"
+    - not:
+        pattern: "return NextResponse.json({error: $$$})"
+    - not:
+        pattern: "return NextResponse.json({success: $$$})"
+    - not:
+        any:
+          - pattern: "return NextResponse.json($$$, {status: 400})"
+          - pattern: "return NextResponse.json($$$, {status: 401})"
+          - pattern: "return NextResponse.json($$$, {status: 403})"
+          - pattern: "return NextResponse.json($$$, {status: 404})"
+          - pattern: "return NextResponse.json($$$, {status: 500})"
+          - pattern: "return NextResponse.json($$$, { status: 400 })"
+          - pattern: "return NextResponse.json($$$, { status: 401 })"
+          - pattern: "return NextResponse.json($$$, { status: 403 })"
+          - pattern: "return NextResponse.json($$$, { status: 404 })"
+          - pattern: "return NextResponse.json($$$, { status: 500 })"
+          - pattern: "return NextResponse.json($$$, {status: 503})"
+          - pattern: "return NextResponse.json($$$, { status: 503 })"
+files:
+  - "frontend/app/api/**/route.ts"

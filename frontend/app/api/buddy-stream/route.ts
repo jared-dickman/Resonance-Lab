@@ -127,6 +127,7 @@ export async function POST(request: NextRequest): Promise<Response> {
       }
 
       await sendEvent('start', { model: MODEL, tools: BUDDY_TOOL_NAMES });
+      await sendEvent('thinking', {});
 
       // Use agent-sdk query() for streaming
       const result = query({
@@ -159,6 +160,7 @@ export async function POST(request: NextRequest): Promise<Response> {
                   await sendEvent('tool_start', { tool: b.name, id: b.id });
                 } else if (b.type === 'tool_result') {
                   await sendEvent('tool_result', { id: b.tool_use_id });
+                  await sendEvent('thinking', {}); // Agent processing tool result
 
                   // Parse navigation from tool result
                   if (typeof b.content === 'string') {

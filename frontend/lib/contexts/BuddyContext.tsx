@@ -34,6 +34,8 @@ interface BuddyContextType {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   toggleBuddy: () => void;
+  openBuddy: () => void;
+  expandSignal: number;
 }
 
 const BuddyContext = createContext<BuddyContextType | undefined>(undefined);
@@ -94,6 +96,7 @@ export function BuddyProvider({ children }: { children: ReactNode }) {
   const [chords, setChords] = useState<string[]>();
   const [key, setKey] = useState<string>();
   const [isOpen, setIsOpenInternal] = useState(true);
+  const [expandSignal, setExpandSignal] = useState(0);
   const saveTimeoutRef = useRef<NodeJS.Timeout>(undefined);
   const isInitializedRef = useRef(false);
 
@@ -129,17 +132,27 @@ export function BuddyProvider({ children }: { children: ReactNode }) {
 
   const toggleBuddy = useCallback(() => setIsOpen(!isOpen), [isOpen, setIsOpen]);
 
-  // Ctrl+B keyboard shortcut to toggle buddy (B for Buddy, avoids Ctrl+A Select All conflict)
+  // openBuddy: opens AND expands (for explicit summons via button/shortcut)
+  const openBuddy = useCallback(() => {
+    setIsOpen(true);
+    setExpandSignal(s => s + 1);
+  }, [setIsOpen]);
+
+  // Ctrl+B keyboard shortcut - always opens expanded
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
         e.preventDefault();
-        toggleBuddy();
+        if (isOpen) {
+          setIsOpen(false);
+        } else {
+          openBuddy();
+        }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [toggleBuddy]);
+  }, [isOpen, setIsOpen, openBuddy]);
 
   return (
     <BuddyContext.Provider
@@ -152,6 +165,8 @@ export function BuddyProvider({ children }: { children: ReactNode }) {
         isOpen,
         setIsOpen,
         toggleBuddy,
+        openBuddy,
+        expandSignal,
       }}
     >
       {children}
@@ -171,6 +186,8 @@ export function useBuddy() {
       isOpen: false,
       setIsOpen: () => {},
       toggleBuddy: () => {},
+      openBuddy: () => {},
+      expandSignal: 0,
     };
   }
   return ctx;

@@ -18,7 +18,7 @@ export const BUDDY_DEFAULT_RATING = 0;
 export const BUDDY_RATING_PRECISION = 1;
 export const BUDDY_FIRST_LOAD_DELAY_MS = 500;
 
-export const BUDDY_API_ENDPOINT = '/api/core-buddy';
+export const BUDDY_API_ENDPOINT = '/api/buddy-stream';
 
 export const BUDDY_ERROR_MESSAGE = 'Hit a wrong note. Try again?';
 export const BUDDY_DEFAULT_THINKING = 'Thinking...';
@@ -152,12 +152,8 @@ export const STRUCTURED_DATA_TYPES = {
 
 /** Navigation routes for Buddy's mini nav bar - DRY via pageRoutes */
 export const BUDDY_NAV_ROUTES = [
-  { path: pageRoutes.songs, label: 'Library', icon: 'music' },
-  { path: pageRoutes.artists, label: 'Artists', icon: 'users' },
-  // { path: pageRoutes.songwriter, label: 'Write', icon: 'pen' }, // TODO: Re-enable when songwriter is stable
-  { path: pageRoutes.jam, label: 'Jam', icon: 'guitar' },
-  { path: pageRoutes.musicTheory, label: 'Theory', icon: 'book' },
-  { path: pageRoutes.metronome, label: 'Tempo', icon: 'clock' },
-  { path: pageRoutes.composer, label: 'Compose', icon: 'piano' },
-  { path: pageRoutes.pedalboard, label: 'FX', icon: 'sliders' },
+  { path: pageRoutes.repertoire, label: 'Repertoire', icon: 'turntable' }, // Classic vinyl turntable
+  { path: pageRoutes.jam, label: 'Jam', icon: 'waveform' },                // Live audio waves - creative flow
+  { path: pageRoutes.studio, label: 'Studio', icon: 'headphones' },        // Mixing/listening
+  { path: pageRoutes.composer, label: 'Compose', icon: 'feather' },        // Creative writing
 ] as const;

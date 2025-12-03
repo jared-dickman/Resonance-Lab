@@ -5,15 +5,10 @@ import { usePathname } from 'next/navigation';
 import { useSongs } from '@/lib/SongsContext';
 import { useMemo } from 'react';
 
-function SignalWave({ interactive = false }: { interactive?: boolean }) {
+function SignalWave() {
   return (
-    <span
-      className={`inline-flex items-center justify-center mx-2.5 ${
-        interactive ? 'opacity-50 hover:opacity-80 transition-opacity cursor-pointer' : 'opacity-35'
-      }`}
-      aria-hidden={!interactive}
-    >
-      <svg width="18" height="12" viewBox="0 0 18 12" fill="none" className="text-primary">
+    <span className="inline-flex items-center justify-center mx-5 opacity-50" aria-hidden>
+      <svg width="24" height="16" viewBox="0 0 18 12" fill="none" className="text-foreground">
         <line x1="1" y1="5" x2="1" y2="7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
         <line x1="5" y1="4" x2="5" y2="8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
         <line x1="9" y1="2" x2="9" y2="10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -24,71 +19,95 @@ function SignalWave({ interactive = false }: { interactive?: boolean }) {
   );
 }
 
+interface Crumb {
+  label: string;
+  href: string;
+}
+
 export function Breadcrumbs() {
   const pathname = usePathname();
   const { songs } = useSongs();
-  const pathSegments = pathname.split('/').filter(segment => segment);
 
-  const { currentLabel, parentHref, parentLabel } = useMemo(() => {
-    if (pathSegments.length === 0) {
-      return { currentLabel: 'Songs', parentHref: null, parentLabel: null };
-    }
+  const crumbs = useMemo(() => {
+    const segments = pathname.split('/').filter(Boolean);
+    const result: Crumb[] = [];
 
-    let current = '';
-    let parent: { href: string; label: string } | null = null;
+    // Don't add Jamium - logo already shows it
+    if (segments.length === 0) return result;
 
-    if (pathSegments.length > 1) {
-      const parentPath = '/' + pathSegments.slice(0, -1).join('/');
-      const parentSegment = pathSegments[pathSegments.length - 2] ?? '';
-      let pLabel = parentSegment.replace(/_/g, ' ').replace(/-/g, ' ');
+    // Map routes to friendly names
+    const routeLabels: Record<string, string> = {
+      songs: 'Repertoire',
+      repertoire: 'Repertoire',
+      artists: 'Repertoire',
+      jam: 'Jam',
+      studio: 'Studio',
+      composer: 'Compose',
+      'music-theory': 'Theory',
+    };
 
-      if (pathSegments[0] === 'songs' && pathSegments.length === 3) {
-        const artistSlug = pathSegments[1];
+    // Handle song paths: /songs/[artist]/[song]
+    if (segments[0] === 'songs') {
+      result.push({ label: 'Repertoire', href: '/repertoire' });
+
+      const artistSlug = segments[1];
+      if (artistSlug) {
         const song = songs.find(s => s.artistSlug === artistSlug);
-        pLabel = song?.artist || pLabel.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-      } else {
-        pLabel = pLabel.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-      }
+        const artistName = song?.artist ?? artistSlug.replace(/_/g, ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        result.push({ label: artistName, href: `/songs/${artistSlug}` });
 
-      parent = { href: parentPath, label: pLabel };
-    } else {
-      parent = { href: '/', label: 'Home' };
-    }
-
-    const lastSegment = pathSegments[pathSegments.length - 1] ?? '';
-    current = lastSegment.replace(/_/g, ' ').replace(/-/g, ' ');
-
-    if (pathSegments[0] === 'songs') {
-      if (pathSegments.length === 2) {
-        const song = songs.find(s => s.artistSlug === lastSegment);
-        current = song?.artist || current.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-      } else if (pathSegments.length === 3) {
-        const artistSlug = pathSegments[1];
-        const song = songs.find(s => s.artistSlug === artistSlug && s.songSlug === lastSegment);
-        current = song?.title || current.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        const songSlug = segments[2];
+        if (songSlug) {
+          const matchedSong = songs.find(s => s.artistSlug === artistSlug && s.songSlug === songSlug);
+          const songTitle = matchedSong?.title ?? songSlug.replace(/_/g, ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+          result.push({ label: songTitle, href: `/songs/${artistSlug}/${songSlug}` });
+        }
       }
     } else {
-      current = current.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+      // Other routes
+      const firstSegment = segments[0];
+      if (firstSegment) {
+        const label = routeLabels[firstSegment] ?? firstSegment.charAt(0).toUpperCase() + firstSegment.slice(1);
+        result.push({ label, href: `/${firstSegment}` });
+      }
     }
 
-    return { currentLabel: current, parentHref: parent?.href || null, parentLabel: parent?.label || null };
-  }, [pathname, songs, pathSegments]);
+    return result;
+  }, [pathname, songs]);
 
-  if (!parentHref) {
-    return (
-      <nav className="flex items-center min-w-0" aria-label="Navigation">
-        <SignalWave />
-        <span className="text-lg font-semibold text-foreground">Songs</span>
-      </nav>
-    );
+  const lastCrumb = crumbs[crumbs.length - 1];
+
+  // Home page - no breadcrumb needed, logo is enough
+  if (crumbs.length === 0) {
+    return null;
   }
 
   return (
     <nav className="flex items-center min-w-0" aria-label="Navigation">
-      <Link href={parentHref} aria-label={`Back to ${parentLabel}`}>
-        <SignalWave interactive />
-      </Link>
-      <span className="text-lg font-semibold text-foreground truncate">{currentLabel}</span>
+      {/* Desktop: Full breadcrumb path */}
+      <div className="hidden md:flex items-center">
+        {crumbs.map((crumb, i) => {
+          const isLast = i === crumbs.length - 1;
+          return (
+            <span key={crumb.href} className="flex items-center">
+              <SignalWave />
+              {isLast ? (
+                <span className="text-xl font-bold text-foreground/90">{crumb.label}</span>
+              ) : (
+                <Link href={crumb.href} className="text-xl font-bold text-foreground/60 hover:text-foreground/80 transition-colors">
+                  {crumb.label}
+                </Link>
+              )}
+            </span>
+          );
+        })}
+      </div>
+
+      {/* Mobile: Last item only */}
+      <div className="flex md:hidden items-center">
+        <SignalWave />
+        <span className="text-xl font-bold text-foreground/90">{lastCrumb?.label}</span>
+      </div>
     </nav>
   );
 }

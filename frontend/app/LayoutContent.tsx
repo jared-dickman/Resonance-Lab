@@ -24,7 +24,7 @@ export function useHeaderLogoRef() {
 
 function LayoutInner({ children, headerLogoRef }: { children: React.ReactNode; headerLogoRef: React.RefObject<HTMLHeadingElement | null> }) {
   const pathname = usePathname();
-  const { isOpen, toggleBuddy } = useBuddy();
+  const { isOpen, setIsOpen, openBuddy } = useBuddy();
   const { introComplete, introLanding } = useIntro();
 
   const isLandingPage = pathname === '/';
@@ -64,7 +64,7 @@ function LayoutInner({ children, headerLogoRef }: { children: React.ReactNode; h
                 variant="outline"
                 size="sm"
                 className="font-medium h-8 gap-2 shrink-0 relative overflow-hidden border-accent/50 hover:border-accent"
-                onClick={toggleBuddy}
+                onClick={() => isOpen ? setIsOpen(false) : openBuddy()}
               >
                 {/* Animated gradient fill - sweeps right-to-left on open, follows Buddy out on close */}
                 <motion.div

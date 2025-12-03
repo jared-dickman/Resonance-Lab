@@ -1,0 +1,36 @@
+id: api-require-error-tracker
+message: |
+  API routes must use serverErrorTracker.captureApiError() in catch blocks
+
+  ❌ Bad - Generic error handling:
+    } catch (err) {
+      console.error(err)
+      return NextResponse.json({error: 'Failed'}, {status: 500})
+    }
+
+  ✅ Good - Structured error tracking:
+    } catch (err) {
+      serverErrorTracker.captureApiError(err, {service: 'songs-api', operation: 'get'})
+      return NextResponse.json({error: 'Service unavailable'}, {status: 500})
+    }
+
+  Import: import { serverErrorTracker } from '@/app/utils/error-tracker.server'
+severity: error
+language: typescript
+note: Structured error tracking enables monitoring, alerting, and debugging in production
+rule:
+  kind: catch_clause
+  all:
+    - has:
+        any:
+          - pattern: NextResponse.json($$$)
+          - pattern: return NextResponse.json($$$)
+        stopBy: end
+    - not:
+        has:
+          pattern: serverErrorTracker.captureApiError($$$)
+          stopBy: end
+files:
+  - "frontend/app/api/**/route.ts"
+ignores:
+  - "**/*.test.ts"

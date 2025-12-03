@@ -2,7 +2,7 @@
 
 import { useSongDetail } from '@/app/features/songs/hooks';
 import SongClient from '@/app/songs/[artist]/[song]/SongClient';
-import { Spinner } from '@/components/ui/spinner';
+import { DramaticLoader } from '@/components/ui/loaders/DramaticLoader';
 import { use } from 'react';
 
 interface SongPageProps {
@@ -18,8 +18,8 @@ export default function SongPage({ params }: SongPageProps) {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[32rem]">
-        <Spinner className="h-8 w-8" />
+      <div className="relative min-h-[32rem]">
+        <DramaticLoader isLoading={isLoading} size="lg" />
       </div>
     );
   }

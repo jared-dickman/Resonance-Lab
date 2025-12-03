@@ -7,7 +7,7 @@ import { Send, Sparkles, Zap, Bot } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Spinner } from '@/components/ui/spinner';
+import { RandomLoader } from '@/components/ui/loaders/RandomLoader';
 import { cn, selectRandom, selectRandomWithFallback } from '@/lib/utils';
 import type { SearchResult } from '@/lib/types';
 import placeholders from '@/lib/data/placeholders.json';
@@ -282,7 +282,7 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
     try {
       const newHistory = [...conversationHistory, { role: 'user', content: userMessage }];
 
-      const response = await fetch(apiRoutes.coreBuddy, {
+      const response = await fetch(apiRoutes.buddyStream, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: newHistory }),
@@ -519,7 +519,7 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
           disabled={isLoading || isSaving || !input.trim()}
           data-testid={AgentChatTestIds.sendButton}
         >
-          {isLoading ? <Spinner className="h-4 w-4" /> : <Send className="h-4 w-4" />}
+          {isLoading ? <RandomLoader size="sm" /> : <Send className="h-4 w-4" />}
         </Button>
       </form>
     </div>

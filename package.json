@@ -36,7 +36,7 @@
   "scripts": {
     "build": "npm run build -w frontend",
     "dev": "npm run dev -w frontend",
-    "jamium": "(sleep 2 && open http://jamium.localhost:4242 &) && pnpm dev",
+    "jamium": "pkill -f './server' 2>/dev/null; (cd scraper && ADDR=:8080 SONGS_DIR=../songs ./server &) && (sleep 2 && open http://jamium.localhost:4242 &) && pnpm dev",
     "start": "npm run start -w frontend",
     "test": "echo \"No unit tests configured yet\" && exit 0",
     "lint": "eslint . --fix",

@@ -14,14 +14,14 @@ export interface LoaderProps {
 
 /**
  * Standard square dimensions for loaders
- * sm: 48x48 - compact inline use
+ * sm: 32x32 - compact inline buttons
  * md: 64x64 - default display
- * lg: 80x80 - prominent display
+ * lg: 128x128 - dramatic full-page display
  */
 export const LOADER_SIZE = {
-  sm: 48,
+  sm: 32,
   md: 64,
-  lg: 80,
+  lg: 128,
 } as const;
 
 /**
@@ -29,9 +29,9 @@ export const LOADER_SIZE = {
  * Maintains 4:3 aspect ratio
  */
 export const LOADER_RECT = {
-  sm: { width: 56, height: 42 },
+  sm: { width: 40, height: 30 },
   md: { width: 72, height: 54 },
-  lg: { width: 88, height: 66 },
+  lg: { width: 160, height: 120 },
 } as const;
 
 /**

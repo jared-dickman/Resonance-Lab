@@ -87,9 +87,15 @@ export function toSongDetailView(response: SongDetailResponse): SongDetailView |
     title: response.summary.title,
     songSlug: response.summary.songSlug,
     key: response.songJson.key,
-    sections: response.songJson.sections,
-    chordsHtml: response.chordsHtml,
-    tabHtml: response.tabHtml,
+    sections: response.songJson.sections.map(section => ({
+      name: section.name,
+      lines: section.lines.map(line => ({
+        lyric: line.lyric,
+        chord: line.chord ?? undefined,
+      })),
+    })),
+    chordsHtml: response.chordsHtml ?? undefined,
+    tabHtml: response.tabHtml ?? undefined,
   };
 }
 

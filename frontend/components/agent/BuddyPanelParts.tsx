@@ -154,6 +154,7 @@ export function BuddyNavBar({ onNavigate }: BuddyNavBarProps) {
 interface BuddyMessageListProps {
   messages: BuddyMessage[];
   isLoading: boolean;
+  isThinking: boolean;
   thinkingPun: string;
   placeholder: string;
   isSaving: boolean;
@@ -161,7 +162,7 @@ interface BuddyMessageListProps {
   onSelectResult: (result: SearchResult, type: 'chord' | 'tab') => void;
 }
 
-export function BuddyMessageList({ messages, isLoading, thinkingPun, placeholder, isSaving, onSelectSuggestion, onSelectResult }: BuddyMessageListProps) {
+export function BuddyMessageList({ messages, isLoading, isThinking, thinkingPun, placeholder, isSaving, onSelectSuggestion, onSelectResult }: BuddyMessageListProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const isEmptyState = messages.length === 0;
 
@@ -232,6 +233,19 @@ export function BuddyMessageList({ messages, isLoading, thinkingPun, placeholder
           </motion.div>
         );
       })}
+
+      {/* Thinking indicator - shows when agent is processing between tool calls */}
+      {isThinking && messages.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="flex justify-start"
+        >
+          <div className="py-2 px-3">
+            <RandomLoader size="sm" />
+          </div>
+        </motion.div>
+      )}
 
       <div ref={messagesEndRef} />
     </div>
