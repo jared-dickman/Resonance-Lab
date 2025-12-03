@@ -90,5 +90,4 @@ Thumbs.db
 .cache/
 *.cache
 backend
-.claude/skills/docker-dude/vps-config.json
-.claude/skills/docker-dude/scripts/
+.claude/skills/docker-dude/
