@@ -2,10 +2,9 @@ import { tool, createSdkMcpServer } from '@anthropic-ai/claude-agent-sdk';
 // SDK requires Zod 3 (not Zod 4) - see https://github.com/anthropics/claude-agent-sdk-typescript/issues/4
 // Type assertion needed: SDK types reference 'zod' (v4 in project) but expects v3 at runtime
 import { z } from 'zod3';
-import type { ZodRawShape } from 'zod';
-
-// Helper to bridge zod3 schemas to SDK's expected zod types
-const asSchema = <T extends Record<string, unknown>>(schema: T): ZodRawShape => schema as unknown as ZodRawShape;
+// Helper to bridge zod3 schemas to SDK's expected zod types (zod v3 → SDK)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const asSchema = <T extends Record<string, unknown>>(schema: T): any => schema;
 import {
   executeSearch,
   executeDownload,
