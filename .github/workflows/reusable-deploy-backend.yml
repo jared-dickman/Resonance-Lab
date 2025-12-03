@@ -53,7 +53,9 @@ jobs:
             git fetch origin
             git reset --hard origin/${{ inputs.branch }}
             git clean -fd
-            docker compose up -d --build ${{ inputs.container_name }}
+            # Cleanup orphaned containers to prevent name conflicts
+            docker container prune -f 2>/dev/null || true
+            docker compose up -d --build --remove-orphans ${{ inputs.container_name }}
             sleep 5
             docker ps | grep -q ${{ inputs.container_name }} || { docker logs ${{ inputs.container_name }} --tail 20; exit 1; }
             echo "✅ Deployed"
