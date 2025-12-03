@@ -15,11 +15,13 @@ const songItemSchema = z.object({
 
 const songsResponseSchema = z.array(songItemSchema).max(MAX_SONGS);
 
-interface ArtistResponse {
-  name: string;
-  slug: string;
-  songCount: number;
-}
+const artistResponseSchema = z.object({
+  name: z.string(),
+  slug: z.string(),
+  songCount: z.number(),
+});
+const artistsResponseSchema = z.array(artistResponseSchema);
+type ArtistResponse = z.infer<typeof artistResponseSchema>;
 
 export async function GET() {
   if (!API_BASE_URL) {
@@ -83,7 +85,7 @@ export async function GET() {
       .map(a => ({ name: a.name, slug: a.slug, songCount: a.count }))
       .sort((a, b) => a.name.localeCompare(b.name));
 
-    return NextResponse.json(artists);
+    return NextResponse.json(artistsResponseSchema.parse(artists));
   } catch (err) {
     serverErrorTracker.captureApiError(err, {
       service: 'artists-api',

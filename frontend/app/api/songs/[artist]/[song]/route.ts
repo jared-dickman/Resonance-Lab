@@ -64,24 +64,7 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     }
 
     const rawData = await response.json();
-
-    // Security: Validate response before returning
-    const validationResult = songDetailSchema.safeParse(rawData);
-    if (!validationResult.success) {
-      serverErrorTracker.captureApiError(
-        new Error('Invalid response from upstream API'),
-        {
-          service: 'songs-api',
-          operation: 'get-song-detail',
-          artist,
-          title: song,
-          validationErrors: validationResult.error.flatten(),
-        }
-      );
-      return NextResponse.json({ error: 'Invalid response data' }, { status: 500 });
-    }
-
-    return NextResponse.json(validationResult.data);
+    return NextResponse.json(songDetailSchema.parse(rawData));
   } catch (err) {
     serverErrorTracker.captureApiError(err, {
       service: 'songs-api',

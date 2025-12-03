@@ -43,21 +43,7 @@ export async function GET() {
 
     const data = await response.json();
 
-    // Validate response schema
-    const validated = songsListSchema.safeParse(data);
-    if (!validated.success) {
-      serverErrorTracker.captureApiError(
-        new Error('Invalid response schema from backend'),
-        {
-          service: 'songs-api',
-          operation: 'get-songs',
-          validationErrors: validated.error.flatten(),
-        }
-      );
-      return NextResponse.json({ error: GENERIC_ERRORS.FETCH }, { status: 500 });
-    }
-
-    return NextResponse.json(validated.data);
+    return NextResponse.json(songsListSchema.parse(data));
   } catch (err) {
     serverErrorTracker.captureApiError(err, {
       service: 'songs-api',
@@ -129,22 +115,7 @@ export async function POST(request: NextRequest) {
     }
 
     const data = await response.json();
-
-    // Validate response schema
-    const validated = savedSongSchema.safeParse(data);
-    if (!validated.success) {
-      serverErrorTracker.captureApiError(
-        new Error('Invalid response schema from backend'),
-        {
-          service: 'songs-api',
-          operation: 'save-song',
-          validationErrors: validated.error.flatten(),
-        }
-      );
-      return NextResponse.json({ error: GENERIC_ERRORS.SAVE }, { status: 500 });
-    }
-
-    return NextResponse.json(validated.data);
+    return NextResponse.json(savedSongSchema.parse(data));
   } catch (err) {
     serverErrorTracker.captureApiError(err, {
       service: 'songs-api',

@@ -23,11 +23,8 @@ export async function GET() {
       backend: isConfigured ? '✅ Backend configured' : '❌ No backend',
     } as const;
 
-    // Validate response schema
-    const validated = LabResponseSchema.parse(response);
-
-    logger.info('[lab] Health check', { status: validated.status });
-    return NextResponse.json(validated);
+    logger.info('[lab] Health check', { status: response.status });
+    return NextResponse.json(LabResponseSchema.parse(response));
   } catch (err) {
     serverErrorTracker.captureApiError(err, { service: 'lab', operation: 'health-check' });
     return NextResponse.json({ error: 'Service unavailable' }, { status: 500 });
