@@ -54,13 +54,13 @@ export function Breadcrumbs() {
       if (artistSlug) {
         const song = songs.find(s => s.artistSlug === artistSlug);
         const artistName = song?.artist ?? artistSlug.replace(/_/g, ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-        result.push({ label: artistName, href: `/songs/${artistSlug}` });
+        result.push({ label: artistName, href: `/repertoire/${artistSlug}` });
 
         const songSlug = segments[2];
         if (songSlug) {
           const matchedSong = songs.find(s => s.artistSlug === artistSlug && s.songSlug === songSlug);
           const songTitle = matchedSong?.title ?? songSlug.replace(/_/g, ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-          result.push({ label: songTitle, href: `/songs/${artistSlug}/${songSlug}` });
+          result.push({ label: songTitle, href: `/repertoire/${artistSlug}/${songSlug}` });
         }
       }
     } else {

@@ -13,7 +13,19 @@ import {
   executeGetArtistSongs,
   executeNavigate,
 } from './executors';
-import { AllParams } from '@/lib/params/pageParams';
+import { AllParams, PageParams } from '@/lib/params/pageParams';
+import { buddyRoutes } from '@/lib/routes';
+
+// Generate route docs from source of truth
+const routeDocs = Object.entries(buddyRoutes)
+  .map(([, r]) => `- ${r.path} → ${r.desc}`)
+  .join('\n');
+const songRoute = `- ${buddyRoutes.repertoire.path}/{Artist}/{Song} → Specific song`;
+
+// Generate param docs from source of truth
+const paramDocs = Object.entries(PageParams.jam)
+  .map(([, p]) => `- ${p.key}: ${p.description}`)
+  .join('\n');
 
 // =============================================================================
 // TOOL DEFINITIONS
@@ -114,32 +126,16 @@ RETURNS: { artist, songs: [{ title, artist, artistSlug, songSlug }], count }
 
 IMPORTANT: Use artistSlug and songSlug from results for navigate tool.`;
 
-const NAVIGATE_DESCRIPTION = `Navigate the user to a page with optional UI state params.
+const NAVIGATE_DESCRIPTION = `Navigate user to a page. Slugs use Title_Case_With_Underscores.
 
-WHEN TO USE:
-- After downloading a song: navigate with preferred settings
-- User asks to go somewhere with specific settings
-- Control UI state: tempo, capo, tab type, etc.
+ROUTES:
+${routeDocs}
+${songRoute}
 
-PAGES:
-- /songs → Full library
-- /songs/{artistSlug}/{songSlug} → Specific song
-- /jam → Practice mode
-- /composer → Build progressions
+PARAMS (optional):
+${paramDocs}
 
-AVAILABLE PARAMS (optional):
-- tab: "chords" | "tab" | "both" (tab view type)
-- bpm: tempo as string (e.g. "90")
-- capo: fret position (e.g. "2")
-- transpose: semitones (e.g. "-2")
-- view: "practice" | "perform" | "edit"
-
-EXAMPLES:
-- path: "/songs/Oasis/Wonderwall", params: { tab: "chords", bpm: "80", capo: "2" }
-- path: "/jam", params: { bpm: "120" }
-- path: "/songs" (no params = defaults)
-
-SLUG FORMAT: Title_Case_With_Underscores`;
+EXAMPLE: path: "/repertoire/Oasis/Wonderwall", params: { bpm: "80", capo: "2" }`;
 
 export interface NavigationCallback {
   (path: string, reason?: string): void;

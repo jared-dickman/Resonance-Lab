@@ -69,7 +69,7 @@ export function toSongsListView(songs: SavedSongResponse[]): SavedSongView[] {
   return songs.map(song => ({
     ...song,
     displayTitle: `${song.artist} - ${song.title}`,
-    detailUrl: `/songs/${song.artistSlug}/${song.songSlug}`,
+    detailUrl: `/repertoire/${song.artistSlug}/${song.songSlug}`,
   }));
 }
 

@@ -160,6 +160,16 @@ export function CoreAgentBuddy({ onSave, isSaving = false, isLanding = false, on
     }
   }, [isOpen, isMinimized]);
 
+  // Auto-focus input when thinking/loading finishes
+  const wasProcessingRef = useRef(false);
+  useEffect(() => {
+    const isProcessing = chat.isLoading || chat.isThinking;
+    if (wasProcessingRef.current && !isProcessing) {
+      setTimeout(() => inputRef.current?.focus(), BUDDY_AUTOFOCUS_DELAY_MS);
+    }
+    wasProcessingRef.current = isProcessing;
+  }, [chat.isLoading, chat.isThinking]);
+
   useIntervalEffect(
     () => setCurrentPlaceholder(selectRandomWithFallback(placeholders, BUDDY_DEFAULT_PLACEHOLDER)),
     BUDDY_PLACEHOLDER_INTERVAL_MS,

@@ -234,17 +234,15 @@ export function BuddyMessageList({ messages, isLoading, isThinking, thinkingPun,
         );
       })}
 
-      {/* Thinking indicator - shows when agent is processing between tool calls */}
-      {isThinking && messages.length > 0 && (
+      {/* Thinking indicator - shows when agent is processing between tool calls (not during loading) */}
+      {isThinking && !isLoading && messages.length > 0 && (
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           className="flex justify-start"
         >
-          <div className="flex items-center gap-2 rounded-xl px-3 py-2 bg-white/5 border border-white/10">
-            <div className="w-4 h-4">
-              <RandomLoader size="sm" />
-            </div>
+          <div className="w-4 h-4">
+            <RandomLoader size="sm" />
           </div>
         </motion.div>
       )}

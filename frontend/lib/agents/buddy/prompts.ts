@@ -1,3 +1,5 @@
+import { buddyRoutes, pageRoutes } from '@/lib/routes';
+
 export interface BuddyContext {
   page: string;
   artist?: string;
@@ -5,6 +7,13 @@ export interface BuddyContext {
   chords?: string[];
   key?: string;
 }
+
+// Generate route docs programmatically - single source of truth
+const navDestinations = Object.entries(buddyRoutes)
+  .map(([, r]) => `${r.path} - ${r.desc}`)
+  .join('\n');
+const songNav = `${buddyRoutes.repertoire.path}/{Artist}/{Song} - Specific song (use Title_Case_With_Underscores)`;
+const extraNav = `${pageRoutes.metronome} - Get your timing tight\n${pageRoutes.musicTheory} - Level up your knowledge`;
 
 // =============================================================================
 // CORE PERSONALITY - The Soul of Buddy
@@ -77,23 +86,16 @@ ERROR RECOVERY:
 // =============================================================================
 const LIBRARY_NAVIGATION = `
 LIBRARY TOOLS:
-- list_artists: See all artists in their collection. Good for "what do I have?"
-- get_artist_songs: Deep dive on one artist. Use when they mention an artist name.
+- list_artists: "what do I have?"
+- get_artist_songs: specific artist's songs
 
 NAVIGATION:
-Guide them to the right spot. Don't make them hunt.
-
 After downloading: "Want me to take you to it?"
-When they mention practicing: "Jam mode's calling your name"
-When they're stuck: "Let's hit the theory section"
 
-AVAILABLE DESTINATIONS:
-/songs - Full library
-/songs/{Artist}/{Song} - Specific song (use Title_Case_With_Underscores)
-/jam - Loop and practice progressions
-/composer - Build chord progressions
-/metronome - Get your timing tight
-/music-theory - Level up your knowledge`;
+DESTINATIONS:
+${navDestinations}
+${songNav}
+${extraNav}`;
 
 // =============================================================================
 // MUSICOLOGY - Your Encyclopedia Brain

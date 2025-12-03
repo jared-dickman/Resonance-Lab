@@ -100,7 +100,7 @@ export default function HomePage() {
               <motion.div key={`${song.artistSlug}/${song.songSlug}`} variants={SLIDE_UP_VARIANTS}>
               <SapphireCard className="group">
                 <Link
-                  href={`/songs/${song.artistSlug}/${song.songSlug}`}
+                  href={`/repertoire/${song.artistSlug}/${song.songSlug}`}
                   className="block p-4"
                 >
                   <div className="flex items-start gap-3">

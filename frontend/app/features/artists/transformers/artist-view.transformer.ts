@@ -19,6 +19,6 @@ export function toArtistsListView(artists: ArtistResponse[]): ArtistView[] {
     slug: artist.slug,
     name: artist.name,
     songCount: artist.songCount,
-    songsUrl: `/songs/${artist.slug}`,
+    songsUrl: `/repertoire/${artist.slug}`,
   }));
 }

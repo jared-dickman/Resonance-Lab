@@ -42,9 +42,9 @@ const BuddyContext = createContext<BuddyContextType | undefined>(undefined);
 
 function derivePageFromPathname(pathname: string): PageContext {
   if (pathname === '/') return 'landing';
-  if (pathname === '/songs') return 'library';
+  if (pathname === '/repertoire') return 'library';
   if (pathname === '/artists') return 'artists';
-  if (pathname.startsWith('/songs/')) {
+  if (pathname.startsWith('/repertoire/')) {
     const parts = pathname.split('/').filter(Boolean);
     return parts.length === 3 ? 'song' : 'artist';
   }
@@ -58,7 +58,7 @@ function derivePageFromPathname(pathname: string): PageContext {
 }
 
 function extractArtistFromPathname(pathname: string): string | undefined {
-  if (pathname.startsWith('/songs/')) {
+  if (pathname.startsWith('/repertoire/')) {
     const parts = pathname.split('/').filter(Boolean);
     const artist = parts[1];
     if (parts.length >= 2 && artist) {
@@ -69,7 +69,7 @@ function extractArtistFromPathname(pathname: string): string | undefined {
 }
 
 function extractSongFromPathname(pathname: string): string | undefined {
-  if (pathname.startsWith('/songs/')) {
+  if (pathname.startsWith('/repertoire/')) {
     const parts = pathname.split('/').filter(Boolean);
     const song = parts[2];
     if (parts.length >= 3 && song) {

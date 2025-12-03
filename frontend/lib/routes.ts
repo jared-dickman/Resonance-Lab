@@ -5,7 +5,6 @@
 export const pageRoutes = {
   home: '/',
   repertoire: '/repertoire',
-  songs: '/songs',
   artists: '/artists',
   songwriter: '/songwriter',
   jam: '/jam',
@@ -14,6 +13,13 @@ export const pageRoutes = {
   musicTheory: '/music-theory',
   composer: '/composer',
   pedalboard: '/pedalboard',
+} as const;
+
+/** Routes Buddy can navigate to with descriptions */
+export const buddyRoutes = {
+  repertoire: { path: '/repertoire', desc: 'Song library' },
+  jam: { path: '/jam', desc: 'Practice mode' },
+  composer: { path: '/composer', desc: 'Build progressions' },
 } as const;
 
 export type PageRoute = (typeof pageRoutes)[keyof typeof pageRoutes];

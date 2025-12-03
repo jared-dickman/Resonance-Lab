@@ -97,7 +97,7 @@ function SongsView() {
       {sortedSongs.map(song => (
         <motion.div key={`${song.artistSlug}/${song.songSlug}`} variants={SLIDE_UP_VARIANTS}>
           <SapphireCard className="group">
-            <Link href={`/songs/${song.artistSlug}/${song.songSlug}`} className="block p-4">
+            <Link href={`/repertoire/${song.artistSlug}/${song.songSlug}`} className="block p-4">
               <div className="flex items-start gap-3">
                 <div className="p-2 rounded-md bg-sapphire-500/10 text-sapphire-400">
                   <Disc3 className="h-5 w-5" />

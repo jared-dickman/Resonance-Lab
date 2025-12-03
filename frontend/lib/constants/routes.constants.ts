@@ -1,6 +1,6 @@
 export const APP_ROUTES = {
   HOME: '/',
-  SONGS: '/songs',
+  REPERTOIRE: '/repertoire',
   JAM: '/jam',
   SONGWRITER: '/songwriter',
   METRONOME: '/metronome',
