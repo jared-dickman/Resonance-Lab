@@ -4,12 +4,14 @@ import { z } from 'zod';
 import { logger } from '@/lib/logger';
 import { env } from '@/app/config/env';
 import { serverErrorTracker } from '@/app/utils/error-tracker.server';
+import { validateApiAuth } from '@/lib/auth/apiAuth';
 import {
   createBuddyMcpServer,
   BUDDY_TOOL_NAMES,
   buildSystemPrompt,
-  type BuddyContext,
 } from '@/lib/agents/buddy';
+import { escapeXmlForLlm } from '@/lib/utils/sanitize';
+import { checkRateLimit, getRemainingRequests } from '@/app/utils/rate-limiter';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -72,6 +74,36 @@ function createSSEStream() {
  * - Graceful error recovery
  */
 export async function POST(request: NextRequest): Promise<Response> {
+  // Enterprise security: validate API key
+  const authResult = validateApiAuth(request);
+  if (!authResult.authorized) {
+    return authResult.response!;
+  }
+
+  // Rate limiting: 10 requests per minute per IP
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+    || request.headers.get('x-real-ip')
+    || 'unknown';
+
+  if (!checkRateLimit(ip, 10, 60000)) {
+    const remaining = getRemainingRequests(ip, 10);
+    logger.warn('[buddy-stream/rate-limit]', { ip, remaining });
+    return new Response(
+      JSON.stringify({
+        error: 'Too Many Requests',
+        message: 'Rate limit exceeded. Please wait before retrying.',
+        retryAfter: 60
+      }),
+      {
+        status: 429,
+        headers: {
+          'Content-Type': 'application/json',
+          'Retry-After': '60'
+        }
+      }
+    );
+  }
+
   const abortController = new AbortController();
 
   // Handle client disconnect
@@ -136,12 +168,12 @@ export async function POST(request: NextRequest): Promise<Response> {
       // Format conversation history for context (exclude last user message - it becomes the prompt)
       const historyMessages = messages.slice(0, -1);
       const conversationHistory = historyMessages.length > 0
-        ? historyMessages.map(m => `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.content}`).join('\n\n')
+        ? historyMessages.map(m => `${m.role === 'user' ? 'User' : 'Assistant'}: ${escapeXmlForLlm(m.content)}`).join('\n\n')
         : '';
 
       const fullPrompt = conversationHistory
-        ? `<conversation_history>\n${conversationHistory}\n</conversation_history>\n\nUser: ${lastUserMessage.content}`
-        : lastUserMessage.content;
+        ? `<conversation_history>\n${conversationHistory}\n</conversation_history>\n\nUser: ${escapeXmlForLlm(lastUserMessage.content)}`
+        : escapeXmlForLlm(lastUserMessage.content);
 
       await sendEvent('start', { model: MODEL, tools: BUDDY_TOOL_NAMES });
 

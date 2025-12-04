@@ -1,11 +1,12 @@
-import type { Metadata } from 'next';
-import SongwriterClient from '@/components/songwriter/SongwriterClient';
-import { APP_NAME } from '@/app/config/app';
+'use client';
 
-export const metadata: Metadata = {
-  title: `Songwriter Assistant | ${APP_NAME}`,
-  description: 'AI-powered songwriting assistant for crafting lyrics, chords, and structure',
-};
+import dynamic from 'next/dynamic';
+import { RandomLoader } from '@/components/ui/loaders/RandomLoader';
+
+const SongwriterClient = dynamic(() => import('@/components/songwriter/SongwriterClient'), {
+  ssr: false,
+  loading: () => <RandomLoader />,
+});
 
 export default function SongwriterPage() {
   return <SongwriterClient />;

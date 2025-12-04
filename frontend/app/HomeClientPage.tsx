@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 import { SapphireCard } from '@/components/ui/card';
 import { DramaticLoader } from '@/components/ui/loaders/DramaticLoader';
 import { useSongs, useDeleteSong } from '@/app/features/songs/hooks';
-import { ANIMATION_DURATION, SLIDE_UP_VARIANTS } from '@/lib/constants/animation.constants';
+import { SLIDE_UP_VARIANTS } from '@/lib/constants/animation.constants';
 
 interface StatusMessage {
   type: 'success' | 'error' | 'info';

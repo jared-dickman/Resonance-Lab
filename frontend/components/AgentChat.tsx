@@ -284,7 +284,9 @@ export function AgentChat({ onSave, isSaving }: AgentChatProps) {
 
       const response = await fetch(apiRoutes.buddyStream, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({ messages: newHistory }),
       });
 

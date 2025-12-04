@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import type { BuddyMessage, BuddyApiResponse, Suggestion } from '@/lib/types/buddy.types';
+import type { BuddyMessage, Suggestion } from '@/lib/types/buddy.types';
 import type { SearchResult } from '@/lib/types';
 import { selectRandomWithFallback } from '@/lib/utils';
 import { logger } from '@/lib/logger';

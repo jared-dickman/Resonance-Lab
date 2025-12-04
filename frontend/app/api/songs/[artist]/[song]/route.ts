@@ -3,7 +3,10 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { env } from '@/app/config/env';
 import { serverErrorTracker } from '@/app/utils/error-tracker.server';
+import { validateApiAuth } from '@/lib/auth/apiAuth';
 import { songDetailSchema } from '@/app/features/songs/dto/song-response.schema';
+import { toSongDetailView } from '@/app/features/songs/transformers/song-view.transformer';
+import { songDetailViewSchema } from '@/app/features/songs/dto/song-view.schema';
 
 const API_BASE_URL = env.API_BASE_URL;
 
@@ -17,7 +20,12 @@ interface RouteParams {
   params: Promise<{ artist: string; song: string }>;
 }
 
-export async function GET(_request: NextRequest, { params }: RouteParams) {
+export async function GET(request: NextRequest, { params }: RouteParams) {
+  const authResult = validateApiAuth(request);
+  if (!authResult.authorized) {
+    return authResult.response!;
+  }
+
   let artist: string | undefined;
   let song: string | undefined;
 
@@ -64,7 +72,14 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     }
 
     const rawData = await response.json();
-    return NextResponse.json(songDetailSchema.parse(rawData));
+    const validatedData = songDetailSchema.parse(rawData);
+    const transformed = toSongDetailView(validatedData);
+
+    if (!transformed) {
+      return NextResponse.json({ error: 'Song data incomplete' }, { status: 404 });
+    }
+
+    return NextResponse.json(songDetailViewSchema.parse(transformed));
   } catch (err) {
     serverErrorTracker.captureApiError(err, {
       service: 'songs-api',
@@ -76,7 +91,12 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
   }
 }
 
-export async function DELETE(_request: NextRequest, { params }: RouteParams) {
+export async function DELETE(request: NextRequest, { params }: RouteParams) {
+  const authResult = validateApiAuth(request);
+  if (!authResult.authorized) {
+    return authResult.response!;
+  }
+
   let artist: string | undefined;
   let song: string | undefined;
 

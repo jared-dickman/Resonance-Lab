@@ -1,4 +1,5 @@
 import { buddyRoutes, pageRoutes } from '@/lib/routes';
+import { escapeXmlForLlm } from '@/lib/utils/sanitize';
 
 export interface BuddyContext {
   page: string;
@@ -116,9 +117,9 @@ Keep it snappy though - one golden nugget per response.`;
 function buildContextGuidance(context: BuddyContext): string {
   if (context.artist && context.song) {
     return `
-YOU'RE ON: "${context.song}" by ${context.artist}
-${context.chords?.length ? `Chords: ${context.chords.join(' → ')}` : ''}
-${context.key ? `Key: ${context.key}` : ''}
+YOU'RE ON: "${escapeXmlForLlm(context.song)}" by ${escapeXmlForLlm(context.artist)}
+${context.chords?.length ? `Chords: ${context.chords.map(escapeXmlForLlm).join(' → ')}` : ''}
+${context.key ? `Key: ${escapeXmlForLlm(context.key)}` : ''}
 
 CONTEXT MOVES:
 - Offer practice tips for tricky chord changes
@@ -128,7 +129,7 @@ CONTEXT MOVES:
 
   if (context.artist) {
     return `
-YOU'RE ON: ${context.artist}'s page
+YOU'RE ON: ${escapeXmlForLlm(context.artist)}'s page
 
 CONTEXT MOVES:
 - Share deep cuts they might've missed

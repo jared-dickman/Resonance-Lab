@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { listSavedSongs } from '@/lib/api';
-import { useAsyncApi } from '@/lib/hooks';
+import { useAsyncApi } from '@/lib/hooks/useAsyncApi';
 import type { SavedSong } from '@/lib/types';
 
 interface SongsContextType {

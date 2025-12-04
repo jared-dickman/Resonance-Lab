@@ -2,8 +2,11 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { env } from '@/app/config/env';
 import { serverErrorTracker } from '@/app/utils/error-tracker.server';
+import { validateApiAuth } from '@/lib/auth/apiAuth';
 import { downloadRequestSchema } from '@/app/features/songs/dto/song-request.schema';
 import { savedSongSchema } from '@/app/features/songs/dto/song-response.schema';
+import { toSongsListView } from '@/app/features/songs/transformers/song-view.transformer';
+import { songsListViewSchema } from '@/app/features/songs/dto/song-view.schema';
 import { z } from 'zod';
 
 const API_BASE_URL = env.API_BASE_URL;
@@ -19,7 +22,12 @@ const GENERIC_ERRORS = {
 // GET list response validation
 const songsListSchema = z.array(savedSongSchema);
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const authResult = validateApiAuth(request);
+  if (!authResult.authorized) {
+    return authResult.response!;
+  }
+
   if (!API_BASE_URL) {
     serverErrorTracker.captureApiError(new Error('API_BASE_URL not configured'), {
       service: 'songs-api',
@@ -30,7 +38,7 @@ export async function GET() {
 
   try {
     const response = await fetch(`${API_BASE_URL}/api/songs`, {
-      cache: 'no-store',
+      next: { revalidate: 60 }, // 60 seconds stale-while-revalidate
     });
 
     if (!response.ok) {
@@ -42,8 +50,10 @@ export async function GET() {
     }
 
     const data = await response.json();
+    const validatedData = songsListSchema.parse(data);
+    const viewData = toSongsListView(validatedData);
 
-    return NextResponse.json(songsListSchema.parse(data));
+    return NextResponse.json(songsListViewSchema.parse(viewData));
   } catch (err) {
     serverErrorTracker.captureApiError(err, {
       service: 'songs-api',
@@ -54,6 +64,11 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const authResult = validateApiAuth(request);
+  if (!authResult.authorized) {
+    return authResult.response!;
+  }
+
   if (!API_BASE_URL) {
     serverErrorTracker.captureApiError(new Error('API_BASE_URL not configured'), {
       service: 'songs-api',

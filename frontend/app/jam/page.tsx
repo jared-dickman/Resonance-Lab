@@ -1,12 +1,12 @@
-import type { Metadata } from 'next';
-import JamAssistantClient from '@/components/JamAssistantClient';
-import { APP_NAME } from '@/app/config/app';
+'use client';
 
-export const metadata: Metadata = {
-  title: `Jam Assistant | ${APP_NAME}`,
-  description:
-    'Get chord progression recommendations, build jam sessions, and practice with adaptive difficulty',
-};
+import dynamic from 'next/dynamic';
+import { RandomLoader } from '@/components/ui/loaders/RandomLoader';
+
+const JamAssistantClient = dynamic(() => import('@/components/JamAssistantClient'), {
+  ssr: false,
+  loading: () => <RandomLoader />,
+});
 
 export default function JamPage() {
   return <JamAssistantClient />;

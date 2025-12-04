@@ -18,8 +18,9 @@ export async function GET() {
     let status: HealthStatus = 'healthy';
     let httpStatus = 200;
 
-    // Check 1: Environment configured
-    if (!process.env.ANTHROPIC_API_KEY?.startsWith('sk-ant-')) {
+    // Check 1: Dependencies configured
+    // Note: Consider adding rate limiting for production monitoring
+    if (!process.env.ANTHROPIC_API_KEY) {
       status = 'unhealthy';
       httpStatus = 503;
     } else {

@@ -75,7 +75,9 @@ export async function executeDownload(
   try {
     const response = await fetch(`${apiBaseUrl}/api/songs`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ songUrl, artist, title }),
     });
 
@@ -105,7 +107,9 @@ export async function executeListArtists(apiBaseUrl: string): Promise<string> {
   logger.info('[buddy/list-artists] starting');
 
   try {
-    const response = await fetch(`${apiBaseUrl}/api/songs`, { cache: 'no-store' });
+    const response = await fetch(`${apiBaseUrl}/api/songs`, {
+      cache: 'no-store',
+    });
 
     if (!response.ok) {
       throw new Error(`Failed to fetch songs: ${response.status}`);
@@ -143,7 +147,9 @@ export async function executeGetArtistSongs(apiBaseUrl: string, artist: string):
   logger.info('[buddy/get-artist-songs] starting', { artist });
 
   try {
-    const response = await fetch(`${apiBaseUrl}/api/songs`, { cache: 'no-store' });
+    const response = await fetch(`${apiBaseUrl}/api/songs`, {
+      cache: 'no-store',
+    });
 
     if (!response.ok) {
       throw new Error(`Failed to fetch songs: ${response.status}`);

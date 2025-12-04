@@ -6,7 +6,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useIntelligentComposer } from '@/lib/hooks';
+import { useIntelligentComposer } from '@/lib/hooks/useIntelligentComposer';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';

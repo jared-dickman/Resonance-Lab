@@ -1,8 +1,10 @@
+import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { env } from '@/app/config/env';
 import { logger } from '@/lib/logger';
 import { serverErrorTracker } from '@/app/utils/error-tracker.server';
+import { validateApiAuth } from '@/lib/auth/apiAuth';
 
 const LabResponseSchema = z.object({
   message: z.string(),
@@ -11,7 +13,12 @@ const LabResponseSchema = z.object({
   backend: z.string(),
 }).strict();
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const authResult = validateApiAuth(request);
+  if (!authResult.authorized) {
+    return authResult.response!;
+  }
+
   try {
     const isConfigured = !!env.API_BASE_URL;
     const isDev = env.API_BASE_URL?.includes('dev.srv');

@@ -1,7 +1,11 @@
+import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { env } from '@/app/config/env';
 import { serverErrorTracker } from '@/app/utils/error-tracker.server';
+import { validateApiAuth } from '@/lib/auth/apiAuth';
+import { toArtistsListView } from '@/app/features/artists/transformers/artist-view.transformer';
+import { artistsListViewSchema } from '@/app/features/artists/dto/artist-view.schema';
 
 const API_BASE_URL = env.API_BASE_URL;
 const REQUEST_TIMEOUT_MS = 5000;
@@ -23,7 +27,12 @@ const artistResponseSchema = z.object({
 const artistsResponseSchema = z.array(artistResponseSchema);
 type ArtistResponse = z.infer<typeof artistResponseSchema>;
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const authResult = validateApiAuth(request);
+  if (!authResult.authorized) {
+    return authResult.response!;
+  }
+
   if (!API_BASE_URL) {
     serverErrorTracker.captureApiError(new Error('API_BASE_URL not configured'), {
       service: 'artists-api',
@@ -35,7 +44,7 @@ export async function GET() {
   try {
     // Fetch songs with timeout
     const response = await fetch(`${API_BASE_URL}/api/songs`, {
-      cache: 'no-store',
+      next: { revalidate: 60 }, // 60 seconds stale-while-revalidate
       signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
     });
 
@@ -85,7 +94,9 @@ export async function GET() {
       .map(a => ({ name: a.name, slug: a.slug, songCount: a.count }))
       .sort((a, b) => a.name.localeCompare(b.name));
 
-    return NextResponse.json(artistsResponseSchema.parse(artists));
+    const validatedData = artistsResponseSchema.parse(artists);
+    const viewData = toArtistsListView(validatedData);
+    return NextResponse.json(artistsListViewSchema.parse(viewData));
   } catch (err) {
     serverErrorTracker.captureApiError(err, {
       service: 'artists-api',

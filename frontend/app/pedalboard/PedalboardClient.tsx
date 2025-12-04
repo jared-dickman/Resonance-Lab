@@ -25,14 +25,12 @@ import { Play, Square, Guitar, Star, Zap, Settings, Maximize2, Minimize2 } from 
 
 import { Pedalboard } from '@/lib/audio/effects';
 import { PedalboardUI } from '@/components/effects';
-import {
-  AnimatedCableRouting,
-  SpectrumAnalyzer,
-  WaveformOscilloscope,
-  SignalPathDiagram,
-  AudioReactiveParticles,
-  GenerativeArtVisualizer,
-} from '@/components/effects/d3';
+import { AnimatedCableRouting } from '@/components/effects/d3/AnimatedCableRouting';
+import { SpectrumAnalyzer } from '@/components/effects/d3/SpectrumAnalyzer';
+import { WaveformOscilloscope } from '@/components/effects/d3/WaveformOscilloscope';
+import { SignalPathDiagram } from '@/components/effects/d3/SignalPathDiagram';
+import { AudioReactiveParticles } from '@/components/effects/d3/AudioReactiveParticles';
+import { GenerativeArtVisualizer } from '@/components/effects/d3/GenerativeArtVisualizer';
 import type { VisualizationStyle } from '@/lib/utils/visualization/generative-art.utils';
 import { cn } from '@/lib/utils';
 
