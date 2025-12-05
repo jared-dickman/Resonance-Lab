@@ -4,7 +4,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { serverErrorTracker } from '@/app/utils/error-tracker.server';
 import { validateApiAuth } from '@/lib/auth/apiAuth';
-import type { savedSongSchema } from '@/app/features/songs/dto/song-response.schema';
+import { savedSongSchema } from '@/app/features/songs/dto/song-response.schema';
 import { toSongsListView } from '@/app/features/songs/transformers/song-view.transformer';
 import { songsListViewSchema } from '@/app/features/songs/dto/song-view.schema';
 import { z } from 'zod';
@@ -145,7 +145,7 @@ export async function POST(request: NextRequest) {
 
     const now = new Date().toISOString();
 
-    return NextResponse.json({
+    return NextResponse.json(savedSongSchema.parse({
       artist: song.artist,
       artistSlug,
       title: song.title,
@@ -155,7 +155,7 @@ export async function POST(request: NextRequest) {
       hasChords: true,
       hasTab: false,
       updatedAt: now,
-    });
+    }));
   } catch (err) {
     serverErrorTracker.captureApiError(err, {
       service: 'songs-api',
