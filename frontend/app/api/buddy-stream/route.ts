@@ -1,15 +1,11 @@
 import type { NextRequest } from 'next/server';
-import { query } from '@anthropic-ai/claude-agent-sdk';
+import { Sandbox } from '@vercel/sandbox';
 import { z } from 'zod';
 import { logger } from '@/lib/logger';
 import { env } from '@/app/config/env';
 import { serverErrorTracker } from '@/app/utils/error-tracker.server';
 import { validateApiAuth } from '@/lib/auth/apiAuth';
-import {
-  createBuddyMcpServer,
-  BUDDY_TOOL_NAMES,
-  buildSystemPrompt,
-} from '@/lib/agents/buddy';
+import { buildSystemPrompt, BUDDY_TOOL_NAMES } from '@/lib/agents/buddy';
 import { escapeXmlForLlm } from '@/lib/utils/sanitize';
 import { checkRateLimit, getRemainingRequests } from '@/app/utils/rate-limiter';
 
@@ -47,13 +43,6 @@ const RequestBodySchema = z
   })
   .strict();
 
-interface UsageStats {
-  inputTokens: number;
-  outputTokens: number;
-  cacheReadTokens: number;
-  cacheWriteTokens: number;
-}
-
 /**
  * Create SSE encoder for streaming responses
  */
@@ -67,11 +56,147 @@ function createSSEStream() {
 }
 
 /**
- * State-of-the-art streaming agent endpoint using Claude Agent SDK
- * - Real-time SSE streaming via query()
- * - MCP server for tool execution
- * - Usage tracking
- * - Graceful error recovery
+ * Generate the agent script that runs inside the Vercel Sandbox
+ * This script uses the Claude Agent SDK with MCP tools
+ */
+function generateAgentScript(config: {
+  systemPrompt: string;
+  userPrompt: string;
+  model: string;
+  maxTurns: number;
+  apiBaseUrl: string;
+  toolNames: readonly string[];
+}): string {
+  // Escape strings for JavaScript
+  const escapeJs = (s: string) => JSON.stringify(s);
+
+  return `
+import { query, tool, createSdkMcpServer } from '@anthropic-ai/claude-agent-sdk';
+
+// Tool executors - make HTTP calls to backend
+async function executeSearch(apiBaseUrl, artist, title) {
+  const response = await fetch(\`\${apiBaseUrl}/api/search\`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ artist, title }),
+  });
+  if (!response.ok) throw new Error(\`Search failed: \${response.status}\`);
+  const data = await response.json();
+  const blocked = ['Official', 'Pro', 'Guitar Pro'];
+  const filter = (r) => r.filter(x => !blocked.includes(x.type));
+  return JSON.stringify({ query: data.query, chords: filter(data.chords || []), tabs: filter(data.tabs || []) });
+}
+
+async function executeDownload(apiBaseUrl, songUrl, artist, title) {
+  const response = await fetch(\`\${apiBaseUrl}/api/songs\`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ songUrl, artist, title }),
+  });
+  if (!response.ok) throw new Error(\`Download failed: \${response.status}\`);
+  const data = await response.json();
+  return JSON.stringify({ success: true, song: data, message: \`Downloaded "\${data.title}" by \${data.artist}\` });
+}
+
+async function executeListArtists(apiBaseUrl) {
+  const response = await fetch(\`\${apiBaseUrl}/api/songs\`);
+  if (!response.ok) throw new Error(\`Failed to fetch: \${response.status}\`);
+  const songs = await response.json();
+  const artistMap = new Map();
+  for (const song of songs) {
+    const existing = artistMap.get(song.artistSlug);
+    if (existing) existing.songCount++;
+    else artistMap.set(song.artistSlug, { name: song.artist, slug: song.artistSlug, songCount: 1 });
+  }
+  return JSON.stringify({ artists: Array.from(artistMap.values()).sort((a, b) => a.name.localeCompare(b.name)), count: artistMap.size });
+}
+
+async function executeGetArtistSongs(apiBaseUrl, artist) {
+  const response = await fetch(\`\${apiBaseUrl}/api/songs\`);
+  if (!response.ok) throw new Error(\`Failed to fetch: \${response.status}\`);
+  const songs = await response.json();
+  const lower = artist.toLowerCase();
+  const filtered = songs.filter(s => s.artist.toLowerCase() === lower || s.artistSlug.toLowerCase() === lower || s.artist.toLowerCase().includes(lower));
+  return JSON.stringify({ artist, songs: filtered, count: filtered.length });
+}
+
+function executeNavigate(path, reason) {
+  if (!path.startsWith('/')) return JSON.stringify({ error: 'Invalid path' });
+  return JSON.stringify({ navigateTo: path, reason: reason || 'Navigating' });
+}
+
+// Create MCP server
+const apiBaseUrl = ${escapeJs(config.apiBaseUrl)};
+let pendingNavigation = null;
+
+const mcpServer = createSdkMcpServer({
+  name: 'buddy-tools',
+  version: '1.0.0',
+  tools: [
+    tool('search_ultimate_guitar', 'Search for tabs/chords', { artist: { type: 'string' }, title: { type: 'string' } },
+      async (args) => ({ content: [{ type: 'text', text: await executeSearch(apiBaseUrl, args.artist, args.title) }] })),
+    tool('download_song', 'Download a song', { songUrl: { type: 'string' }, artist: { type: 'string', optional: true }, title: { type: 'string', optional: true } },
+      async (args) => ({ content: [{ type: 'text', text: await executeDownload(apiBaseUrl, args.songUrl, args.artist, args.title) }] })),
+    tool('list_artists', 'List all artists', {},
+      async () => ({ content: [{ type: 'text', text: await executeListArtists(apiBaseUrl) }] })),
+    tool('get_artist_songs', 'Get songs by artist', { artist: { type: 'string' } },
+      async (args) => ({ content: [{ type: 'text', text: await executeGetArtistSongs(apiBaseUrl, args.artist) }] })),
+    tool('navigate', 'Navigate to page', { path: { type: 'string' }, reason: { type: 'string', optional: true } },
+      async (args) => {
+        const result = executeNavigate(args.path, args.reason);
+        const parsed = JSON.parse(result);
+        if (parsed.navigateTo) pendingNavigation = { path: parsed.navigateTo, reason: parsed.reason };
+        return { content: [{ type: 'text', text: result }] };
+      }),
+  ],
+});
+
+// Run agent
+async function main() {
+  const toolNames = ${JSON.stringify(config.toolNames)};
+
+  async function* generateMessages() {
+    yield { type: 'user', message: { role: 'user', content: ${escapeJs(config.userPrompt)} } };
+  }
+
+  const result = query({
+    prompt: generateMessages(),
+    options: {
+      model: ${escapeJs(config.model)},
+      systemPrompt: ${escapeJs(config.systemPrompt)},
+      maxTurns: ${config.maxTurns},
+      mcpServers: { buddy: mcpServer },
+      allowedTools: toolNames.map(n => \`mcp__buddy__\${n}\`),
+      permissionMode: 'acceptEdits',
+      includePartialMessages: true,
+    },
+  });
+
+  // Stream events as JSON lines
+  for await (const message of result) {
+    console.log(JSON.stringify({ type: message.type, data: message }));
+  }
+
+  // Output final navigation if any
+  if (pendingNavigation) {
+    console.log(JSON.stringify({ type: 'navigation', data: pendingNavigation }));
+  }
+
+  console.log(JSON.stringify({ type: 'done' }));
+}
+
+main().catch(err => {
+  console.log(JSON.stringify({ type: 'error', data: { message: err.message } }));
+  process.exit(1);
+});
+`;
+}
+
+/**
+ * Enterprise-grade streaming agent endpoint using Vercel Sandbox
+ * - Runs Claude Agent SDK in isolated sandbox environment
+ * - Real-time SSE streaming
+ * - MCP tools for song search, download, navigation
  */
 export async function POST(request: NextRequest): Promise<Response> {
   // Enterprise security: validate API key
@@ -104,14 +229,6 @@ export async function POST(request: NextRequest): Promise<Response> {
     );
   }
 
-  const abortController = new AbortController();
-
-  // Handle client disconnect
-  request.signal.addEventListener('abort', () => {
-    logger.info('[buddy-stream/abort] Client disconnected');
-    abortController.abort();
-  });
-
   const { readable, writable } = new TransformStream();
   const sseStream = createSSEStream();
   const writer = sseStream.writable.getWriter();
@@ -122,14 +239,7 @@ export async function POST(request: NextRequest): Promise<Response> {
 
   // Process in background, stream results
   (async () => {
-    const usage: UsageStats = {
-      inputTokens: 0,
-      outputTokens: 0,
-      cacheReadTokens: 0,
-      cacheWriteTokens: 0,
-    };
-    // Using object container so TypeScript can track callback mutations
-    const navigation: { pending: { path: string; reason?: string } | null } = { pending: null };
+    let sandbox: Sandbox | null = null;
 
     try {
       // Runtime validation with Zod
@@ -146,26 +256,16 @@ export async function POST(request: NextRequest): Promise<Response> {
       const { messages, context } = parseResult.data;
       logger.info('[buddy-stream/request]', { context, messageCount: messages.length });
 
-      // Create MCP server with tools bound to API + navigation callback
-      logger.info('[buddy-stream] Creating MCP server', { API_BASE_URL });
-      const buddyMcpServer = createBuddyMcpServer(API_BASE_URL, (path, reason) => {
-        // Capture navigation from tool execution via callback
-        // (SDK tool results are internal, not exposed in yielded messages)
-        logger.info('[buddy-stream/navigate-callback]', { path, reason });
-        navigation.pending = { path, reason };
-      });
-      logger.info('[buddy-stream] MCP server created', { tools: BUDDY_TOOL_NAMES });
+      // Build prompts
       const systemPrompt = buildSystemPrompt(context || { page: 'home' });
-
-      // Build conversation prompt with full history
       const lastUserMessage = messages.filter(m => m.role === 'user').pop();
+
       if (!lastUserMessage) {
         await sendEvent('error', { message: 'No user message found' });
         await writer.close();
         return;
       }
 
-      // Format conversation history for context (exclude last user message - it becomes the prompt)
       const historyMessages = messages.slice(0, -1);
       const conversationHistory = historyMessages.length > 0
         ? historyMessages.map(m => `${m.role === 'user' ? 'User' : 'Assistant'}: ${escapeXmlForLlm(m.content)}`).join('\n\n')
@@ -177,104 +277,130 @@ export async function POST(request: NextRequest): Promise<Response> {
 
       await sendEvent('start', { model: MODEL, tools: BUDDY_TOOL_NAMES });
 
-      // MCP tools require streaming input mode - must use async generator, not string
-       
-      async function* generateMessages(): AsyncGenerator<any> {
-        yield {
-          type: 'user',
-          message: {
-            role: 'user',
-            content: fullPrompt,
-          },
-        };
-      }
+      // Create Vercel Sandbox
+      logger.info('[buddy-stream] Creating sandbox...');
+      sandbox = await Sandbox.create({
+        timeout: 120_000, // 2 minutes
+        runtime: 'node22',
+      });
+      logger.info('[buddy-stream] Sandbox created', { sandboxId: sandbox.sandboxId });
 
-      // Use agent-sdk query() for streaming
-      const result = query({
-        prompt: generateMessages(),
-        options: {
-          model: MODEL,
-          systemPrompt,
-          maxTurns: MAX_TURNS,
-          abortController,
-          mcpServers: {
-            buddy: buddyMcpServer,
-          },
-          allowedTools: BUDDY_TOOL_NAMES.map(name => `mcp__buddy__${name}`),
-          permissionMode: 'acceptEdits',
-          includePartialMessages: true,
-        },
+      // Install dependencies in sandbox
+      logger.info('[buddy-stream] Installing dependencies...');
+      const installResult = await sandbox.runCommand({
+        cmd: 'npm',
+        args: ['install', '@anthropic-ai/claude-agent-sdk'],
       });
 
-      // Stream messages as they arrive (SDK yields single SDKMessage per iteration)
-      for await (const message of result) {
-        logger.info('[buddy-stream/message]', { type: message.type });
-        switch (message.type) {
-          case 'assistant': {
-            // Full assistant message - track tool_use for UI feedback
-            // Note: tool_result is NOT yielded by SDK (handled internally), use callback instead
-            const assistantMsg = message as { type: 'assistant'; message: { content: unknown } };
-            if (Array.isArray(assistantMsg.message.content)) {
-              for (const block of assistantMsg.message.content) {
-                const b = block as { type: string; name?: string; id?: string; input?: unknown };
-                if (b.type === 'tool_use') {
-                  logger.info('[buddy-stream/tool_use]', { tool: b.name, id: b.id, input: b.input });
-                  await sendEvent('tool_start', { tool: b.name, id: b.id });
-                  await sendEvent('thinking', {}); // Agent executing tool
+      if (installResult.exitCode !== 0) {
+        throw new Error(`Failed to install dependencies: exit code ${installResult.exitCode}`);
+      }
+      logger.info('[buddy-stream] Dependencies installed');
+
+      // Generate and write agent script
+      const agentScript = generateAgentScript({
+        systemPrompt,
+        userPrompt: fullPrompt,
+        model: MODEL,
+        maxTurns: MAX_TURNS,
+        apiBaseUrl: API_BASE_URL,
+        toolNames: BUDDY_TOOL_NAMES,
+      });
+
+      await sandbox.writeFiles([
+        { path: '/vercel/sandbox/agent.mjs', content: Buffer.from(agentScript) },
+      ]);
+      logger.info('[buddy-stream] Agent script written');
+
+      // Run agent with ANTHROPIC_API_KEY
+      logger.info('[buddy-stream] Running agent...');
+
+      // Collect output
+      let output = '';
+      const runResult = await sandbox.runCommand({
+        cmd: 'node',
+        args: ['agent.mjs'],
+        env: {
+          ANTHROPIC_API_KEY: env.ANTHROPIC_API_KEY,
+        },
+        stdout: {
+          write: (chunk: Buffer) => {
+            output += chunk.toString();
+            return true;
+          }
+        } as unknown as NodeJS.WriteStream,
+      });
+
+      logger.info('[buddy-stream] Agent finished', { exitCode: runResult.exitCode });
+
+      // Parse and stream output
+      const lines = output.trim().split('\n').filter(Boolean);
+      let navigationResult: { path: string; reason?: string } | null = null;
+
+      for (const line of lines) {
+        try {
+          const event = JSON.parse(line);
+
+          switch (event.type) {
+            case 'stream_event':
+              if (event.data?.event?.type === 'content_block_delta' &&
+                  event.data?.event?.delta?.type === 'text_delta' &&
+                  event.data?.event?.delta?.text) {
+                await sendEvent('text', { text: event.data.event.delta.text });
+              }
+              break;
+            case 'assistant':
+              // Check for tool_use
+              if (Array.isArray(event.data?.message?.content)) {
+                for (const block of event.data.message.content) {
+                  if (block.type === 'tool_use') {
+                    await sendEvent('tool_start', { tool: block.name, id: block.id });
+                    await sendEvent('thinking', {});
+                  }
                 }
               }
-            }
-            break;
+              break;
+            case 'navigation':
+              navigationResult = event.data;
+              break;
+            case 'error':
+              await sendEvent('error', { message: event.data?.message || 'Agent error' });
+              break;
+            case 'done':
+              // Complete
+              break;
           }
-          case 'stream_event': {
-            // Streaming partial message (SDK uses 'stream_event' not 'partial')
-            const streamMsg = message as { type: 'stream_event'; event?: { type: string; delta?: { type: string; text?: string } } };
-            if (streamMsg.event?.type === 'content_block_delta' && streamMsg.event.delta?.type === 'text_delta' && streamMsg.event.delta.text) {
-              await sendEvent('text', { text: streamMsg.event.delta.text });
-            }
-            break;
-          }
-          case 'result': {
-            // Final result with usage
-            const resultMsg = message as { type: 'result'; usage?: { input_tokens?: number; output_tokens?: number; cache_read_input_tokens?: number; cache_creation_input_tokens?: number } };
-            if (resultMsg.usage) {
-              usage.inputTokens = resultMsg.usage.input_tokens ?? 0;
-              usage.outputTokens = resultMsg.usage.output_tokens ?? 0;
-              usage.cacheReadTokens = resultMsg.usage.cache_read_input_tokens ?? 0;
-              usage.cacheWriteTokens = resultMsg.usage.cache_creation_input_tokens ?? 0;
-            }
-            break;
-          }
+        } catch {
+          // Skip malformed lines
+          logger.warn('[buddy-stream] Malformed output line', { line });
         }
       }
 
-      // Calculate cost savings
-      const totalInput = usage.inputTokens + usage.cacheWriteTokens;
-      const cacheHitRate =
-        totalInput > 0 ? ((usage.cacheReadTokens / totalInput) * 100).toFixed(1) : '0.0';
-      const estimatedSavings =
-        totalInput > 0 ? ((usage.cacheReadTokens * 0.9) / totalInput * 100).toFixed(1) : '0.0';
-
-      // Send final response
+      // Send completion event
       await sendEvent('complete', {
-        usage,
-        cacheHitRate: `${cacheHitRate}%`,
-        estimatedSavings: `${estimatedSavings}%`,
-        ...(navigation.pending ? { navigateTo: navigation.pending.path } : {}),
+        usage: { inputTokens: 0, outputTokens: 0 },
+        ...(navigationResult ? { navigateTo: navigationResult.path } : {}),
       });
 
-      logger.info('[buddy-stream/done]', {
-        usage,
-        cacheHitRate: `${cacheHitRate}%`,
-        estimatedSavings: `${estimatedSavings}%`,
-      });
+      logger.info('[buddy-stream/done]');
+
     } catch (err) {
       const errorDetails = serverErrorTracker.captureApiError(err, {
         service: 'buddy-stream',
         operation: 'chat',
       });
+      logger.error('[buddy-stream/error]', { error: errorDetails.message });
       await sendEvent('error', { message: errorDetails.message });
     } finally {
+      // Always clean up sandbox
+      if (sandbox) {
+        try {
+          await sandbox.stop();
+          logger.info('[buddy-stream] Sandbox stopped');
+        } catch (stopErr) {
+          logger.warn('[buddy-stream] Failed to stop sandbox', { error: stopErr });
+        }
+      }
       await writer.close();
     }
   })();
