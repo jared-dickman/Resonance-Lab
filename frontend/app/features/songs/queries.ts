@@ -3,6 +3,7 @@ import type {
   SongDetailResponse,
   SearchResponseData,
 } from '@/app/features/songs/dto/song-response.schema';
+import type { SongDetailView } from '@/app/features/songs/transformers/song-view.transformer';
 import type {
   DownloadRequestInput,
   SearchRequestInput,
@@ -29,12 +30,12 @@ export async function fetchSongsList(): Promise<SavedSongResponse[]> {
 export async function fetchSongDetail(
   artistSlug: string,
   songSlug: string
-): Promise<SongDetailResponse> {
+): Promise<SongDetailView> {
   const response = await fetch(apiRoutes.songDetail(artistSlug, songSlug), {
     cache: 'no-store',
     headers: getAuthHeaders(),
   });
-  return handleResponse<SongDetailResponse>(response);
+  return handleResponse<SongDetailView>(response);
 }
 
 export async function searchSongs(input: SearchRequestInput): Promise<SearchResponseData> {

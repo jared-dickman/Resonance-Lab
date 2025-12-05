@@ -3,16 +3,8 @@
 import { useApiQuery, useApiMutation } from '@/app/hooks/query-hooks';
 import { songKeys } from '@/app/features/songs/keys';
 import { songOptions, songMutations } from '@/app/features/songs/options';
-import {
-  toSongsListView,
-  toSongDetailView,
-  toSearchView,
-} from '@/app/features/songs/transformers/song-view.transformer';
-import type {
-  SavedSongResponse,
-  SongDetailResponse,
-  SearchResponseData,
-} from '@/app/features/songs/dto/song-response.schema';
+import { toSongsListView, toSearchView } from '@/app/features/songs/transformers/song-view.transformer';
+import type { SavedSongResponse, SongDetailResponse, SearchResponseData } from '@/app/features/songs/dto/song-response.schema';
 import type {
   SavedSongView,
   SongDetailView,
@@ -49,20 +41,17 @@ export function useSongs() {
 
 /**
  * Fetch song detail by artist and song slug
- *
- * @example
- * const { data: song, isLoading, error } = useSongDetail('the-beatles', 'let-it-be');
+ * API route transforms raw→view, hook consumes view directly
  */
 export function useSongDetail(artistSlug: string, songSlug: string) {
   const options = songOptions.detail(artistSlug, songSlug);
 
-  return useApiQuery<SongDetailResponse, Error, SongDetailView | null>(
+  return useApiQuery<SongDetailView, Error, SongDetailView>(
     options.queryKey,
     options.queryFn,
     {
-      select: toSongDetailView,
-      staleTime: 10 * 60 * 1000, // 10 minutes (song details change less frequently)
-      enabled: Boolean(artistSlug && songSlug), // Only fetch if both params provided
+      staleTime: 10 * 60 * 1000,
+      enabled: Boolean(artistSlug && songSlug),
     }
   );
 }
