@@ -4,7 +4,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { serverErrorTracker } from '@/app/utils/error-tracker.server';
 import { validateApiAuth } from '@/lib/auth/apiAuth';
-import { savedSongSchema } from '@/app/features/songs/dto/song-response.schema';
+import type { savedSongSchema } from '@/app/features/songs/dto/song-response.schema';
 import { toSongsListView } from '@/app/features/songs/transformers/song-view.transformer';
 import { songsListViewSchema } from '@/app/features/songs/dto/song-view.schema';
 import { z } from 'zod';
