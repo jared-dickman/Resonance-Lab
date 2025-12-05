@@ -157,14 +157,6 @@ Focused practice session. Help with technique, tempo work, and skill building.`,
     metronome: `
 YOU'RE IN: Metronome 🥁
 Timing and rhythm focus. Keep advice tempo and groove related.`,
-
-    songwriter: `
-YOU'RE IN: Songwriter Mode ✍️
-Help with songwriting craft, structure, and lyrical ideas.`,
-
-    pedalboard: `
-YOU'RE IN: Tone Lab 🎛️
-They're shaping their sound. Discuss effects, signal chain, and tone.`,
   };
 
   return pageContextMap[context.page] || '';

@@ -25,11 +25,23 @@ export default function SongPage({ params }: SongPageProps) {
   }
 
   if (error) {
-    return <div className="text-center text-destructive">Failed to load song: {error.message}</div>;
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[24rem] text-center">
+        <div className="text-6xl mb-4">🎸</div>
+        <h2 className="text-xl font-semibold text-destructive mb-2">Failed to load song</h2>
+        <p className="text-muted-foreground">{error.message}</p>
+      </div>
+    );
   }
 
   if (!songData || !songData.sections) {
-    return <div>Song not found.</div>;
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[24rem] text-center">
+        <div className="text-6xl mb-4">🎵</div>
+        <h2 className="text-xl font-semibold mb-2">Song not found</h2>
+        <p className="text-muted-foreground">This song may have been removed or the link is incorrect.</p>
+      </div>
+    );
   }
 
   return (
