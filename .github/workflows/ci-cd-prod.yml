@@ -26,20 +26,6 @@ jobs:
     secrets:
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-  # Deploy only after ALL checks pass
-  deploy-backend:
-    name: Deploy Backend to Production
-    needs: [quality-security, build-test, security-audit]
-    uses: ./.github/workflows/reusable-deploy-backend.yml
-    with:
-      environment: production
-      branch: master
-      container_name: backend
-      health_check_url: https://srv1015344.hstgr.cloud/api/health
-    secrets:
-      VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
-      VPS_HOST: ${{ secrets.VPS_HOST }}
-
   enforce-protection:
     name: Enforce Quality Gates
     runs-on: ubuntu-latest

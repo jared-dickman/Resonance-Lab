@@ -22,20 +22,6 @@ jobs:
     name: Build & Test
     uses: ./.github/workflows/reusable-build-test.yml
 
-  # Deploy only after ALL checks pass
-  deploy-dev:
-    name: Deploy to Dev Environment
-    needs: [quality-security, build-test]
-    uses: ./.github/workflows/reusable-deploy-backend.yml
-    with:
-      environment: development
-      branch: ${{ github.head_ref || github.ref_name }}
-      container_name: backend-dev
-      health_check_url: https://dev.srv1015344.hstgr.cloud/api/health
-    secrets:
-      VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
-      VPS_HOST: ${{ secrets.VPS_HOST }}
-
   enforce-protection:
     name: Enforce Quality Gates
     runs-on: ubuntu-latest
