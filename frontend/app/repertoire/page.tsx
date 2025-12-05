@@ -24,31 +24,31 @@ const RepertoireTestIds = {
 
 function ViewToggle({ view, onViewChange }: { view: ViewMode; onViewChange: (v: ViewMode) => void }) {
   return (
-    <div className="relative grid grid-cols-2 gap-0.5 bg-muted/50 rounded-md p-0.5" data-testid={RepertoireTestIds.toggle}>
+    <div className="relative grid grid-cols-2 gap-0.5 bg-sapphire-500/10 border border-sapphire-500/20 rounded-lg p-1" data-testid={RepertoireTestIds.toggle}>
       {/* Sliding indicator */}
       <motion.div
-        className="absolute inset-y-0.5 w-[calc(50%-1px)] rounded-[5px] bg-background shadow-sm pointer-events-none"
-        animate={{ left: view === 'songs' ? 2 : 'calc(50% + 1px)' }}
+        className="absolute inset-y-1 w-[calc(50%-4px)] rounded-md bg-sapphire-500/20 border border-sapphire-500/30 pointer-events-none"
+        animate={{ left: view === 'songs' ? 4 : 'calc(50%)' }}
         transition={{ type: 'spring', stiffness: 500, damping: 35 }}
       />
       <button
         onClick={() => onViewChange('songs')}
         className={cn(
-          'relative z-10 flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors rounded-[5px]',
-          view === 'songs' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
+          'relative z-10 flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-md',
+          view === 'songs' ? 'text-sapphire-300' : 'text-muted-foreground hover:text-foreground'
         )}
       >
-        <Music className="h-3.5 w-3.5" />
+        <Music className="h-4 w-4" />
         Songs
       </button>
       <button
         onClick={() => onViewChange('artists')}
         className={cn(
-          'relative z-10 flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors rounded-[5px]',
-          view === 'artists' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
+          'relative z-10 flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-md',
+          view === 'artists' ? 'text-sapphire-300' : 'text-muted-foreground hover:text-foreground'
         )}
       >
-        <Users className="h-3.5 w-3.5" />
+        <Users className="h-4 w-4" />
         Artists
       </button>
     </div>
@@ -211,18 +211,25 @@ function RepertoireContent() {
     router.replace(`/repertoire?view=${newView}`, { scroll: false });
   };
 
-  const { data: songs = [] } = useSongs();
-  const { data: artists = [] } = useArtists();
-  const count = view === 'songs' ? songs.length : artists.length;
+  const { data: songs = [], isLoading: songsLoading } = useSongs();
+  const { data: artists = [], isLoading: artistsLoading } = useArtists();
+  const isLoaded = !songsLoading && !artistsLoading;
 
   return (
     <div className="space-y-4" data-testid={RepertoireTestIds.container}>
-      <div className="flex items-center justify-between gap-4">
-        <div className="min-w-0">
-          <h1 className="text-xl font-semibold tracking-tight">Repertoire</h1>
-          <p className="text-muted-foreground text-xs">{count} {view === 'songs' ? 'songs' : 'artists'}</p>
-        </div>
+      <div className="flex flex-col items-end gap-1">
         <ViewToggle view={view} onViewChange={handleViewChange} />
+        <AnimatePresence>
+          {isLoaded && (
+            <motion.p
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-muted-foreground text-xs"
+            >
+              {songs.length} songs / {artists.length} artists
+            </motion.p>
+          )}
+        </AnimatePresence>
       </div>
       <AnimatePresence mode="wait">
         <motion.div key={view} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} transition={{ duration: 0.12 }}>

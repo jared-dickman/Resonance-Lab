@@ -1,0 +1,18 @@
+{
+  "artist": "Unknown Artist",
+  "title": "Unknown Title",
+  "key": "Am",
+  "sectionCount": 6,
+  "chords": [
+    "Am7",
+    "Dm7",
+    "G7",
+    "Cmaj7",
+    "Fmaj7",
+    "Bm7b5",
+    "E7",
+    "A7",
+    "C6add9"
+  ],
+  "chordCount": 50
+}

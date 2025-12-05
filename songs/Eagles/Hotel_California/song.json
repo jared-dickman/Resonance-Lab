@@ -4,23 +4,6 @@
   "key": "Am",
   "sections": [
     {
-      "name": "Intro",
-      "lines": [
-        {
-          "chord": null,
-          "lyric": "Tabbed by: Emrldeyzs"
-        },
-        {
-          "chord": null,
-          "lyric": "Capo 2"
-        },
-        {
-          "chord": null,
-          "lyric": "x2"
-        }
-      ]
-    },
-    {
       "name": "Verse",
       "lines": [
         {
@@ -164,7 +147,7 @@
           "chord": {
             "name": "Dm"
           },
-          "lyric": "time of year (any time of year), you can"
+          "lyric": "any time of year (any time of year), you can"
         },
         {
           "chord": {

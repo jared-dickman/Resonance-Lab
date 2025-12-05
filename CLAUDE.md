@@ -5,3 +5,4 @@
 - read rules/index.md at the start of every chat and load the 3-7 most important rules for the given task and complexity. ask clarification about the task if unclear
 - gh user jared-dickman in this project!
 - Local dev: http://jamium.localhost:4242 (direct Next.js, .localhost auto-resolves)
+- Use only @anthropic-ai/claude-agent-sdk - never @anthropic-ai/sdk

@@ -19,6 +19,8 @@ import { BuddyErrorBoundary } from '@/components/agent/BuddyErrorBoundary';
 
 // Context to share header logo ref with CinematicIntro
 const HeaderLogoRefContext = createContext<React.RefObject<HTMLHeadingElement | null> | null>(null);
+
+const LAYOUT_PADDING = 'px-4';
 export function useHeaderLogoRef() {
   return useContext(HeaderLogoRefContext);
 }
@@ -43,7 +45,7 @@ function LayoutInner({ children, headerLogoRef }: { children: React.ReactNode; h
       <div className="flex-1 flex flex-col min-w-0">
         {/* Unified header - logo, breadcrumbs, buddy toggle in single row */}
         <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <div className="flex items-center justify-between h-12 w-full pl-2 pr-4">
+          <div className={`flex items-center justify-between h-12 w-full ${LAYOUT_PADDING}`}>
             {/* Logo + Breadcrumbs inline */}
             <div className="flex items-center min-w-0">
               <Link
@@ -63,8 +65,7 @@ function LayoutInner({ children, headerLogoRef }: { children: React.ReactNode; h
             {!isLandingPage && (
               <Button
                 variant="outline"
-                size="sm"
-                className="font-medium h-8 gap-2 shrink-0 relative overflow-hidden border-accent/50 hover:border-accent"
+                className="font-medium h-auto px-4 py-2 text-sm gap-2 shrink-0 relative overflow-hidden border-sapphire-500/20 bg-sapphire-500/10 hover:border-sapphire-500/30"
                 onClick={() => isOpen ? setIsOpen(false) : openBuddy()}
               >
                 {/* Animated gradient fill - sweeps right-to-left on open, follows Buddy out on close */}
@@ -88,7 +89,7 @@ function LayoutInner({ children, headerLogoRef }: { children: React.ReactNode; h
             )}
           </div>
         </header>
-        <main className={isSongwriterPage ? "w-full flex-1" : "w-full px-2 pt-2 flex-1"}>
+        <main className={isSongwriterPage ? "w-full flex-1" : `w-full ${LAYOUT_PADDING} pt-2 flex-1`}>
           {children}
         </main>
       </div>

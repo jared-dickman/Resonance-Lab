@@ -1,0 +1,252 @@
+{
+  "artist": "Eva Cassidy",
+  "title": "Autumn Leaves",
+  "key": "Gm",
+  "sections": [
+    {
+      "name": "Verse 1",
+      "lines": [
+        {
+          "chord": {
+            "name": "Cm7"
+          },
+          "lyric": "The falling le",
+          "lineGroup": 1
+        },
+        {
+          "chord": {
+            "name": "F7"
+          },
+          "lyric": "aves drift by my",
+          "lineGroup": 1
+        },
+        {
+          "chord": {
+            "name": "Bbmaj7"
+          },
+          "lyric": "window",
+          "lineGroup": 1
+        },
+        {
+          "chord": {
+            "name": "Ebmaj7"
+          },
+          "lyric": "",
+          "lineGroup": 1
+        },
+        {
+          "chord": {
+            "name": "Am7b5"
+          },
+          "lyric": "The autumn lea",
+          "lineGroup": 2
+        },
+        {
+          "chord": {
+            "name": "D7"
+          },
+          "lyric": "ves of red and g",
+          "lineGroup": 2
+        },
+        {
+          "chord": {
+            "name": "Gm7"
+          },
+          "lyric": "old",
+          "lineGroup": 2
+        }
+      ]
+    },
+    {
+      "name": "Verse 2",
+      "lines": [
+        {
+          "chord": {
+            "name": "Cm7"
+          },
+          "lyric": "I see your lip",
+          "lineGroup": 3
+        },
+        {
+          "chord": {
+            "name": "F7"
+          },
+          "lyric": "s, the summer ki",
+          "lineGroup": 3
+        },
+        {
+          "chord": {
+            "name": "Bbmaj7"
+          },
+          "lyric": "sses",
+          "lineGroup": 3
+        },
+        {
+          "chord": {
+            "name": "Ebmaj7"
+          },
+          "lyric": "",
+          "lineGroup": 3
+        },
+        {
+          "chord": {
+            "name": "Am7b5"
+          },
+          "lyric": "The sunburned",
+          "lineGroup": 4
+        },
+        {
+          "chord": {
+            "name": "D7"
+          },
+          "lyric": "hands I used to",
+          "lineGroup": 4
+        },
+        {
+          "chord": {
+            "name": "Gm7"
+          },
+          "lyric": "hold",
+          "lineGroup": 4
+        }
+      ]
+    },
+    {
+      "name": "Bridge",
+      "lines": [
+        {
+          "chord": {
+            "name": "Am7b5"
+          },
+          "lyric": "Since you went",
+          "lineGroup": 5
+        },
+        {
+          "chord": {
+            "name": "D7"
+          },
+          "lyric": "away the days g",
+          "lineGroup": 5
+        },
+        {
+          "chord": {
+            "name": "Gm7"
+          },
+          "lyric": "row long",
+          "lineGroup": 5
+        },
+        {
+          "chord": {
+            "name": "Cm7"
+          },
+          "lyric": "And soon I'll",
+          "lineGroup": 6
+        },
+        {
+          "chord": {
+            "name": "F7"
+          },
+          "lyric": "hear old winter'",
+          "lineGroup": 6
+        },
+        {
+          "chord": {
+            "name": "Bbmaj7"
+          },
+          "lyric": "s song",
+          "lineGroup": 6
+        },
+        {
+          "chord": {
+            "name": "Am7b5"
+          },
+          "lyric": "But I miss you",
+          "lineGroup": 7
+        },
+        {
+          "chord": {
+            "name": "D7"
+          },
+          "lyric": "most of all my",
+          "lineGroup": 7
+        },
+        {
+          "chord": {
+            "name": "Gm7"
+          },
+          "lyric": "darling",
+          "lineGroup": 7
+        },
+        {
+          "chord": {
+            "name": "Gm6"
+          },
+          "lyric": "",
+          "lineGroup": 7
+        },
+        {
+          "chord": {
+            "name": "Am7b5"
+          },
+          "lyric": "When autumn le",
+          "lineGroup": 8
+        },
+        {
+          "chord": {
+            "name": "D7"
+          },
+          "lyric": "aves start to fa",
+          "lineGroup": 8
+        },
+        {
+          "chord": {
+            "name": "Gm7"
+          },
+          "lyric": "ll",
+          "lineGroup": 8
+        },
+        {
+          "chord": {
+            "name": "C9"
+          },
+          "lyric": "",
+          "lineGroup": 8
+        }
+      ]
+    },
+    {
+      "name": "Outro",
+      "lines": [
+        {
+          "chord": {
+            "name": "Gm7"
+          },
+          "lyric": "```",
+          "lineGroup": 9
+        },
+        {
+          "chord": {
+            "name": "Gm6"
+          },
+          "lyric": "",
+          "lineGroup": 9
+        },
+        {
+          "chord": {
+            "name": "Gm7"
+          },
+          "lyric": "",
+          "lineGroup": 9
+        },
+        {
+          "chord": {
+            "name": "C7b9"
+          },
+          "lyric": "",
+          "lineGroup": 9
+        }
+      ]
+    }
+  ],
+  "sourceUrl": "https://tabs.ultimate-guitar.com/tab/eva-cassidy/autumn-leaves-chords-44889"
+}
