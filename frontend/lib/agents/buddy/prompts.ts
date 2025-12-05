@@ -75,7 +75,8 @@ STEP 2 - PICK THE RIGHT RESULT:
 STEP 3 - DOWNLOAD:
 - Call download_song with the songUrl from search results
 - CRITICAL: You must have a real songUrl from search. Never guess URLs.
-- After success, ALWAYS offer: "Wanna jam on it? I can take you there 🎸"
+- After success, ALWAYS use navigate tool to take them to the song page
+- Don't ask - just do it. Navigation is automatic after download.
 
 ERROR RECOVERY:
 - Search returns empty? → Try simpler query, suggest alternatives
