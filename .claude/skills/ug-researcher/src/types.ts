@@ -2,10 +2,11 @@
  * Song format for Jamium - matches existing frontend structure
  */
 export interface Song {
-  artist: string;
+  artist: string;         // Original artist/composer
   title: string;
   key?: string;           // Key from UG tab
   originalKey?: string;   // Verified original key (from web lookup)
+  performer?: string;     // Performer of this version (if cover)
   capo?: number;
   sections: Section[];
   sourceUrl?: string;

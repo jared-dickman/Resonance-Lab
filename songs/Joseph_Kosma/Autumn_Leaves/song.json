@@ -1,0 +1,913 @@
+{
+  "artist": "Joseph Kosma",
+  "title": "Autumn Leaves",
+  "key": "Bm",
+  "sections": [
+    {
+      "name": "Intro",
+      "lines": [
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 1
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 1
+        }
+      ]
+    },
+    {
+      "name": "Verse 1",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "The falling",
+          "lineGroup": 2
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "leaves",
+          "lineGroup": 2
+        },
+        {
+          "chord": {
+            "name": "A7"
+          },
+          "lyric": "drift by my",
+          "lineGroup": 2
+        },
+        {
+          "chord": {
+            "name": "Dmaj7"
+          },
+          "lyric": "window",
+          "lineGroup": 2
+        },
+        {
+          "chord": {
+            "name": "Gmaj7"
+          },
+          "lyric": "",
+          "lineGroup": 2
+        },
+        {
+          "chord": null,
+          "lyric": "The autumn",
+          "lineGroup": 3
+        },
+        {
+          "chord": {
+            "name": "C#m7b5"
+          },
+          "lyric": "leaves",
+          "lineGroup": 3
+        },
+        {
+          "chord": {
+            "name": "F#7"
+          },
+          "lyric": "of red and",
+          "lineGroup": 3
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "gold",
+          "lineGroup": 3
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 3
+        }
+      ]
+    },
+    {
+      "name": "Verse 2",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "I see your",
+          "lineGroup": 4
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "lips",
+          "lineGroup": 4
+        },
+        {
+          "chord": {
+            "name": "A7"
+          },
+          "lyric": "The summer k",
+          "lineGroup": 4
+        },
+        {
+          "chord": {
+            "name": "Dmaj7"
+          },
+          "lyric": "isses",
+          "lineGroup": 4
+        },
+        {
+          "chord": {
+            "name": "Gmaj7"
+          },
+          "lyric": "",
+          "lineGroup": 4
+        },
+        {
+          "chord": null,
+          "lyric": "The sunburned",
+          "lineGroup": 5
+        },
+        {
+          "chord": {
+            "name": "C#m7b5"
+          },
+          "lyric": "hands",
+          "lineGroup": 5
+        },
+        {
+          "chord": {
+            "name": "F#7"
+          },
+          "lyric": "I used to",
+          "lineGroup": 5
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "hold",
+          "lineGroup": 5
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 5
+        }
+      ]
+    },
+    {
+      "name": "Pre-Chorus",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "Since you went",
+          "lineGroup": 6
+        },
+        {
+          "chord": {
+            "name": "C#m7b5"
+          },
+          "lyric": "away",
+          "lineGroup": 6
+        },
+        {
+          "chord": {
+            "name": "F#7"
+          },
+          "lyric": "the days grow",
+          "lineGroup": 6
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "long",
+          "lineGroup": 6
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 6
+        },
+        {
+          "chord": null,
+          "lyric": "And soon I'll",
+          "lineGroup": 7
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "hear",
+          "lineGroup": 7
+        },
+        {
+          "chord": {
+            "name": "A7"
+          },
+          "lyric": "old winter's",
+          "lineGroup": 7
+        },
+        {
+          "chord": {
+            "name": "Dmaj7"
+          },
+          "lyric": "song",
+          "lineGroup": 7
+        },
+        {
+          "chord": {
+            "name": "Dmaj7"
+          },
+          "lyric": "",
+          "lineGroup": 7
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "But I m",
+          "lineGroup": 8
+        },
+        {
+          "chord": {
+            "name": "C#m7b5"
+          },
+          "lyric": "iss you most of",
+          "lineGroup": 8
+        },
+        {
+          "chord": {
+            "name": "F#7"
+          },
+          "lyric": "all, my",
+          "lineGroup": 8
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "darling",
+          "lineGroup": 8
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 8
+        },
+        {
+          "chord": {
+            "name": "C#m7b5"
+          },
+          "lyric": "When autumn l",
+          "lineGroup": 9
+        },
+        {
+          "chord": {
+            "name": "F#7"
+          },
+          "lyric": "eaves start to f",
+          "lineGroup": 9
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "all",
+          "lineGroup": 9
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 9
+        }
+      ]
+    },
+    {
+      "name": "Instrumental",
+      "lines": [
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "",
+          "lineGroup": 10
+        },
+        {
+          "chord": {
+            "name": "A7"
+          },
+          "lyric": "",
+          "lineGroup": 10
+        },
+        {
+          "chord": {
+            "name": "Dmaj7"
+          },
+          "lyric": "",
+          "lineGroup": 10
+        },
+        {
+          "chord": {
+            "name": "Gmaj7"
+          },
+          "lyric": "",
+          "lineGroup": 10
+        },
+        {
+          "chord": {
+            "name": "C#m7b5"
+          },
+          "lyric": "",
+          "lineGroup": 11
+        },
+        {
+          "chord": {
+            "name": "F#7"
+          },
+          "lyric": "",
+          "lineGroup": 11
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 11
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 11
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "",
+          "lineGroup": 12
+        },
+        {
+          "chord": {
+            "name": "A7"
+          },
+          "lyric": "",
+          "lineGroup": 12
+        },
+        {
+          "chord": {
+            "name": "Dmaj7"
+          },
+          "lyric": "",
+          "lineGroup": 12
+        },
+        {
+          "chord": {
+            "name": "Gmaj7"
+          },
+          "lyric": "",
+          "lineGroup": 12
+        },
+        {
+          "chord": {
+            "name": "C#m7b5"
+          },
+          "lyric": "",
+          "lineGroup": 13
+        },
+        {
+          "chord": {
+            "name": "F#7"
+          },
+          "lyric": "",
+          "lineGroup": 13
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 13
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 13
+        }
+      ]
+    },
+    {
+      "name": "Pre-Chorus",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "Since you went",
+          "lineGroup": 14
+        },
+        {
+          "chord": {
+            "name": "C#m7b5"
+          },
+          "lyric": "away",
+          "lineGroup": 14
+        },
+        {
+          "chord": {
+            "name": "F#7"
+          },
+          "lyric": "the days grow",
+          "lineGroup": 14
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "long",
+          "lineGroup": 14
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 14
+        },
+        {
+          "chord": null,
+          "lyric": "And soon I'll",
+          "lineGroup": 15
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "hear",
+          "lineGroup": 15
+        },
+        {
+          "chord": {
+            "name": "A7"
+          },
+          "lyric": "old winter's",
+          "lineGroup": 15
+        },
+        {
+          "chord": {
+            "name": "Dmaj7"
+          },
+          "lyric": "song",
+          "lineGroup": 15
+        },
+        {
+          "chord": {
+            "name": "Dmaj7"
+          },
+          "lyric": "",
+          "lineGroup": 15
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "But I m",
+          "lineGroup": 16
+        },
+        {
+          "chord": {
+            "name": "C#m7b5"
+          },
+          "lyric": "iss you most of",
+          "lineGroup": 16
+        },
+        {
+          "chord": {
+            "name": "F#7"
+          },
+          "lyric": "all, my",
+          "lineGroup": 16
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "darling",
+          "lineGroup": 16
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 16
+        },
+        {
+          "chord": null,
+          "lyric": "When",
+          "lineGroup": 17
+        },
+        {
+          "chord": {
+            "name": "C#m7b5"
+          },
+          "lyric": "autumn l",
+          "lineGroup": 17
+        },
+        {
+          "chord": {
+            "name": "F#7"
+          },
+          "lyric": "eaves start to f",
+          "lineGroup": 17
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "all",
+          "lineGroup": 17
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 17
+        },
+        {
+          "chord": null,
+          "lyric": "Yes, I",
+          "lineGroup": 18
+        },
+        {
+          "chord": {
+            "name": "C#m7b5"
+          },
+          "lyric": "miss you most of",
+          "lineGroup": 18
+        },
+        {
+          "chord": {
+            "name": "F#7"
+          },
+          "lyric": "all, my",
+          "lineGroup": 18
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "darling",
+          "lineGroup": 18
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 18
+        },
+        {
+          "chord": {
+            "name": "C#m7b5"
+          },
+          "lyric": "When autumn l",
+          "lineGroup": 19
+        },
+        {
+          "chord": {
+            "name": "F#7"
+          },
+          "lyric": "eaves ... start to ... f",
+          "lineGroup": 19
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "all",
+          "lineGroup": 19
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 19
+        }
+      ]
+    },
+    {
+      "name": "Outro Solo",
+      "lines": [
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "",
+          "lineGroup": 20
+        },
+        {
+          "chord": {
+            "name": "A7"
+          },
+          "lyric": "",
+          "lineGroup": 20
+        },
+        {
+          "chord": {
+            "name": "Dmaj7"
+          },
+          "lyric": "",
+          "lineGroup": 20
+        },
+        {
+          "chord": {
+            "name": "Gmaj7"
+          },
+          "lyric": "",
+          "lineGroup": 20
+        },
+        {
+          "chord": {
+            "name": "C#m7b5"
+          },
+          "lyric": "",
+          "lineGroup": 21
+        },
+        {
+          "chord": {
+            "name": "F#7"
+          },
+          "lyric": "",
+          "lineGroup": 21
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 21
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 21
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "",
+          "lineGroup": 22
+        },
+        {
+          "chord": {
+            "name": "A7"
+          },
+          "lyric": "",
+          "lineGroup": 22
+        },
+        {
+          "chord": {
+            "name": "Dmaj7"
+          },
+          "lyric": "",
+          "lineGroup": 22
+        },
+        {
+          "chord": {
+            "name": "Gmaj7"
+          },
+          "lyric": "",
+          "lineGroup": 22
+        },
+        {
+          "chord": {
+            "name": "C#m7b5"
+          },
+          "lyric": "",
+          "lineGroup": 23
+        },
+        {
+          "chord": {
+            "name": "F#7"
+          },
+          "lyric": "",
+          "lineGroup": 23
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 23
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 23
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "",
+          "lineGroup": 24
+        },
+        {
+          "chord": {
+            "name": "A7"
+          },
+          "lyric": "",
+          "lineGroup": 24
+        },
+        {
+          "chord": {
+            "name": "Dmaj7"
+          },
+          "lyric": "",
+          "lineGroup": 24
+        },
+        {
+          "chord": {
+            "name": "Gmaj7"
+          },
+          "lyric": "",
+          "lineGroup": 24
+        },
+        {
+          "chord": {
+            "name": "C#m7b5"
+          },
+          "lyric": "",
+          "lineGroup": 25
+        },
+        {
+          "chord": {
+            "name": "F#7"
+          },
+          "lyric": "",
+          "lineGroup": 25
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 25
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 25
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "",
+          "lineGroup": 26
+        },
+        {
+          "chord": {
+            "name": "A7"
+          },
+          "lyric": "",
+          "lineGroup": 26
+        },
+        {
+          "chord": {
+            "name": "Dmaj7"
+          },
+          "lyric": "",
+          "lineGroup": 26
+        },
+        {
+          "chord": {
+            "name": "Gmaj7"
+          },
+          "lyric": "",
+          "lineGroup": 26
+        },
+        {
+          "chord": {
+            "name": "C#m7b5"
+          },
+          "lyric": "",
+          "lineGroup": 27
+        },
+        {
+          "chord": {
+            "name": "F#7"
+          },
+          "lyric": "",
+          "lineGroup": 27
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 27
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 27
+        },
+        {
+          "chord": {
+            "name": "Em7"
+          },
+          "lyric": "",
+          "lineGroup": 28
+        },
+        {
+          "chord": {
+            "name": "A7"
+          },
+          "lyric": "",
+          "lineGroup": 28
+        },
+        {
+          "chord": {
+            "name": "Dmaj7"
+          },
+          "lyric": "",
+          "lineGroup": 28
+        },
+        {
+          "chord": {
+            "name": "Gmaj7"
+          },
+          "lyric": "",
+          "lineGroup": 28
+        },
+        {
+          "chord": {
+            "name": "C#m7b5"
+          },
+          "lyric": "X",
+          "lineGroup": 29
+        },
+        {
+          "chord": {
+            "name": "F#7"
+          },
+          "lyric": "",
+          "lineGroup": 29
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 29
+        },
+        {
+          "chord": {
+            "name": "Bm"
+          },
+          "lyric": "",
+          "lineGroup": 29
+        }
+      ]
+    }
+  ],
+  "sourceUrl": "https://tabs.ultimate-guitar.com/tab/eric-clapton/autumn-leaves-chords-1009824",
+  "originalKey": "Am",
+  "performer": "Eric Clapton"
+}

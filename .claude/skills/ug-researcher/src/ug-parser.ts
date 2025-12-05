@@ -22,6 +22,7 @@ export function parseUGMarkdown(markdown: string, sourceUrl?: string): Song {
   const sections: Section[] = [];
   let currentSection: Section | null = null;
   let lineGroupCounter = 0;
+  let inCodeBlock = false;
   let inContent = false;
 
   // Extract artist/title from URL
@@ -59,7 +60,17 @@ export function parseUGMarkdown(markdown: string, sourceUrl?: string): Song {
       }
     }
 
-    // Start content on first section header
+    // Track code block boundaries - song content is inside ```
+    if (trimmed.startsWith('```')) {
+      if (inCodeBlock) {
+        // Closing ``` - STOP parsing, we're done with song content
+        break;
+      }
+      inCodeBlock = true;
+      continue;
+    }
+
+    // Start content on first section header (must be inside code block)
     const sectionMatch = trimmed.match(SECTION_HEADER_REGEX);
     if (sectionMatch) {
       inContent = true;

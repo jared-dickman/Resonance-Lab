@@ -1,129 +1,79 @@
 ---
 name: ug-researcher
-description: Fetch Ultimate Guitar chords via Jina and parse to Song JSON with position tracking. Use for "fetch UG", "get chords".
+description: Search UG API for best tab, fetch via Jina, verify metadata, output Song JSON
 auto_trigger: true
-keywords: [ultimate guitar, UG, fetch chords, chord sheet, tabs, jazz chords]
-tools: [Bash, Read, Write]
+keywords: [ultimate guitar, UG, fetch chords, tabs]
+tools: [Bash, Read, Write, WebSearch]
 ---
 
 # UG Researcher
 
-Fetch chord sheets from Ultimate Guitar and convert to structured Song JSON with exact position tracking for accurate re-rendering.
+Search UG API → get best rated tab → fetch via Jina → verify metadata → output Song JSON.
 
-## File Structure
-
-```
-.claude/skills/ug-researcher/
-├── SKILL.md
-├── src/
-│   ├── index.ts       # Exports
-│   ├── types.ts       # PositionedSong, Song types
-│   └── ug-parser.ts   # Parser with position tracking
-├── scripts/
-│   ├── fetch.sh       # Fetch UG tab via Jina
-│   ├── parse.ts       # Parse markdown to JSON
-│   ├── validate.ts    # Validate against expected output
-│   └── run-all.sh     # Run all validations
-└── examples/
-    ├── ug-folsom-prison.md
-    ├── ug-folsom-prison.expected.json
-    ├── ug-autumn-leaves.md
-    ├── ug-autumn-leaves.expected.json
-    └── ...
-```
-
-## Scripts
-
-### Fetch UG Tab
-
-```bash
-./scripts/fetch.sh "https://tabs.ultimate-guitar.com/tab/artist/song-chords-12345" output.md
-```
-
-### Parse to JSON
-
-```bash
-npx tsx scripts/parse.ts input.md output.json
-npx tsx scripts/parse.ts input.md --simple  # Frontend-compatible format
-```
-
-### Validate Example
-
-```bash
-npx tsx scripts/validate.ts ug-folsom-prison
-```
-
-### Run All Validations
-
-```bash
-./scripts/run-all.sh
-```
-
-## Programmatic Usage
+## Workflow
 
 ```typescript
-import { parseUGMarkdownPositioned, toSimpleSong } from './src';
+import { getBestTabUrl } from './src/ug-api';
+import { parseUGMarkdown } from './src/ug-parser';
 
-// Full position data for accurate rendering
-const positioned = parseUGMarkdownPositioned(markdown, url);
+// 1. Search API for best tab (filters out Pro+ content)
+const url = await getBestTabUrl('Oasis', 'Wonderwall');
 
-// Simple format for frontend
-const simple = toSimpleSong(positioned);
+// 2. Fetch via Jina
+const md = await fetch(`https://r.jina.ai/${url}`).then(r => r.text());
+
+// 3. Parse to JSON
+const song = parseUGMarkdown(md, url);
+
+// 4. WebSearch to verify: "{title} original composer key"
+//    Update: artist, originalKey, performer (if cover)
 ```
+
+## API Search (src/ug-api.ts)
+
+```typescript
+// Search returns best tabs sorted by: Rating × ln(Votes)
+const results = await searchUG('Johnny Cash', 'Folsom Prison');
+// → [{id, song_name, artist_name, rating, votes, score, tab_url}, ...]
+
+// Get single best URL
+const url = await getBestTabUrl('Johnny Cash', 'Folsom Prison');
+// → "https://tabs.ultimate-guitar.com/tab/johnny-cash/folsom-prison-blues-chords-811776"
+```
+
+**Filters out Pro+ content:** Official, Pro, Power (404 via Jina)
 
 ## Output Format
 
-### PositionedSong (Full)
-
 ```json
 {
-  "artist": "Johnny Cash",
-  "title": "Folsom Prison Blues",
-  "key": "G",
-  "capo": 0,
-  "tempo": 220,
+  "artist": "Joseph Kosma",
+  "title": "Autumn Leaves",
+  "key": "Bm",
+  "originalKey": "Am",
+  "performer": "Eric Clapton",
   "sections": [{
     "name": "Verse 1",
-    "lines": [{
-      "chord": { "name": "G", "position": 2, "length": 1 },
-      "lyric": "I hear the train",
-      "lyricStart": 2,
-      "lyricEnd": 17
-    }]
+    "lines": [
+      { "chord": null, "lyric": "The falling", "lineGroup": 1 },
+      { "chord": { "name": "Em7" }, "lyric": "leaves", "lineGroup": 1 }
+    ]
   }]
 }
 ```
 
-### Expected JSON (Validation)
+## Scripts
 
-```json
-{
-  "artist": "Johnny Cash",
-  "title": "Folsom Prison Blues",
-  "key": "G",
-  "sectionCount": 7,
-  "chords": ["G", "G7", "C", "D7", "D"],
-  "chordCount": 79
-}
-```
-
-## Supported Chords
-
-- **Basic:** C, Am, G7, F, Dm, E7
-- **Extended:** Cmaj7, Dm9, G13, Fmaj9
-- **Altered:** Am7b5, C7b9, G7#9, D7b9#11
-- **Suspended:** Csus2, Dsus4, A7sus4
-- **Added:** Cadd9, Fadd11, C6add9
-- **Slash Bass:** Am/G, D/F#, C/E
-- **Diminished/Augmented:** Cdim, Cdim7, Caug, C+
+| Script | Purpose |
+|--------|---------|
+| `npx tsx -e "..."` | Inline API search + parse |
+| `scripts/fetch.sh <url>` | Fetch via Jina |
+| `scripts/parse.ts <md> <json>` | Parse markdown |
 
 ## Anti-Patterns
 
-❌ Direct UG scraping (blocked, returns 404)
-✅ Use Jina: `./scripts/fetch.sh`
-
-❌ Manual JSON creation
-✅ Use: `npx tsx scripts/parse.ts`
-
-❌ Untested examples
-✅ Run: `./scripts/run-all.sh`
+- ❌ Guess tab URLs (404 risk)
+- ❌ Trust UG URL for original artist
+- ❌ Include Pro+/Official tabs
+- ✅ Always use API search first
+- ✅ WebSearch to verify metadata
