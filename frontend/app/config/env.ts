@@ -5,6 +5,7 @@ export const env = createEnv({
   server: {
     NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
     API_BASE_URL: z.string().url().optional().describe('Backend API base URL (server-side)'),
+    ANTHROPIC_API_KEY: z.string().min(1).describe('Anthropic API key for Claude (server-side only)'),
   },
   client: {
     NEXT_PUBLIC_API_BASE_URL: z

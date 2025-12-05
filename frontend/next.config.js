@@ -16,6 +16,8 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_BUILD_TIME: new Date().toISOString(),
   },
+  // Exclude claude-agent-sdk from bundling - it spawns CLI subprocess
+  serverExternalPackages: ['@anthropic-ai/claude-agent-sdk'],
 };
 
 export default nextConfig;
