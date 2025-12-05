@@ -11,6 +11,7 @@ export const savedSongViewSchema = z.object({
   title: z.string(),
   songSlug: z.string(),
   key: z.string(),
+  album: z.string().nullable().optional(),
   hasChords: z.boolean(),
   hasTab: z.boolean(),
   updatedAt: z.string(),
@@ -26,6 +27,7 @@ export const songDetailViewSchema = z.object({
   title: z.string(),
   songSlug: z.string(),
   key: z.string().optional(),
+  album: z.string().nullable().optional(),
   sections: z.array(
     z.object({
       name: z.string(),

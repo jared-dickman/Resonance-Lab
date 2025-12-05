@@ -7,6 +7,7 @@ export interface Song {
   key?: string;           // Key from UG tab
   originalKey?: string;   // Verified original key (from web lookup)
   performer?: string;     // Performer of this version (if cover)
+  album?: string;         // Album from MusicBrainz (CRITICAL - always fetch)
   capo?: number;
   sections: Section[];
   sourceUrl?: string;

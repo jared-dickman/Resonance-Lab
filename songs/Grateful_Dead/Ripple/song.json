@@ -1,0 +1,528 @@
+{
+  "artist": "Grateful Dead",
+  "title": "Ripple",
+  "sections": [
+    {
+      "name": "Intro",
+      "lines": [
+        {
+          "chord": null,
+          "lyric": "Ripple"
+        },
+        {
+          "chord": null,
+          "lyric": "Grateful Dead"
+        },
+        {
+          "chord": null,
+          "lyric": "American Beauty"
+        },
+        {
+          "chord": null,
+          "lyric": "Transcribed By: Matt Schultz"
+        },
+        {
+          "chord": null,
+          "lyric": "Tuning: Standard"
+        },
+        {
+          "chord": null,
+          "lyric": "B|--------------|---0---0---------|------------------------------|"
+        },
+        {
+          "chord": null,
+          "lyric": "B|-------------|----0---0-----|-----0---0-1---|---------------|"
+        }
+      ]
+    },
+    {
+      "name": "Verse 1",
+      "lines": [
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "If my words did glow with the gold of"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "sunshine"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "And my tunes were played on the harp unst"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "rung"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "Would you hear my voice come through the"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "music"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Would you"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "hold it"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "near"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "as it were your"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "own?"
+        }
+      ]
+    },
+    {
+      "name": "Verse 2",
+      "lines": [
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "It's a hand-me-down, the thoughts are"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "broken"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Perhaps they're better left un"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "sung"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "I don't know, don't really"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "care"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "Let there be"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "songs"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "to fill the"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "air"
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Ripple in still"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "water"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "is no pebble"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "tossed"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "wind to"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "blow"
+        }
+      ]
+    },
+    {
+      "name": "Verse 3",
+      "lines": [
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "hand if your cup be"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "empty"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "If your cup is full may it be aga"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "in"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "Let it be known there is a"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "fountain"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "That was not"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "made"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "by the hands of"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "men"
+        },
+        {
+          "chord": null,
+          "lyric": "Verse 4"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "There is a road, no simple"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "highway"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Between the dawn and the dark of"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "night"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "And if you go no one may"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "follow"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "That path is"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "for"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "your steps"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "alone"
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "chord": {
+            "name": "Am"
+          },
+          "lyric": "Ripple in still"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "water"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "is no pebble"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "tossed"
+        },
+        {
+          "chord": {
+            "name": "A"
+          },
+          "lyric": "wind to"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "blow"
+        }
+      ]
+    },
+    {
+      "name": "Verse 5",
+      "lines": [
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "choose to lead must"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "follow"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "But if you fall you fall al"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "one"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "If you should stand then who's to"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "guide you?"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "If I knew the"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "way"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "I would take you"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "home"
+        }
+      ]
+    },
+    {
+      "name": "Outro Verse",
+      "lines": [
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "da, Lah da-ah da"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "da, da"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "La da da, la da, da da da-ah, da"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "da"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "Lat da dat da, Lah da-ah da"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "da, da"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "La da da"
+        },
+        {
+          "chord": {
+            "name": "D"
+          },
+          "lyric": "da,"
+        },
+        {
+          "chord": {
+            "name": "C"
+          },
+          "lyric": "Lah da da da"
+        },
+        {
+          "chord": {
+            "name": "G"
+          },
+          "lyric": "da"
+        },
+        {
+          "chord": null,
+          "lyric": "************************************"
+        },
+        {
+          "chord": null,
+          "lyric": "| h Hammer-on"
+        },
+        {
+          "chord": null,
+          "lyric": "************************************"
+        }
+      ]
+    }
+  ]
+}

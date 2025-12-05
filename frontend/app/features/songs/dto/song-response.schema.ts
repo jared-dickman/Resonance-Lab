@@ -15,6 +15,7 @@ export const savedSongSchema = z.object({
   title: z.string().max(MAX_TITLE_LENGTH),
   songSlug: z.string().max(MAX_SLUG_LENGTH),
   key: z.string().max(MAX_KEY_LENGTH),
+  album: z.string().max(MAX_TITLE_LENGTH).nullable().optional(),
   hasChords: z.boolean(),
   hasTab: z.boolean(),
   updatedAt: z.string().max(50),
@@ -39,6 +40,7 @@ export const songSchema = z.object({
   artist: z.string().max(MAX_ARTIST_LENGTH),
   title: z.string().max(MAX_TITLE_LENGTH),
   key: z.string().max(MAX_KEY_LENGTH).optional(),
+  album: z.string().max(MAX_TITLE_LENGTH).nullable().optional(),
   sections: z.array(songSectionSchema).max(MAX_SECTIONS),
 }).strict();
 
