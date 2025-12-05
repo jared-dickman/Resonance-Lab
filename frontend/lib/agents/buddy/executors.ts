@@ -11,7 +11,7 @@ import {
   searchTabs,
   ripSong,
   type RiffRipperResult,
-} from '../../../../.claude/agents/riff-ripper';
+} from '@/lib/agents/riff-ripper';
 
 export async function executeSearch(
   _apiBaseUrl: string,
