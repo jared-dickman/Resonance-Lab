@@ -7,7 +7,6 @@ import { BUDDY_VISIBLE_STORAGE_KEY, BUDDY_STATE_DEBOUNCE_MS } from '@/lib/consta
 type PageContext =
   | 'landing'
   | 'library'
-  | 'artists'
   | 'artist'
   | 'song'
   | 'jam'
@@ -43,7 +42,6 @@ const BuddyContext = createContext<BuddyContextType | undefined>(undefined);
 function derivePageFromPathname(pathname: string): PageContext {
   if (pathname === '/') return 'landing';
   if (pathname === '/repertoire') return 'library';
-  if (pathname === '/artists') return 'artists';
   if (pathname.startsWith('/repertoire/')) {
     const parts = pathname.split('/').filter(Boolean);
     return parts.length === 3 ? 'song' : 'artist';

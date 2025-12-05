@@ -5,7 +5,6 @@
 export const pageRoutes = {
   home: '/',
   repertoire: '/repertoire',
-  artists: '/artists',
   songwriter: '/songwriter',
   jam: '/jam',
   studio: '/studio',
