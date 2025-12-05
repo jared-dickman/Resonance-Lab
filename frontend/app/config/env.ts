@@ -6,6 +6,9 @@ export const env = createEnv({
     NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
     API_BASE_URL: z.string().url().optional().describe('Backend API base URL (server-side)'),
     ANTHROPIC_API_KEY: z.string().min(1).describe('Anthropic API key for Claude (server-side only)'),
+    JINA_API_KEY: z.string().min(1).optional().describe('Jina AI API key for web scraping'),
+    PINECONE_API_KEY: z.string().min(1).optional().describe('Pinecone API key for vector DB'),
+    FIRECRAWL_API_KEY: z.string().min(1).optional().describe('Firecrawl API key for web crawling'),
   },
   client: {
     NEXT_PUBLIC_API_BASE_URL: z
@@ -22,6 +25,7 @@ export const env = createEnv({
     NEXT_PUBLIC_FORCE_ONBOARDING: z
       .string()
       .optional()
+
       .describe('Dev-only: Force onboarding demo to replay (ignored in production)'),
   },
   experimental__runtimeEnv: {

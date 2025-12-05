@@ -15,19 +15,27 @@ Search UG API → get best rated tab → fetch via Jina → verify metadata → 
 ```typescript
 import { getBestTabUrl } from './src/ug-api';
 import { parseUGMarkdown } from './src/ug-parser';
+import { fetchAlbum } from './src/musicbrainz';
 
 // 1. Search API for best tab (filters out Pro+ content)
 const url = await getBestTabUrl('Oasis', 'Wonderwall');
 
-// 2. Fetch via Jina
-const md = await fetch(`https://r.jina.ai/${url}`).then(r => r.text());
+// 2. Fetch via Jina (programmatic - works on prod)
+const md = await fetch(`https://r.jina.ai/${url}`, {
+  headers: { 'Authorization': `Bearer ${process.env.JINA_API_KEY}` }
+}).then(r => r.text());
 
 // 3. Parse to JSON
 const song = parseUGMarkdown(md, url);
 
-// 4. WebSearch to verify: "{title} original composer key"
+// 4. CRITICAL: Fetch album from MusicBrainz
+song.album = await fetchAlbum(song.artist, song.title);
+
+// 5. WebSearch to verify: "{title} original composer key"
 //    Update: artist, originalKey, performer (if cover)
 ```
+
+**CRITICAL:** Step 4 (album fetch) is REQUIRED - never skip it.
 
 ## API Search (src/ug-api.ts)
 
@@ -52,6 +60,7 @@ const url = await getBestTabUrl('Johnny Cash', 'Folsom Prison');
   "key": "Bm",
   "originalKey": "Am",
   "performer": "Eric Clapton",
+  "album": "Unplugged",
   "sections": [{
     "name": "Verse 1",
     "lines": [

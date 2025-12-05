@@ -1,13 +1,15 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useSongs } from '@/lib/SongsContext';
 import { useMemo } from 'react';
 
-function SignalWave() {
+function SignalWave({ clickable = false, onClick }: { clickable?: boolean; onClick?: () => void }) {
+  const className = `inline-flex items-center justify-center mx-5 opacity-50 ${clickable ? 'cursor-pointer hover:opacity-100 transition-opacity' : ''}`;
+
   return (
-    <span className="inline-flex items-center justify-center mx-5 opacity-50" aria-hidden>
+    <span className={className} aria-hidden={!clickable} onClick={onClick}>
       <svg width="24" height="16" viewBox="0 0 18 12" fill="none" className="text-foreground">
         <line x1="1" y1="5" x2="1" y2="7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
         <line x1="5" y1="4" x2="5" y2="8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -26,40 +28,39 @@ interface Crumb {
 
 export function Breadcrumbs() {
   const pathname = usePathname();
+  const router = useRouter();
   const { songs } = useSongs();
 
   const crumbs = useMemo(() => {
     const segments = pathname.split('/').filter(Boolean);
     const result: Crumb[] = [];
 
-    // Don't add Jamium - logo already shows it
+    // Don't include Jamium - it's already in the header logo
     if (segments.length === 0) return result;
 
     // Map routes to friendly names
     const routeLabels: Record<string, string> = {
-      songs: 'Repertoire',
       repertoire: 'Repertoire',
-      artists: 'Repertoire',
       jam: 'Jam',
       studio: 'Studio',
       composer: 'Compose',
       'music-theory': 'Theory',
     };
 
-    // Handle song paths: /songs/[artist]/[song]
-    if (segments[0] === 'songs') {
+    // Handle repertoire paths: /repertoire/[artist]/[song]
+    if (segments[0] === 'repertoire') {
       result.push({ label: 'Repertoire', href: '/repertoire' });
 
       const artistSlug = segments[1];
       if (artistSlug) {
         const song = songs.find(s => s.artistSlug === artistSlug);
-        const artistName = song?.artist ?? artistSlug.replace(/_/g, ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        const artistName = song?.artist ?? decodeURIComponent(artistSlug).replace(/_/g, ' ');
         result.push({ label: artistName, href: `/repertoire/${artistSlug}` });
 
         const songSlug = segments[2];
         if (songSlug) {
           const matchedSong = songs.find(s => s.artistSlug === artistSlug && s.songSlug === songSlug);
-          const songTitle = matchedSong?.title ?? songSlug.replace(/_/g, ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+          const songTitle = matchedSong?.title ?? decodeURIComponent(songSlug).replace(/_/g, ' ');
           result.push({ label: songTitle, href: `/repertoire/${artistSlug}/${songSlug}` });
         }
       }
@@ -76,11 +77,20 @@ export function Breadcrumbs() {
   }, [pathname, songs]);
 
   const lastCrumb = crumbs[crumbs.length - 1];
+  const parentCrumb = crumbs.length > 1 ? crumbs[crumbs.length - 2] : null;
 
-  // Home page - no breadcrumb needed, logo is enough
+  // Home page or no crumbs - show nothing
   if (crumbs.length === 0) {
     return null;
   }
+
+  const handleMobileBack = () => {
+    if (parentCrumb) {
+      router.push(parentCrumb.href);
+    } else {
+      router.back();
+    }
+  };
 
   return (
     <nav className="flex items-center min-w-0" aria-label="Navigation">
@@ -103,9 +113,9 @@ export function Breadcrumbs() {
         })}
       </div>
 
-      {/* Mobile: Last item only */}
+      {/* Mobile: Last item only, clickable wave to go back */}
       <div className="flex md:hidden items-center">
-        <SignalWave />
+        <SignalWave clickable onClick={handleMobileBack} />
         <span className="text-xl font-bold text-foreground/90">{lastCrumb?.label}</span>
       </div>
     </nav>

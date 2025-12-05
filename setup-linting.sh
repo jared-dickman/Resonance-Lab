@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Setup script for code quality tools in resonance-lab project
-echo "🔧 Setting up code quality tools for resonance-lab..."
+# Setup script for code quality tools in jamium project
+echo "🔧 Setting up code quality tools for jamium..."
 
 # Install necessary dependencies
 echo "📦 Installing dependencies..."

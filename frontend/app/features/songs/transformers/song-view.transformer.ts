@@ -16,6 +16,7 @@ export interface SavedSongView {
   title: string;
   songSlug: string;
   key: string;
+  album?: string | null;
   hasChords: boolean;
   hasTab: boolean;
   updatedAt: string;
@@ -30,6 +31,7 @@ export interface SongDetailView {
   title: string;
   songSlug: string;
   key?: string;
+  album?: string | null;
   sections: Array<{
     name: string;
     lines: Array<{
@@ -87,6 +89,7 @@ export function toSongDetailView(response: SongDetailResponse): SongDetailView |
     title: response.summary.title,
     songSlug: response.summary.songSlug,
     key: response.songJson.key,
+    album: response.songJson.album ?? undefined,
     sections: response.songJson.sections.map(section => ({
       name: section.name,
       lines: section.lines.map(line => ({
