@@ -1,0 +1,217 @@
+'use client';
+
+import { useMemo, useState } from 'react';
+import Link from 'next/link';
+import { Music, Trash2 } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useSongs, useDeleteSong } from '@/app/features/songs/hooks';
+
+interface ArtistClientProps {
+  artistSlug: string;
+}
+
+export default function ArtistClient({ artistSlug }: ArtistClientProps) {
+  const { data: songs = [], isLoading: isLoadingSongs } = useSongs();
+  const { mutate: deleteSongMutation, isPending: isDeleting } = useDeleteSong();
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+
+  const artistData = useMemo(() => {
+    const artistSongs = songs.filter(song => song.artistSlug === artistSlug);
+
+    if (artistSongs.length === 0) {
+      return null;
+    }
+
+    const artistName = artistSongs[0]?.artist ?? 'Unknown Artist';
+    const sortedSongs = [...artistSongs].sort((a, b) => a.title.localeCompare(b.title));
+
+    const keys = new Set(artistSongs.map(s => s.key).filter(Boolean));
+    const lastUpdated = new Date(
+      Math.max(...artistSongs.map(s => new Date(s.updatedAt).getTime()))
+    );
+
+    return {
+      name: artistName,
+      songs: sortedSongs,
+      totalSongs: sortedSongs.length,
+      keys: Array.from(keys),
+      lastUpdated,
+    };
+  }, [songs, artistSlug]);
+
+  const handleDelete = (
+    songArtistSlug: string,
+    songSlug: string,
+    title: string,
+    event: React.MouseEvent
+  ) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!confirm(`Are you sure you want to delete "${title}"? This cannot be undone.`)) {
+      return;
+    }
+
+    deleteSongMutation(
+      { artistSlug: songArtistSlug, songSlug },
+      {
+        onSuccess: () => {
+          setStatusMessage(`✨ ${title} deleted successfully.`);
+          setTimeout(() => setStatusMessage(null), 3000);
+        },
+        onError: error => {
+          setStatusMessage(error.message || 'Failed to delete song.');
+          setTimeout(() => setStatusMessage(null), 3000);
+        },
+      }
+    );
+  };
+
+  if (isLoadingSongs) {
+    return (
+      <div className="space-y-6">
+        <Skeleton className="h-9 w-32" />
+        <Card>
+          <CardHeader>
+            <div className="flex items-start justify-between">
+              <div className="space-y-2">
+                <Skeleton className="h-8 w-48" />
+                <Skeleton className="h-4 w-32" />
+              </div>
+              <Skeleton className="h-8 w-8 rounded-full" />
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-16" />
+                <div className="flex gap-2">
+                  <Skeleton className="h-6 w-12" />
+                  <Skeleton className="h-6 w-12" />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-4 w-32" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-16" />
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="rounded-md border p-4">
+                  <Skeleton className="h-5 w-3/4 mb-2" />
+                  <Skeleton className="h-4 w-1/3" />
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (!artistData) {
+    return (
+      <div className="space-y-6">
+        <Card>
+          <CardContent className="pt-6">
+            <p className="text-muted-foreground">
+              Artist not found. They may not have any saved songs yet.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <div className="flex items-start justify-between">
+            <div className="space-y-1">
+              <CardTitle className="text-2xl">{artistData.name}</CardTitle>
+              <CardDescription>
+                {artistData.totalSongs} {artistData.totalSongs === 1 ? 'song' : 'songs'} in your
+                library
+              </CardDescription>
+            </div>
+            <Music className="h-8 w-8 text-muted-foreground" />
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-2">
+              <h3 className="text-sm font-medium text-muted-foreground">Keys</h3>
+              <div className="flex flex-wrap gap-2">
+                {artistData.keys.length > 0 ? (
+                  artistData.keys.map(key => (
+                    <span
+                      key={key}
+                      className="inline-flex items-center rounded-md bg-sapphire-500/10 px-2.5 py-0.5 text-sm font-medium text-sapphire-300 border border-sapphire-500/20"
+                    >
+                      {key}
+                    </span>
+                  ))
+                ) : (
+                  <span className="text-sm text-muted-foreground">No keys specified</span>
+                )}
+              </div>
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-sm font-medium text-muted-foreground">Last Updated</h3>
+              <p className="text-sm">{artistData.lastUpdated.toLocaleDateString()}</p>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <h3 className="text-sm font-medium text-muted-foreground">Songs</h3>
+            {statusMessage && (
+              <div className="p-3 rounded-md bg-sapphire-500/10 text-sm border border-sapphire-500/20 text-sapphire-300">
+                {statusMessage}
+              </div>
+            )}
+            <div className="space-y-2">
+              {artistData.songs.map(song => (
+                <div
+                  key={`${song.artistSlug}/${song.songSlug}`}
+                  className="group rounded-md border border-sapphire-500/10 p-4 transition-all duration-200 hover:border-sapphire-500/30 hover:bg-muted/50"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <Link
+                      href={`/repertoire/${song.artistSlug}/${song.songSlug}`}
+                      className="flex-1 space-y-1"
+                    >
+                      <div className="font-medium hover:text-sapphire-400 transition-colors duration-200">
+                        {song.title}
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Updated {new Date(song.updatedAt).toLocaleDateString()}
+                      </div>
+                    </Link>
+                    <div className="flex items-center gap-2">
+                      {song.key && (
+                        <span className="inline-flex items-center rounded-md bg-sapphire-500/10 px-2.5 py-0.5 text-xs font-medium text-sapphire-300 border border-sapphire-500/20">
+                          {song.key}
+                        </span>
+                      )}
+                      <button
+                        onClick={e => handleDelete(song.artistSlug, song.songSlug, song.title, e)}
+                        disabled={isDeleting}
+                        className="opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-destructive/10 rounded text-destructive disabled:opacity-50"
+                        title="Delete song"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
