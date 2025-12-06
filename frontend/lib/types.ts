@@ -16,8 +16,9 @@ export interface Song {
   sections: {
     name: string;
     lines: {
-      chord?: { name: string };
+      chord?: { name: string } | null;
       lyric: string;
+      lineGroup?: number;
     }[];
   }[];
 }

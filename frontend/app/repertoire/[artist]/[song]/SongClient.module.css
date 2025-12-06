@@ -31,48 +31,86 @@
 
 .section {
   margin-bottom: 1.5rem;
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, var(--sapphire-500) 5%, transparent);
+  border: 1px solid color-mix(in srgb, var(--sapphire-500) 10%, transparent);
+  overflow: hidden;
+}
+
+.sectionTrigger {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: color-mix(in srgb, var(--sapphire-500) 8%, transparent);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.sectionTrigger:hover {
+  background: color-mix(in srgb, var(--sapphire-500) 12%, transparent);
+}
+
+.chevronRotate {
+  width: 1rem;
+  height: 1rem;
+  color: var(--sapphire-400);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+/* Rotate when parent trigger is open */
+[data-state='open'] > .chevronRotate {
+  transform: rotate(90deg);
 }
 
 .sectionTitle {
-  margin-bottom: 0.75rem;
-  font-size: 1rem;
+  margin: 0;
+  font-size: 0.875rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: color-mix(in srgb, var(--sapphire-300) 90%, transparent);
 }
 
-.line {
+.sectionContent {
+  padding: 0.75rem 1rem;
+}
+
+/* UG-style: chord stacked above lyric per fragment */
+.ugLineGroup {
   display: flex;
-  gap: 0.75rem;
-  align-items: baseline;
-  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.25rem;
   font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-.chord {
-  min-width: 4rem;
-  font-weight: 700;
-  color: var(--sapphire-400);
-  transition: all 0.2s ease;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.375rem;
-  background: color-mix(in srgb, var(--sapphire-500) 10%, transparent);
+.ugFragment {
+  display: inline-flex;
+  flex-direction: column;
+  margin-right: 1ch;
 }
 
-.chord:hover {
-  background: color-mix(in srgb, var(--sapphire-500) 20%, transparent);
-  transform: translateY(-1px);
+.ugChord {
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--sapphire-400);
+  min-height: 1.25rem;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.ugChord:hover {
   color: var(--sapphire-300);
 }
 
 .chordActive {
-  background: color-mix(in srgb, var(--sapphire-500) 25%, transparent);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--sapphire-500) 40%, transparent);
-  color: var(--sapphire-300);
+  color: var(--sapphire-200);
+  text-shadow: 0 0 8px var(--sapphire-400);
 }
 
-.lyric {
-  flex: 1;
+.ugLyric {
   color: rgb(229, 231, 235);
 }

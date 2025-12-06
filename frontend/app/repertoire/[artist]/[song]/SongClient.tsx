@@ -2,7 +2,7 @@
 
 import { KEY_SIGNATURES, SongToolbar } from '@/components/SongToolbar';
 import type { Song } from '@/lib/types';
-import { transposeChord } from '@/lib/utils';
+import { cn, transposeChord } from '@/lib/utils';
 import { calculateScrollSpeed } from '@/lib/utils/song/scrollSpeed';
 import type { ChordElementInfo } from '@/lib/utils/song/chordTracking';
 import { findClosestVisibleChord } from '@/lib/utils/song/chordTracking';
@@ -15,16 +15,66 @@ import { ChordJourneyVisualization } from '@/components/ChordJourneyVisualizatio
 import { ChordRhythmGame } from '@/components/ChordRhythmGame';
 import { LoopPracticeMode } from '@/components/LoopPracticeMode';
 import { Button } from '@/components/ui/button';
-import { Guitar, Piano } from 'lucide-react';
+import { Guitar, Piano, ChevronRight } from 'lucide-react';
 import { useGuitarPlayback } from '@/lib/hooks';
 import IntelligentMusicPanel from '@/components/music-theory/IntelligentMusicPanel';
 import { useDeleteSong } from '@/app/features/songs/hooks';
 import { useRouter } from 'next/navigation';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 interface SongClientProps {
   song: Song;
   artistSlug: string;
   songSlug: string;
+}
+
+interface GroupedLine {
+  lineGroup: number;
+  items: Array<{ chord: string | null; lyric: string }>;
+}
+
+/** Group section lines by lineGroup for UG-style rendering */
+function groupLinesByLineGroup(lines: Song['sections'][0]['lines']): GroupedLine[] {
+  // If any line has lineGroup, use that for grouping
+  const hasLineGroup = lines.some(l => l.lineGroup !== undefined);
+
+  if (hasLineGroup) {
+    const groups = new Map<number, GroupedLine>();
+    lines.forEach((line) => {
+      const lg = line.lineGroup ?? 0;
+      if (!groups.has(lg)) {
+        groups.set(lg, { lineGroup: lg, items: [] });
+      }
+      groups.get(lg)!.items.push({
+        chord: line.chord?.name ?? null,
+        lyric: line.lyric,
+      });
+    });
+    return Array.from(groups.values()).sort((a, b) => a.lineGroup - b.lineGroup);
+  }
+
+  // Fallback: group no-chord prefixes with next chord entry
+  const result: GroupedLine[] = [];
+  let currentGroup: GroupedLine = { lineGroup: 0, items: [] };
+
+  lines.forEach((line) => {
+    currentGroup.items.push({
+      chord: line.chord?.name ?? null,
+      lyric: line.lyric,
+    });
+    // If this line has a chord, it ends the current group
+    if (line.chord?.name) {
+      result.push(currentGroup);
+      currentGroup = { lineGroup: result.length, items: [] };
+    }
+  });
+
+  // Don't forget trailing items without chords
+  if (currentGroup.items.length > 0) {
+    result.push(currentGroup);
+  }
+
+  return result;
 }
 
 const getNormalizedKey = (key?: string) => {
@@ -245,41 +295,48 @@ export function SongClient({ song, artistSlug, songSlug }: SongClientProps): Rea
         isDeleting={isDeleting}
       />
 
-      {/* Lyrics Container */}
+      {/* Lyrics Container - UG Style */}
       <div ref={lyricsContainerRef} className={styles.lyricsContainer}>
-        {transposedSections.map((section, sectionIndex) => (
-          <div key={`${section.name}-${sectionIndex}`} className={styles.section}>
-            <h3 className={styles.sectionTitle}>{section.name}</h3>
-            {section.lines.map((line, lineIndex) => {
-              const chordKey = `${sectionIndex}-${lineIndex}`;
-              const isActive = line.chord?.name === currentChord;
-
-              return (
-                <div key={chordKey} className={styles.line}>
-                  {line.chord?.name && (
-                    <span
-                      ref={el => {
-                        if (el && line.chord?.name) {
-                          chordElementsRef.current.set(chordKey, {
-                            element: el,
-                            chordName: line.chord.name,
-                          });
-                        }
-                      }}
-                      className={`${styles.chord} ${isActive ? styles.chordActive : ''}`}
-                      onClick={() => setCurrentChord(line.chord!.name)}
-                      style={{ cursor: 'pointer' }}
-                      title="Click to view chord diagram"
-                    >
-                      {line.chord.name}
-                    </span>
-                  )}
-                  <span className={styles.lyric}>{line.lyric}</span>
-                </div>
-              );
-            })}
-          </div>
-        ))}
+        {transposedSections.map((section, sectionIndex) => {
+          const groupedLines = groupLinesByLineGroup(section.lines);
+          return (
+            <Collapsible key={`${section.name}-${sectionIndex}`} defaultOpen className={styles.section}>
+              <CollapsibleTrigger className={styles.sectionTrigger}>
+                <ChevronRight className={styles.chevronRotate} />
+                <h3 className={styles.sectionTitle}>{section.name}</h3>
+              </CollapsibleTrigger>
+              <CollapsibleContent className={styles.sectionContent}>
+                {groupedLines.map((group, groupIndex) => (
+                  <div key={`group-${group.lineGroup}`} className={styles.ugLineGroup}>
+                    {group.items.map((item, itemIndex) => {
+                      const chordKey = `${sectionIndex}-${groupIndex}-${itemIndex}`;
+                      const isActive = item.chord === currentChord;
+                      return (
+                        <span key={chordKey} className={styles.ugFragment}>
+                          <span
+                            ref={el => {
+                              if (el && item.chord) {
+                                chordElementsRef.current.set(chordKey, {
+                                  element: el,
+                                  chordName: item.chord,
+                                });
+                              }
+                            }}
+                            className={cn(styles.ugChord, isActive && styles.chordActive)}
+                            onClick={() => item.chord && setCurrentChord(item.chord)}
+                          >
+                            {item.chord || '\u00A0'}
+                          </span>
+                          <span className={styles.ugLyric}>{item.lyric}</span>
+                        </span>
+                      );
+                    })}
+                  </div>
+                ))}
+              </CollapsibleContent>
+            </Collapsible>
+          );
+        })}
       </div>
 
       {/* Instrument Toggle and Display */}
