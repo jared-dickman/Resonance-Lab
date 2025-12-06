@@ -120,7 +120,7 @@ function DockToggle({ dockMode, dockEdge, onToggleDock, onSelectEdge }: DockTogg
                 setShowPicker(true); // Right-click always shows picker
               }}
             >
-              {isDocked ? <PinOff className="h-3 w-3" /> : <Pin className="h-3 w-3" />}
+              {isDocked ? <PinOff className="h-3.5 w-3.5" /> : <Pin className="h-3.5 w-3.5" />}
             </Button>
           </PopoverTrigger>
         </TooltipTrigger>
@@ -162,7 +162,7 @@ interface BuddyHeaderProps {
   onSelectEdge: (edge: DockEdge) => void;
 }
 
-const HEADER_BUTTON_CLASS = 'h-6 w-6 text-white/40 hover:text-white/80 hover:bg-white/10';
+const HEADER_BUTTON_CLASS = 'h-7 w-7 rounded-md text-white/50 hover:text-white hover:bg-white/10 transition-colors';
 const RESULT_LABEL_CLASS = 'text-[9px] uppercase tracking-widest text-white/40 mb-1';
 
 function ResultSection({ label, results, type, onSelect, disabled }: {
@@ -195,19 +195,19 @@ function BuddyHeaderControls({ isStatic, isOnboarding, isMinimized, dockMode, do
   if (isStatic) return null;
 
   return (
-    <div className="flex items-center gap-1">
-      {/* Dock toggle - desktop/tablet only (hidden on mobile via parent) */}
+    <div className="flex items-center gap-0.5">
       <DockToggle
         dockMode={dockMode}
         dockEdge={dockEdge}
         onToggleDock={onToggleDock}
         onSelectEdge={onSelectEdge}
       />
+      <div className="w-px h-4 bg-white/10 mx-1" />
       <Button variant="ghost" size="icon" className={HEADER_BUTTON_CLASS} onClick={(e) => { e.stopPropagation(); onMinimize(); }}>
-        {isMinimized ? <Maximize2 className="h-3 w-3" /> : <Minimize2 className="h-3 w-3" />}
+        {isMinimized ? <Maximize2 className="h-3.5 w-3.5" /> : <Minimize2 className="h-3.5 w-3.5" />}
       </Button>
       <Button variant="ghost" size="icon" className={HEADER_BUTTON_CLASS} onClick={(e) => { e.stopPropagation(); onClose(); }}>
-        <X className="h-3 w-3" />
+        <X className="h-3.5 w-3.5" />
       </Button>
     </div>
   );
@@ -218,7 +218,7 @@ export function BuddyHeader({ context, isStatic, isOnboarding, isMinimized, dock
   return (
     <div className={cn('flex items-center justify-between px-4 py-3 border-b border-white/5 select-none', !isStatic && !isDocked && 'cursor-grab active:cursor-grabbing')}>
       <div className="flex items-center gap-2.5">
-        {!isStatic && !isDocked && <GripHorizontal className="h-4 w-4 text-white/20" />}
+        {!isStatic && !isDocked && <GripHorizontal className="h-4 w-4 text-white/15" />}
         <motion.div
           animate={BUDDY_ICON_GLOW_ANIMATION}
           transition={BUDDY_ICON_GLOW_TRANSITION}
