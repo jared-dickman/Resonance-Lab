@@ -478,7 +478,7 @@ function DesktopPanel({
               exit={{ opacity: 0, height: 0 }}
               className="flex flex-col"
             >
-              {!isOnboarding && <BuddyNavBar onNavigate={onClose} />}
+              {!isOnboarding && !isStatic && <BuddyNavBar onNavigate={onClose} />}
 
               <div className={BUDDY_SCROLL_CONTAINER_CLASS}>
                 <BuddyMessageList

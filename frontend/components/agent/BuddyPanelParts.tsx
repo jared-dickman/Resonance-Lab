@@ -103,7 +103,7 @@ export function BuddyHeader({ context, isStatic, isOnboarding, isMinimized, onMi
         </motion.div>
         <div className="flex flex-col">
           <span className="font-semibold text-sm text-white/90">Buddy</span>
-          {!isMinimized && <ContextChip />}
+          {!isMinimized && !isStatic && <ContextChip />}
         </div>
       </div>
       <BuddyHeaderControls {...{ isStatic, isOnboarding, isMinimized, onMinimize, onClose, onSkip }} />
