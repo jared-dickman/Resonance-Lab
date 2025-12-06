@@ -326,7 +326,7 @@ function MobileHeader({ context, onClose }: { context: { page: string; artist?: 
         </motion.div>
         <div>
           <span className="font-semibold text-white">Buddy</span>
-          <ContextChip page={context.page} artist={context.artist} song={context.song} />
+          <ContextChip />
         </div>
       </div>
       <Button variant="ghost" size="icon" className="h-8 w-8 text-white/60 hover:text-white hover:bg-white/10" onClick={onClose}>
