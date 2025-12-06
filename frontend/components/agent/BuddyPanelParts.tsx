@@ -218,7 +218,7 @@ export function BuddyHeader({ context, isStatic, isOnboarding, isMinimized, dock
   return (
     <div className={cn('flex items-center justify-between px-4 py-3 border-b border-white/5 select-none', !isStatic && !isDocked && 'cursor-grab active:cursor-grabbing')}>
       <div className="flex items-center gap-2.5">
-        {!isStatic && <GripHorizontal className="h-4 w-4 text-white/20" />}
+        {!isStatic && !isDocked && <GripHorizontal className="h-4 w-4 text-white/20" />}
         <motion.div
           animate={BUDDY_ICON_GLOW_ANIMATION}
           transition={BUDDY_ICON_GLOW_TRANSITION}
@@ -231,7 +231,7 @@ export function BuddyHeader({ context, isStatic, isOnboarding, isMinimized, dock
           {!isMinimized && !isStatic && <ContextChip />}
         </div>
       </div>
-      <BuddyHeaderControls {...{ isStatic, isOnboarding, isMinimized, onMinimize, onClose, onSkip }} />
+      <BuddyHeaderControls {...{ isStatic, isOnboarding, isMinimized, dockMode, dockEdge, onMinimize, onClose, onSkip, onToggleDock, onSelectEdge }} />
     </div>
   );
 }
