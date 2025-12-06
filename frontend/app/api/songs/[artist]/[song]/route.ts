@@ -1,14 +1,12 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { env } from '@/app/config/env';
 import { serverErrorTracker } from '@/app/utils/error-tracker.server';
 import { validateApiAuth } from '@/lib/auth/apiAuth';
-import { songDetailSchema } from '@/app/features/songs/dto/song-response.schema';
 import { toSongDetailView } from '@/app/features/songs/transformers/song-view.transformer';
 import { songDetailViewSchema } from '@/app/features/songs/dto/song-view.schema';
-
-const API_BASE_URL = env.API_BASE_URL;
+import { findSongBySlug, softDeleteSong } from '@/lib/supabase/songs.repository';
+import type { SongRow } from '@/lib/supabase/songs.schema';
 
 // Security: Validate path parameters with strict bounds
 const PathParamsSchema = z.object({
@@ -20,6 +18,48 @@ interface RouteParams {
   params: Promise<{ artist: string; song: string }>;
 }
 
+type SongSection = {
+  name: string;
+  lines: Array<{ chord?: { name: string } | null; lyric: string }>;
+};
+
+function toSongDetailResponse(record: SongRow) {
+  const rawSections = record.sections as Array<{
+    name: string;
+    lines: Array<{ lyrics?: string; chords?: string; chord?: { name: string } | null; lyric?: string }>;
+  }>;
+
+  // Transform sections to expected format
+  const sections: SongSection[] = rawSections.map((section) => ({
+    name: section.name,
+    lines: section.lines.map((line) => ({
+      chord: line.chord ?? (line.chords ? { name: line.chords } : null),
+      lyric: line.lyric ?? line.lyrics ?? '',
+    })),
+  }));
+
+  return {
+    summary: {
+      artist: record.artist,
+      artistSlug: record.artist_slug,
+      title: record.title,
+      songSlug: record.song_slug,
+      key: record.key ?? '',
+      album: record.album ?? null,
+      hasChords: record.has_chords,
+      hasTab: record.has_tab,
+      updatedAt: record.updated_at,
+    },
+    songJson: {
+      artist: record.artist,
+      title: record.title,
+      key: record.key ?? undefined,
+      album: record.album ?? null,
+      sections,
+    },
+  };
+}
+
 export async function GET(request: NextRequest, { params }: RouteParams) {
   const authResult = validateApiAuth(request);
   if (!authResult.authorized) {
@@ -29,18 +69,10 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
   let artist: string | undefined;
   let song: string | undefined;
 
-  if (!API_BASE_URL) {
-    serverErrorTracker.captureApiError(new Error('API_BASE_URL not configured'), {
-      service: 'songs-api',
-      operation: 'get-song-detail',
-    });
-    return NextResponse.json({ error: 'API_BASE_URL not configured' }, { status: 500 });
-  }
-
   try {
     const resolvedParams = await params;
 
-    // Security: Validate params before URL construction (prevents path traversal)
+    // Security: Validate params before query (prevents injection)
     const parseResult = PathParamsSchema.safeParse(resolvedParams);
     if (!parseResult.success) {
       serverErrorTracker.captureApiError(
@@ -57,23 +89,14 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     artist = parseResult.data.artist;
     song = parseResult.data.song;
 
-    const response = await fetch(`${API_BASE_URL}/api/songs/${artist}/${song}`, {
-      cache: 'no-store',
-    });
+    const record = await findSongBySlug(artist, song);
 
-    if (!response.ok) {
-      await serverErrorTracker.captureNetworkError(response, {
-        service: 'songs-api',
-        operation: 'get-song-detail',
-        artist,
-        title: song,
-      });
-      return NextResponse.json({ error: 'Song not found' }, { status: response.status });
+    if (!record) {
+      return NextResponse.json({ error: 'Song not found' }, { status: 404 });
     }
 
-    const rawData = await response.json();
-    const validatedData = songDetailSchema.parse(rawData);
-    const transformed = toSongDetailView(validatedData);
+    const songDetailResponse = toSongDetailResponse(record);
+    const transformed = toSongDetailView(songDetailResponse);
 
     if (!transformed) {
       return NextResponse.json({ error: 'Song data incomplete' }, { status: 404 });
@@ -100,18 +123,10 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
   let artist: string | undefined;
   let song: string | undefined;
 
-  if (!API_BASE_URL) {
-    serverErrorTracker.captureApiError(new Error('API_BASE_URL not configured'), {
-      service: 'songs-api',
-      operation: 'delete-song',
-    });
-    return NextResponse.json({ error: 'API_BASE_URL not configured' }, { status: 500 });
-  }
-
   try {
     const resolvedParams = await params;
 
-    // Security: Validate params before URL construction (prevents path traversal)
+    // Security: Validate params before query (prevents injection)
     const parseResult = PathParamsSchema.safeParse(resolvedParams);
     if (!parseResult.success) {
       serverErrorTracker.captureApiError(
@@ -128,20 +143,12 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     artist = parseResult.data.artist;
     song = parseResult.data.song;
 
-    serverErrorTracker.addBreadcrumb('songs-api', 'Deleting song', { artist, title: song });
+    serverErrorTracker.addBreadcrumb('songs-api', 'Soft-deleting song', { artist, title: song });
 
-    const response = await fetch(`${API_BASE_URL}/api/songs/${artist}/${song}`, {
-      method: 'DELETE',
-    });
+    const deleted = await softDeleteSong(artist, song);
 
-    if (!response.ok) {
-      await serverErrorTracker.captureNetworkError(response, {
-        service: 'songs-api',
-        operation: 'delete-song',
-        artist,
-        title: song,
-      });
-      return NextResponse.json({ error: 'Failed to delete song' }, { status: response.status });
+    if (!deleted) {
+      return NextResponse.json({ error: 'Song not found' }, { status: 404 });
     }
 
     return new NextResponse(null, { status: 204 });

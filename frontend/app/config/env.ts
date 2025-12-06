@@ -9,6 +9,10 @@ export const env = createEnv({
     JINA_API_KEY: z.string().min(1).optional().describe('Jina AI API key for web scraping'),
     PINECONE_API_KEY: z.string().min(1).optional().describe('Pinecone API key for vector DB'),
     FIRECRAWL_API_KEY: z.string().min(1).optional().describe('Firecrawl API key for web crawling'),
+
+    // Supabase
+    SUPABASE_URL: z.string().url().describe('Supabase project URL'),
+    SUPABASE_KEY: z.string().min(1).describe('Supabase service role key (server-side only)'),
   },
   client: {
     NEXT_PUBLIC_API_BASE_URL: z
