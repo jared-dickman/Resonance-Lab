@@ -16,8 +16,21 @@ interface StructuredData {
   [key: string]: unknown;
 }
 
+const PAGE_HINTS: Record<string, string> = {
+  library: 'try: add a song',
+  jam: 'pick chords to jam',
+  theory: 'explore the circle',
+  composer: 'build progressions',
+  metronome: 'set your tempo',
+  songwriter: 'write lyrics',
+  studio: 'practice mode',
+  pedalboard: 'tweak your tone',
+  landing: 'ask me anything',
+};
+
 export function ContextChip({ page, artist, song }: { page: string; artist?: string; song?: string }) {
-  const label = song ?? artist ?? page;
+  // Priority: song > artist > page hint
+  const label = song ?? artist ?? PAGE_HINTS[page] ?? page;
   const showMusicIcon = Boolean(song ?? artist);
 
   return (
