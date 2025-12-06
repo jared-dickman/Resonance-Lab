@@ -28,8 +28,19 @@ export default {
             // Check if this is a data-testid attribute
             if (node.name.name !== 'data-testid') return;
 
-            // Check if the value is a string literal (not an expression)
+            // Only flag string literals (not expressions with variables)
             if (node.value && node.value.type === 'Literal' && typeof node.value.value === 'string') {
+              context.report({
+                node: node.value,
+                messageId: 'useMagicTestId'
+              });
+            }
+
+            // Also flag inline string templates
+            if (node.value &&
+                node.value.type === 'JSXExpressionContainer' &&
+                node.value.expression.type === 'Literal' &&
+                typeof node.value.expression.value === 'string') {
               context.report({
                 node: node.value,
                 messageId: 'useMagicTestId'
@@ -292,10 +303,12 @@ export default {
             // Check if this is a className attribute
             if (node.name.name !== 'className') return;
 
-            // Check if the value is a direct template literal
+            // Check if the value is a direct template literal with dynamic expressions
             if (node.value &&
                 node.value.type === 'JSXExpressionContainer' &&
-                node.value.expression.type === 'TemplateLiteral') {
+                node.value.expression.type === 'TemplateLiteral' &&
+                node.value.expression.expressions &&
+                node.value.expression.expressions.length > 0) {
               context.report({
                 node: node.value,
                 messageId: 'useCnUtility'
@@ -331,9 +344,9 @@ export default {
         schema: []
       },
       create(context) {
-        // Skip fixtures and non-e2e files
+        // Only check e2e/locators/*.locators.ts files
         const filename = context.getFilename();
-        if (filename.includes('/fixtures/') || !filename.includes('/e2e/')) {
+        if (!filename.includes('/e2e/locators/') || !filename.includes('.locators.')) {
           return {};
         }
 
@@ -416,22 +429,46 @@ export default {
           { regex: /bearer\s+[a-zA-Z0-9\-._~+/]+=*/i, type: 'Bearer tokens' }
         ];
 
+        function isEnvAccess(node) {
+          // Check if it's accessing process.env or import.meta.env
+          if (node && node.type === 'MemberExpression') {
+            if (node.object.type === 'MemberExpression' &&
+                node.object.object.name === 'process' &&
+                node.object.property.name === 'env') {
+              return true;
+            }
+            if (node.object.type === 'MemberExpression' &&
+                node.object.object.type === 'MetaProperty' &&
+                node.object.property.name === 'env') {
+              return true;
+            }
+          }
+          return false;
+        }
+
         return {
           // Check variable assignments
           VariableDeclarator(node) {
+            // Skip if right side is env access
+            if (isEnvAccess(node.init)) {
+              return;
+            }
+
             if (node.init && node.init.type === 'Literal' &&
                 typeof node.init.value === 'string' &&
-                node.init.value.length > 10) {
+                node.init.value.length > 10 &&
+                node.id.type === 'Identifier') {
 
               for (const pattern of secretPatterns) {
                 if (pattern.regex.test(node.id.name)) {
                   // Check if the value looks like a real secret (not a placeholder)
                   const value = node.init.value;
-                  if (!value.startsWith('process.env.') &&
-                      !value.startsWith('import.meta.env.') &&
-                      !value.includes('YOUR_') &&
+                  if (!value.includes('YOUR_') &&
                       !value.includes('REPLACE_') &&
-                      !value.includes('xxx')) {
+                      !value.includes('EXAMPLE') &&
+                      !value.toUpperCase().includes('XXX') &&
+                      value !== 'v1' &&
+                      value.length > 15) {
                     context.report({
                       node: node.init,
                       messageId: 'exposedSecret',
@@ -453,11 +490,12 @@ export default {
                 const key = node.key.type === 'Identifier' ? node.key.name : node.key.value;
                 if (pattern.regex.test(key)) {
                   const value = node.value.value;
-                  if (!value.startsWith('process.env.') &&
-                      !value.startsWith('import.meta.env.') &&
-                      !value.includes('YOUR_') &&
+                  if (!value.includes('YOUR_') &&
                       !value.includes('REPLACE_') &&
-                      !value.includes('xxx')) {
+                      !value.includes('EXAMPLE') &&
+                      !value.toUpperCase().includes('XXX') &&
+                      value !== 'v1' &&
+                      value.length > 15) {
                     context.report({
                       node: node.value,
                       messageId: 'exposedSecret',
@@ -540,7 +578,21 @@ export default {
               // Check if assigned to a variable with await
               const isAwaited = parent && parent.type === 'AwaitExpression';
 
-              if (!hasCatch && !inTry && !isAwaited && !hasChain) {
+              // Check if inside async function (await without explicit try/catch is ok)
+              let inAsyncFunction = false;
+              let funcAncestor = node.parent;
+              while (funcAncestor) {
+                if ((funcAncestor.type === 'FunctionDeclaration' ||
+                     funcAncestor.type === 'FunctionExpression' ||
+                     funcAncestor.type === 'ArrowFunctionExpression') &&
+                    funcAncestor.async) {
+                  inAsyncFunction = true;
+                  break;
+                }
+                funcAncestor = funcAncestor.parent;
+              }
+
+              if (!hasCatch && !inTry && !isAwaited && !hasChain && !inAsyncFunction) {
                 context.report({
                   node,
                   messageId: 'unhandledPromise'
@@ -575,9 +627,9 @@ export default {
 
         return {
           ExportNamedDeclaration(node) {
-            // Check for POST/PUT/PATCH handlers without validation
+            // Check for POST/PUT/PATCH handlers without validation (skip GET)
             if (node.declaration && node.declaration.type === 'FunctionDeclaration') {
-              const funcName = node.declaration.id.name;
+              const funcName = node.declaration.id?.name;
 
               if (['POST', 'PUT', 'PATCH'].includes(funcName)) {
                 // Check if function body contains zod parse

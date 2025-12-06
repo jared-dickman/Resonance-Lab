@@ -15,7 +15,7 @@ import importPlugin
 import storybook
   from 'eslint-plugin-storybook'
 import resonancePlugin
-  from './scripts/eslint-plugin-resonance.mjs'
+  from 'scripts/eslint-plugin-jamium.mjs'
 
 export default [
   // Ignore build outputs and generated files

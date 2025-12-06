@@ -837,7 +837,7 @@ function writeTestFile(relativePath: string, code: string): string {
 
 function runEslintRule(rule: string, filePath: string): { passed: boolean; output: string } {
   // Create ESLint configuration inline using our custom plugin
-  const pluginPath = path.join(process.cwd(), 'scripts', 'eslint-plugin-blogzilla.mjs');
+  const pluginPath = path.join(process.cwd(), 'scripts', 'eslint-plugin-jamium.mjs');
   const eslintConfigContent = `
 import blogzillaPlugin from '${pluginPath}';
 import typescriptParser from '@typescript-eslint/parser';
@@ -908,6 +908,7 @@ function runRule(rule: string, filePath: string): { passed: boolean; output: str
     const output = execSync(`pnpm exec sg scan --rule rules/${rule}.yml ${filePath}`, {
       encoding: 'utf-8',
       stdio: 'pipe',
+      cwd: process.cwd()
     });
     return { passed: true, output };
   } catch (error: any) {
