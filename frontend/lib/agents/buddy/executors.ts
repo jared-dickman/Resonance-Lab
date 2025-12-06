@@ -78,7 +78,13 @@ export async function executeDownload(
     }
 
     const song = result.song;
-    const saveResponse = await fetch(`${apiBaseUrl}/api/songs`, {
+    // Use origin from request context or fallback to production URL
+    const baseUrl = typeof window !== 'undefined'
+      ? window.location.origin
+      : process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : 'https://www.jamium.com';
+    const saveResponse = await fetch(`${baseUrl}/api/songs`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
