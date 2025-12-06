@@ -154,7 +154,32 @@ function isLikelyChordLine(line: string, chords: ChordPosition[]): boolean {
 }
 
 /**
+ * Find the nearest word boundary at or after the given position
+ * Returns the position where a word starts (after whitespace)
+ */
+function findWordBoundary(line: string, pos: number): number {
+  // If position is beyond line length, return line length
+  if (pos >= line.length) return line.length;
+
+  // If we're at the start or at whitespace, find next word start
+  if (pos === 0 || /\s/.test(line[pos - 1] ?? '')) {
+    // Skip any whitespace to find word start
+    while (pos < line.length && /\s/.test(line[pos] ?? '')) {
+      pos++;
+    }
+    return pos;
+  }
+
+  // We're in the middle of a word - go back to word start
+  while (pos > 0 && !/\s/.test(line[pos - 1] ?? '')) {
+    pos--;
+  }
+  return pos;
+}
+
+/**
  * Split lyrics at chord positions and pair each chord with its segment
+ * Uses word boundaries to avoid splitting words mid-character
  * Lyrics BEFORE first chord become a separate null-chord entry
  */
 function pairChordsWithLyrics(chords: ChordPosition[], lyricLine: string, lineGroup: number): Line[] {
@@ -163,10 +188,16 @@ function pairChordsWithLyrics(chords: ChordPosition[], lyricLine: string, lineGr
   // Sort chords by position
   const sorted = [...chords].sort((a, b) => a.position - b.position);
 
+  // Convert chord positions to word-aligned positions in lyric line
+  const alignedPositions = sorted.map(chord => ({
+    ...chord,
+    alignedPos: findWordBoundary(lyricLine, chord.position),
+  }));
+
   // Handle lyrics BEFORE first chord (no chord above them)
-  const firstChord = sorted[0];
-  if (firstChord && firstChord.position > 0) {
-    const prefix = lyricLine.slice(0, firstChord.position).trim();
+  const firstChord = alignedPositions[0];
+  if (firstChord && firstChord.alignedPos > 0) {
+    const prefix = lyricLine.slice(0, firstChord.alignedPos).trim();
     if (prefix) {
       result.push({
         chord: null,
@@ -177,12 +208,12 @@ function pairChordsWithLyrics(chords: ChordPosition[], lyricLine: string, lineGr
   }
 
   // Pair each chord with its lyric segment
-  for (let i = 0; i < sorted.length; i++) {
-    const chord = sorted[i]!;
-    const nextPosition = sorted[i + 1]?.position ?? lyricLine.length;
+  for (let i = 0; i < alignedPositions.length; i++) {
+    const chord = alignedPositions[i]!;
+    const nextPosition = alignedPositions[i + 1]?.alignedPos ?? lyricLine.length;
 
     // Get lyric segment from this chord to the next
-    const segment = lyricLine.slice(chord.position, nextPosition).trim();
+    const segment = lyricLine.slice(chord.alignedPos, nextPosition).trim();
 
     result.push({
       chord: { name: chord.name },
