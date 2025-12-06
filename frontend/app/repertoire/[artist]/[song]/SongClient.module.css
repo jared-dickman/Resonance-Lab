@@ -77,6 +77,38 @@
 
 .sectionContent {
   padding: 0.75rem 1rem;
+  overflow: hidden;
+}
+
+/* Smooth height animation for Radix Collapsible */
+.sectionContent[data-state='open'] {
+  animation: slideDown 0.2s ease-out;
+}
+
+.sectionContent[data-state='closed'] {
+  animation: slideUp 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
 }
 
 /* UG-style: chord stacked above lyric per fragment */
