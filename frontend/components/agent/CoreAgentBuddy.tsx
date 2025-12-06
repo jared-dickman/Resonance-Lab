@@ -6,6 +6,7 @@ import { Bot, X, Send } from 'lucide-react';
 import type { DockEdge, DockMode } from '@/lib/types/buddy.types';
 import { useIntervalEffect } from '@/lib/hooks/useIntervalEffect';
 import { useBuddyChat } from '@/lib/hooks/useBuddyChat';
+import { useBuddyPanelState, clampPosition, getDockedStyle } from '@/lib/hooks/useBuddyState';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { RandomLoader } from '@/components/ui/loaders/RandomLoader';
@@ -29,21 +30,12 @@ import {
   BUDDY_PANEL_VARIANTS,
   BUDDY_GLOW_VARIANTS,
   BUDDY_MINIMIZED_VARIANTS,
-  BUDDY_POSITION_STORAGE_KEY,
-  BUDDY_MINIMIZED_STORAGE_KEY,
-  BUDDY_DOCK_MODE_STORAGE_KEY,
-  BUDDY_DOCK_EDGE_STORAGE_KEY,
-  BUDDY_STATE_DEBOUNCE_MS,
-  BUDDY_DEFAULT_POSITION,
-  BUDDY_DEFAULT_DOCK_MODE,
-  BUDDY_DEFAULT_DOCK_EDGE,
   BUDDY_AUTOFOCUS_DELAY_MS,
   BUDDY_ENTRANCE_DELAY_MS,
   BUDDY_FIRST_LOAD_DELAY_MS,
   BUDDY_DEFAULT_PLACEHOLDER,
   BUDDY_PANEL_WIDTH,
   BUDDY_PANEL_HEIGHT,
-  BUDDY_EDGE_PADDING,
   BUDDY_HEADER_HEIGHT,
   BUDDY_INPUT_PLACEHOLDER,
   BUDDY_ICON_GLOW_ANIMATION,
@@ -61,71 +53,6 @@ interface CoreAgentBuddyProps {
   onboarding?: OnboardingState;
 }
 
-function clampPosition(x: number, y: number): { x: number; y: number } {
-  if (typeof window === 'undefined') return { x, y };
-  return {
-    x: Math.max(BUDDY_EDGE_PADDING, Math.min(x, window.innerWidth - BUDDY_PANEL_WIDTH - BUDDY_EDGE_PADDING)),
-    y: Math.max(BUDDY_EDGE_PADDING, Math.min(y, window.innerHeight - BUDDY_PANEL_HEIGHT - BUDDY_EDGE_PADDING)),
-  };
-}
-
-function getCenteredPosition(): { x: number; y: number } {
-  if (typeof window === 'undefined') return { x: 100, y: 100 };
-  return clampPosition(
-    Math.round((window.innerWidth - BUDDY_PANEL_WIDTH) / 2),
-    Math.round((window.innerHeight - BUDDY_PANEL_HEIGHT) / 2)
-  );
-}
-
-function loadSavedPosition(): { x: number; y: number } {
-  if (typeof window === 'undefined') return getCenteredPosition();
-  try {
-    const saved = localStorage.getItem(BUDDY_POSITION_STORAGE_KEY);
-    if (saved) {
-      const parsed = JSON.parse(saved) as { x: number; y: number };
-      return clampPosition(parsed.x, parsed.y);
-    }
-  } catch { /* Invalid JSON */ }
-  return getCenteredPosition();
-}
-
-function loadSavedMinimized(): boolean {
-  if (typeof window === 'undefined') return false;
-  try {
-    return localStorage.getItem(BUDDY_MINIMIZED_STORAGE_KEY) === 'true';
-  } catch {
-    return false;
-  }
-}
-
-function loadSavedDockMode(): DockMode {
-  if (typeof window === 'undefined') return BUDDY_DEFAULT_DOCK_MODE;
-  try {
-    const saved = localStorage.getItem(BUDDY_DOCK_MODE_STORAGE_KEY);
-    if (saved === 'floating' || saved === 'docked') return saved;
-  } catch { /* Invalid value */ }
-  return BUDDY_DEFAULT_DOCK_MODE;
-}
-
-function loadSavedDockEdge(): DockEdge {
-  if (typeof window === 'undefined') return BUDDY_DEFAULT_DOCK_EDGE;
-  try {
-    const saved = localStorage.getItem(BUDDY_DOCK_EDGE_STORAGE_KEY);
-    if (saved === 'top' || saved === 'bottom' || saved === 'left' || saved === 'right') return saved;
-  } catch { /* Invalid value */ }
-  return BUDDY_DEFAULT_DOCK_EDGE;
-}
-
-function getDockedStyle(edge: DockEdge): React.CSSProperties {
-  const isHorizontal = edge === 'top' || edge === 'bottom';
-  return {
-    [edge]: 0,
-    ...(isHorizontal
-      ? { left: 0, width: '100vw', height: BUDDY_DOCKED_HEIGHT }
-      : { top: 0, height: '100vh', width: BUDDY_PANEL_WIDTH }),
-  };
-}
-
 export function CoreAgentBuddy({ onSave, isSaving = false, isLanding = false, onboarding }: CoreAgentBuddyProps) {
   const { context, isOpen, setIsOpen, expandSignal } = useBuddy();
   const isOnboarding = !!onboarding;
@@ -133,62 +60,18 @@ export function CoreAgentBuddy({ onSave, isSaving = false, isLanding = false, on
 
   const chat = useBuddyChat({ context, onSave });
   const inputRef = useRef<HTMLInputElement>(null);
-  const minimizedSaveTimeoutRef = useRef<NodeJS.Timeout>(undefined);
 
-  const [isMinimized, setIsMinimizedInternal] = useState(false);
+  // Consolidated panel state (position, dock, minimize) with localStorage persistence
+  const {
+    position, setPosition, isMinimized, setIsMinimized,
+    dockMode, dockEdge, setDockEdge, handleToggleDock, handleDragEnd, isDocked
+  } = useBuddyPanelState(isStatic);
+
   const [isFirstLoad, setIsFirstLoad] = useState(true);
   const [isReady, setIsReady] = useState(false);
-  const [position, setPosition] = useState(BUDDY_DEFAULT_POSITION);
-  const [cachedFloatPosition, setCachedFloatPosition] = useState(BUDDY_DEFAULT_POSITION);
-  const [dockMode, setDockModeInternal] = useState<DockMode>(BUDDY_DEFAULT_DOCK_MODE);
-  const [dockEdge, setDockEdgeInternal] = useState<DockEdge>(BUDDY_DEFAULT_DOCK_EDGE);
   const [currentPlaceholder, setCurrentPlaceholder] = useState(() =>
     selectRandomWithFallback(placeholders, BUDDY_DEFAULT_PLACEHOLDER)
   );
-  const dockSaveTimeoutRef = useRef<NodeJS.Timeout>(undefined);
-
-  // Debounced minimized state setter
-  const setIsMinimized = useCallback((minimized: boolean) => {
-    setIsMinimizedInternal(minimized);
-    if (minimizedSaveTimeoutRef.current) clearTimeout(minimizedSaveTimeoutRef.current);
-    minimizedSaveTimeoutRef.current = setTimeout(() => {
-      localStorage.setItem(BUDDY_MINIMIZED_STORAGE_KEY, String(minimized));
-    }, BUDDY_STATE_DEBOUNCE_MS);
-  }, []);
-
-  // Dock mode setter with persistence
-  const setDockMode = useCallback((mode: DockMode) => {
-    setDockModeInternal(mode);
-    if (dockSaveTimeoutRef.current) clearTimeout(dockSaveTimeoutRef.current);
-    dockSaveTimeoutRef.current = setTimeout(() => {
-      localStorage.setItem(BUDDY_DOCK_MODE_STORAGE_KEY, mode);
-    }, BUDDY_STATE_DEBOUNCE_MS);
-  }, []);
-
-  // Dock edge setter with persistence
-  const setDockEdge = useCallback((edge: DockEdge) => {
-    setDockEdgeInternal(edge);
-    if (dockSaveTimeoutRef.current) clearTimeout(dockSaveTimeoutRef.current);
-    dockSaveTimeoutRef.current = setTimeout(() => {
-      localStorage.setItem(BUDDY_DOCK_EDGE_STORAGE_KEY, edge);
-    }, BUDDY_STATE_DEBOUNCE_MS);
-  }, []);
-
-  const handleToggleDock = useCallback(() => {
-    if (dockMode === 'floating') {
-      setCachedFloatPosition(position);
-      setDockMode('docked');
-      setIsMinimized(false);
-    } else {
-      setPosition(cachedFloatPosition);
-      setDockMode('floating');
-    }
-  }, [dockMode, position, cachedFloatPosition, setDockMode, setIsMinimized]);
-
-  // Select dock edge
-  const handleSelectEdge = useCallback((edge: DockEdge) => {
-    setDockEdge(edge);
-  }, [setDockEdge]);
 
   const displayMessages = isOnboarding ? (onboarding?.messages as BuddyMessage[]) : chat.messages;
   const displayLoading = isOnboarding ? onboarding?.isLoading : chat.isLoading;
@@ -202,30 +85,12 @@ export function CoreAgentBuddy({ onSave, isSaving = false, isLanding = false, on
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    const savedPosition = loadSavedPosition();
-    setPosition(savedPosition);
-    setCachedFloatPosition(savedPosition);
-    // Static/onboarding mode: always start expanded, floating
-    setIsMinimizedInternal(isStatic ? false : loadSavedMinimized());
-    setDockModeInternal(isStatic ? 'floating' : loadSavedDockMode());
-    setDockEdgeInternal(loadSavedDockEdge());
-  }, [isStatic]);
-
   // Expand when explicitly summoned (button/shortcut)
   useEffect(() => {
     if (expandSignal > 0) {
       setIsMinimized(false);
     }
   }, [expandSignal, setIsMinimized]);
-
-  const positionSaveTimeoutRef = useRef<NodeJS.Timeout>(undefined);
-  const handleDragEnd = useCallback(() => {
-    if (positionSaveTimeoutRef.current) clearTimeout(positionSaveTimeoutRef.current);
-    positionSaveTimeoutRef.current = setTimeout(() => {
-      localStorage.setItem(BUDDY_POSITION_STORAGE_KEY, JSON.stringify(position));
-    }, BUDDY_STATE_DEBOUNCE_MS);
-  }, [position]);
 
   const handleAnimationComplete = useCallback(() => {
     if (isFirstLoad) {
@@ -315,7 +180,7 @@ export function CoreAgentBuddy({ onSave, isSaving = false, isLanding = false, on
             onMinimize={() => setIsMinimized(!isMinimized)}
             onClose={() => setIsOpen(false)}
             onToggleDock={handleToggleDock}
-            onSelectEdge={handleSelectEdge}
+            onSelectEdge={setDockEdge}
             onSkip={onboarding?.skip}
             onAnimationComplete={handleAnimationComplete}
             onSelectSuggestion={chat.selectSuggestion}

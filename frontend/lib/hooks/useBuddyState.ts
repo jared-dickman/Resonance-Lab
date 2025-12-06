@@ -65,8 +65,8 @@ function loadSavedState() {
       getCenteredPosition()
     ),
     minimized: loadFromStorage(BUDDY_MINIMIZED_STORAGE_KEY, (v) => (v === true ? true : v === false ? false : null), false),
-    dockMode: loadFromStorage(BUDDY_DOCK_MODE_STORAGE_KEY, (v) => (v === 'floating' || v === 'docked' ? v : null), BUDDY_DEFAULT_DOCK_MODE),
-    dockEdge: loadFromStorage(BUDDY_DOCK_EDGE_STORAGE_KEY, (v) => (['top', 'bottom', 'left', 'right'].includes(v as string) ? v as DockEdge : null), BUDDY_DEFAULT_DOCK_EDGE),
+    dockMode: loadFromStorage<DockMode>(BUDDY_DOCK_MODE_STORAGE_KEY, (v) => (v === 'floating' || v === 'docked' ? v as DockMode : null), BUDDY_DEFAULT_DOCK_MODE),
+    dockEdge: loadFromStorage<DockEdge>(BUDDY_DOCK_EDGE_STORAGE_KEY, (v) => (['top', 'bottom', 'left', 'right'].includes(v as string) ? v as DockEdge : null), BUDDY_DEFAULT_DOCK_EDGE),
   };
 }
 
@@ -117,11 +117,12 @@ export function useBuddyPanelState(isStatic: boolean) {
     if (dockMode === 'floating') {
       setCachedFloatPosition(position);
       setDockMode('docked');
+      setIsMinimized(false);
     } else {
       setPosition(cachedFloatPosition);
       setDockMode('floating');
     }
-  }, [dockMode, position, cachedFloatPosition, setDockMode]);
+  }, [dockMode, position, cachedFloatPosition, setDockMode, setIsMinimized]);
 
   const handleDragEnd = useCallback(() => {
     persistDebounced(BUDDY_POSITION_STORAGE_KEY, position);
