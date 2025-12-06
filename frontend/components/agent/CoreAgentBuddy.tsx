@@ -130,8 +130,9 @@ export function CoreAgentBuddy({ onSave, isSaving = false, isLanding = false, on
 
   useEffect(() => {
     setPosition(loadSavedPosition());
-    setIsMinimizedInternal(loadSavedMinimized());
-  }, []);
+    // Static/onboarding mode: always start expanded
+    setIsMinimizedInternal(isStatic ? false : loadSavedMinimized());
+  }, [isStatic]);
 
   // Expand when explicitly summoned (button/shortcut)
   useEffect(() => {
@@ -155,10 +156,12 @@ export function CoreAgentBuddy({ onSave, isSaving = false, isLanding = false, on
   }, [isFirstLoad]);
 
   useEffect(() => {
-    if (isOpen && !isMinimized) {
+    // Autofocus when buddy is visible and expanded (including static/onboarding mode)
+    const isVisible = isStatic || isOpen;
+    if (isVisible && !isMinimized) {
       setTimeout(() => inputRef.current?.focus(), BUDDY_AUTOFOCUS_DELAY_MS);
     }
-  }, [isOpen, isMinimized]);
+  }, [isOpen, isMinimized, isStatic]);
 
   // Auto-focus input when thinking/loading finishes
   const wasProcessingRef = useRef(false);

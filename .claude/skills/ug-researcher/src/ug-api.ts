@@ -61,9 +61,9 @@ function getAuthHeaders(): Record<string, string> {
     Math.floor(Math.random() * 16).toString(16)
   ).join('');
 
-  // UTC timestamp: YYYY-MM-DD:HH
+  // UTC timestamp: YYYY-MM-DD:H (hour NOT zero-padded per UG API spec)
   const now = new Date();
-  const timestamp = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, '0')}-${String(now.getUTCDate()).padStart(2, '0')}:${String(now.getUTCHours()).padStart(2, '0')}`;
+  const timestamp = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, '0')}-${String(now.getUTCDate()).padStart(2, '0')}:${now.getUTCHours()}`;
 
   // API key = MD5(deviceID + timestamp + "createLog()")
   const apiKey = createHash('md5')
