@@ -3,11 +3,10 @@
 import { useState, useRef, useEffect, type FormEvent, type RefObject } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bot, X, Minimize2, Maximize2, GripHorizontal, Move, Pin, PinOff, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Home, Music, Users, PenLine, Guitar, BookOpen, Clock, Piano, SlidersHorizontal, Send, Layers, Radio, Headphones, Feather, AudioWaveform, Disc3 as Turntable } from 'lucide-react';
+import { Bot, X, Minimize2, Maximize2, GripHorizontal, PanelRight, Maximize, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Home, Music, Users, PenLine, Guitar, BookOpen, Clock, Piano, SlidersHorizontal, Send, Layers, Radio, Headphones, Feather, AudioWaveform, Disc3 as Turntable } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { RandomLoader } from '@/components/ui/loaders/RandomLoader';
 import { cn } from '@/lib/utils';
 import type { BuddyMessage, Suggestion, DockEdge, DockMode } from '@/lib/types/buddy.types';
@@ -97,49 +96,39 @@ function DockToggle({ dockMode, dockEdge, onToggleDock, onSelectEdge }: DockTogg
   const [showPicker, setShowPicker] = useState(false);
   const isDocked = dockMode === 'docked';
 
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isDocked) {
+      onToggleDock();
+    } else {
+      setShowPicker(true);
+    }
+  };
+
   return (
     <Popover open={showPicker} onOpenChange={setShowPicker}>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <PopoverTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className={HEADER_BUTTON_CLASS}
-              onClick={(e) => {
-                e.stopPropagation();
-                if (isDocked) {
-                  onToggleDock(); // Undock immediately
-                } else {
-                  setShowPicker(true); // Show edge picker
-                }
-              }}
-              onContextMenu={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setShowPicker(true); // Right-click always shows picker
-              }}
-            >
-              {isDocked ? <PinOff className="h-3.5 w-3.5" /> : <Pin className="h-3.5 w-3.5" />}
-            </Button>
-          </PopoverTrigger>
-        </TooltipTrigger>
-        <TooltipContent side="bottom" className="text-[10px]">
-          {isDocked ? 'Float freely' : 'Dock to edge'}
-        </TooltipContent>
-      </Tooltip>
+      <PopoverTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          className={HEADER_BUTTON_CLASS}
+          onClick={handleClick}
+          title={isDocked ? 'Float freely' : 'Dock to edge'}
+        >
+          {isDocked ? <Maximize className="h-3.5 w-3.5" /> : <PanelRight className="h-3.5 w-3.5" />}
+        </Button>
+      </PopoverTrigger>
       <PopoverContent
         side="bottom"
         align="center"
         className="w-auto p-3 bg-slate-900/95 backdrop-blur-xl border-white/10"
-        onInteractOutside={() => setShowPicker(false)}
       >
         <div className="text-[10px] text-white/50 text-center mb-2 uppercase tracking-wider">Pick edge</div>
         <EdgePicker
           currentEdge={dockEdge}
           onSelectEdge={(edge) => {
             onSelectEdge(edge);
-            if (!isDocked) onToggleDock(); // Auto-dock when selecting edge
+            if (!isDocked) onToggleDock();
           }}
           onClose={() => setShowPicker(false)}
         />
@@ -194,6 +183,8 @@ function BuddyHeaderControls({ isStatic, isOnboarding, isMinimized, dockMode, do
 
   if (isStatic) return null;
 
+  const isDocked = dockMode === 'docked';
+
   return (
     <div className="flex items-center gap-0.5">
       <DockToggle
@@ -203,9 +194,11 @@ function BuddyHeaderControls({ isStatic, isOnboarding, isMinimized, dockMode, do
         onSelectEdge={onSelectEdge}
       />
       <div className="w-px h-4 bg-white/10 mx-1" />
-      <Button variant="ghost" size="icon" className={HEADER_BUTTON_CLASS} onClick={(e) => { e.stopPropagation(); onMinimize(); }}>
-        {isMinimized ? <Maximize2 className="h-3.5 w-3.5" /> : <Minimize2 className="h-3.5 w-3.5" />}
-      </Button>
+      {!isDocked && (
+        <Button variant="ghost" size="icon" className={HEADER_BUTTON_CLASS} onClick={(e) => { e.stopPropagation(); onMinimize(); }}>
+          {isMinimized ? <Maximize2 className="h-3.5 w-3.5" /> : <Minimize2 className="h-3.5 w-3.5" />}
+        </Button>
+      )}
       <Button variant="ghost" size="icon" className={HEADER_BUTTON_CLASS} onClick={(e) => { e.stopPropagation(); onClose(); }}>
         <X className="h-3.5 w-3.5" />
       </Button>

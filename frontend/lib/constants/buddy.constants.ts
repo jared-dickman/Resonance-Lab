@@ -8,6 +8,7 @@ import { pageRoutes } from '@/lib/routes';
 export const BUDDY_SIDEBAR_WIDTH = 440;
 export const BUDDY_PANEL_WIDTH = 420;
 export const BUDDY_PANEL_HEIGHT = 640;
+export const BUDDY_DOCKED_HEIGHT = 320;
 export const BUDDY_EDGE_PADDING = 32;
 export const BUDDY_MINIMIZED_WIDTH = 280;
 export const BUDDY_MINIMIZED_HEIGHT = 56;

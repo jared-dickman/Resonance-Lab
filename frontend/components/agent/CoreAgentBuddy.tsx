@@ -51,6 +51,7 @@ import {
   BUDDY_SCROLL_CONTAINER_CLASS,
   BUDDY_GRADIENT_ICON_BOX,
   BUDDY_DOCK_SPRING,
+  BUDDY_DOCKED_HEIGHT,
 } from '@/lib/constants/buddy.constants';
 
 interface CoreAgentBuddyProps {
@@ -115,13 +116,12 @@ function loadSavedDockEdge(): DockEdge {
   return BUDDY_DEFAULT_DOCK_EDGE;
 }
 
-/** Compute CSS style for docked position */
 function getDockedStyle(edge: DockEdge): React.CSSProperties {
   const isHorizontal = edge === 'top' || edge === 'bottom';
   return {
     [edge]: 0,
     ...(isHorizontal
-      ? { left: 0, width: '100vw', height: BUDDY_PANEL_HEIGHT }
+      ? { left: 0, width: '100vw', height: BUDDY_DOCKED_HEIGHT }
       : { top: 0, height: '100vh', width: BUDDY_PANEL_WIDTH }),
   };
 }
@@ -174,18 +174,16 @@ export function CoreAgentBuddy({ onSave, isSaving = false, isLanding = false, on
     }, BUDDY_STATE_DEBOUNCE_MS);
   }, []);
 
-  // Toggle dock mode
   const handleToggleDock = useCallback(() => {
     if (dockMode === 'floating') {
-      // Cache current position before docking
       setCachedFloatPosition(position);
       setDockMode('docked');
+      setIsMinimized(false);
     } else {
-      // Restore cached position
       setPosition(cachedFloatPosition);
       setDockMode('floating');
     }
-  }, [dockMode, position, cachedFloatPosition, setDockMode]);
+  }, [dockMode, position, cachedFloatPosition, setDockMode, setIsMinimized]);
 
   // Select dock edge
   const handleSelectEdge = useCallback((edge: DockEdge) => {
@@ -551,7 +549,7 @@ function DesktopPanel({
         className={cn(
           'overflow-hidden bg-gradient-to-b from-slate-900/95 to-slate-950/95',
           'backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/50',
-          isDocked ? 'rounded-none h-full w-full' : 'rounded-2xl',
+          isDocked ? 'rounded-none h-full w-full flex flex-col' : 'rounded-2xl',
           isMinimized && 'cursor-pointer',
           isFirstLoad && 'ring-2 ring-blue-500/50 ring-offset-2 ring-offset-transparent'
         )}
@@ -577,9 +575,9 @@ function DesktopPanel({
           {!isMinimized && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 560 }}
+              animate={{ opacity: 1, height: isDocked ? 'auto' : 560 }}
               exit={{ opacity: 0, height: 0 }}
-              className="flex flex-col"
+              className={cn('flex flex-col', isDocked && 'flex-1')}
             >
               {!isOnboarding && <BuddyNavBar onNavigate={onClose} />}
 
