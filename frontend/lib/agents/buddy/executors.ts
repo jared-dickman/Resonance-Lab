@@ -2,7 +2,7 @@
  * Buddy Tool Executors - Powered by Riff-Ripper 🎸
  *
  * Uses riff-ripper's TypeScript functions for UG search/fetch,
- * then saves via the existing /api/songs endpoint to persist to disk.
+ * then saves via the existing /api/songs endpoint to persist to Supabase.
  */
 
 import { logger } from '@/lib/logger';
@@ -12,6 +12,17 @@ import {
   ripSong,
   type RiffRipperResult,
 } from '@/lib/agents/riff-ripper';
+
+/** Get the API base URL for internal fetch calls (server-side) */
+function getApiBaseUrl(): string {
+  // Vercel provides VERCEL_URL for serverless functions
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+  // Local development - use PORT if available
+  const port = process.env.PORT || '3000';
+  return `http://localhost:${port}`;
+}
 
 export async function executeSearch(
   _apiBaseUrl: string,
@@ -53,7 +64,7 @@ export async function executeSearch(
 }
 
 export async function executeDownload(
-  apiBaseUrl: string,
+  _apiBaseUrl: string,
   songUrl: string,
   artist?: string,
   title?: string
@@ -78,13 +89,7 @@ export async function executeDownload(
     }
 
     const song = result.song;
-    // Use origin from request context or fallback to production URL
-    const baseUrl = typeof window !== 'undefined'
-      ? window.location.origin
-      : process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : 'https://www.jamium.com';
-    const saveResponse = await fetch(`${baseUrl}/api/songs`, {
+    const saveResponse = await fetch(`${getApiBaseUrl()}/api/songs`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -119,9 +124,9 @@ export async function executeDownload(
   }
 }
 
-export async function executeListArtists(apiBaseUrl: string): Promise<string> {
+export async function executeListArtists(_apiBaseUrl?: string): Promise<string> {
   try {
-    const response = await fetch(`${apiBaseUrl}/api/songs`, {
+    const response = await fetch(`${getApiBaseUrl()}/api/songs`, {
       cache: 'no-store',
     });
 
@@ -161,11 +166,11 @@ export async function executeListArtists(apiBaseUrl: string): Promise<string> {
 }
 
 export async function executeGetArtistSongs(
-  apiBaseUrl: string,
+  _apiBaseUrl: string,
   artist: string
 ): Promise<string> {
   try {
-    const response = await fetch(`${apiBaseUrl}/api/songs`, {
+    const response = await fetch(`${getApiBaseUrl()}/api/songs`, {
       cache: 'no-store',
     });
 
