@@ -141,11 +141,39 @@ export const BUDDY_MINIMIZED_VARIANTS: Variants = {
   minimized: { width: BUDDY_MINIMIZED_WIDTH, height: BUDDY_MINIMIZED_HEIGHT, transition: SPRING_ANIMATION },
 };
 
+/** Dock transition spring - elastic feel */
+export const BUDDY_DOCK_SPRING = { type: 'spring' as const, stiffness: 300, damping: 28 };
+
+/** Edge picker arrow animation - staggered fade-in */
+export const BUDDY_EDGE_PICKER_VARIANTS: Variants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.15, ease: 'easeOut' as const },
+  },
+};
+
+/** Edge picker container - staggered children */
+export const BUDDY_EDGE_PICKER_CONTAINER: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.05, delayChildren: 0.05 },
+  },
+};
+
 /** State persistence */
 export const BUDDY_POSITION_STORAGE_KEY = 'buddy-position';
 export const BUDDY_VISIBLE_STORAGE_KEY = 'buddy-visible';
 export const BUDDY_MINIMIZED_STORAGE_KEY = 'buddy-minimized';
+export const BUDDY_DOCK_MODE_STORAGE_KEY = 'buddy-dock-mode';
+export const BUDDY_DOCK_EDGE_STORAGE_KEY = 'buddy-dock-edge';
 export const BUDDY_STATE_DEBOUNCE_MS = 1000;
+
+/** Dock defaults */
+export const BUDDY_DEFAULT_DOCK_MODE = 'floating' as const;
+export const BUDDY_DEFAULT_DOCK_EDGE = 'right' as const;
 // Centered: will be calculated on mount if no saved position
 export const BUDDY_DEFAULT_POSITION = { x: -1, y: -1 };
 
