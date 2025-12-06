@@ -128,7 +128,7 @@ export function BuddyNavBar({ onNavigate }: BuddyNavBarProps) {
     <nav className="relative border-b border-white/5 bg-white/[0.02]">
       <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-slate-900/95 to-transparent z-10 pointer-events-none" />
       <div className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-slate-900/95 to-transparent z-10 pointer-events-none" />
-      <div className="flex items-center gap-0.5 px-4 py-2 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+      <div className="flex items-center justify-center gap-0.5 px-4 py-2 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
         {BUDDY_NAV_ROUTES.map(route => {
           const Icon = NAV_ICONS[route.icon];
           const isActive = pathname === route.path || pathname?.startsWith(route.path);

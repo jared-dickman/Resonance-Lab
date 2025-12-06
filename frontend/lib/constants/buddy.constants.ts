@@ -49,6 +49,31 @@ export const BUDDY_GRADIENT_USER_MSG = 'bg-gradient-to-r from-blue-500/80 to-pur
 export const BUDDY_GRADIENT_SEND_BTN = 'bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 border-0';
 
 /**
+ * Landing page entrance: elegant rise from center after cinematic intro
+ * Seamless continuation of the dramatic intro sequence
+ */
+export const BUDDY_LANDING_VARIANTS: Variants = {
+  closed: {
+    opacity: 0,
+    scale: 0.92,
+    y: 40,
+    filter: 'blur(8px)',
+  },
+  open: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: {
+      type: 'spring',
+      stiffness: 120,
+      damping: 20,
+      delay: 0.15,
+    },
+  },
+};
+
+/**
  * First load: dramatic slow entrance from top-right (Buddy button location)
  * Creates "emerging from the button" feeling - SLOW & DRAMATIC
  * Gradient reveal sweeps left (arriving from right)

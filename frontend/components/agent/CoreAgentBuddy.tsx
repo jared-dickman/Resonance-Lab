@@ -24,6 +24,7 @@ import { ContextChip } from '@/components/agent/BuddySubComponents';
 import {
   BUDDY_PLACEHOLDER_INTERVAL_MS,
   BUDDY_FIRST_LOAD_VARIANTS,
+  BUDDY_LANDING_VARIANTS,
   BUDDY_PANEL_VARIANTS,
   BUDDY_GLOW_VARIANTS,
   BUDDY_MINIMIZED_VARIANTS,
@@ -269,7 +270,7 @@ function MobilePanel({ context, messages, input, isLoading, isThinking, isSaving
       animate={{ y: 0 }}
       exit={{ y: '100%' }}
       transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-      className="fixed inset-x-0 bottom-0 top-12 z-[60] md:hidden bg-slate-950 pb-[env(safe-area-inset-bottom)]"
+      className="fixed inset-0 z-[60] md:hidden bg-slate-950 pb-[env(safe-area-inset-bottom)]"
     >
       <div className="flex flex-col h-full">
         <MobileHeader context={context} onClose={onClose} />
@@ -316,22 +317,22 @@ function MobilePanel({ context, messages, input, isLoading, isThinking, isSaving
 function MobileHeader({ context, onClose }: { context: { page: string; artist?: string; song?: string }; onClose: () => void }) {
   return (
     <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
-      <div className="flex items-center gap-2.5">
+      <div className="flex-1" /> {/* Left spacer for centering */}
+      <div className="flex items-center gap-3">
         <motion.div
           animate={BUDDY_ICON_GLOW_ANIMATION}
           transition={BUDDY_ICON_GLOW_TRANSITION}
-          className={cn('h-8 w-8', BUDDY_GRADIENT_ICON_BOX)}
+          className={cn('h-9 w-9', BUDDY_GRADIENT_ICON_BOX)}
         >
           <Bot className="h-5 w-5 text-blue-400" />
         </motion.div>
-        <div>
-          <span className="font-semibold text-white">Buddy</span>
-          <ContextChip />
-        </div>
+        <span className="font-semibold text-lg text-white">Buddy</span>
       </div>
-      <Button variant="ghost" size="icon" className="h-8 w-8 text-white/60 hover:text-white hover:bg-white/10" onClick={onClose}>
-        <X className="h-5 w-5" />
-      </Button>
+      <div className="flex-1 flex justify-end">
+        <Button variant="ghost" size="icon" className="h-8 w-8 text-white/60 hover:text-white hover:bg-white/10" onClick={onClose}>
+          <X className="h-5 w-5" />
+        </Button>
+      </div>
     </div>
   );
 }
@@ -416,9 +417,18 @@ function DesktopPanel({
     onDragEnd();
   }, [isDragging, onDragEnd]);
 
+  // Landing page: elegant rise animation after cinematic intro
+  // First load (from button): dramatic emerge from top-right
+  // Regular: standard panel animation
+  const panelVariants = isStatic
+    ? BUDDY_LANDING_VARIANTS
+    : isFirstLoad
+      ? BUDDY_FIRST_LOAD_VARIANTS
+      : BUDDY_PANEL_VARIANTS;
+
   return (
     <motion.div
-      variants={isFirstLoad ? BUDDY_FIRST_LOAD_VARIANTS : BUDDY_PANEL_VARIANTS}
+      variants={panelVariants}
       initial="closed"
       animate="open"
       exit="closed"
