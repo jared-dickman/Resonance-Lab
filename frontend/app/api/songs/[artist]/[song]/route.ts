@@ -20,21 +20,22 @@ interface RouteParams {
 
 type SongSection = {
   name: string;
-  lines: Array<{ chord?: { name: string } | null; lyric: string }>;
+  lines: Array<{ chord?: { name: string } | null; lyric: string; lineGroup?: number }>;
 };
 
 function toSongDetailResponse(record: SongRow) {
   const rawSections = record.sections as Array<{
     name: string;
-    lines: Array<{ lyrics?: string; chords?: string; chord?: { name: string } | null; lyric?: string }>;
+    lines: Array<{ lyrics?: string; chords?: string; chord?: { name: string } | null; lyric?: string; lineGroup?: number }>;
   }>;
 
-  // Transform sections to expected format
+  // Transform sections to expected format (preserve lineGroup for UG-style rendering)
   const sections: SongSection[] = rawSections.map((section) => ({
     name: section.name,
     lines: section.lines.map((line) => ({
       chord: line.chord ?? (line.chords ? { name: line.chords } : null),
       lyric: line.lyric ?? line.lyrics ?? '',
+      lineGroup: line.lineGroup,
     })),
   }));
 

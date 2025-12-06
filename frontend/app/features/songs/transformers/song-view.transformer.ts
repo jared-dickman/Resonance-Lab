@@ -37,6 +37,7 @@ export interface SongDetailView {
     lines: Array<{
       chord?: { name: string };
       lyric: string;
+      lineGroup?: number;
     }>;
   }>;
   chordsHtml?: string;
@@ -95,6 +96,7 @@ export function toSongDetailView(response: SongDetailResponse): SongDetailView |
       lines: section.lines.map(line => ({
         lyric: line.lyric,
         chord: line.chord ?? undefined,
+        lineGroup: line.lineGroup,
       })),
     })),
     chordsHtml: response.chordsHtml ?? undefined,

@@ -35,6 +35,7 @@ export const songDetailViewSchema = z.object({
         z.object({
           chord: z.object({ name: z.string() }).optional(),
           lyric: z.string(),
+          lineGroup: z.number().optional(),
         })
       ),
     })

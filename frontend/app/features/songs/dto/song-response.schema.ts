@@ -29,6 +29,7 @@ export const songSectionLineSchema = z.object({
     name: z.string().max(20),
   }).strict().nullish(),
   lyric: z.string().max(1000),
+  lineGroup: z.number().int().optional(),
 }).strict();
 
 export const songSectionSchema = z.object({

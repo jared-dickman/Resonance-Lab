@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Music, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
@@ -10,34 +11,42 @@ import {
   BUDDY_EMPTY_STATE_SUBTITLE,
   STRUCTURED_DATA_TYPES,
 } from '@/lib/constants/buddy.constants';
+import placeholders from '@/lib/data/placeholders.json';
 
 interface StructuredData {
   type: string;
   [key: string]: unknown;
 }
 
-const PAGE_HINTS: Record<string, string> = {
-  library: 'try: add a song',
-  jam: 'pick chords to jam',
-  theory: 'explore the circle',
-  composer: 'build progressions',
-  metronome: 'set your tempo',
-  songwriter: 'write lyrics',
-  studio: 'practice mode',
-  pedalboard: 'tweak your tone',
-  landing: 'ask me anything',
-};
+const ROTATION_INTERVAL_MS = 8000; // 8 seconds - very slow rotation
 
 export function ContextChip({ page, artist, song }: { page: string; artist?: string; song?: string }) {
-  // Priority: song > artist > page hint
-  const label = song ?? artist ?? PAGE_HINTS[page] ?? page;
+  const [phraseIndex, setPhraseIndex] = useState(() => Math.floor(Math.random() * placeholders.length));
+
+  // Rotate phrases slowly when no song/artist context
+  useEffect(() => {
+    if (song || artist) return;
+    const interval = setInterval(() => {
+      setPhraseIndex(prev => (prev + 1) % placeholders.length);
+    }, ROTATION_INTERVAL_MS);
+    return () => clearInterval(interval);
+  }, [song, artist]);
+
+  // Priority: song > artist > rotating phrase
+  const label = song ?? artist ?? placeholders[phraseIndex];
   const showMusicIcon = Boolean(song ?? artist);
 
   return (
-    <span className="text-[10px] text-white/50 font-mono lowercase tracking-wide">
+    <motion.span
+      key={label}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="text-[10px] text-white/50 font-mono lowercase tracking-wide"
+    >
       {showMusicIcon && <Music className="h-2.5 w-2.5 inline mr-1" />}
       {label}
-    </span>
+    </motion.span>
   );
 }
 
